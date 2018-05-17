@@ -72,6 +72,8 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose)
 	_dataset = dataset;
 	_autoClose = autoClose;
     _dataset->GetGeoTransform(_geoTransform);
+	int xRasterSize = _dataset->GetRasterXSize();
+	int yRasterSize = _dataset->GetRasterYSize();
 
 	_spatialRef = (OGRSpatialReference*)OSRNewSpatialReference(nullptr);
 	char* _spatialRefStr = (char*)_dataset->GetProjectionRef();
@@ -80,11 +82,10 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose)
 	{
 		OSRDestroySpatialReference(_spatialRef);
 		_spatialRef = nullptr;
-		_geoTransform[5] = -_geoTransform[5];
+		_geoTransform[5] = -abs(_geoTransform[5]);
+		_geoTransform[3] = yRasterSize;
 	}
 
-	int xRasterSize = _dataset->GetRasterXSize();
-	int yRasterSize = _dataset->GetRasterYSize();
 	double x1, y1, x2, y2, x3, y3;
 	this->Pixel2Spatial(0, yRasterSize, &x1, &y1);
 	this->Pixel2Spatial(xRasterSize, yRasterSize, &x2, &y2);
