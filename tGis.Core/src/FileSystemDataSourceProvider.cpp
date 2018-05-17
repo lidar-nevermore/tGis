@@ -49,16 +49,25 @@ IDataSource * FileSystemDataSourceProvider::UI_CreateDataSource()
 
 IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
 {
-	map<string,int>::iterator pos = _mapDataSource.find(path);
+	string strPath(path);
+	map<string, IDataSource*>::iterator pos = _mapDataSource.find(strPath);
 
 	if (pos != _mapDataSource.end())
-		return _vecDataSource.at(pos->second);
+		return (*pos).second;
 
 	FileSystemDataSource* ds = new FileSystemDataSource(path);
-	_vecDataSource.insert(_vecDataSource.end(),ds);
-	_mapDataSource.insert(map<string,int>::value_type(path, _vecDataSource.size() - 1));
+	_vecDataSource.push_back(ds);
+	_mapDataSource.insert(map<string, IDataSource*>::value_type(strPath, ds));
 
 	return ds;
+}
+
+void FileSystemDataSourceProvider::ReleaseDataSource(IDataSource * ds)
+{
+	map<string, IDataSource*>::iterator pos = _mapDataSource.find(ds->GetConnectionString());
+
+	if (pos != _mapDataSource.end())
+		delete (*pos).second;
 }
 
 int FileSystemDataSourceProvider::GetDataSourceCount()
@@ -69,6 +78,10 @@ int FileSystemDataSourceProvider::GetDataSourceCount()
 IDataSource * FileSystemDataSourceProvider::GetDataSource(int pos)
 {
 	return _vecDataSource.at(pos);
+}
+
+void FileSystemDataSourceProvider::Release()
+{
 }
 
 END_NAME_SPACE(tGis, Core)

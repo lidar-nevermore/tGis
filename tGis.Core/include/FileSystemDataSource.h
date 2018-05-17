@@ -15,7 +15,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGISCORE_API FileSystemDataSource : public IDataSource
 {
 	friend class FileSystemDataSourceProvider;
-
 public:
 	FileSystemDataSource(const char* path);
 	~FileSystemDataSource();
@@ -29,10 +28,10 @@ private:
 	bool _connected;
 
 	vector<IDataSource*> _vecDataSource;
-	map<string, int> _mapDataSource;
+	map<string, IDataSource*> _mapDataSource;
 
 	vector<IDataset*> _vecDataset;
-	map<string, int> _mapDataset;
+	map<string, IDataset*> _mapDataset;
 
 public:
 	const char* GetType();

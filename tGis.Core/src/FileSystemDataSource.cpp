@@ -1,6 +1,10 @@
 #include "FileSystemDataSource.h"
 #include "IDataset.h"
+#include "FileSystemDataSourceProvider.h"
 
+#include "gdal.h"
+#include "gdal_priv.h"
+#include "ogr_spatialref.h"
 #include "boost/filesystem.hpp" 
 
 namespace fs = boost::filesystem;
@@ -21,15 +25,7 @@ FileSystemDataSource::FileSystemDataSource(const char* path)
 
 FileSystemDataSource::~FileSystemDataSource()
 {
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
-	{
-		delete (*it);
-	}
-
-	for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
-	{
-		delete (*it);
-	}
+	Disconnect();
 }
 
 const char * FileSystemDataSource::GetType()
@@ -59,36 +55,57 @@ void FileSystemDataSource::Connect()
 
 void FileSystemDataSource::Disconnect()
 {
-	return;
+	_connected = false;
+	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
+	{
+		FileSystemDataSourceProvider::INSTANCE._mapDataSource.erase((*it)->GetConnectionString());
+		delete (*it);
+	}
+	_vecDataSource.clear();
+	_mapDataSource.clear();
+	for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
+	{
+		delete (*it);
+	}
+	_vecDataset.clear();
+	_mapDataset.clear();
 }
 
 int FileSystemDataSource::GetDatasetCount()
 {
-	return 0;
+	return _vecDataset.size();
 }
 
-IDataset * FileSystemDataSource::GetDataset(int)
+IDataset * FileSystemDataSource::GetDataset(int pos)
 {
-	return nullptr;
+	return _vecDataset.at(pos);
 }
 
-IDataset * FileSystemDataSource::GetDataset(char *)
+IDataset * FileSystemDataSource::GetDataset(char * name)
 {
+	map<string, IDataset*>::iterator pos = _mapDataset.find(name);
+
+	if (pos != _mapDataset.end())
+		return (*pos).second;
 	return nullptr;
 }
 
 int FileSystemDataSource::GetDataSourceCount()
 {
-	return 0;
+	return _vecDataSource.size();
 }
 
-IDataSource * FileSystemDataSource::GetDataSource(int)
+IDataSource * FileSystemDataSource::GetDataSource(int pos)
 {
-	return nullptr;
+	return _vecDataSource.at(pos);
 }
 
-IDataSource * FileSystemDataSource::GetDataSource(char *)
+IDataSource * FileSystemDataSource::GetDataSource(char * path)
 {
+	map<string, IDataSource*>::iterator pos = _mapDataSource.find(path);
+
+	if (pos != _mapDataSource.end())
+		return (*pos).second;
 	return nullptr;
 }
 

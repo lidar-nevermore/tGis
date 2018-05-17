@@ -30,7 +30,7 @@ bool MapWidget::AddMapTool(IMapTool * tool)
 	if (canAdd)
 	{
 		tool->SetMapWidget(this);
-		_vecMapTool.insert(_vecMapTool.begin(), tool);
+		_vecMapTool.push_back(tool);
 	}
 
 	return canAdd;

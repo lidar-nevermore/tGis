@@ -118,8 +118,6 @@ inline void MyGDALSetPixelValue(GDALDataType dt,double v, void* pix)
 
 class TGISCORE_API MyGDALRasterDataset : public IDataset
 {
-friend class FileSystemDataSource;
-
 public:
 	const char* GetType();
 	const char* GetName();
@@ -160,6 +158,14 @@ public:
 	MyGDALRasterDataset();
    	MyGDALRasterDataset(char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update);
 	virtual ~MyGDALRasterDataset();
+
+public:
+	static int GetSupportedFileFormatCount();
+	static const char* GetSupportedFileFormatExt(int);
+	static const char* GetSupportedFileFormatName(int);
+	static bool GetSupportedFileFormatCreatable(int);
+
+public:
 
 	GDALDataset* GetGDALDataset();
 

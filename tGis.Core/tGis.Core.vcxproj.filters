@@ -50,9 +50,6 @@
     <ClInclude Include="include\tEntity.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\DataSourceRepository.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
     <ClInclude Include="include\FileSystemDataSourceProvider.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
@@ -122,13 +119,13 @@
     <ClInclude Include="include\Helper.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\DataSourceProviderRepository.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
       <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DataSourceRepository.cpp">
-      <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
       <Filter>src\Organizer</Filter>
@@ -170,6 +167,9 @@
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\tOrganizer.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DataSourceProviderRepository.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
   </ItemGroup>

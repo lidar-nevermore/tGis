@@ -2,7 +2,7 @@
 #include "IDataSourceProvider.h"
 #include "ILayerProvider.h"
 #include "FileSystemDataSourceProvider.h"
-#include "DataSourceRepository.h"
+#include "DataSourceProviderRepository.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 

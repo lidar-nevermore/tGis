@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\DataSourceRepository.h" />
+    <ClInclude Include="include\DataSourceProviderRepository.h" />
     <ClInclude Include="include\FileSystemDataSource.h" />
     <ClInclude Include="include\FileSystemDataSourceProvider.h" />
     <ClInclude Include="include\GeoSurface.h" />
@@ -50,7 +50,7 @@
     <ClInclude Include="include\RasterLayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DataSourceRepository.cpp" />
+    <ClCompile Include="src\DataSourceProviderRepository.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />

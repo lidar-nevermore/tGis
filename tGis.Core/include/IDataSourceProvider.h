@@ -17,9 +17,12 @@ struct TGISCORE_API IDataSourceProvider
 
 	virtual IDataSource* UI_CreateDataSource() = 0;
 	virtual IDataSource* CreateDataSource(const char*) = 0;
+	virtual void ReleaseDataSource(IDataSource*) = 0;
 
 	virtual int GetDataSourceCount() = 0;
 	virtual IDataSource* GetDataSource(int) = 0;
+
+	virtual void Release() = 0;
 
 	virtual ~IDataSourceProvider() {};
 };

@@ -12,6 +12,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGISCORE_API FileSystemDataSourceProvider : public IDataSourceProvider
 {
+	friend class FileSystemDataSource;
 public:
 	typedef char*(*UI)();
 
@@ -30,11 +31,10 @@ private:
 private:
 	UI _ui;
 	vector<IDataSource*> _vecDataSource;
-	map<string, int> _mapDataSource;
+	map<string, IDataSource*> _mapDataSource;
 
 
 public:
-
 	const char* GetSupportedDataSourceType();
 	const char* GetCatagory();
 
@@ -42,9 +42,12 @@ public:
 
 	IDataSource* UI_CreateDataSource();
 	IDataSource* CreateDataSource(const char* path);
+	void ReleaseDataSource(IDataSource*);
 
 	int GetDataSourceCount();
 	IDataSource* GetDataSource(int);
+
+	void Release();
 };
 
 END_NAME_SPACE(tGis, Core)

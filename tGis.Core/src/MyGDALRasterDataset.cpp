@@ -2,6 +2,7 @@
 #include "MyGDALRasterDataset.h"
 #include <algorithm>
 #include <string>
+#include <vector>
 #include "boost/filesystem.hpp" 
 
 using namespace std;
@@ -12,6 +13,9 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 MyGDALRasterDataset::GDALInit MyGDALRasterDataset::_init;// = IndexRaster::RasterInit();
 
+vector<string> g_SupportedFileFormatExt;
+vector<string> g_SupportedFileFormatName;
+vector<int> g_SupportedFileFormatCreatable;
 
 MyGDALRasterDataset::GDALInit::GDALInit()
 {
@@ -31,6 +35,27 @@ MyGDALRasterDataset::GDALInit::GDALInit()
 	CPLSetConfigOption("GDAL_DATA", dataPath.string().c_str());
     CPLSetConfigOption("GEOTIFF_CSV", dataPath.string().c_str());
 	CPLSetConfigOption("GDAL_DRIVER_PATH", pluginPath.string().c_str());
+
+	GDALDriverManager* dm = GetGDALDriverManager();
+	int drc = dm->GetDriverCount();
+	for (int i = 0; i < drc; i++)
+	{
+		GDALDriver* drv = dm->GetDriver(i);
+		const char* ext = drv->GetMetadataItem(GDAL_DMD_EXTENSIONS);
+		if (ext != nullptr && strcmp(ext, "") != 0)
+		{
+			const char* name = drv->GetMetadataItem(GDAL_DMD_LONGNAME);
+			const char* creatable = drv->GetMetadataItem(GDAL_DCAP_CREATE);
+			int bc = (creatable==nullptr || strcmp(creatable, "YES") != 0) ? 0 : 1;
+
+			g_SupportedFileFormatExt.push_back(ext);
+			if(name == nullptr)
+				g_SupportedFileFormatName.push_back("");
+			else
+				g_SupportedFileFormatName.push_back(name);
+			g_SupportedFileFormatCreatable.push_back(bc);
+		}
+	}
 }
 
 const char* const MyGDALRasterDataset::_type = "AB56EFC6-4940-4CF8-AC48-01F830DA8C0D";
@@ -66,6 +91,27 @@ MyGDALRasterDataset::~MyGDALRasterDataset()
 		GDALClose(_dataset);
 	}
 }
+
+int MyGDALRasterDataset::GetSupportedFileFormatCount()
+{
+	return g_SupportedFileFormatExt.size();
+}
+
+const char * MyGDALRasterDataset::GetSupportedFileFormatExt(int pos)
+{
+	return g_SupportedFileFormatExt.at(pos).c_str();
+}
+
+const char * MyGDALRasterDataset::GetSupportedFileFormatName(int pos)
+{
+	return g_SupportedFileFormatName.at(pos).c_str();
+}
+
+bool MyGDALRasterDataset::GetSupportedFileFormatCreatable(int pos)
+{
+	return g_SupportedFileFormatCreatable.at(pos);
+}
+
 
 void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose)
 {
