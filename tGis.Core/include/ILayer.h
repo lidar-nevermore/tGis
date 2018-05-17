@@ -1,0 +1,38 @@
+#pragma once
+
+#ifndef __I_LAYER_H__
+#define __I_LAYER_H__
+
+#include "Helper.h"
+
+class OGREnvelope;
+class OGRSpatialReference;
+
+BEGIN_NAME_SPACE(tGis, Core)
+
+struct IDataset;
+struct IGeoSurface;
+
+struct TGISCORE_API ILayer
+{
+	virtual const char* GetType() = 0;
+	virtual const char* GetName() = 0;
+	virtual void SetName(char*) = 0;
+	virtual const OGREnvelope* GetEnvelope() = 0;
+	virtual const OGRSpatialReference* GetSpatialReference() = 0;
+	virtual bool CanTransformTo(const OGRSpatialReference*) = 0;
+	virtual bool GetVisible() = 0;
+	virtual void SetVisible(bool) = 0;
+	virtual float GetOpacity() = 0;
+	virtual void SetOpacity(float) = 0;
+	virtual IDataset* GetDataset(int) = 0;
+	virtual void Paint(IGeoSurface*) = 0;
+
+	virtual ~ILayer() {};
+};
+
+
+END_NAME_SPACE(tGis, Core)
+
+
+#endif

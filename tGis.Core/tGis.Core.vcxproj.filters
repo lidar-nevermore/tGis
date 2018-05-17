@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="include\IO">
+      <UniqueIdentifier>{9fa1e215-36f0-48f3-acdc-21add27f44f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Entity">
+      <UniqueIdentifier>{14988ec6-4961-4fa2-ad0d-b470527d6611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Organizer">
+      <UniqueIdentifier>{ff866a89-9e1d-4b9c-81c6-86269367443c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Utility">
+      <UniqueIdentifier>{91dc278a-4944-49ea-9b04-d56e1c25bbb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\IO">
+      <UniqueIdentifier>{697b2720-6965-4af5-a726-f16dd026e2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Entity">
+      <UniqueIdentifier>{33bf6533-c182-438e-8302-fa06833422b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Utility">
+      <UniqueIdentifier>{6e52a017-7fda-46b0-a299-c349b518b8d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Organizer">
+      <UniqueIdentifier>{1d5166c5-3ec5-4ec9-aa51-8bf1d78f0f82}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\tIo.h">
+      <Filter>include\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterBandSeqBlockReader.h">
+      <Filter>include\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterBandSeqPixelReader.h">
+      <Filter>include\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterBandStorageBlockGridReader.h">
+      <Filter>include\IO</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tEntity.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DataSourceRepository.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileSystemDataSourceProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LayerProviderRepository.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IDataSourceProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ILayerProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tOrganizer.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tUtility.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IMapTool.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IMapWidget.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IScreenLayer.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MapTool.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MapWidget.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\FileSystemDataSource.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GeoSurface.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IDataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IDataSource.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IGeoSurface.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ILayer.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IMap.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Map.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyGDALRasterDataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterGrayScaleLayer.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterLayer.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Helper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dllmain.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DataSourceRepository.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LayerProviderRepository.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp">
+      <Filter>src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterBandSeqPixelReader.cpp">
+      <Filter>src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterBandSeqBlockReader.cpp">
+      <Filter>src\IO</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapTool.cpp">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapWidget.cpp">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterLayer.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileSystemDataSource.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeoSurface.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Map.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGDALRasterDataset.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterGrayScaleLayer.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

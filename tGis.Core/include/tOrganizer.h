@@ -1,0 +1,6 @@
+#include "tEntity.h"
+#include "IDataSourceProvider.h"
+#include "ILayerProvider.h"
+#include "FileSystemDataSourceProvider.h"
+#include "DataSourceRepository.h"
+#include "MapRepository.h"
