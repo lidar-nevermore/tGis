@@ -65,6 +65,7 @@
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp" />
     <ClCompile Include="src\RasterGrayScaleLayer.cpp" />
     <ClCompile Include="src\RasterLayer.cpp" />
+    <ClCompile Include="src\tOrganizer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}</ProjectGuid>

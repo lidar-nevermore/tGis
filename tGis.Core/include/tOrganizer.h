@@ -3,4 +3,11 @@
 #include "ILayerProvider.h"
 #include "FileSystemDataSourceProvider.h"
 #include "DataSourceRepository.h"
-#include "MapRepository.h"
+
+BEGIN_NAME_SPACE(tGis, Core)
+
+TGISCORE_API void SetCurrentMap(IMap*);
+
+TGISCORE_API IMap*  GetCurrentMap();
+
+END_NAME_SPACE(tGis, Core)

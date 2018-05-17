@@ -169,5 +169,8 @@
     <ClCompile Include="src\RasterGrayScaleLayer.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\tOrganizer.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

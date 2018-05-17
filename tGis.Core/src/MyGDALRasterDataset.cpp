@@ -95,8 +95,6 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose)
 	_envelope.MaxX = max(_geoTransform[0], max(x1, max(x2, x3)));
 	_envelope.MinY = min(_geoTransform[3], min(y1, min(y2, y3)));
 	_envelope.MaxY = max(_geoTransform[3], max(y1, max(y2, y3)));
-
-
 }
 
 
