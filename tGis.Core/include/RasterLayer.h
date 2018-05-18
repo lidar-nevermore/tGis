@@ -58,22 +58,6 @@ protected:
 	double _maxPixX;
 	double _maxPixY;
 
-	//进行像素对齐操作后 在表面上绘制影像的范围
-	int _paintSurfLeft;
-	int _paintSurfTop;
-	int _paintSurfRight; //不含在内
-	int _paintSurfBottom; //不含在内
-
-	//进行像素对齐操作后 在表面上绘制影像的起始点的残差 小于等于 0.5
-	double _paintSurfLeftRmr;
-	double _paintSurfTopRmr;
-
-	//进行像素对齐操作后 在影像上读取像元的范围 
-	int _readPixLeft;
-	int _readPixTop;
-	int _readPixRight; //不含在内
-	int _readPixBottom; //不含在内
-
 	//绘制表面像素与影像像元边长的比值
 	//也等于一个绘制表面像素相当于多少个影像像元
 	//小于1 影像放大  大于1 影像缩小

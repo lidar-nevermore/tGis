@@ -34,7 +34,7 @@ void QtGeoSurface::EnsurePaintSurfaceValid()
 	{
 		if (_osSurf4Paint != nullptr)
 			delete _osSurf4Paint;
-		_osSurf4Paint = new QPixmap(_surfWidth, _surfHeight);
+		_osSurf4Paint = new QImage(_surfWidth, _surfHeight, QImage::Format_RGB32);
 		_osSurf4Paint->fill(QColor(_surfBackgroundR, _surfBackgroundG, _surfBackgroundB));
 	}
 }
@@ -52,7 +52,7 @@ void QtGeoSurface::DetachQPainter()
 void QtGeoSurface::PresentSurface()
 {
 	if(_osSurf4Present != nullptr)
-		_painter->drawPixmap(_osSurfPresentPosX, _osSurfPresentPosY, _osSurfPresentWidth, _osSurfPresentHeight, *_osSurf4Present, 0, 0, _osSurf4PresentWidth, _osSurf4PresentHeight);
+		_painter->drawImage(QRect(_osSurfPresentPosX, _osSurfPresentPosY, _osSurfPresentWidth, _osSurfPresentHeight), *_osSurf4Present, QRect(0, 0, _osSurf4PresentWidth, _osSurf4PresentHeight));
 }
 
 void QtGeoSurface::SwithSurface()

@@ -43,6 +43,9 @@ MyGDALRasterDataset::GDALInit::GDALInit()
 	for (int i = 0; i < drc; i++)
 	{
 		GDALDriver* drv = dm->GetDriver(i);
+		const char* raster = drv->GetMetadataItem(GDAL_DCAP_RASTER);
+		if (raster == nullptr || strcmp(raster, "YES") != 0)
+			continue;
 		const char* ext = drv->GetMetadataItem(GDAL_DMD_EXTENSIONS);
 		if (ext != nullptr && strcmp(ext, "") != 0)
 		{

@@ -94,20 +94,31 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 
 	int xRasterSize = _dataset->GetGDALDataset()->GetRasterXSize();
 	int yRasterSize = _dataset->GetGDALDataset()->GetRasterYSize();
-	int pixBufXCount = (_maxSurfX - _minSurfX + _bufferAreaWidth - 1) / _bufferAreaWidth;
-	int pixBufYCount = (_maxSurfY - _minSurfY + _bufferAreaWidth - 1) / _bufferAreaWidth;
+
+	int initialPaintingLeft = (int)my_round(_minSurfX, 0);
+	int initialPaintingTop = (int)my_round(_minSurfY, 0);
+	int finalPaintingRight = (int)my_round(_maxSurfX, 0);
+	int finalPaintingBottom = (int)my_round(_maxSurfY, 0);
+
+	int pixBufXCount = (finalPaintingRight - initialPaintingLeft + _bufferAreaWidth - 1) / _bufferAreaWidth;
+	int pixBufYCount = (finalPaintingBottom - initialPaintingTop + _bufferAreaWidth - 1) / _bufferAreaWidth;
 
 	//当前正要绘制部分的范围 单位：绘制表面像素
-	int paintingLeft = (int)my_round(_minSurfX, 0);
-	int paintingTop = (int)my_round(_minSurfY, 0);
+	int paintingLeft = initialPaintingLeft;
+	int paintingTop = initialPaintingTop;
 	int paintingBottom;
 	int paintingRight;
 	//当前正要绘制的部分的宽高 单位：绘制表面像素
 	int paintingWidth;
 	int paintingHeight;
-	//初始影像像素和绘制表面像素对齐残差  单位：绘制表面像素
-	double _initialAlignRmrX = _minSurfX - paintingLeft;
-	double _initialAlignRmrY = _minSurfY - paintingTop;
+
+	//初始影像像素和绘制表面像素对齐残差  单位：影像像素
+	double initialAlignRmrX;
+	double initialAlignRmrY;
+
+	//初始读取位置
+	int initialReadingLeft;
+	int initialReadingTop;
 
 	//当前正要读取部分的范围 单位：影像像素
 	int readingLeft;
@@ -117,9 +128,6 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 	//当前正要读取的部分的宽高 单位：影像像素
 	int readingWidth;
 	int readingHeight;
-	//读取的每一块影像像素和绘制表面像素对齐残差  单位：影像像素
-	double _readingAlignRmrX;
-	double _readingAlignRmrY;
 
 
 	for (int i = 0; i < pixBufYCount; i++)
@@ -130,18 +138,22 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 		if (readingTopDiff / _surfPixRatio >= 1.0)
 		{
 			readingTop = (int)readingTopFloor;
-			_readingAlignRmrY = readingTopOrg - readingTopFloor;
 		}
 		else
 		{
 			readingTop = (int)readingTopFloor + 1;
-			_readingAlignRmrY = readingTopDiff;
+		}
+
+		if (i == 0)
+		{
+			initialReadingTop = readingTop;
+			initialAlignRmrY = readingTopOrg - readingTop;
 		}
 
 		paintingBottom = paintingTop + _bufferAreaWidth;
-		if (paintingBottom > _maxSurfY)
+		if (paintingBottom > finalPaintingBottom)
 		{
-			paintingBottom = (int)my_round(_maxSurfY, 0);
+			paintingBottom = finalPaintingBottom;
 		}
 
 		double readingBottomOrg = _minPixY + (paintingBottom - _minSurfY)*_surfPixRatio;
@@ -149,7 +161,7 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 		double readingBottomDiff = readingBottomOrg - readingBottomFloor;
 		if (readingBottomDiff / _surfPixRatio >= 1.0)
 		{
-			readingBottom = (int)readingBottomFloor + 1;
+			readingBottom = (int)readingBottomFloor + 2;
 		}
 		else
 		{
@@ -165,7 +177,7 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 		paintingHeight = paintingBottom - paintingTop;
 
 
-		paintingLeft = (int)my_round(_minSurfX, 0);
+		paintingLeft = initialPaintingLeft;
 
 		for (int j = 0; j < pixBufXCount; j++)
 		{
@@ -175,18 +187,22 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 			if (readingLeftDiff / _surfPixRatio >= 1.0)
 			{
 				readingLeft = (int)readingLeftFloor;
-				_readingAlignRmrX = readingLeftOrg - readingLeftFloor;
 			}
 			else
 			{
 				readingLeft = (int)readingLeftFloor + 1;
-				_readingAlignRmrX = readingLeftDiff;
+			}
+
+			if (j == 0)
+			{
+				initialReadingLeft = readingLeft;
+				initialAlignRmrX = readingLeftOrg - readingLeft;
 			}
 
 			paintingRight = paintingLeft + _bufferAreaWidth;
-			if (paintingRight > _maxSurfX)
+			if (paintingRight > finalPaintingRight)
 			{
-				paintingRight = (int)my_round(_maxSurfX, 0);
+				paintingRight = finalPaintingRight;
 			}
 
 			double readingRightOrg = _minPixX + (paintingRight - _minSurfX)*_surfPixRatio;
@@ -194,11 +210,11 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 			double readingRightDiff = readingRightOrg - readingRightFloor;
 			if (readingRightDiff / _surfPixRatio >= 1.0)
 			{
-				readingRight = (int)readingRightFloor + 1;
+				readingRight = (int)readingRightFloor + 2;
 			}
 			else
 			{
-				readingRight = (int)readingRightFloor;
+				readingRight = (int)readingRightFloor + 1;
 			}
 
 			if (readingRight > xRasterSize)
@@ -215,14 +231,14 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 			unsigned char* surfBuf = _surfBuffer;
 			for (int m = 0; m < paintingHeight; m++)
 			{
-				int readBufRow = (int)my_round(m*_surfPixRatio + _readingAlignRmrY + _initialAlignRmrY, 0);
+				int readBufRow = (int)my_round((m + paintingTop - initialPaintingTop)*_surfPixRatio + initialAlignRmrY + initialReadingTop - readingTop, 0);
 				if (readBufRow < 0)
 					readBufRow = 0;
 				if (readBufRow >= readingHeight)
 					readBufRow = readingHeight - 1;
 				for (int n = 0; n < paintingWidth; n++)
 				{
-					int readBufCol = (int)my_round(n*_surfPixRatio + _readingAlignRmrX + _initialAlignRmrX, 0);
+					int readBufCol = (int)my_round((n + paintingLeft - initialPaintingLeft)*_surfPixRatio + initialAlignRmrX + initialReadingLeft - readingLeft, 0);
 					if (readBufCol < 0)
 						readBufCol = 0;
 					if (readBufCol >= readingWidth)
@@ -252,20 +268,23 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 
 	int xRasterSize = _dataset->GetGDALDataset()->GetRasterXSize();
 	int yRasterSize = _dataset->GetGDALDataset()->GetRasterYSize();
-	int pixBufXCount = (_maxSurfX - _minSurfX + _bufferAreaWidth - 1) / _bufferAreaWidth;
-	int pixBufYCount = (_maxSurfY - _minSurfY + _bufferAreaWidth - 1) / _bufferAreaWidth;
+
+	int initialPaintingLeft = (int)my_round(_minSurfX, 0);
+	int initialPaintingTop = (int)my_round(_minSurfY, 0);
+	int finalPaintingRight = (int)my_round(_maxSurfX, 0);
+	int finalPaintingBottom = (int)my_round(_maxSurfY, 0);
+
+	int pixBufXCount = (finalPaintingRight - initialPaintingLeft + _bufferAreaWidth - 1) / _bufferAreaWidth;
+	int pixBufYCount = (finalPaintingBottom - initialPaintingTop + _bufferAreaWidth - 1) / _bufferAreaWidth;
 
 	//当前正要绘制部分的范围 单位：绘制表面像素
-	int paintingLeft;
-	int paintingTop = (int)my_round(_minSurfY, 0);
+	int paintingLeft = initialPaintingLeft;
+	int paintingTop = initialPaintingTop;
 	int paintingBottom;
 	int paintingRight;
 	//当前正要绘制的部分的宽高 单位：绘制表面像素
 	int paintingWidth;
 	int paintingHeight;
-	//读取的每一块影像像素和绘制表面像素对齐残差  单位：绘制表面像素
-	double _paintingAlignRmrX;
-	double _paintingAlignRmrY;
 
 	//当前正要读取部分的范围 单位：影像像素
 	int readingLeft;
@@ -287,20 +306,18 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 		if (readingTopDiffSurfPixCount >= 1.0)
 		{
 			readingTop = (int)readingTopFloor;
-			double paintingTopOrg = readingTop / _surfPixRatio;
+			double paintingTopOrg = _minSurfY + (readingTop - _minPixY)/_surfPixRatio;
 			paintingTop = (int)my_round(paintingTopOrg, 0);
-			_paintingAlignRmrY = paintingTopOrg - paintingTop;
 		}
 		else
 		{
 			readingTop = (int)readingTopFloor + 1;
-			_paintingAlignRmrY = readingTopDiffSurfPixCount;
 		}
 
 		paintingBottom = paintingTop + _bufferAreaWidth;
-		if (paintingBottom > _maxSurfY)
+		if (paintingBottom > finalPaintingBottom)
 		{
-			paintingBottom = (int)my_round(_maxSurfY, 0);
+			paintingBottom = finalPaintingBottom;
 		}
 
 		double readingBottomOrg = _minPixY + (paintingBottom - _minSurfY)*_surfPixRatio;
@@ -309,6 +326,8 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 		if (readingBottomDiff / _surfPixRatio >= 1.0)
 		{
 			readingBottom = (int)readingBottomFloor + 1;
+			double paintingBottomOrg = _minSurfY + (readingBottom - _minPixY) / _surfPixRatio;
+			paintingBottom = (int)my_round(paintingBottomOrg, 0);
 		}
 		else
 		{
@@ -324,7 +343,7 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 		paintingHeight = paintingBottom - paintingTop;
 
 
-		paintingLeft = (int)my_round(_minSurfX, 0);
+		paintingLeft = initialPaintingLeft;
 
 		for (int j = 0; j < pixBufXCount; j++)
 		{
@@ -335,20 +354,18 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 			if (readingLeftDiffSurfPixCount >= 1.0)
 			{
 				readingLeft = (int)readingLeftFloor;
-				double paintingLeftOrg = readingLeft / _surfPixRatio;
+				double paintingLeftOrg = _minSurfX + (readingLeft - _minPixX) / _surfPixRatio;
 				paintingLeft = (int)my_round(paintingLeftOrg, 0);
-				_paintingAlignRmrX = paintingLeftOrg - paintingLeft;
 			}
 			else
 			{
 				readingLeft = (int)readingLeftFloor + 1;
-				_paintingAlignRmrX = readingLeftDiffSurfPixCount;
 			}
 
 			paintingRight = paintingLeft + _bufferAreaWidth;
-			if (paintingRight > _maxSurfX)
+			if (paintingRight > finalPaintingRight)
 			{
-				paintingRight = (int)my_round(_maxSurfX, 0);
+				paintingRight = finalPaintingRight;
 			}
 
 			double readingRightOrg = _minPixX + (paintingRight - _minSurfX)*_surfPixRatio;
@@ -357,6 +374,8 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 			if (readingRightDiff / _surfPixRatio >= 1.0)
 			{
 				readingRight = (int)readingRightFloor + 1;
+				double paintingRightOrg = _minSurfX + (readingRight - _minPixX) / _surfPixRatio;
+				paintingRight = (int)my_round(paintingRightOrg, 0);
 			}
 			else
 			{

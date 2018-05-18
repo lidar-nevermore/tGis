@@ -142,65 +142,7 @@ bool RasterLayer::PreparePaint(IGeoSurface* surf)
 	_maxSurfY = max(minInSurfY, maxInSurfY);
 
 	_surfPixRatio = (_maxPixX - _minPixX) / (_maxSurfX - _minSurfX);
-	_outerResample = _surfPixRatio < 1.1;
-
-	_readPixLeft = (int)floor(_minPixX);
-	double offsetLeftOrg = (_readPixLeft + 1 - _minPixX)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX);
-	double offsetLeft = my_round(offsetLeftOrg,0);
-	if (offsetLeft >= 1)
-	{
-		double paintSurfLeftOrg = _minSurfX - (_minPixX - _readPixLeft)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX);
-		_paintSurfLeft = (int)my_round(paintSurfLeftOrg, 0);
-		_paintSurfLeftRmr = _paintSurfLeft - paintSurfLeftOrg;
-	}
-	else
-	{
-		_readPixLeft += 1;
-		_paintSurfLeft = (int)my_round(_minSurfX, 0);
-		_paintSurfLeftRmr = _paintSurfLeft - _minSurfX;
-	}
-
-	_readPixTop = (int)floor(_minPixY);
-	double offsetTopOrg = (_readPixTop + 1 - _minPixY)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX);
-	double offsetTop = my_round(offsetTopOrg, 0);
-	if (offsetTop >= 1)
-	{
-		double paintSurfTopOrg = _minSurfY - (_minPixY - _readPixTop)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX);
-		_paintSurfTop = (int)my_round(paintSurfTopOrg, 0);
-		_paintSurfTopRmr = _paintSurfTop - paintSurfTopOrg;
-	}
-	else
-	{
-		_readPixTop += 1;
-		_paintSurfTop = (int)my_round(_minSurfY, 0);
-		_paintSurfTopRmr = _paintSurfTop - _minSurfY;
-	}
-
-	_readPixRight = (int)floor(_maxPixX);
-	double offsetRightOrg = (_maxPixX - _readPixRight)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX);
-	double offsetRight = my_round(offsetRightOrg, 0);
-	if (offsetRight >= 1)
-	{
-		_readPixRight += 1;
-		_paintSurfRight = (int)my_round(_maxSurfX + (_readPixRight + 1 - _maxPixX)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX), 0);
-	}
-	else
-	{
-		_paintSurfRight = (int)my_round(_maxSurfX, 0);
-	}
-
-	_readPixBottom = (int)floor(_maxPixY);
-	double offsetBottomOrg = (_maxPixY - _readPixBottom)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX);
-	double offsetBottom = my_round(offsetBottomOrg, 0);
-	if (offsetBottom >= 1)
-	{
-		_readPixBottom += 1;
-		_paintSurfBottom = (int)my_round(_maxSurfY + (_readPixBottom + 1 - _maxPixY)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX), 0);
-	}
-	else
-	{
-		_paintSurfBottom = (int)my_round(_maxSurfY, 0);
-	}
+	_outerResample = _surfPixRatio < 0.1;
 
 	return true;
 }

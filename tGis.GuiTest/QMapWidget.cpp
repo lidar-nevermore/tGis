@@ -59,12 +59,12 @@ void QMapWidget::SetBackgroundColor(unsigned char R, unsigned char G, unsigned c
 void QMapWidget::RepaintMap()
 {
 	MapWidget::RepaintMap();
-	repaint();
+	update();
 }
 
 void QMapWidget::PresentSurface()
 {
-	repaint();
+	update();
 }
 
 void QMapWidget::paintEvent(QPaintEvent *)
