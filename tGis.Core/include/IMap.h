@@ -14,7 +14,7 @@ struct IGeoSurface;
 struct TGISCORE_API IMap
 {
 	virtual const char* GetName() = 0;
-	virtual void SetName(char*) = 0;
+	virtual void SetName(const char*) = 0;
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 

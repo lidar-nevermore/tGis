@@ -30,7 +30,9 @@ private:
 
 private:
 	UI _ui;
+	//该集合中只放CreateDataSource和UI_CreateDataSource创建的FileSystemDataSource
 	vector<IDataSource*> _vecDataSource;
+	//该集合中放了所有创建出来的FileSystemDataSource
 	map<string, IDataSource*> _mapDataSource;
 
 

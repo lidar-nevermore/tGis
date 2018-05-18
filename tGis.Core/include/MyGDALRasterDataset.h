@@ -156,14 +156,15 @@ private:
 
 public:
 	MyGDALRasterDataset();
-   	MyGDALRasterDataset(char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update);
+   	MyGDALRasterDataset(const char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update);
 	virtual ~MyGDALRasterDataset();
 
 public:
 	static int GetSupportedFileFormatCount();
-	static const char* GetSupportedFileFormatExt(int);
+	static const vector<string>& GetSupportedFileFormatExt(int);
 	static const char* GetSupportedFileFormatName(int);
 	static bool GetSupportedFileFormatCreatable(int);
+	static bool IsSupportedFileFormatExt(const char*);
 
 public:
 

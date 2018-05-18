@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "boost/filesystem.hpp" 
+#include "boost/algorithm/string/classification.hpp"
+#include "boost/algorithm/string/split.hpp"
 
 using namespace std;
 
@@ -13,7 +15,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 MyGDALRasterDataset::GDALInit MyGDALRasterDataset::_init;// = IndexRaster::RasterInit();
 
-vector<string> g_SupportedFileFormatExt;
+vector<vector<string>> g_SupportedFileFormatExt;
 vector<string> g_SupportedFileFormatName;
 vector<int> g_SupportedFileFormatCreatable;
 
@@ -44,16 +46,30 @@ MyGDALRasterDataset::GDALInit::GDALInit()
 		const char* ext = drv->GetMetadataItem(GDAL_DMD_EXTENSIONS);
 		if (ext != nullptr && strcmp(ext, "") != 0)
 		{
-			const char* name = drv->GetMetadataItem(GDAL_DMD_LONGNAME);
-			const char* creatable = drv->GetMetadataItem(GDAL_DCAP_CREATE);
-			int bc = (creatable==nullptr || strcmp(creatable, "YES") != 0) ? 0 : 1;
+			vector<string> dstext;
+			string strext = ext;
+			boost::split(dstext, strext, boost::is_any_of(" ,.|/\\"), boost::token_compress_on);
+			for (vector<string>::iterator it = dstext.begin(); it != dstext.end();)
+			{
+				if ((*it).empty())
+					it = dstext.erase(it);
+				else
+					++it;
+			}
+			if (dstext.size() > 0) 
+			{
+				g_SupportedFileFormatExt.push_back(dstext);
 
-			g_SupportedFileFormatExt.push_back(ext);
-			if(name == nullptr)
-				g_SupportedFileFormatName.push_back("");
-			else
-				g_SupportedFileFormatName.push_back(name);
-			g_SupportedFileFormatCreatable.push_back(bc);
+				const char* name = drv->GetMetadataItem(GDAL_DMD_LONGNAME);
+				const char* creatable = drv->GetMetadataItem(GDAL_DCAP_CREATE);
+				int bc = (creatable == nullptr || strcmp(creatable, "YES") != 0) ? 0 : 1;
+				
+				if (name == nullptr)
+					g_SupportedFileFormatName.push_back("");
+				else
+					g_SupportedFileFormatName.push_back(name);
+				g_SupportedFileFormatCreatable.push_back(bc);
+			}
 		}
 	}
 }
@@ -67,7 +83,7 @@ MyGDALRasterDataset::MyGDALRasterDataset()
 	_eAccess = GA_ReadOnly;
 }
 
-MyGDALRasterDataset::MyGDALRasterDataset(char* path, bool delayOpen, GDALAccess eAccess)
+MyGDALRasterDataset::MyGDALRasterDataset(const char* path, bool delayOpen, GDALAccess eAccess)
 {
 	_eAccess = eAccess;
 	_openStr = path;
@@ -97,9 +113,9 @@ int MyGDALRasterDataset::GetSupportedFileFormatCount()
 	return g_SupportedFileFormatExt.size();
 }
 
-const char * MyGDALRasterDataset::GetSupportedFileFormatExt(int pos)
+const vector<string>& MyGDALRasterDataset::GetSupportedFileFormatExt(int pos)
 {
-	return g_SupportedFileFormatExt.at(pos).c_str();
+	return g_SupportedFileFormatExt.at(pos);
 }
 
 const char * MyGDALRasterDataset::GetSupportedFileFormatName(int pos)
@@ -110,6 +126,19 @@ const char * MyGDALRasterDataset::GetSupportedFileFormatName(int pos)
 bool MyGDALRasterDataset::GetSupportedFileFormatCreatable(int pos)
 {
 	return g_SupportedFileFormatCreatable.at(pos);
+}
+
+bool MyGDALRasterDataset::IsSupportedFileFormatExt(const char * ext)
+{
+	for (vector<vector<string>>::iterator it = g_SupportedFileFormatExt.begin(); it != g_SupportedFileFormatExt.end(); it++)
+	{
+		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		{
+			if (stricmp((*itt).c_str(), ext) == 0)
+				return true;
+		}
+	}
+	return false;
 }
 
 

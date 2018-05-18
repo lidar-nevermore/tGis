@@ -49,7 +49,7 @@ const char * RasterLayer::GetName()
 	return _name.c_str();
 }
 
-void RasterLayer::SetName(char * name)
+void RasterLayer::SetName(const char * name)
 {
 	_name = name;
 }

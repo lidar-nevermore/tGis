@@ -22,7 +22,7 @@ const char * Map::GetName()
 	return _name.c_str();
 }
 
-void Map::SetName(char * name)
+void Map::SetName(const char * name)
 {
 	_name = name;
 }

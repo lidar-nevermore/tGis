@@ -1,6 +1,7 @@
 #include "FileSystemDataSource.h"
 #include "IDataset.h"
 #include "FileSystemDataSourceProvider.h"
+#include "MyGDALRasterDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -19,7 +20,24 @@ FileSystemDataSource::FileSystemDataSource(const char* path)
 	_path = path;
 	fs::path dir(path);
 	_name = dir.filename().string();
-	_connected = false;
+
+	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(path);
+	if (pos != FileSystemDataSourceProvider::INSTANCE._mapDataSource.end())
+	{
+		FileSystemDataSource* ds = (FileSystemDataSource*)(*pos).second;
+
+		_vecDataSource = ds->_vecDataSource;
+		_mapDataSource = ds->_mapDataSource;
+
+		_vecDataset = ds->_vecDataset;
+		_mapDataset = ds->_mapDataset;
+
+		_connected = ds->IsConnected();
+	}
+	else
+	{
+		_connected = false;
+	}
 }
 
 
@@ -50,7 +68,50 @@ bool FileSystemDataSource::IsConnected()
 
 void FileSystemDataSource::Connect()
 {
-	return;
+	if (_connected)
+		return;
+
+	fs::path dir(_path);
+	fs::directory_iterator end_iter;
+	for (fs::directory_iterator dir_itr(dir); dir_itr != end_iter; ++dir_itr)
+	{
+		if (fs::is_directory(*dir_itr))
+		{
+			string path = (*dir_itr).path().string();
+			map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(path);
+
+			IDataSource* ds = nullptr;
+			if (pos != FileSystemDataSourceProvider::INSTANCE._mapDataSource.end())
+			{
+				ds = (*pos).second;
+				_vecDataSource.push_back(ds);
+				map<string, IDataSource*>::value_type v(path, ds);
+				_mapDataSource.insert(v);
+			}
+			else
+			{
+				ds = new FileSystemDataSource(path.c_str());
+				_vecDataSource.push_back(ds);
+				map<string, IDataSource*>::value_type v(path, ds);
+				_mapDataSource.insert(v);
+				FileSystemDataSourceProvider::INSTANCE._mapDataSource.insert(v);
+			}			
+		}
+		else
+		{
+			if (fs::is_regular_file(*dir_itr) && (*dir_itr).path().has_extension())
+			{
+				string name = (*dir_itr).path().string();
+				string ext = (*dir_itr).path().extension().string();
+				if (MyGDALRasterDataset::IsSupportedFileFormatExt(ext.c_str()))
+				{
+					MyGDALRasterDataset* dt = new MyGDALRasterDataset(name.c_str());
+					_vecDataset.push_back(dt);
+					_mapDataset.insert(map<string, IDataset*>::value_type(name, dt));
+				}
+			}
+		}
+	}
 }
 
 void FileSystemDataSource::Disconnect()
@@ -81,7 +142,7 @@ IDataset * FileSystemDataSource::GetDataset(int pos)
 	return _vecDataset.at(pos);
 }
 
-IDataset * FileSystemDataSource::GetDataset(char * name)
+IDataset * FileSystemDataSource::GetDataset(const char * name)
 {
 	map<string, IDataset*>::iterator pos = _mapDataset.find(name);
 
@@ -100,7 +161,7 @@ IDataSource * FileSystemDataSource::GetDataSource(int pos)
 	return _vecDataSource.at(pos);
 }
 
-IDataSource * FileSystemDataSource::GetDataSource(char * path)
+IDataSource * FileSystemDataSource::GetDataSource(const char * path)
 {
 	map<string, IDataSource*>::iterator pos = _mapDataSource.find(path);
 

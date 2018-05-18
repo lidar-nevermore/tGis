@@ -26,13 +26,13 @@ IDataSourceProvider * DataSourceProviderRepository::GetDataSourceProvider(int po
 	return _vecDataSourceProvider.at(pos);
 }
 
-void DataSourceProviderRepository::AddDataSourceProvider(char* catagory,IDataSourceProvider* dsp)
+void DataSourceProviderRepository::AddDataSourceProvider(const char* catagory,IDataSourceProvider* dsp)
 {
 	_vecDataSourceProvider.push_back(dsp);
 	_mapDataSourceProvider.insert(map<string, IDataSourceProvider*>::value_type(catagory, dsp));
 }
 
-IDataSourceProvider * DataSourceProviderRepository::GetDataSourceProvider(char* catagory)
+IDataSourceProvider * DataSourceProviderRepository::GetDataSourceProvider(const char* catagory)
 {
 	map<string, IDataSourceProvider*>::iterator pos = _mapDataSourceProvider.find(catagory);
 

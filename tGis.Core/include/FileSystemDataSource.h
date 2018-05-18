@@ -44,11 +44,11 @@ public:
 
 	int GetDatasetCount();
 	IDataset* GetDataset(int);
-	IDataset* GetDataset(char*);
+	IDataset* GetDataset(const char*);
 
 	int GetDataSourceCount();
 	IDataSource* GetDataSource(int);
-	IDataSource* GetDataSource(char*);
+	IDataSource* GetDataSource(const char*);
 };
 
 

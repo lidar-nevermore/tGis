@@ -29,8 +29,8 @@ private:
 public:
 	int GetDataSourceProviderCount();
 	IDataSourceProvider* GetDataSourceProvider(int);
-	void AddDataSourceProvider(char* catagory, IDataSourceProvider*);
-	IDataSourceProvider* GetDataSourceProvider(char* catagory);
+	void AddDataSourceProvider(const char* catagory, IDataSourceProvider*);
+	IDataSourceProvider* GetDataSourceProvider(const char* catagory);
 
 private:
 	vector<IDataSourceProvider*> _vecDataSourceProvider;

@@ -21,11 +21,11 @@ struct TGISCORE_API IDataSource
 
 	virtual int GetDatasetCount() = 0;
 	virtual IDataset* GetDataset(int) = 0;
-	virtual IDataset* GetDataset(char*) = 0;
+	virtual IDataset* GetDataset(const char*) = 0;
 
 	virtual int GetDataSourceCount() = 0;
 	virtual IDataSource* GetDataSource(int) = 0;
-	virtual IDataSource* GetDataSource(char*) = 0;
+	virtual IDataSource* GetDataSource(const char*) = 0;
 
 	virtual ~IDataSource() {};
 };

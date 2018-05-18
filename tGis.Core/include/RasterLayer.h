@@ -25,7 +25,7 @@ protected:
 public:
 
 	virtual const char* GetName();
-	virtual void SetName(char* name);
+	virtual void SetName(const char* name);
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
 	virtual bool CanTransformTo(const OGRSpatialReference*);

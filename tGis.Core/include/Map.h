@@ -24,7 +24,7 @@ public:
 
 public:
 	virtual const char* GetName();
-	virtual void SetName(char*);
+	virtual void SetName(const char*);
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
 	virtual int GetLayerCount();
