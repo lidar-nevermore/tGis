@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QPainter>
-#include <QImage>
+#include <QPixmap>
 #include "tEntity.h"
 
 using namespace tGis::Core;
@@ -17,8 +17,8 @@ public:
 
 private:
 	QPainter* _painter;
-	QImage* _osSurf4Paint;
-	QImage* _osSurf4Present;
+	QPixmap* _osSurf4Paint;
+	QPixmap* _osSurf4Present;
 
 	unsigned char _surfBackgroundR;
 	unsigned char _surfBackgroundG;
