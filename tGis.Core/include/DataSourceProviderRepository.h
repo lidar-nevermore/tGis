@@ -18,7 +18,7 @@ struct IDataSourceProvider;
 class TGISCORE_API DataSourceProviderRepository
 {
 public:
-	static const DataSourceProviderRepository INSTANCE;
+	static DataSourceProviderRepository INSTANCE;
 
 private:
 	DataSourceProviderRepository();
@@ -29,7 +29,7 @@ private:
 public:
 	int GetDataSourceProviderCount();
 	IDataSourceProvider* GetDataSourceProvider(int);
-	void AddDataSourceProvider(const char* catagory, IDataSourceProvider*);
+	void AddDataSourceProvider(IDataSourceProvider*);
 	IDataSourceProvider* GetDataSourceProvider(const char* catagory);
 
 private:

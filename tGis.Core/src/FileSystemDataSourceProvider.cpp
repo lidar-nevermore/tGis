@@ -1,5 +1,6 @@
 #include "FileSystemDataSourceProvider.h"
 #include "FileSystemDataSource.h"
+#include "DataSourceProviderRepository.h"
 
 #include <cassert>
 
@@ -14,15 +15,12 @@ FileSystemDataSourceProvider FileSystemDataSourceProvider::INSTANCE;// = new Fil
 
 FileSystemDataSourceProvider::FileSystemDataSourceProvider()
 {
-
+	DataSourceProviderRepository::INSTANCE.AddDataSourceProvider(this);
 }
 
 FileSystemDataSourceProvider::~FileSystemDataSourceProvider()
 {
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
-	{
-		delete (*it);
-	}
+	Release();
 }
 
 const char * FileSystemDataSourceProvider::GetSupportedDataSourceType()
@@ -82,6 +80,11 @@ IDataSource * FileSystemDataSourceProvider::GetDataSource(int pos)
 
 void FileSystemDataSourceProvider::Release()
 {
+	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
+	{
+		delete (*it);
+	}
+	_vecDataSource.clear();
 }
 
 END_NAME_SPACE(tGis, Core)

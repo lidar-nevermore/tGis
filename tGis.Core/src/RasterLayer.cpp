@@ -142,7 +142,7 @@ bool RasterLayer::PreparePaint(IGeoSurface* surf)
 	_maxSurfY = max(minInSurfY, maxInSurfY);
 
 	_surfPixRatio = (_maxPixX - _minPixX) / (_maxSurfX - _minSurfX);
-	_outerResample = _surfPixRatio < 1;
+	_outerResample = _surfPixRatio < 1.1;
 
 	_readPixLeft = (int)floor(_minPixX);
 	double offsetLeftOrg = (_readPixLeft + 1 - _minPixX)*(_maxSurfX - _minSurfX) / (_maxPixX - _minPixX);
