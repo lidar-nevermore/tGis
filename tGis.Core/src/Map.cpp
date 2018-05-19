@@ -49,11 +49,6 @@ bool Map::CanTransformFrom(const OGRSpatialReference *spatialRef)
 	return false;
 }
 
-IOverlayLayer * Map::GetOverlayLayer()
-{
-	return &_overlayLayer;
-}
-
 int Map::GetLayerCount()
 {
 	return _vecLayer.size();

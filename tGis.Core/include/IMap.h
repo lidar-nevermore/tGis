@@ -10,7 +10,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
 struct IGeoSurface;
-struct IOverlayLayer;
 
 struct TGISCORE_API IMap
 {
@@ -20,7 +19,6 @@ struct TGISCORE_API IMap
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 	virtual bool CanTransformFrom(const OGRSpatialReference*) = 0;
 
-	virtual IOverlayLayer* GetOverlayLayer() = 0;
 	virtual int GetLayerCount() = 0;
 	virtual ILayer* GetLayer(int) = 0;
 	virtual bool AddLayer(ILayer*) = 0;

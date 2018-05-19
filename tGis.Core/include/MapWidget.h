@@ -6,6 +6,7 @@
 #include "Helper.h"
 
 #include "IMapWidget.h"
+#include "OverlayLayer.h"
 
 #include <vector>
 
@@ -22,7 +23,7 @@ public:
 
 	virtual IMap* GetMap() = 0;
 	virtual IGeoSurface* GetGeoSurface() = 0;
-	virtual IOverlayLayer* GetScreenLayer() = 0;
+	virtual IOverlayLayer* GetOverlayLayer();
 
 	virtual bool AddMapTool(IMapTool*);
 	virtual void RemoveMapTool(IMapTool*);
@@ -40,6 +41,7 @@ public:
 	virtual void KeyPress(void*);
 
 protected:
+	OverlayLayer _overlayLayer;
 	vector<IMapTool*> _vecMapTool;
 };
 

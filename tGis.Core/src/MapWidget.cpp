@@ -15,6 +15,11 @@ MapWidget::~MapWidget()
 {
 }
 
+IOverlayLayer * MapWidget::GetOverlayLayer()
+{
+	return &_overlayLayer;
+}
+
 bool MapWidget::AddMapTool(IMapTool * tool)
 {
 	bool canAdd = true;
@@ -54,6 +59,7 @@ void MapWidget::RepaintMap()
 	IMap* map = this->GetMap();
 	IGeoSurface* surface = this->GetGeoSurface();
 	map->Paint(surface);
+	_overlayLayer.Paint(surface);
 	surface->SwithSurface();
 }
 
