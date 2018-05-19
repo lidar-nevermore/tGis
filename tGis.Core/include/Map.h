@@ -6,6 +6,7 @@
 #include "Helper.h"
 
 #include "IMap.h"
+#include "OverlayLayer.h"
 
 #include <string>
 #include <vector>
@@ -27,6 +28,8 @@ public:
 	virtual void SetName(const char*);
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
+	virtual bool CanTransformFrom(const OGRSpatialReference*);
+	virtual IOverlayLayer* GetOverlayLayer();
 	virtual int GetLayerCount();
 	virtual ILayer* GetLayer(int);
 	virtual bool AddLayer(ILayer*);
@@ -37,6 +40,7 @@ public:
 	virtual void Paint(IGeoSurface*);
 
 private:
+	OverlayLayer _overlayLayer;
 	vector<ILayer*> _vecLayer;
 	string _name;
 	OGREnvelope _envelope;

@@ -43,7 +43,7 @@ IGeoSurface * QMapWidget::GetGeoSurface()
 	return (IGeoSurface*)&_geoSurface;
 }
 
-IScreenLayer * QMapWidget::GetScreenLayer()
+IOverlayLayer * QMapWidget::GetScreenLayer()
 {
 	return nullptr;
 }

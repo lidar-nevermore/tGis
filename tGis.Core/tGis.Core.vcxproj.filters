@@ -74,9 +74,6 @@
     <ClInclude Include="include\IMapWidget.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\IScreenLayer.h">
-      <Filter>include\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="include\MapTool.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
@@ -121,6 +118,15 @@
     </ClInclude>
     <ClInclude Include="include\DataSourceProviderRepository.h">
       <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOverlayLayer.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOverlayObject.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\OverlayLayer.h">
+      <Filter>include\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +177,9 @@
     </ClCompile>
     <ClCompile Include="src\DataSourceProviderRepository.cpp">
       <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OverlayLayer.cpp">
+      <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

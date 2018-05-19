@@ -37,6 +37,23 @@ const OGRSpatialReference * Map::GetSpatialReference()
 	return _spatialRef;
 }
 
+bool Map::CanTransformFrom(const OGRSpatialReference *spatialRef)
+{
+	const OGRSpatialReference * thisSpatialRef = _spatialRef;
+	if (thisSpatialRef == spatialRef)
+		return true;
+
+	if (thisSpatialRef != nullptr)
+		return thisSpatialRef->IsSame(spatialRef);
+
+	return false;
+}
+
+IOverlayLayer * Map::GetOverlayLayer()
+{
+	return &_overlayLayer;
+}
+
 int Map::GetLayerCount()
 {
 	return _vecLayer.size();
@@ -59,7 +76,7 @@ bool Map::AddLayer(ILayer *layer)
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}
-	else if(layer->CanTransformTo(_spatialRef))
+	else if(CanTransformFrom(layer->GetSpatialReference()))
 	{
 		canAdd = true;
 		MergeEnvelope(layerSpatialRef, layer->GetEnvelope());
@@ -79,22 +96,15 @@ void Map::RemoveLayer(int pos)
 
 void Map::RemoveLayer(ILayer * layer)
 {
-	vector<ILayer*>::iterator remove_pos = _vecLayer.end();
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
 	{
 		if (*it == layer)
 		{
-			remove_pos = it;
+			_vecLayer.erase(it);
+			MergeEnvelope();
 			break;
 		}
-	}
-
-	if (remove_pos != _vecLayer.end())
-	{
-		_vecLayer.erase(remove_pos);
-	}
-
-	MergeEnvelope();
+	}	
 }
 
 bool Map::InsertLayer(int pos, ILayer * layer)
@@ -109,7 +119,7 @@ bool Map::InsertLayer(int pos, ILayer * layer)
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}
-	else if (layer->CanTransformTo(_spatialRef))
+	else if (CanTransformFrom(layer->GetSpatialReference()))
 	{
 		canAdd = true;
 		MergeEnvelope(layerSpatialRef, layer->GetEnvelope());

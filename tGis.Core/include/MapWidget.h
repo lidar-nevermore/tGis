@@ -22,7 +22,7 @@ public:
 
 	virtual IMap* GetMap() = 0;
 	virtual IGeoSurface* GetGeoSurface() = 0;
-	virtual IScreenLayer* GetScreenLayer() = 0;
+	virtual IOverlayLayer* GetScreenLayer() = 0;
 
 	virtual bool AddMapTool(IMapTool*);
 	virtual void RemoveMapTool(IMapTool*);

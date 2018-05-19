@@ -33,12 +33,14 @@
     <ClInclude Include="include\IMap.h" />
     <ClInclude Include="include\IMapTool.h" />
     <ClInclude Include="include\IMapWidget.h" />
-    <ClInclude Include="include\IScreenLayer.h" />
+    <ClInclude Include="include\IOverlayLayer.h" />
+    <ClInclude Include="include\IOverlayObject.h" />
     <ClInclude Include="include\LayerProviderRepository.h" />
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MapTool.h" />
     <ClInclude Include="include\MapWidget.h" />
     <ClInclude Include="include\MyGDALRasterDataset.h" />
+    <ClInclude Include="include\OverlayLayer.h" />
     <ClInclude Include="include\tIo.h" />
     <ClInclude Include="include\tEntity.h" />
     <ClInclude Include="include\tOrganizer.h" />
@@ -60,6 +62,7 @@
     <ClCompile Include="src\MapTool.cpp" />
     <ClCompile Include="src\MapWidget.cpp" />
     <ClCompile Include="src\MyGDALRasterDataset.cpp" />
+    <ClCompile Include="src\OverlayLayer.cpp" />
     <ClCompile Include="src\RasterBandSeqBlockReader.cpp" />
     <ClCompile Include="src\RasterBandSeqPixelReader.cpp" />
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp" />

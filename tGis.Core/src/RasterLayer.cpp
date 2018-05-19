@@ -64,17 +64,6 @@ const OGRSpatialReference * RasterLayer::GetSpatialReference()
 	return _dataset->GetSpatialReference();
 }
 
-bool RasterLayer::CanTransformTo(const OGRSpatialReference* spatialRef)
-{
-	const OGRSpatialReference * thisSpatialRef = _dataset->GetSpatialReference();
-	if (thisSpatialRef == spatialRef)
-		return true;
-	
-	if (thisSpatialRef != nullptr)
-		return thisSpatialRef->IsSame(spatialRef);
-
-	return false;
-}
 
 bool RasterLayer::GetVisible()
 {

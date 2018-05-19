@@ -38,20 +38,14 @@ bool MapWidget::AddMapTool(IMapTool * tool)
 
 void MapWidget::RemoveMapTool(IMapTool * tool)
 {
-	vector<IMapTool*>::iterator remove_pos = _vecMapTool.end();
 	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
 	{
 		if (*it == tool)
 		{
-			remove_pos = it;
+			(*it)->SetMapWidget(nullptr);
+			_vecMapTool.erase(it);
 			break;
 		}
-	}
-
-	if (remove_pos != _vecMapTool.end())
-	{
-		(*remove_pos)->SetMapWidget(nullptr);
-		_vecMapTool.erase(remove_pos);
 	}
 }
 

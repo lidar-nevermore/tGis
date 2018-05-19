@@ -12,14 +12,14 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IMap;
 struct IGeoSurface;
 struct IMapTool;
-struct IScreenLayer;
+struct IOverlayLayer;
 
 struct TGISCORE_API IMapWidget
 {
 	virtual void SetMap(IMap*) = 0;
 	virtual IMap* GetMap() = 0;
 	virtual IGeoSurface* GetGeoSurface() = 0;
-	virtual IScreenLayer* GetScreenLayer() = 0;
+	virtual IOverlayLayer* GetScreenLayer() = 0;
 
 	virtual bool AddMapTool(IMapTool*) = 0;
 	virtual void RemoveMapTool(IMapTool*) = 0;

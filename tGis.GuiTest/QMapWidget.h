@@ -25,7 +25,7 @@ public:
 	void SetMap(IMap*);
 	IMap* GetMap();
 	IGeoSurface* GetGeoSurface();
-	IScreenLayer* GetScreenLayer();
+	IOverlayLayer* GetScreenLayer();
 	void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
 	void RepaintMap();
 	void PresentSurface();

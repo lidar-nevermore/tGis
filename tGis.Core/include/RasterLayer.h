@@ -28,7 +28,6 @@ public:
 	virtual void SetName(const char* name);
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
-	virtual bool CanTransformTo(const OGRSpatialReference*);
 	virtual bool GetVisible();
 	virtual void SetVisible(bool);
 	virtual float GetOpacity();
