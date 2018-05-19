@@ -24,7 +24,11 @@ struct TGISCORE_API IDataSourceProvider
 
 	virtual void Release() = 0;
 
+	IDataSourceProvider() {};
 	virtual ~IDataSourceProvider() {};
+private:
+	IDataSourceProvider(const IDataSourceProvider &) = delete;
+	IDataSourceProvider &operator=(const IDataSourceProvider &) = delete;
 };
 
 

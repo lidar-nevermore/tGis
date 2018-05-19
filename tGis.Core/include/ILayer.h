@@ -27,7 +27,11 @@ struct TGISCORE_API ILayer
 	virtual IDataset* GetDataset(int) = 0;
 	virtual void Paint(IGeoSurface*) = 0;
 
+	ILayer() {};
 	virtual ~ILayer() {};
+private:
+	ILayer(const ILayer &) = delete;
+	ILayer &operator=(const ILayer &) = delete;
 };
 
 

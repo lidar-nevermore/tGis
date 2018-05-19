@@ -28,7 +28,11 @@ struct TGISCORE_API IMapTool
 	virtual void KeyUp(void*) = 0;
 	virtual void KeyPress(void*) = 0;
 
+	IMapTool() {};
 	virtual ~IMapTool() {};
+private:
+	IMapTool(const IMapTool &) = delete;
+	IMapTool &operator=(const IMapTool &) = delete;
 };
 
 

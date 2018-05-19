@@ -39,7 +39,11 @@ struct TGISCORE_API IMapWidget
 	virtual void KeyUp(void*) = 0;
 	virtual void KeyPress(void*) = 0;
 
+	IMapWidget() {};
 	virtual ~IMapWidget() {};
+private:
+	IMapWidget(const IMapWidget &) = delete;
+	IMapWidget &operator=(const IMapWidget &) = delete;
 };
 
 

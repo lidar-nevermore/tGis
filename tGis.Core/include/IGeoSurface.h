@@ -30,7 +30,11 @@ struct TGISCORE_API IGeoSurface
 	virtual void FillRect(int surfX, int surfY, int width, int height, unsigned char R, unsigned char G, unsigned char B, unsigned char A) = 0;
 	virtual void DrawImage(const unsigned char* buf, int surfX, int surfY, int width, int height) = 0;
 
+	IGeoSurface() {};
 	virtual ~IGeoSurface() {};
+private:
+	IGeoSurface(const IGeoSurface &) = delete;
+	IGeoSurface &operator=(const IGeoSurface &) = delete;
 };
 
 

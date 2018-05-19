@@ -27,7 +27,11 @@ struct TGISCORE_API IDataSource
 	virtual IDataSource* GetDataSource(int) = 0;
 	virtual IDataSource* GetDataSource(const char*) = 0;
 
+	IDataSource() {};
 	virtual ~IDataSource() {};
+private:
+	IDataSource(const IDataSource &) = delete;
+	IDataSource &operator=(const IDataSource &) = delete;
 };
 
 END_NAME_SPACE(tGis, Core)

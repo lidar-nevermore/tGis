@@ -22,6 +22,7 @@ struct TGISCORE_API IOverlayLayer
 
 	virtual void Paint(IGeoSurface*) = 0;
 
+	IOverlayLayer() {};
 	virtual ~IOverlayLayer() {};
 private:
 	IOverlayLayer(const IOverlayLayer &) = delete;

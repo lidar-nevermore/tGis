@@ -29,7 +29,11 @@ struct TGISCORE_API IMap
 
 	virtual void Paint(IGeoSurface*) = 0;
 
+	IMap() {};
 	virtual ~IMap() {};
+private:
+	IMap(const IMap &) = delete;
+	IMap &operator=(const IMap &) = delete;
 };
 
 

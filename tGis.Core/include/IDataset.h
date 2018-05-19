@@ -25,7 +25,11 @@ struct TGISCORE_API IDataset
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 
+	IDataset() {};
 	virtual ~IDataset() {};
+private:
+	IDataset(const IDataset &) = delete;
+	IDataset &operator=(const IDataset &) = delete;
 };
 
 
