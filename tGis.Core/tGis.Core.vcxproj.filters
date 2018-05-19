@@ -33,6 +33,12 @@
     <Filter Include="src\Organizer">
       <UniqueIdentifier>{1d5166c5-3ec5-4ec9-aa51-8bf1d78f0f82}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Symbol">
+      <UniqueIdentifier>{0184bfc0-f865-4511-aa64-3c8fa4aa4352}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Symbol">
+      <UniqueIdentifier>{b6080db8-1ca1-404c-b7e9-cb864fa69c8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\tIo.h">
@@ -128,6 +134,21 @@
     <ClInclude Include="include\OverlayLayer.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="include\ISurface.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISymbol.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimpleFillSymbol.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimpleLineSymbol.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimpleMarkerSymbol.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -180,6 +201,15 @@
     </ClCompile>
     <ClCompile Include="src\OverlayLayer.cpp">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimpleFillSymbol.cpp">
+      <Filter>src\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimpleLineSymbol.cpp">
+      <Filter>src\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimpleMarkerSymbol.cpp">
+      <Filter>src\Symbol</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

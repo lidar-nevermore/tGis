@@ -66,8 +66,53 @@ void QtGeoSurface::SwithSurface()
 	_osSurf4Paint = nullptr;
 }
 
-void QtGeoSurface::FillRect(int surfX, int surfY, int width, int height, unsigned char R, unsigned char G, unsigned char B, unsigned char A)
+void QtGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
 {
+	EnsurePaintSurfaceValid();
+	if (_osSurf4Paint == nullptr)
+		return;
+}
+
+void QtGeoSurface::DrawPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
+{
+	EnsurePaintSurfaceValid();
+	if (_osSurf4Paint == nullptr)
+		return;
+}
+
+void QtGeoSurface::FillPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
+{
+	EnsurePaintSurfaceValid();
+	if (_osSurf4Paint == nullptr)
+		return;
+}
+
+void QtGeoSurface::DrawEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
+{
+	EnsurePaintSurfaceValid();
+	if (_osSurf4Paint == nullptr)
+		return;
+}
+
+void QtGeoSurface::FillEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
+{
+	EnsurePaintSurfaceValid();
+	if (_osSurf4Paint == nullptr)
+		return;
+}
+
+void QtGeoSurface::DrawRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
+{
+	EnsurePaintSurfaceValid();
+	if (_osSurf4Paint == nullptr)
+		return;
+}
+
+void QtGeoSurface::FillRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
+{
+	EnsurePaintSurfaceValid();
+	if (_osSurf4Paint == nullptr)
+		return;
 }
 
 void QtGeoSurface::DrawImage(const unsigned char * buf, int surfX, int surfY, int width, int height)

@@ -32,7 +32,16 @@ public:
 	void DetachQPainter();
 	void PresentSurface();
 	void SwithSurface();
-	void FillRect(int surfX, int surfY, int width, int height, unsigned char R, unsigned char G, unsigned char B, unsigned char A);
+
+
+	void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
+	void DrawPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
+	void FillPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft);
+	void DrawEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
+	void FillEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft);
+	void DrawRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
+	void FillRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft);
+
 	void DrawImage(const unsigned char* buf, int surfX, int surfY, int width, int height);
 };
 
