@@ -21,6 +21,7 @@ struct TGISCORE_API IGeoSurface : public ISurface
 
 	virtual void Surface2Spatial(int surfX, int surfY, double *spatialX, double *spatialY) = 0;
 	virtual void Spatial2Surface(double spatialX, double spatialY, double *surfX, double *surfY) = 0;
+	virtual void Spatial2Surface(double spatialX, double spatialY, int *surfX, int *surfY) = 0;
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 	virtual void SetSpatialReference(const OGRSpatialReference*) = 0;

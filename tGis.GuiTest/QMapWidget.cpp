@@ -10,16 +10,18 @@ QMapWidget::QMapWidget(QWidget *parent)
 	_surfBackgroundG = 255;
 	_surfBackgroundB = 255;
 
-	_dataset.Attach("E:\\imLUM2.png",GA_ReadOnly,true);
+	_vector.Attach("E:\\SpatialData\\全国省市县\\BOUND_A省.shp", GA_ReadOnly);
+	_vecLayer.SetOGRLayer(_vector.GetGDALDataset()->GetLayer(0),-1);
+
+	_dataset.Attach("E:\\SpatialData\\SatelliteImage\\Shang\\gf1_pms1_e85.7_n47.2_20150707_L3A0000903873_MTS.tif",GA_ReadOnly);
 	_layer.SetDataset(&_dataset, 1);
-	const OGREnvelope* envelope = _dataset.GetEnvelope();
-	_geoSurface.SetSpatialReference(_dataset.GetSpatialReference());
-	double resx, resy;
-	_dataset.Pixel2Spatial(1, 1, &resx, &resy);
-	_geoSurface.SetViewResolution((resx- envelope->MinX)/1.7);
+	const OGREnvelope* envelope = _vector.GetEnvelope();
+	_geoSurface.SetSpatialReference(_vector.GetSpatialReference());
+	_geoSurface.SetViewResolution(0.01);
 	_geoSurface.SetViewCenter((envelope->MinX + envelope->MaxX) / 2, (envelope->MinY + envelope->MaxY) / 2);
 	_geoSurface.SetBackgroundColor(255, 255, 255);
-	_map.AddLayer(&_layer);
+	//_map.AddLayer(&_layer);
+	_map.AddLayer(&_vecLayer);
 	this->AddMapTool(&_mapPanTool);
 	this->AddMapTool(&_mapZoomTool);
 }

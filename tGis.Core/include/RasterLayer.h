@@ -1,8 +1,11 @@
 #pragma once
 
+#ifndef __RASTERLAYER_H__
+#define __RASTERLAYER_H__
+
 #include "Helper.h"
 
-#include "ILayer.h"
+#include "Layer.h"
 
 #include <string>
 
@@ -12,38 +15,25 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class MyGDALRasterDataset;
 
-class TGISCORE_API RasterLayer : public ILayer
+class TGISCORE_API RasterLayer : public Layer
 {
 public:
 	RasterLayer();
 	RasterLayer(MyGDALRasterDataset* dataset);
 	virtual ~RasterLayer();
 
-protected:
-	void SetDataset(MyGDALRasterDataset* dataset);
-
 public:
-
-	virtual const char* GetName();
-	virtual void SetName(const char* name);
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
-	virtual bool GetVisible();
-	virtual void SetVisible(bool);
-	virtual float GetOpacity();
-	virtual void SetOpacity(float);
-	virtual IDataset* GetDataset(int);
+
+protected:
+	void SetDataset(MyGDALRasterDataset* dataset);
 
 protected:
 	bool PreparePaint(IGeoSurface*);
 	
 protected:
-	MyGDALRasterDataset* _dataset;
-
-	string _name;
-	bool _visible;
-	float _opacity;
-	unsigned char _alpha;
+	MyGDALRasterDataset* _raster;
 
 	//影像可见范围的绘制表面坐标表示
 	double _minSurfX;
@@ -69,3 +59,5 @@ protected:
 };
 
 END_NAME_SPACE(tGis, Core)
+
+#endif

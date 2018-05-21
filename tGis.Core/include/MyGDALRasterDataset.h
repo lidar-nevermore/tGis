@@ -31,15 +31,17 @@ private:
 public:
 	MyGDALRasterDataset();
    	MyGDALRasterDataset(const char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update, bool autoClose = true);
-	virtual ~MyGDALRasterDataset();
+	~MyGDALRasterDataset();
 
 public:
+
+	using MyGDALFileDataset::Attach;
 
 	void Attach(const char* file, GDALAccess eAccess, double noDataVale, bool autoClose = true);
 
 	void AttachHDF(const char* file,GDALAccess eAccess,const int subdataset,bool autoClose = true);
 
-	void Attach(GDALDataset* dataset,bool autoClose = false);
+	void Attach(GDALDataset* dataset,bool autoClose = false) override;
 
 	void Attach(GDALDataset* dataset,double noDataVale,bool autoClose = false);
 

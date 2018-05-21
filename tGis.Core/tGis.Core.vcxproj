@@ -37,6 +37,7 @@
     <ClInclude Include="include\IOverlayObject.h" />
     <ClInclude Include="include\ISurface.h" />
     <ClInclude Include="include\ISymbol.h" />
+    <ClInclude Include="include\Layer.h" />
     <ClInclude Include="include\LayerProviderRepository.h" />
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MapTool.h" />
@@ -57,6 +58,8 @@
     <ClInclude Include="include\RasterBandStorageBlockGridReader.h" />
     <ClInclude Include="include\RasterGrayScaleLayer.h" />
     <ClInclude Include="include\RasterLayer.h" />
+    <ClInclude Include="include\VectorLayer.h" />
+    <ClInclude Include="include\VectorSimpleLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />
@@ -64,6 +67,7 @@
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
     <ClCompile Include="src\GeoSurface.cpp" />
+    <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerProviderRepository.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
@@ -81,6 +85,8 @@
     <ClCompile Include="src\SimpleLineSymbol.cpp" />
     <ClCompile Include="src\SimpleMarkerSymbol.cpp" />
     <ClCompile Include="src\tOrganizer.cpp" />
+    <ClCompile Include="src\VectorLayer.cpp" />
+    <ClCompile Include="src\VectorSimpleLayer.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}</ProjectGuid>

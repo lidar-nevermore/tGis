@@ -23,12 +23,13 @@ public:
 	static const int EllipseCross = 7;
 
 public:
+	SimpleMarkerSymbol();
 	SimpleMarkerSymbol(int t);
 	~SimpleMarkerSymbol();
 
-	virtual const char* GetLocator() = 0;
+	const char* GetLocator() override;
 
-	virtual void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c);
+	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
     inline void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);
 	inline void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);

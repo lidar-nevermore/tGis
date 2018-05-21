@@ -8,13 +8,19 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+SimpleMarkerSymbol::SimpleMarkerSymbol()
+	:SimpleMarkerSymbol(SimpleMarkerSymbol::Rect)
+{
+
+}
+
 SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
 {
 	_type = t;
 	_r = 30;
 	_g = 236;
 	_b = 63;
-	_a = 0;
+	_a = 255;
 	_width = 5;
 	_height = 5;
 	_lineWidth = 1;
@@ -34,6 +40,7 @@ SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
 
 SimpleMarkerSymbol::~SimpleMarkerSymbol()
 {
+
 }
 
 const char * SimpleMarkerSymbol::GetLocator()

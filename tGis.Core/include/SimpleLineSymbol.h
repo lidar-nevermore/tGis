@@ -19,12 +19,13 @@ public:
 	static const int DashDot = 3;
 	static const int DashDotDot = 4;
 public:
+	SimpleLineSymbol();
 	SimpleLineSymbol(int t);
 	~SimpleLineSymbol();
 
-	virtual const char* GetLocator() = 0;
+	const char* GetLocator() override;
 
-	virtual void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c);
+	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
 public:
 	inline void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);

@@ -46,7 +46,7 @@ bool Map::CanTransformFrom(const OGRSpatialReference *spatialRef)
 	if (thisSpatialRef != nullptr)
 		return thisSpatialRef->IsSame(spatialRef);
 
-	return false;
+	return true;
 }
 
 int Map::GetLayerCount()
@@ -62,7 +62,10 @@ ILayer * Map::GetLayer(int pos)
 bool Map::AddLayer(ILayer *layer)
 {
 	bool canAdd = false;
-	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetSpatialReference());
+	const OGRSpatialReference* clayerSpatialRef = layer->GetSpatialReference();
+	OGRSpatialReference* layerSpatialRef = nullptr;
+	if(clayerSpatialRef != nullptr)
+		layerSpatialRef = const_cast<OGRSpatialReference*>(clayerSpatialRef);
 	if (_vecLayer.size() == 0)
 	{
 		_spatialRef = layerSpatialRef;
@@ -71,7 +74,7 @@ bool Map::AddLayer(ILayer *layer)
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}
-	else if(CanTransformFrom(layer->GetSpatialReference()))
+	else if(CanTransformFrom(clayerSpatialRef))
 	{
 		canAdd = true;
 		MergeEnvelope(layerSpatialRef, layer->GetEnvelope());

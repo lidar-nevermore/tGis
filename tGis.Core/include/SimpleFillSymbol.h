@@ -30,12 +30,13 @@ public:
 	static const int DiagonalCross = 13;
 
 public:
+	SimpleFillSymbol();
 	SimpleFillSymbol(int t);
 	~SimpleFillSymbol();
 
-	virtual const char* GetLocator() = 0;
+	const char* GetLocator() override;
 
-	virtual void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) = 0;
+	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
 public:
 	inline void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);

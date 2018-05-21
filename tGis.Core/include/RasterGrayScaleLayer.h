@@ -1,5 +1,9 @@
 #pragma once
 
+
+#ifndef __RASTERGRAYSCALELAYER_H__
+#define __RASTERGRAYSCALELAYER_H__
+
 #include "Helper.h"
 
 #include "RasterLayer.h"
@@ -32,6 +36,8 @@ public:
 	virtual void SetOpacity(float);
 
 	virtual void Paint(IGeoSurface*);
+
+private:
 	virtual void PaintByOuterResample(IGeoSurface*);
 	virtual void PaintByIOResample(IGeoSurface*);
 
@@ -49,3 +55,5 @@ private:
 };
 
 END_NAME_SPACE(tGis, Core)
+
+#endif

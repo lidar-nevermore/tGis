@@ -72,7 +72,7 @@ public:
 
 	virtual GDALDataset* GetGDALDataset();
 
-	virtual void Attach(const char* file, GDALAccess eAccess, bool autoClose = true);
+	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true);
 
 	virtual void Attach(GDALDataset* dataset, bool autoClose = false) = 0;
 

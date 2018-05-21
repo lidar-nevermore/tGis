@@ -38,13 +38,13 @@ public:
 
 	virtual void Paint(IGeoSurface*);
 
-private:
+protected:
 	vector<ILayer*> _vecLayer;
 	string _name;
 	OGREnvelope _envelope;
 	OGRSpatialReference* _spatialRef;
 
-private:
+protected:
 	void MergeEnvelope();
 	void MergeEnvelope(const OGRSpatialReference* spatialRef,const OGREnvelope *envelope);
 

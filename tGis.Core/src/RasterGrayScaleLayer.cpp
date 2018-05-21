@@ -92,8 +92,8 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 {
 	//逐块读取原始像素，创建成和绘制表面一样大小的RGBA缓冲
 
-	int xRasterSize = _dataset->GetGDALDataset()->GetRasterXSize();
-	int yRasterSize = _dataset->GetGDALDataset()->GetRasterYSize();
+	int xRasterSize = _raster->GetGDALDataset()->GetRasterXSize();
+	int yRasterSize = _raster->GetGDALDataset()->GetRasterYSize();
 
 	int initialPaintingLeft = (int)my_round(_minSurfX, 0);
 	int initialPaintingTop = (int)my_round(_minSurfY, 0);
@@ -266,8 +266,8 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 {
 	//逐块读取原始像素，创建成和绘制表面一样大小的RGBA缓冲
 
-	int xRasterSize = _dataset->GetGDALDataset()->GetRasterXSize();
-	int yRasterSize = _dataset->GetGDALDataset()->GetRasterYSize();
+	int xRasterSize = _raster->GetGDALDataset()->GetRasterXSize();
+	int yRasterSize = _raster->GetGDALDataset()->GetRasterYSize();
 
 	int initialPaintingLeft = (int)my_round(_minSurfX, 0);
 	int initialPaintingTop = (int)my_round(_minSurfY, 0);
@@ -401,7 +401,7 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 			paintingWidth = paintingRight - paintingLeft;
 
 			int panBandMap[3] = { _bandIndex,_bandIndex,_bandIndex };
-			_dataset->GetGDALDataset()->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
+			_raster->GetGDALDataset()->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
 				_surfBuffer, paintingWidth, paintingHeight, GDT_Byte, 3, panBandMap, 4, paintingWidth * 4, 1);
 
 			surf->DrawImage(_surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);

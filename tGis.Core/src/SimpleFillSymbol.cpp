@@ -8,13 +8,19 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+
+SimpleFillSymbol::SimpleFillSymbol()
+	:SimpleFillSymbol(SimpleFillSymbol::Solid)
+{
+}
+
 SimpleFillSymbol::SimpleFillSymbol(int t)
 {
 	_type = t;
 	_r = 30;
 	_g = 236;
 	_b = 63;
-	_a = 0;
+	_a = 255;
 
 	_locator[0] = 's';
 	_locator[1] = 'y';

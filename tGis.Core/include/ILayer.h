@@ -24,7 +24,6 @@ struct TGISCORE_API ILayer
 	virtual void SetVisible(bool) = 0;
 	virtual float GetOpacity() = 0;
 	virtual void SetOpacity(float) = 0;
-	virtual IDataset* GetDataset(int) = 0;
 	virtual void Paint(IGeoSurface*) = 0;
 
 	ILayer() {};

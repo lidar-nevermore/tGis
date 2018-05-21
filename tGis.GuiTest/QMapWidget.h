@@ -34,6 +34,10 @@ private:
 	QtGeoSurface _geoSurface;
 	MyGDALRasterDataset _dataset;
 	RasterGrayScaleLayer _layer;
+
+	MyGDALVectorDataset _vector;
+	VectorSimpleLayer _vecLayer;
+
 	Map _map;
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;

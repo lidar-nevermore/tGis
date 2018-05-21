@@ -6,13 +6,18 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+SimpleLineSymbol::SimpleLineSymbol()
+	:SimpleLineSymbol(SimpleLineSymbol::Solid)
+{
+}
+
 SimpleLineSymbol::SimpleLineSymbol(int t)
 {
 	_type = t;
-	_r = 30;
-	_g = 236;
-	_b = 63;
-	_a = 0;
+	_r = 0;
+	_g = 0;
+	_b = 0;
+	_a = 255;
 	_width = 1;
 
 	_locator[0] = 's';

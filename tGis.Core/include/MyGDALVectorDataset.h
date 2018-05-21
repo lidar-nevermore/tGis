@@ -26,17 +26,14 @@ public:
 private:
 	static const char* const _type;
 
-private:
-	OGREnvelope _envelope;
-
 public:
 	MyGDALVectorDataset();
 	MyGDALVectorDataset(const char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update, bool autoClose = true);
-	virtual ~MyGDALVectorDataset();
+	~MyGDALVectorDataset();
 
 public:
-
-	void Attach(GDALDataset* dataset, bool autoClose = false);
+	using MyGDALFileDataset::Attach;
+	void Attach(GDALDataset* dataset, bool autoClose = false) override;
 
 private:
 	CPL_DISALLOW_COPY_ASSIGN(MyGDALVectorDataset)

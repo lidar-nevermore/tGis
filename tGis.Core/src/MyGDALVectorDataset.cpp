@@ -50,15 +50,7 @@ void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)
 {
 	_dataset = dataset;
 	_autoClose = autoClose;
-
-	_spatialRef = (OGRSpatialReference*)OSRNewSpatialReference(nullptr);
-	char* _spatialRefStr = (char*)_dataset->GetProjectionRef();
-	OGRErr err = _spatialRef->importFromWkt(&_spatialRefStr);
-	if (OGRERR_NONE != err)
-	{
-		OSRDestroySpatialReference(_spatialRef);
-		_spatialRef = nullptr;
-	}
+	_spatialRef = nullptr;
 
 	_envelope.MinX = 0.0;
 	_envelope.MaxX = 0.0;

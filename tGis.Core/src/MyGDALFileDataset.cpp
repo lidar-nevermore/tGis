@@ -242,7 +242,7 @@ void MyGDALFileDataset::Attach(const char * file, GDALAccess eAccess, bool autoC
 	_openStr = file;
 	fs::path dir(file);
 	_name = dir.filename().string();
-	GDALDataset *dataset = (GDALDataset*)GDALOpen(file, eAccess);
+	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, eAccess, nullptr, nullptr, nullptr);
 	if (dataset != nullptr)
 	{
 		Attach(dataset, autoClose);

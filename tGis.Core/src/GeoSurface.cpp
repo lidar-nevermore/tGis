@@ -79,6 +79,12 @@ void GeoSurface::Spatial2Surface(double spatialX, double spatialY, double * surf
 	*surfY = (_spatialTop - spatialY) / _resolution;
 }
 
+void GeoSurface::Spatial2Surface(double spatialX, double spatialY, int * surfX, int * surfY)
+{
+	*surfX = (int)my_round((spatialX - _spatialLeft) / _resolution, 0);
+	*surfY = (int)my_round((_spatialTop - spatialY) / _resolution, 0);
+}
+
 const OGREnvelope * GeoSurface::GetEnvelope()
 {
 	return &_envelope;

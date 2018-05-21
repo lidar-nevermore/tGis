@@ -96,6 +96,10 @@ void MyGDALRasterDataset::Attach(const char* file, GDALAccess eAccess, double no
 	{
 		Attach(dataset, noDataVale, autoClose);
 	}
+	else
+	{
+		throw std::exception("不支持打开此格式的影像！");
+	}
 }
 
 

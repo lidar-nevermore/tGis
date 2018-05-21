@@ -11,5 +11,8 @@
 #include "MyGDALVectorDataset.h"
 #include "FileSystemDataSource.h"
 
+#include "Layer.h"
 #include "RasterLayer.h"
 #include "RasterGrayScaleLayer.h"
+#include "VectorLayer.h"
+#include "VectorSimpleLayer.h"

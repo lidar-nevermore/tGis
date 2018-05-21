@@ -1,6 +1,8 @@
 #include "RasterLayer.h"
 #include "MyGDALRasterDataset.h"
 #include "IGeoSurface.h"
+
+
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
@@ -12,9 +14,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 RasterLayer::RasterLayer()
 {
-	_visible = true;
-	_opacity = 1.0;
-	_alpha = 255;
 }
 
 RasterLayer::RasterLayer(MyGDALRasterDataset* dataset)
@@ -23,7 +22,7 @@ RasterLayer::RasterLayer(MyGDALRasterDataset* dataset)
 	{
 		throw std::exception("不支持非北方朝上的影响！");
 	}
-	_dataset = dataset;
+	_raster = dataset;
 	_visible = true;
 	_opacity = 1.0;
 	_alpha = 255;
@@ -34,62 +33,25 @@ RasterLayer::~RasterLayer()
 {
 }
 
+const OGREnvelope * RasterLayer::GetEnvelope()
+{
+	return _raster->GetEnvelope();
+}
+
+const OGRSpatialReference * RasterLayer::GetSpatialReference()
+{
+	return _raster->GetSpatialReference();
+}
+
 void RasterLayer::SetDataset(MyGDALRasterDataset * dataset)
 {
 	if (!dataset->IsNorthUp())
 	{
 		throw std::exception("不支持非北方朝上的影响！");
 	}
-	_dataset = dataset;
+	_raster = dataset;
 }
 
-
-const char * RasterLayer::GetName()
-{
-	return _name.c_str();
-}
-
-void RasterLayer::SetName(const char * name)
-{
-	_name = name;
-}
-
-const OGREnvelope * RasterLayer::GetEnvelope()
-{
-	return _dataset->GetEnvelope();
-}
-
-const OGRSpatialReference * RasterLayer::GetSpatialReference()
-{
-	return _dataset->GetSpatialReference();
-}
-
-
-bool RasterLayer::GetVisible()
-{
-	return _visible;
-}
-
-void RasterLayer::SetVisible(bool visible)
-{
-	_visible = visible;
-}
-
-float RasterLayer::GetOpacity()
-{
-	return _opacity;
-}
-
-void RasterLayer::SetOpacity(float opacity)
-{
-	_opacity = opacity;
-	_alpha = unsigned char(255 * _opacity);
-}
-
-IDataset * RasterLayer::GetDataset(int)
-{
-	return _dataset;
-}
 
 bool RasterLayer::PreparePaint(IGeoSurface* surf)
 {
@@ -98,7 +60,7 @@ bool RasterLayer::PreparePaint(IGeoSurface* surf)
 	if (_alpha == 0)
 		return false;
 
-	OGREnvelope aoienvelope = *(_dataset->GetEnvelope());
+	OGREnvelope aoienvelope = *(_raster->GetEnvelope());
 	aoienvelope.Intersect(*(surf->GetEnvelope()));
 	if (!aoienvelope.IsInit())
 		return false;
@@ -108,8 +70,8 @@ bool RasterLayer::PreparePaint(IGeoSurface* surf)
 	double maxInPixX = 0;
 	double maxInPixY = 0;
 
-	_dataset->Spatial2Pixel(aoienvelope.MinX, aoienvelope.MinY, &minInPixX, &minInPixY);
-	_dataset->Spatial2Pixel(aoienvelope.MaxX, aoienvelope.MaxY, &maxInPixX, &maxInPixY);
+	_raster->Spatial2Pixel(aoienvelope.MinX, aoienvelope.MinY, &minInPixX, &minInPixY);
+	_raster->Spatial2Pixel(aoienvelope.MaxX, aoienvelope.MaxY, &maxInPixX, &maxInPixY);
 
 
 	_minPixX = min(minInPixX, maxInPixX);
