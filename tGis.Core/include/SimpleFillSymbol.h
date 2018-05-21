@@ -13,6 +13,7 @@ struct ISurface;
 class TGISCORE_API SimpleFillSymbol : public TSymbol<char>
 {
 public:
+	static const int NoFill = -1;
 	static const int Solid = 0;
 	static const int Dense1 = 1;
 	static const int Dense2 = 2;

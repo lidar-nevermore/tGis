@@ -10,7 +10,7 @@ QMapWidget::QMapWidget(QWidget *parent)
 	_surfBackgroundG = 255;
 	_surfBackgroundB = 255;
 
-	_dataset.Attach("E:\\imLUM2.png",GA_ReadOnly);
+	_dataset.Attach("E:\\imLUM2.png",GA_ReadOnly,true);
 	_layer.SetDataset(&_dataset, 1);
 	const OGREnvelope* envelope = _dataset.GetEnvelope();
 	_geoSurface.SetSpatialReference(_dataset.GetSpatialReference());

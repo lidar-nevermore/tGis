@@ -13,80 +13,13 @@ namespace fs = boost::filesystem;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-MyGDALRasterDataset::GDALInit MyGDALRasterDataset::_init;// = IndexRaster::RasterInit();
-
-vector<vector<string>> g_SupportedFileFormatExt;
-vector<string> g_SupportedFileFormatName;
-vector<int> g_SupportedFileFormatCreatable;
-
-MyGDALRasterDataset::GDALInit::GDALInit()
-{
-    GDALAllRegister();          //GDAL所有操作都需要先注册格式
-	OGRRegisterAll();
-	CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");  //支持中文路径
-
-	fs::path exePath = fs::initial_path<boost::filesystem::path>();
-
-	fs::path dataPath(exePath);
-	dataPath.append("gdal-data");
-
-	fs::path pluginPath(exePath);
-	pluginPath.append("gdalplugins");
-
-
-	CPLSetConfigOption("GDAL_DATA", dataPath.string().c_str());
-    CPLSetConfigOption("GEOTIFF_CSV", dataPath.string().c_str());
-	CPLSetConfigOption("GDAL_DRIVER_PATH", pluginPath.string().c_str());
-
-	GDALDriverManager* dm = GetGDALDriverManager();
-	int drc = dm->GetDriverCount();
-	for (int i = 0; i < drc; i++)
-	{
-		GDALDriver* drv = dm->GetDriver(i);
-		const char* raster = drv->GetMetadataItem(GDAL_DCAP_RASTER);
-		if (raster == nullptr || strcmp(raster, "YES") != 0)
-			continue;
-		const char* ext = drv->GetMetadataItem(GDAL_DMD_EXTENSIONS);
-		if (ext != nullptr && strcmp(ext, "") != 0)
-		{
-			vector<string> dstext;
-			string strext = ext;
-			boost::split(dstext, strext, boost::is_any_of(" ,.|/\\"), boost::token_compress_on);
-			for (vector<string>::iterator it = dstext.begin(); it != dstext.end();)
-			{
-				if ((*it).empty())
-					it = dstext.erase(it);
-				else
-					++it;
-			}
-			if (dstext.size() > 0) 
-			{
-				g_SupportedFileFormatExt.push_back(dstext);
-
-				const char* name = drv->GetMetadataItem(GDAL_DMD_LONGNAME);
-				const char* creatable = drv->GetMetadataItem(GDAL_DCAP_CREATE);
-				int bc = (creatable == nullptr || strcmp(creatable, "YES") != 0) ? 0 : 1;
-				
-				if (name == nullptr)
-					g_SupportedFileFormatName.push_back("");
-				else
-					g_SupportedFileFormatName.push_back(name);
-				g_SupportedFileFormatCreatable.push_back(bc);
-			}
-		}
-	}
-}
-
 const char* const MyGDALRasterDataset::_type = "AB56EFC6-4940-4CF8-AC48-01F830DA8C0D";
 
 MyGDALRasterDataset::MyGDALRasterDataset()
 {
-	_dataset = nullptr;
-	_autoClose = false;
-	_eAccess = GA_ReadOnly;
 }
 
-MyGDALRasterDataset::MyGDALRasterDataset(const char* path, bool delayOpen, GDALAccess eAccess)
+MyGDALRasterDataset::MyGDALRasterDataset(const char* path, bool delayOpen, GDALAccess eAccess, bool autoClose)
 {
 	_eAccess = eAccess;
 	_openStr = path;
@@ -99,49 +32,13 @@ MyGDALRasterDataset::MyGDALRasterDataset(const char* path, bool delayOpen, GDALA
 	}
 	else
 	{
-		Attach(path, eAccess);
+		((MyGDALFileDataset*)this)->Attach(path, eAccess, autoClose);
 	}
 }
 
 MyGDALRasterDataset::~MyGDALRasterDataset()
 {
-	if (_autoClose && _dataset != nullptr)
-	{
-		GDALClose(_dataset);
-	}
-}
 
-int MyGDALRasterDataset::GetSupportedFileFormatCount()
-{
-	return g_SupportedFileFormatExt.size();
-}
-
-const vector<string>& MyGDALRasterDataset::GetSupportedFileFormatExt(int pos)
-{
-	return g_SupportedFileFormatExt.at(pos);
-}
-
-const char * MyGDALRasterDataset::GetSupportedFileFormatName(int pos)
-{
-	return g_SupportedFileFormatName.at(pos).c_str();
-}
-
-bool MyGDALRasterDataset::GetSupportedFileFormatCreatable(int pos)
-{
-	return g_SupportedFileFormatCreatable.at(pos);
-}
-
-bool MyGDALRasterDataset::IsSupportedFileFormatExt(const char * ext)
-{
-	for (vector<vector<string>>::iterator it = g_SupportedFileFormatExt.begin(); it != g_SupportedFileFormatExt.end(); it++)
-	{
-		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
-		{
-			if (stricmp((*itt).c_str(), ext) == 0)
-				return true;
-		}
-	}
-	return false;
 }
 
 
@@ -187,20 +84,13 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, double noDataValue, bool 
 	Attach(dataset, autoClose);
 }
 
-void MyGDALRasterDataset::Attach(const char* file,GDALAccess eAccess,bool autoClose)
-{
-	_eAccess = eAccess;
-	GDALDataset *dataset = (GDALDataset*)GDALOpen(file, eAccess);
-	if (dataset != nullptr)
-	{
-		Attach(dataset,autoClose);
-	}	
-}
-
 
 void MyGDALRasterDataset::Attach(const char* file, GDALAccess eAccess, double noDataVale, bool autoClose)
 {
 	_eAccess = eAccess;
+	_openStr = file;
+	fs::path dir(file);
+	_name = dir.filename().string();
 	GDALDataset *dataset = (GDALDataset*)GDALOpen(file, eAccess);
 	if (dataset != nullptr)
 	{
@@ -232,9 +122,13 @@ void MyGDALRasterDataset::AttachHDF(const char* file,GDALAccess eAccess,const in
 				if(i == 2*subdataset)
 				{
 					std::string tmpstr = std::string(papszSUBDATASETS[i]);  
-					tmpstr = tmpstr.substr(tmpstr.find_first_of("=") + 1);  
-					const char *tmpc_str = tmpstr.c_str();  
-					GDALDataset *dataset = (GDALDataset*)GDALOpen(tmpc_str, eAccess); 
+					_openStr = tmpstr.substr(tmpstr.find_first_of("=") + 1);
+					fs::path dir(file);
+					char subset[32] = { 0 };
+					strcpy(subset, ":SUBDATASET_");
+					_itoa(subdataset, subset + 12, 10);
+					_name = dir.filename().string() + subset;
+					GDALDataset *dataset = (GDALDataset*)GDALOpen(_openStr.c_str(), eAccess);
 					Attach(dataset,autoClose);
 					break;
 				}
@@ -243,36 +137,6 @@ void MyGDALRasterDataset::AttachHDF(const char* file,GDALAccess eAccess,const in
 	}
 
 	GDALClose(pd);
-}
-
-void MyGDALRasterDataset::Detach()
-{
-	if(_autoClose && _dataset != nullptr)
-	{
-		GDALClose(_dataset);
-	}
-	_dataset = nullptr;
-	_autoClose = false;
-}
-
-GDALDataset* MyGDALRasterDataset::GetGDALDataset()
-{
-	return _dataset;
-}
-
-void MyGDALRasterDataset::SetAutoClose(bool autoClose)
-{
-	_autoClose = autoClose;
-}
-
-bool MyGDALRasterDataset::GetAutoClose()
-{
-	return _autoClose;
-}
-
-const OGREnvelope* MyGDALRasterDataset::GetEnvelope()
-{
-	return &_envelope;
 }
 
 const double* MyGDALRasterDataset::GetGeoTransform()
@@ -314,42 +178,5 @@ const char * MyGDALRasterDataset::GetType()
 	return _type;
 }
 
-const char * MyGDALRasterDataset::GetName()
-{
-	return _name.c_str();
-}
-
-const char * MyGDALRasterDataset::GetOpenString()
-{
-	return _openStr.c_str();
-}
-
-bool MyGDALRasterDataset::IsOpened()
-{
-	return _dataset != nullptr;
-}
-
-void MyGDALRasterDataset::Open()
-{
-	if (_dataset == nullptr)
-	{
-		Attach(_openStr.c_str(), _eAccess);
-	}
-}
-
-void MyGDALRasterDataset::Close()
-{
-	Detach();
-}
-
-IDataSource * MyGDALRasterDataset::GetDataSource()
-{
-	return _dataSource;
-}
-
-const OGRSpatialReference * MyGDALRasterDataset::GetSpatialReference()
-{
-	return _spatialRef;
-}
 
 END_NAME_SPACE(tGis, Core)

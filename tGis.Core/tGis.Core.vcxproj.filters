@@ -149,6 +149,12 @@
     <ClInclude Include="include\SimpleMarkerSymbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
+    <ClInclude Include="include\MyGDALFileDataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyGDALVectorDataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -210,6 +216,12 @@
     </ClCompile>
     <ClCompile Include="src\SimpleMarkerSymbol.cpp">
       <Filter>src\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGDALFileDataset.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGDALVectorDataset.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

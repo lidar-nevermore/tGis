@@ -25,7 +25,11 @@ private:
 	unsigned char _surfBackgroundB;
 
 private:
-	void EnsurePaintSurfaceValid();
+	inline void EnsurePaintSurfaceValid();
+	inline Qt::PenStyle TranslateLineStyle(int lt);
+	inline Qt::BrushStyle TranslateFillStyle(int ft);
+	inline QPoint* CreateQPoints(int count, int* surfX, int* surfY);
+	inline void DeleteQPoints(QPoint* pts);
 
 public:
 	void AttachQPainter(QPainter* painter);

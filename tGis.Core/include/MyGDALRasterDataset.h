@@ -1,24 +1,67 @@
 #pragma once
 
-#ifndef __I_MYGDALDATASET_H__
-#define __I_MYGDALDATASET_H__
+#ifndef __MYGDALRASTERDATASET_H__
+#define __MYGDALRASTERDATASET_H__
 
 #include "Helper.h"
+
+#include "IDataset.h"
+#include "MyGDALFileDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
-#include "IDataset.h"
-#include <string>
 
 using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+
+class TGISCORE_API MyGDALRasterDataset : public MyGDALFileDataset
+{
+public:
+	const char* GetType();
+
+private:
+	static const char* const _type;
+
+private:
+	double _geoTransform[6];
+
+public:
+	MyGDALRasterDataset();
+   	MyGDALRasterDataset(const char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update, bool autoClose = true);
+	virtual ~MyGDALRasterDataset();
+
+public:
+
+	void Attach(const char* file, GDALAccess eAccess, double noDataVale, bool autoClose = true);
+
+	void AttachHDF(const char* file,GDALAccess eAccess,const int subdataset,bool autoClose = true);
+
+	void Attach(GDALDataset* dataset,bool autoClose = false);
+
+	void Attach(GDALDataset* dataset,double noDataVale,bool autoClose = false);
+
+	//Spatial position of the upper left corner of the pixel.
+	void Pixel2Spatial(int pixX,int pixY,double *projX, double *projY);
+
+	void Spatial2Pixel(double projX,double projY,double *pixX, double *pixY);
+
+	const double* GetGeoTransform();
+
+	bool IsNorthUp();
+
+  private:
+    CPL_DISALLOW_COPY_ASSIGN(MyGDALRasterDataset)
+};
+
+
+
 inline double MyGDALGetPixelValue(GDALDataType dt, void* pix)
 {
 	double pixValue = 0.0;
-	switch(dt)
+	switch (dt)
 	{
 	case GDT_Byte:
 		pixValue = *((unsigned char*)pix);
@@ -88,9 +131,9 @@ inline double MyGDALGetPixelValue(GDALDataType dt, void* pix)
 //	}
 //}
 
-inline void MyGDALSetPixelValue(GDALDataType dt,double v, void* pix)
+inline void MyGDALSetPixelValue(GDALDataType dt, double v, void* pix)
 {
-	switch(dt)
+	switch (dt)
 	{
 	case GDT_Byte:
 		*((unsigned char*)pix) = (unsigned char)v;
@@ -115,92 +158,6 @@ inline void MyGDALSetPixelValue(GDALDataType dt,double v, void* pix)
 		break;
 	}
 }
-
-class TGISCORE_API MyGDALRasterDataset : public IDataset
-{
-public:
-	const char* GetType();
-	const char* GetName();
-	const char* GetOpenString();
-
-	bool IsOpened();
-	void Open();
-	void Close();
-	IDataSource* GetDataSource();
-	const OGRSpatialReference* GetSpatialReference();
-
-private:
-	static const char* const _type;
-	OGRSpatialReference* _spatialRef;
-
-protected:
-	string _openStr;
-	string _name;
-	IDataSource* _dataSource;
-
-private:
-	class GDALInit
-	{
-	public:
-		GDALInit();
-	};
-
-	static GDALInit _init;
-private:
-	GDALDataset* _dataset;
-	bool _autoClose;
-	GDALAccess _eAccess;
-
-	double _geoTransform[6];
-	OGREnvelope _envelope;
-
-public:
-	MyGDALRasterDataset();
-   	MyGDALRasterDataset(const char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update);
-	virtual ~MyGDALRasterDataset();
-
-public:
-	static int GetSupportedFileFormatCount();
-	static const vector<string>& GetSupportedFileFormatExt(int);
-	static const char* GetSupportedFileFormatName(int);
-	static bool GetSupportedFileFormatCreatable(int);
-	static bool IsSupportedFileFormatExt(const char*);
-
-public:
-
-	GDALDataset* GetGDALDataset();
-
-	void Attach(const char* file,GDALAccess eAccess,bool autoClose = true);
-
-	void Attach(const char* file, GDALAccess eAccess, double noDataVale, bool autoClose = true);
-
-	void AttachHDF(const char* file,GDALAccess eAccess,const int subdataset,bool autoClose = true);
-
-	void Attach(GDALDataset* dataset,bool autoClose = false);
-
-	void Attach(GDALDataset* dataset,double noDataVale,bool autoClose = false);
-
-	void Detach();
-
-	void SetAutoClose(bool autoClose);
-
-	bool GetAutoClose();
-
-	//Spatial position of the upper left corner of the pixel.
-	void Pixel2Spatial(int pixX,int pixY,double *projX, double *projY);
-
-	void Spatial2Pixel(double projX,double projY,double *pixX, double *pixY);
-
-	const OGREnvelope* GetEnvelope();
-
-	const double* GetGeoTransform();
-
-	bool IsNorthUp();
-
-  private:
-    CPL_DISALLOW_COPY_ASSIGN(MyGDALRasterDataset)
-};
-
 
 
 END_NAME_SPACE(tGis, Core)

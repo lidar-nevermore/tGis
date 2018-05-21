@@ -41,7 +41,9 @@
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MapTool.h" />
     <ClInclude Include="include\MapWidget.h" />
+    <ClInclude Include="include\MyGDALFileDataset.h" />
     <ClInclude Include="include\MyGDALRasterDataset.h" />
+    <ClInclude Include="include\MyGDALVectorDataset.h" />
     <ClInclude Include="include\OverlayLayer.h" />
     <ClInclude Include="include\SimpleFillSymbol.h" />
     <ClInclude Include="include\SimpleLineSymbol.h" />
@@ -66,7 +68,9 @@
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
     <ClCompile Include="src\MapWidget.cpp" />
+    <ClCompile Include="src\MyGDALFileDataset.cpp" />
     <ClCompile Include="src\MyGDALRasterDataset.cpp" />
+    <ClCompile Include="src\MyGDALVectorDataset.cpp" />
     <ClCompile Include="src\OverlayLayer.cpp" />
     <ClCompile Include="src\RasterBandSeqBlockReader.cpp" />
     <ClCompile Include="src\RasterBandSeqPixelReader.cpp" />

@@ -2,6 +2,7 @@
 #include "IDataset.h"
 #include "FileSystemDataSourceProvider.h"
 #include "MyGDALRasterDataset.h"
+#include "MyGDALVectorDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -103,9 +104,17 @@ void FileSystemDataSource::Connect()
 			{
 				string name = (*dir_itr).path().string();
 				string ext = (*dir_itr).path().extension().string();
-				if (MyGDALRasterDataset::IsSupportedFileFormatExt(ext.c_str()))
+				if (MyGDALFileDataset::IsSupportedRasterFormatExt(ext.c_str()))
 				{
 					MyGDALRasterDataset* dt = new MyGDALRasterDataset(name.c_str());
+					dt->_dataSource = this;
+					_vecDataset.push_back(dt);
+					_mapDataset.insert(map<string, IDataset*>::value_type(name, dt));
+				}
+				else if (MyGDALFileDataset::IsSupportedVectorFormatExt(ext.c_str()))
+				{
+					MyGDALVectorDataset* dt = new MyGDALVectorDataset(name.c_str());
+					dt->_dataSource = this;
 					_vecDataset.push_back(dt);
 					_mapDataset.insert(map<string, IDataset*>::value_type(name, dt));
 				}

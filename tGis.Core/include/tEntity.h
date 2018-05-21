@@ -5,7 +5,11 @@
 #include "IMap.h"
 #include "Map.h"
 #include "GeoSurface.h"
+
+#include "MyGDALFileDataset.h"
+#include "MyGDALRasterDataset.h"
+#include "MyGDALVectorDataset.h"
+#include "FileSystemDataSource.h"
+
 #include "RasterLayer.h"
 #include "RasterGrayScaleLayer.h"
-#include "MyGDALRasterDataset.h"
-#include "FileSystemDataSource.h"
