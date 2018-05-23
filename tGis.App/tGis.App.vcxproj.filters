@@ -11,6 +11,18 @@
     <ClCompile Include="QDataSourceWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QMapWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QtGeoSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapPanTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapZoomTool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -41,6 +53,9 @@
     <QtMoc Include="QDataSourceWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="QMapWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="tGisApp.ui">
@@ -54,6 +69,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IconRes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="QtGeoSurface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapZoomTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapPanTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

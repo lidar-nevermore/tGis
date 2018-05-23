@@ -28,7 +28,7 @@
      <number>1</number>
     </property>
     <item>
-     <widget class="QWidget" name="widget" native="true"/>
+     <widget class="QMapWidget" name="widget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -132,6 +132,12 @@
    <class>QDataSourceWidget</class>
    <extends>QTreeView</extends>
    <header>qdatasourcewidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QMapWidget</class>
+   <extends>QWidget</extends>
+   <header>qmapwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -56,6 +56,10 @@ void MapWidget::RemoveMapTool(IMapTool * tool)
 void MapWidget::RepaintMap()
 {
 	IMap* map = this->GetMap();
+
+	if (map == nullptr)
+		return;
+
 	IGeoSurface* surface = this->GetGeoSurface();
 	map->Paint(surface);
 	_overlayLayer.Paint(surface);
