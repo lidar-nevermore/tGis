@@ -29,6 +29,7 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE.GetDataSourceProvider(i);
 		QStandardItem* pItem = new QStandardItem();
 		pItem->setText(provider->GetCatagory());
+		pItem->setEditable(false);
 		const QIcon* icon = IconRes::INSTANCE.GetIcon(provider->GetType());
 		if (icon != nullptr)
 		{
@@ -36,10 +37,10 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 		}
 		QVariant userData;
 		userData.setValue<void*>((void*)provider);
-		pItem->setData(userData,DATAROLE);
+		pItem->setData(userData,DataRole);
 		QVariant userDataType;
-		userDataType.setValue<int>(DATASOURCEPROVIDER);
-		pItem->setData(userDataType, DATATYPEROLE);
+		userDataType.setValue<int>(DataSourceProviderType);
+		pItem->setData(userDataType, DataTypeRole);
 		rootNode->appendRow(pItem);
 
 		int datasourceCount = provider->GetDataSourceCount();
@@ -62,6 +63,7 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * item, IDataSource * ds
 {
 	QStandardItem* pItem = new QStandardItem();
 	pItem->setText(ds->GetName());
+	pItem->setEditable(false);
 	const QIcon* icon = IconRes::INSTANCE.GetIcon(ds->GetType());
 	if (icon != nullptr)
 	{
@@ -69,10 +71,10 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * item, IDataSource * ds
 	}
 	QVariant userData;
 	userData.setValue<void*>((void*)ds);
-	pItem->setData(userData, DATAROLE);
+	pItem->setData(userData, DataRole);
 	QVariant userDataType;
-	userDataType.setValue<int>(DATASOURCE);
-	pItem->setData(userDataType, DATATYPEROLE);
+	userDataType.setValue<int>(DataSourceType);
+	pItem->setData(userDataType, DataTypeRole);
 
 	item->appendRow(pItem);
 
@@ -90,6 +92,7 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * item, IDataSource * ds
 			IDataset* dt = ds->GetDataset(i);
 			QStandardItem* pDatasetItem = new QStandardItem();
 			pDatasetItem->setText(dt->GetName());
+			pDatasetItem->setEditable(false);
 			const QIcon* icon = IconRes::INSTANCE.GetIcon(dt->GetType());
 			if (icon != nullptr)
 			{
@@ -97,10 +100,10 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * item, IDataSource * ds
 			}
 			QVariant userData;
 			userData.setValue<void*>((void*)dt);
-			pItem->setData(userData, DATAROLE);
+			pItem->setData(userData, DataRole);
 			QVariant userDataType;
-			userDataType.setValue<int>(DATASET);
-			pItem->setData(userDataType, DATATYPEROLE);
+			userDataType.setValue<int>(DatasetType);
+			pItem->setData(userDataType, DataTypeRole);
 		}
 	}
 }

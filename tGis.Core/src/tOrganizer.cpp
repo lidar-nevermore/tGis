@@ -3,16 +3,28 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-IMap* g_CurrentMap = nullptr;
+static IMap* g_CurrentMap = nullptr;
 
-void SetCurrentMap(IMap* map)
+static IMapWidget* g_CurrentMapWidget = nullptr;
+
+TGISCORE_API void SetCurrentMap(IMap* map)
 {
 	g_CurrentMap = map;
 }
 
-IMap* GetCurrentMap()
+TGISCORE_API IMap* GetCurrentMap()
 {
 	return g_CurrentMap;
+}
+
+TGISCORE_API void SetCurrentMapWidget(IMapWidget * mapwidget)
+{
+	g_CurrentMapWidget = mapwidget;
+}
+
+TGISCORE_API IMapWidget * GetCurrentMapWidget()
+{
+	return g_CurrentMapWidget;
 }
 
 END_NAME_SPACE(tGis, Core)

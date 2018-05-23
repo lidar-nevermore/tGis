@@ -15,12 +15,12 @@ public:
 	~QDataSourceWidget();
 
 private:
-	static const int DATASOURCEPROVIDER = 1;
-	static const int DATASOURCE = 2;
-	static const int DATASET = 3;
+	static const int DataSourceProviderType = 1;
+	static const int DataSourceType = 2;
+	static const int DatasetType = 3;
 
-	static const int DATATYPEROLE = 6;
-	static const int DATAROLE = 7;
+	static const int DataTypeRole = Qt::UserRole + 1;
+	static const int DataRole = Qt::UserRole + 2;
 
 private:
 	void AddDataSourceNode(QStandardItem* item, tg::IDataSource* ds);
