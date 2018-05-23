@@ -97,7 +97,8 @@ void VectorSimpleLayer::Paint(IGeoSurface * surf)
 inline void VectorSimpleLayer::PrepareCT(IGeoSurface * surf)
 {
 	const OGRSpatialReference* surfSpatialRef = surf->GetSpatialReference();
-	if (_spatialRef != nullptr && surfSpatialRef != nullptr && !(surfSpatialRef->IsSame(_surfSpatialRef)))
+
+	if (_spatialRef != nullptr && surfSpatialRef != nullptr && !(_surfSpatialRef != nullptr && surfSpatialRef->IsSame(_surfSpatialRef)))
 	{
 		if (_CT != nullptr) 
 		{
@@ -127,8 +128,40 @@ inline void VectorSimpleLayer::DrawPoint(IGeoSurface*, OGRPoint *)
 {
 }
 
-inline void VectorSimpleLayer::DrawLineString(IGeoSurface*, OGRLineString *)
+inline void VectorSimpleLayer::DrawLineString(IGeoSurface* surf, OGRLineString *geometry)
 {
+	if (_CT != nullptr)
+	{
+		geometry->transform(_CT);
+	}
+
+	int ptcount = geometry->getNumPoints();
+	int* x = new int[ptcount];
+	int* y = new int[ptcount];
+	int pti = 0;
+	int spti = 0;
+	while (pti < ptcount)
+	{
+		surf->Spatial2Surface(geometry->getX(pti), geometry->getY(pti), x + spti, y + spti);
+		if (pti > 0)
+		{
+			if (*(x + spti) != *(x + spti - 1) || *(y + spti) != *(y + spti - 1))
+			{
+				spti++;
+			}
+		}
+		else
+		{
+			spti++;
+		}
+
+		pti++;
+	}
+
+	_simpleLineSymbol.Paint(surf, spti, x, y, nullptr, nullptr);
+
+	delete[] x;
+	delete[] y;
 }
 
 inline void VectorSimpleLayer::DrawPolygon(IGeoSurface* surf, OGRPolygon * geometry)
@@ -144,15 +177,29 @@ inline void VectorSimpleLayer::DrawPolygon(IGeoSurface* surf, OGRPolygon * geome
 		int ptcount = exterior->getNumPoints();
 		int* x = new int[ptcount];
 		int* y = new int[ptcount];
-		for (int i = 0; i < ptcount; i++)
+		int pti = 0;
+		int spti = 0;
+		while (pti < ptcount)
 		{
-			*(x + i) = (int)exterior->getX(i);
-			*(y + i) = (int)exterior->getY(i);
-			//surf->Spatial2Surface(exterior->getX(i), exterior->getY(i), x + i, y + i);
-		}
+			surf->Spatial2Surface(exterior->getX(pti), exterior->getY(pti), x + spti, y + spti);
+			if (pti > 0)
+			{
+				if (*(x + spti) != *(x + spti - 1) || *(y + spti) != *(y + spti - 1))
+				{
+					spti++;
+				}
+			}
+			else
+			{
+				spti++;
+			}
 
-		//_simpleFillSymbol.Paint(surf, ptcount, x, y, nullptr, nullptr);
-		_simpleLineSymbol.Paint(surf, ptcount, x, y, nullptr, nullptr);
+			pti++;
+		}
+		*(y + spti) = *y;
+		*(x + spti) = *x;
+		_simpleFillSymbol.Paint(surf, spti+1, x, y, nullptr, nullptr);
+		_simpleLineSymbol.Paint(surf, spti+1, x, y, nullptr, nullptr);
 
 		delete[] x;
 		delete[] y;

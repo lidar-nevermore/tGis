@@ -10,6 +10,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 
 const char* const FileSystemDataSourceProvider::_catagory = "FileSystem";
+const char* const FileSystemDataSourceProvider::_type = "13D0E005-C5CD-4210-A5D3-FDD57AB12990";
 FileSystemDataSourceProvider FileSystemDataSourceProvider::INSTANCE;// = new FileSystemDataSourceProvider();
 
 
@@ -31,6 +32,11 @@ const char * FileSystemDataSourceProvider::GetSupportedDataSourceType()
 const char * FileSystemDataSourceProvider::GetCatagory()
 {
 	return FileSystemDataSourceProvider::_catagory;
+}
+
+const char * FileSystemDataSourceProvider::GetType()
+{
+	return _type;
 }
 
 void FileSystemDataSourceProvider::SetCreateDataSourceUI(UI ui)

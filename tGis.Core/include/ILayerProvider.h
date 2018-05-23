@@ -15,7 +15,7 @@ struct TGISCORE_API ILayerProvider
 {
 	virtual const char* GetSupportedDatasetType() = 0;
 	virtual const char* GetSupportedLayerType() = 0;
-	virtual char* GetName() = 0;
+	virtual const char* GetType() = 0;
 
 	virtual ILayer* UI_CreateLayer() = 0;
 	virtual ILayer* CreateLayer(const IDataset*) = 0;

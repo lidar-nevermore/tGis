@@ -14,5 +14,11 @@
 #include "Layer.h"
 #include "RasterLayer.h"
 #include "RasterGrayScaleLayer.h"
+
+#include "ISymbol.h"
+#include "SimpleMarkerSymbol.h"
+#include "SimpleLineSymbol.h"
+#include "SimpleFillSymbol.h"
 #include "VectorLayer.h"
 #include "VectorSimpleLayer.h"
+

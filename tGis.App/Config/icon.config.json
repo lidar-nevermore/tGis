@@ -1,0 +1,27 @@
+{
+    "Include":[
+
+    ],
+    "Icon":[
+        {
+            "Type":"13D0E005-C5CD-4210-A5D3-FDD57AB12990",
+            "Name":"FileSystemDataSourceProvider",
+            "Icon":"{StartupDir}/Images/DataSourceProvider/disk.png"
+        },
+        {
+            "Type":"9357FB74-8ED4-4666-9D91-8B322208D60A",
+            "Name":"FileSystemDatasSource",
+            "Icon":"{StartupDir}/Images/DataSourceProvider/folder.png"
+        },
+        {
+            "Type":"AB56EFC6-4940-4CF8-AC48-01F830DA8C0D",
+            "Name":"MyGDALRasterDataset",
+            "Icon":"{StartupDir}/Images/DataSourceProvider/raseter.png"
+        },
+        {
+            "Type":"09DBE03B-7228-49A1-89B5-8970AE3E16C8",
+            "Name":"MyGDALVectorDataset",
+            "Icon":"{StartupDir}/Images/DataSourceProvider/vector.png"
+        }
+    ]
+}

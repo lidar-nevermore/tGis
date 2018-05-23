@@ -27,6 +27,7 @@ private:
 
 private:
 	static const char* const _catagory;
+	static const char* const _type;
 
 private:
 	UI _ui;
@@ -39,6 +40,7 @@ private:
 public:
 	const char* GetSupportedDataSourceType();
 	const char* GetCatagory();
+	const char* GetType();
 
 	void SetCreateDataSourceUI(const UI ui);
 

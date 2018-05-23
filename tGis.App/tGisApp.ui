@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tGisClass</class>
- <widget class="QMainWindow" name="tGisClass">
+ <class>tGisAppClass</class>
+ <widget class="QMainWindow" name="tGisAppClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -79,12 +79,10 @@
       <number>1</number>
      </property>
      <item>
-      <widget class="QTreeWidget" name="treeWidget">
-       <column>
-        <property name="text">
-         <string notr="true">1</string>
-        </property>
-       </column>
+      <widget class="QTreeView" name="treeView_2">
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
     </layout>
@@ -118,15 +116,26 @@
       <number>1</number>
      </property>
      <item>
-      <widget class="QTreeView" name="treeView"/>
+      <widget class="QDataSourceWidget" name="treeView">
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QDataSourceWidget</class>
+   <extends>QTreeView</extends>
+   <header>qdatasourcewidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
-  <include location="tGis.qrc"/>
+  <include location="tGisApp.qrc"/>
  </resources>
  <connections/>
 </ui>

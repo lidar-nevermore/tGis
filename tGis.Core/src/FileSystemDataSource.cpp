@@ -19,10 +19,23 @@ const char* const FileSystemDataSource::_type = "9357FB74-8ED4-4666-9D91-8B32220
 FileSystemDataSource::FileSystemDataSource(const char* path)
 {
 	_path = path;
-	fs::path dir(path);
+	wchar_t sepc[2] = { fs::path::preferred_separator, 0 };
+	wstring sep;
+	sep.append(sepc);
+	fs::path sepp(sep);
+	string sepstr = sepp.string();
+
+	size_t spos = _path.size() - sepstr.size();
+
+	if (_path.find(sepstr, spos) == spos)
+	{
+		_path = _path.substr(0, spos);
+	}
+
+	fs::path dir(_path);
 	_name = dir.filename().string();
 
-	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(path);
+	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(_path);
 	if (pos != FileSystemDataSourceProvider::INSTANCE._mapDataSource.end())
 	{
 		FileSystemDataSource* ds = (FileSystemDataSource*)(*pos).second;

@@ -3,7 +3,6 @@
 #include "IGeoSurface.h"
 #include "IMapTool.h"
 
-
 BEGIN_NAME_SPACE(tGis, Core)
 
 MapWidget::MapWidget()

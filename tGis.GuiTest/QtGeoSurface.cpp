@@ -149,7 +149,7 @@ void QtGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned ch
 	if (_osSurf4Paint == nullptr)
 		return;
 
-	QPoint* qpt = CreateQPoints(count, surfX, surfX);
+	QPoint* qpt = CreateQPoints(count, surfX, surfY);
 
 	QPainter painter(_osSurf4Paint);
 	QPen pen(QColor(r, g, b, a), lw, TranslateLineStyle(lt));
@@ -166,7 +166,7 @@ void QtGeoSurface::DrawPolygon(int count, int * surfX, int * surfY, unsigned cha
 	if (_osSurf4Paint == nullptr)
 		return;
 
-	QPoint* qpt = CreateQPoints(count, surfX, surfX);
+	QPoint* qpt = CreateQPoints(count, surfX, surfY);
 
 	QPainter painter(_osSurf4Paint);
 	QPen pen(QColor(r, g, b, a), lw, TranslateLineStyle(lt));
@@ -184,7 +184,7 @@ void QtGeoSurface::FillPolygon(int count, int * surfX, int * surfY, unsigned cha
 	if (_osSurf4Paint == nullptr)
 		return;
 
-	QPoint* qpt = CreateQPoints(count, surfX, surfX);
+	QPoint* qpt = CreateQPoints(count, surfX, surfY);
 
 	QPainter painter(_osSurf4Paint);
 	QBrush brush(QColor(r, g, b, a), TranslateFillStyle(ft));

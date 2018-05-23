@@ -14,6 +14,7 @@ struct TGISCORE_API IDataSourceProvider
 {
 	virtual const char* GetSupportedDataSourceType() = 0;
 	virtual const char* GetCatagory() = 0;
+	virtual const char* GetType() = 0;
 
 	virtual IDataSource* UI_CreateDataSource() = 0;
 	virtual IDataSource* CreateDataSource(const char*) = 0;

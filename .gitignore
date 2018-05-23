@@ -1,0 +1,11 @@
+/.vs/
+/tGis/GeneratedFiles/
+/tGis/x64/
+/x64/
+*.VC.db
+*.VC.VC.opendb
+*.vcxproj.user
+*.obj
+/tGis.Core/x64/
+/tGis.GuiTest/x64/
+/tGis.GuiTest/GeneratedFiles/

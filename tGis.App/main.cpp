@@ -1,10 +1,10 @@
-#include "tGis.h"
+#include "tGisApp.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])
 {
 	QApplication a(argc, argv);
-	tGis w;
+	tGisApp w;
 	w.show();
 	return a.exec();
 }

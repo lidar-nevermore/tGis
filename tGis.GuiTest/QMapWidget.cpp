@@ -1,6 +1,6 @@
 #include "QMapWidget.h"
 #include "qevent.h"
-#include "tUtility.h"
+
 
 QMapWidget::QMapWidget(QWidget *parent)
 	:QWidget(parent)
@@ -16,8 +16,8 @@ QMapWidget::QMapWidget(QWidget *parent)
 	_dataset.Attach("E:\\SpatialData\\SatelliteImage\\Shang\\gf1_pms1_e85.7_n47.2_20150707_L3A0000903873_MTS.tif",GA_ReadOnly);
 	_layer.SetDataset(&_dataset, 1);
 	const OGREnvelope* envelope = _vector.GetEnvelope();
-	_geoSurface.SetSpatialReference(_vector.GetSpatialReference());
-	_geoSurface.SetViewResolution(0.01);
+	_geoSurface.SetSpatialReference(_vecLayer.GetSpatialReference());
+	_geoSurface.SetViewResolution(0.9);
 	_geoSurface.SetViewCenter((envelope->MinX + envelope->MaxX) / 2, (envelope->MinY + envelope->MaxY) / 2);
 	_geoSurface.SetBackgroundColor(255, 255, 255);
 	//_map.AddLayer(&_layer);

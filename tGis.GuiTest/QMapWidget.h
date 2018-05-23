@@ -1,11 +1,9 @@
 #pragma once
 
 #include <QWidget>
-#include <QOpenGLWidget>
 #include <QPainter>
-#include <QOpenGLFunctions>
 
-#include "MapWidget.h"
+#include "tUtility.h"
 #include "QtGeoSurface.h"
 #include "MapPanTool.h"
 
