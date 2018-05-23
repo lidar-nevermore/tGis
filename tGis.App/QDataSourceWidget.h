@@ -23,6 +23,10 @@ private:
 	static const int DataRole = Qt::UserRole + 2;
 
 private:
-	void AddDataSourceNode(QStandardItem* item, tg::IDataSource* ds);
+	void AddDataSourceNode(QStandardItem* parent, tg::IDataSource* ds);
+	void AddDataSourceChildNode(QStandardItem* node, tg::IDataSource* ds);
+
+private slots:
+	void NodeDoubleClicked(const QModelIndex &index);
 };
 

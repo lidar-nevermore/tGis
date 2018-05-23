@@ -19,6 +19,8 @@ const char* const FileSystemDataSource::_type = "9357FB74-8ED4-4666-9D91-8B32220
 FileSystemDataSource::FileSystemDataSource(const char* path)
 {
 	_path = path;
+
+
 	wchar_t sepc[2] = { fs::path::preferred_separator, 0 };
 	wstring sep;
 	sep.append(sepc);
@@ -29,11 +31,15 @@ FileSystemDataSource::FileSystemDataSource(const char* path)
 
 	if (_path.find(sepstr, spos) == spos)
 	{
-		_path = _path.substr(0, spos);
+		string seppath = _path.substr(0, spos);
+		fs::path dir(seppath);
+		_name = dir.filename().string();
 	}
-
-	fs::path dir(_path);
-	_name = dir.filename().string();
+	else
+	{
+		fs::path dir(_path);
+		_name = dir.filename().string();
+	}
 
 	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(_path);
 	if (pos != FileSystemDataSourceProvider::INSTANCE._mapDataSource.end())
@@ -89,9 +95,17 @@ void FileSystemDataSource::Connect()
 	fs::directory_iterator end_iter;
 	for (fs::directory_iterator dir_itr(dir); dir_itr != end_iter; ++dir_itr)
 	{
+		//fs::file_status status = fs::detail::status(*dir_itr);
+		//fs::perms perm = status.permissions();
+		//if (perm&(fs::perms::owner_read | fs::perms::group_read | fs::perms::others_read) == 0)
+		//	continue;
+		fs::path subdir = (*dir_itr).path();
+		if (subdir.filename_is_dot() || subdir.filename_is_dot_dot())
+			continue;
+
 		if (fs::is_directory(*dir_itr))
 		{
-			string path = (*dir_itr).path().string();
+			string path = subdir.string();
 			map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(path);
 
 			IDataSource* ds = nullptr;
@@ -115,8 +129,8 @@ void FileSystemDataSource::Connect()
 		{
 			if (fs::is_regular_file(*dir_itr) && (*dir_itr).path().has_extension())
 			{
-				string name = (*dir_itr).path().string();
-				string ext = (*dir_itr).path().extension().string();
+				string name = subdir.string();
+				string ext = subdir.extension().string().substr(1);
 				if (MyGDALFileDataset::IsSupportedRasterFormatExt(ext.c_str()))
 				{
 					MyGDALRasterDataset* dt = new MyGDALRasterDataset(name.c_str());
@@ -134,6 +148,8 @@ void FileSystemDataSource::Connect()
 			}
 		}
 	}
+
+	_connected = true;
 }
 
 void FileSystemDataSource::Disconnect()

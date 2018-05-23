@@ -16,7 +16,7 @@
         {
             "Type":"AB56EFC6-4940-4CF8-AC48-01F830DA8C0D",
             "Name":"MyGDALRasterDataset",
-            "Icon":"{StartupDir}/Images/DataSourceProvider/raseter.png"
+            "Icon":"{StartupDir}/Images/DataSourceProvider/raster.png"
         },
         {
             "Type":"09DBE03B-7228-49A1-89B5-8970AE3E16C8",
