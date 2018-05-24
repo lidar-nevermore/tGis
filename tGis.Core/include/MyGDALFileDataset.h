@@ -70,17 +70,15 @@ public:
 
 public:
 
-	virtual GDALDataset* GetGDALDataset();
+	GDALDataset* GetGDALDataset();
 
-	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true);
+	virtual void Attach(const char* file, GDALAccess eAccess, bool autoClose = true) = 0;
 
-	virtual void Attach(GDALDataset* dataset, bool autoClose = false) = 0;
+	void Detach();
 
-	virtual void Detach();
+	void SetAutoClose(bool autoClose);
 
-	virtual void SetAutoClose(bool autoClose);
-
-	virtual bool GetAutoClose();
+	bool GetAutoClose();
 };
 
 END_NAME_SPACE(tGis, Core)

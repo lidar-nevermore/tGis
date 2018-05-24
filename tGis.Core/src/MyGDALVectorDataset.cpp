@@ -37,13 +37,26 @@ MyGDALVectorDataset::MyGDALVectorDataset(const char * path, bool delayOpen, GDAL
 	}
 	else
 	{
-		((MyGDALFileDataset*)this)->Attach(path, eAccess, autoClose);
+		Attach(path, eAccess, autoClose);
 	}
 }
 
 
 MyGDALVectorDataset::~MyGDALVectorDataset()
 {
+}
+
+void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
+{
+	_eAccess = eAccess;
+	_path = file;
+	fs::path dir(file);
+	_name = dir.filename().string();
+	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, eAccess, nullptr, nullptr, nullptr);
+	if (dataset != nullptr)
+	{
+		Attach(dataset, autoClose);
+	}
 }
 
 void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)

@@ -1,6 +1,6 @@
 /.vs/
-/tGis/GeneratedFiles/
-/tGis/x64/
+/tGis.App/GeneratedFiles/
+/tGis.App/x64/
 /x64/
 *.VC.db
 *.VC.VC.opendb

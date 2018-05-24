@@ -56,6 +56,7 @@
     <ClInclude Include="include\tIo.h" />
     <ClInclude Include="include\tEntity.h" />
     <ClInclude Include="include\tOrganizer.h" />
+    <ClInclude Include="include\tSymbol.h" />
     <ClInclude Include="include\tUtility.h" />
     <ClInclude Include="include\RasterBandSeqBlockReader.h" />
     <ClInclude Include="include\RasterBandSeqPixelReader.h" />

@@ -11,11 +11,11 @@ QMapWidget::QMapWidget(QWidget *parent)
 	_surfBackgroundB = 255;
 
 	_vector.Attach("E:\\SpatialData\\全国省市县\\BOUND_A省.shp", GA_ReadOnly);
-	_vecLayer.SetOGRLayer(_vector.GetGDALDataset()->GetLayer(0),-1);
+	_vecLayer.SetOGRLayer(&_vector,_vector.GetGDALDataset()->GetLayer(0),-1);
 
 	_dataset.Attach("E:\\SpatialData\\SatelliteImage\\Shang\\gf1_pms1_e85.7_n47.2_20150707_L3A0000903873_MTS.tif",GA_ReadOnly);
 	_layer.SetDataset(&_dataset, 1);
-	const OGREnvelope* envelope = _vector.GetEnvelope();
+	const OGREnvelope* envelope = _vecLayer.GetEnvelope();
 	_geoSurface.SetSpatialReference(_vecLayer.GetSpatialReference());
 	_geoSurface.SetViewResolution(0.9);
 	_geoSurface.SetViewCenter((envelope->MinX + envelope->MaxX) / 2, (envelope->MinY + envelope->MaxY) / 2);

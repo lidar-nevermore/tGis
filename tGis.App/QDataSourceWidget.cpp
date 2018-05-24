@@ -138,5 +138,29 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 	{
 		//TODO: ÃÌº”œ‘ æ
 		IDataset* dt = (IDataset*)(index.data(DataRole).value<void*>());
+		dt->Open();
+
+		if (!dt->IsOpened())
+			return;
+
+		int layerProviderCount = LayerProviderRepository::INSTANCE.GetLayerProviderCountSupportDataset(dt->GetType());
+		ILayerProviderPtr* providers = new ILayerProviderPtr[layerProviderCount];
+		LayerProviderRepository::INSTANCE.GetLayerProviderSupportDataset(dt->GetType(), layerProviderCount, providers);
+		ILayer* layer = providers[0]->UI_CreateLayer(dt);
+		
+		IMap* map = GetCurrentMap();
+		IMapWidget* mapWidget = GetCurrentMapWidget();
+		IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
+
+		int layerCount = map->GetLayerCount();
+		map->AddLayer(layer);
+		if (layerCount == 0)
+		{
+			const OGREnvelope* envelope = layer->GetEnvelope();
+			geoSurface->SetSpatialReference(layer->GetSpatialReference());
+			geoSurface->SetViewResolution(0.9);
+			geoSurface->SetViewCenter((envelope->MinX + envelope->MaxX) / 2, (envelope->MinY + envelope->MaxY) / 2);
+		}
+		mapWidget->RepaintMap();
 	}
 }

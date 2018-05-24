@@ -48,9 +48,11 @@ void RasterGrayScaleLayerProvider::SetCreationUI(const UI ui)
 
 ILayer * RasterGrayScaleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
-	assert(_ui != nullptr);
+	//assert(_ui != nullptr);
 
-	return _ui();
+	//return _ui();
+
+	return  new RasterGrayScaleLayer((MyGDALRasterDataset*)dataset, 1);
 }
 
 ILayer * RasterGrayScaleLayerProvider::CreateLayer(IDataset * dataset, int band)

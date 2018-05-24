@@ -118,7 +118,7 @@ struct GDALInit
 	}//end of constructor
 };
 
-char* GDALInit::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf", "\0" };
+char* GDALInit::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf","png", "\0" };
 
 GDALInit* MyGDALFileDataset::_GDALInit = new GDALInit();
 
@@ -260,19 +260,6 @@ const OGRSpatialReference * MyGDALFileDataset::GetSpatialReference()
 const OGREnvelope * MyGDALFileDataset::GetEnvelope()
 {
 	return &_envelope;
-}
-
-void MyGDALFileDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
-{
-	_eAccess = eAccess;
-	_path = file;
-	fs::path dir(file);
-	_name = dir.filename().string();
-	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, eAccess, nullptr, nullptr, nullptr);
-	if (dataset != nullptr)
-	{
-		Attach(dataset, autoClose);
-	}
 }
 
 void MyGDALFileDataset::Detach()

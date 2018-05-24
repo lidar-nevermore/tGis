@@ -36,14 +36,18 @@ public:
 	~MyGDALRasterDataset();
 
 public:
+	using MyGDALFileDataset::GetGDALDataset;
+	using MyGDALFileDataset::Detach;
+	using MyGDALFileDataset::SetAutoClose;
+	using MyGDALFileDataset::GetAutoClose;
 
-	using MyGDALFileDataset::Attach;
+	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true) override;
 
 	void Attach(const char* file, GDALAccess eAccess, double noDataVale, bool autoClose = true);
 
 	void AttachHDF(const char* file,GDALAccess eAccess,const int subdataset,bool autoClose = true);
 
-	void Attach(GDALDataset* dataset,bool autoClose = false) override;
+	void Attach(GDALDataset* dataset,bool autoClose = false);
 
 	void Attach(GDALDataset* dataset,double noDataVale,bool autoClose = false);
 

@@ -36,8 +36,13 @@ public:
 	~MyGDALVectorDataset();
 
 public:
-	using MyGDALFileDataset::Attach;
-	void Attach(GDALDataset* dataset, bool autoClose = false) override;
+	using MyGDALFileDataset::GetGDALDataset;
+	using MyGDALFileDataset::Detach;
+	using MyGDALFileDataset::SetAutoClose;
+	using MyGDALFileDataset::GetAutoClose;
+
+	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true) override;
+	void Attach(GDALDataset* dataset, bool autoClose = false) ;
 
 private:
 	CPL_DISALLOW_COPY_ASSIGN(MyGDALVectorDataset)

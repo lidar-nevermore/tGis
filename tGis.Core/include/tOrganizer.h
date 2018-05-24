@@ -1,8 +1,12 @@
 #include "tEntity.h"
+#include "tUtility.h"
 #include "IDataSourceProvider.h"
 #include "ILayerProvider.h"
 #include "FileSystemDataSourceProvider.h"
 #include "DataSourceProviderRepository.h"
+#include "RasterGrayScaleLayerProvider.h"
+#include "VectorSimpleLayerProvider.h"
+#include "LayerProviderRepository.h"
 
 
 BEGIN_NAME_SPACE(tGis, Core)

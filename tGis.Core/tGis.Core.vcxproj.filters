@@ -179,6 +179,9 @@
     <ClInclude Include="include\SymbolLibraryRepository.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
+    <ClInclude Include="include\tSymbol.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">

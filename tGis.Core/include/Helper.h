@@ -60,12 +60,6 @@ inline double my_round(double val, int places) {
 	return !my_isnan(x) ? x : t;
 }
 
-END_NAME_SPACE(tGis, Core)
-
-
-
-
-
 
 // this shit for shit
 
@@ -85,6 +79,7 @@ struct PtrDestructor
 	T* _ptr;
 };
 
+END_NAME_SPACE(tGis, Core)
 
 
 // this shit for shit
