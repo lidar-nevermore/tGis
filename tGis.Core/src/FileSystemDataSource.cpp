@@ -76,7 +76,7 @@ const char * FileSystemDataSource::GetName()
 	return _name.c_str();
 }
 
-const char * FileSystemDataSource::GetConnectionString()
+const char * FileSystemDataSource::GetCreationString()
 {
 	return _path.c_str();
 }
@@ -129,21 +129,21 @@ void FileSystemDataSource::Connect()
 		{
 			if (fs::is_regular_file(*dir_itr) && (*dir_itr).path().has_extension())
 			{
-				string name = subdir.string();
+				string path = subdir.string();
 				string ext = subdir.extension().string().substr(1);
 				if (MyGDALFileDataset::IsSupportedRasterFormatExt(ext.c_str()))
 				{
-					MyGDALRasterDataset* dt = new MyGDALRasterDataset(name.c_str());
+					MyGDALRasterDataset* dt = new MyGDALRasterDataset(path.c_str());
 					dt->_dataSource = this;
 					_vecDataset.push_back(dt);
-					_mapDataset.insert(map<string, IDataset*>::value_type(name, dt));
+					_mapDataset.insert(map<string, IDataset*>::value_type(path, dt));
 				}
 				else if (MyGDALFileDataset::IsSupportedVectorFormatExt(ext.c_str()))
 				{
-					MyGDALVectorDataset* dt = new MyGDALVectorDataset(name.c_str());
+					MyGDALVectorDataset* dt = new MyGDALVectorDataset(path.c_str());
 					dt->_dataSource = this;
 					_vecDataset.push_back(dt);
-					_mapDataset.insert(map<string, IDataset*>::value_type(name, dt));
+					_mapDataset.insert(map<string, IDataset*>::value_type(path, dt));
 				}
 			}
 		}
@@ -157,7 +157,7 @@ void FileSystemDataSource::Disconnect()
 	_connected = false;
 	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
 	{
-		FileSystemDataSourceProvider::INSTANCE._mapDataSource.erase((*it)->GetConnectionString());
+		FileSystemDataSourceProvider::INSTANCE._mapDataSource.erase((*it)->GetCreationString());
 		delete (*it);
 	}
 	_vecDataSource.clear();

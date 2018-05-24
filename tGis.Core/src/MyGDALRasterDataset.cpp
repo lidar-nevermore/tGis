@@ -22,7 +22,7 @@ MyGDALRasterDataset::MyGDALRasterDataset()
 MyGDALRasterDataset::MyGDALRasterDataset(const char* path, bool delayOpen, GDALAccess eAccess, bool autoClose)
 {
 	_eAccess = eAccess;
-	_openStr = path;
+	_path = path;
 	fs::path dir(path);
 	_name = dir.filename().string();
 	if (delayOpen)
@@ -88,7 +88,7 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, double noDataValue, bool 
 void MyGDALRasterDataset::Attach(const char* file, GDALAccess eAccess, double noDataVale, bool autoClose)
 {
 	_eAccess = eAccess;
-	_openStr = file;
+	_path = file;
 	fs::path dir(file);
 	_name = dir.filename().string();
 	GDALDataset *dataset = (GDALDataset*)GDALOpen(file, eAccess);
@@ -126,13 +126,13 @@ void MyGDALRasterDataset::AttachHDF(const char* file,GDALAccess eAccess,const in
 				if(i == 2*subdataset)
 				{
 					std::string tmpstr = std::string(papszSUBDATASETS[i]);  
-					_openStr = tmpstr.substr(tmpstr.find_first_of("=") + 1);
+					_path = tmpstr.substr(tmpstr.find_first_of("=") + 1);
 					fs::path dir(file);
 					char subset[32] = { 0 };
 					strcpy(subset, ":SUBDATASET_");
 					_itoa(subdataset, subset + 12, 10);
 					_name = dir.filename().string() + subset;
-					GDALDataset *dataset = (GDALDataset*)GDALOpen(_openStr.c_str(), eAccess);
+					GDALDataset *dataset = (GDALDataset*)GDALOpen(_path.c_str(), eAccess);
 					Attach(dataset,autoClose);
 					break;
 				}

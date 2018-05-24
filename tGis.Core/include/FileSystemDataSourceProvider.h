@@ -26,7 +26,7 @@ private:
 	FileSystemDataSourceProvider &operator=(const FileSystemDataSourceProvider &) = delete;
 
 private:
-	static const char* const _catagory;
+	static const char* const _name;
 	static const char* const _type;
 
 private:
@@ -39,7 +39,7 @@ private:
 
 public:
 	const char* GetSupportedDataSourceType();
-	const char* GetCatagory();
+	const char* GetName();
 	const char* GetType();
 
 	void SetCreateDataSourceUI(const UI ui);

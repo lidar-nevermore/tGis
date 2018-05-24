@@ -23,6 +23,9 @@
     <ClCompile Include="MapZoomTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QLayerWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="QMapWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QLayerWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

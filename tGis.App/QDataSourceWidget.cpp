@@ -28,7 +28,7 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 	{
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE.GetDataSourceProvider(i);
 		QStandardItem* pItem = new QStandardItem();
-		pItem->setText(QString::fromLocal8Bit(provider->GetCatagory()));
+		pItem->setText(QString::fromLocal8Bit(provider->GetName()));
 		pItem->setEditable(false);
 		const QIcon* icon = IconRes::INSTANCE.GetIcon(provider->GetType());
 		if (icon != nullptr)
@@ -137,5 +137,6 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 	else if (type == DatasetType)
 	{
 		//TODO: ÃÌº”œ‘ æ
+		IDataset* dt = (IDataset*)(index.data(DataRole).value<void*>());
 	}
 }

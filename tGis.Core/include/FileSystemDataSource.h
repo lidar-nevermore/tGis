@@ -36,7 +36,7 @@ private:
 public:
 	const char* GetType();
 	const char* GetName();
-	const char* GetConnectionString();
+	const char* GetCreationString();
 
 	bool IsConnected();
 	void Connect();

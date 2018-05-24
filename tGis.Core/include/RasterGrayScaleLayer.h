@@ -33,6 +33,7 @@ private:
 
 public:
 	virtual const char* GetType();
+	virtual const char* GetCreationString();
 	virtual void SetOpacity(float);
 
 	virtual void Paint(IGeoSurface*);

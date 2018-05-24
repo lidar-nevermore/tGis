@@ -56,6 +56,11 @@ const char * RasterGrayScaleLayer::GetType()
 	return _type;
 }
 
+const char * RasterGrayScaleLayer::GetCreationString()
+{
+	return nullptr;
+}
+
 void RasterGrayScaleLayer::SetOpacity(float opacity)
 {
 	_opacity = opacity;

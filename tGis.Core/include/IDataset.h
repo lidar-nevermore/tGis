@@ -16,7 +16,7 @@ struct TGISCORE_API IDataset
 {
 	virtual const char* GetType() = 0;
 	virtual const char* GetName() = 0;
-	virtual const char* GetOpenString() = 0;
+	virtual const char* GetCreationString() = 0;
 
 	virtual bool IsOpened() = 0;
 	virtual void Open() = 0;

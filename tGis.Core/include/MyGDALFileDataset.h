@@ -25,7 +25,7 @@ class TGISCORE_API MyGDALFileDataset : public IDataset
 
 public:
 	virtual const char* GetName();
-	virtual const char* GetOpenString();
+	virtual const char* GetCreationString();
 
 	virtual bool IsOpened();
 	virtual void Open();
@@ -39,7 +39,7 @@ protected:
 	OGREnvelope _envelope;
 
 protected:
-	string _openStr;
+	string _path;
 	string _name;
 	IDataSource* _dataSource;
 

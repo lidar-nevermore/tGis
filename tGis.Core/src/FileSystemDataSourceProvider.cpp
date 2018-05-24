@@ -9,7 +9,7 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-const char* const FileSystemDataSourceProvider::_catagory = "FileSystem";
+const char* const FileSystemDataSourceProvider::_name = "FileSystem";
 const char* const FileSystemDataSourceProvider::_type = "13D0E005-C5CD-4210-A5D3-FDD57AB12990";
 FileSystemDataSourceProvider FileSystemDataSourceProvider::INSTANCE;// = new FileSystemDataSourceProvider();
 
@@ -29,9 +29,9 @@ const char * FileSystemDataSourceProvider::GetSupportedDataSourceType()
 	return FileSystemDataSource::_type;
 }
 
-const char * FileSystemDataSourceProvider::GetCatagory()
+const char * FileSystemDataSourceProvider::GetName()
 {
-	return FileSystemDataSourceProvider::_catagory;
+	return FileSystemDataSourceProvider::_name;
 }
 
 const char * FileSystemDataSourceProvider::GetType()
@@ -68,7 +68,7 @@ IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
 
 void FileSystemDataSourceProvider::ReleaseDataSource(IDataSource * ds)
 {
-	map<string, IDataSource*>::iterator pos = _mapDataSource.find(ds->GetConnectionString());
+	map<string, IDataSource*>::iterator pos = _mapDataSource.find(ds->GetCreationString());
 
 	if (pos != _mapDataSource.end())
 		delete (*pos).second;

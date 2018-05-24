@@ -14,6 +14,10 @@ public:
 	explicit QDataSourceWidget(QWidget *parent = 0);
 	~QDataSourceWidget();
 
+public:
+signals:
+	void LayerAdded(IMap*, ILayer*);
+
 private:
 	static const int DataSourceProviderType = 1;
 	static const int DataSourceType = 2;

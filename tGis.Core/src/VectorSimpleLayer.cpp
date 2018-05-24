@@ -51,6 +51,11 @@ const char * VectorSimpleLayer::GetType()
 	return _type;
 }
 
+const char * VectorSimpleLayer::GetCreationString()
+{
+	return nullptr;
+}
+
 void VectorSimpleLayer::Paint(IGeoSurface * surf)
 {
 	OGRFeature* feature = nullptr;

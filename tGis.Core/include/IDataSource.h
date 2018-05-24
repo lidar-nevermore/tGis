@@ -13,7 +13,7 @@ struct TGISCORE_API IDataSource
 {
 	virtual const char* GetType() = 0;
 	virtual const char* GetName() = 0;
-	virtual const char* GetConnectionString() = 0;
+	virtual const char* GetCreationString() = 0;
 
 	virtual bool IsConnected() = 0;
 	virtual void Connect() = 0;

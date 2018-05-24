@@ -23,6 +23,23 @@ struct GDALInit
 	vector<string> _SupportedRasterFormatName;
 	vector<int> _SupportedRasterFormatCreatable;
 
+	static char*  _excludeExt[];
+
+	static bool IsExcludeExt(const char* ext)
+	{
+		int i = 0;
+		char* e = _excludeExt[i];
+		while(strcmp(e, "\0") != 0)
+		{
+			if (stricmp(e, ext) == 0)
+				return true;
+
+			i++;
+			e = _excludeExt[i];
+		}
+		return false;
+	}
+
 	GDALInit()
 	{
 		GDALAllRegister();          //GDAL所有操作都需要先注册格式
@@ -99,10 +116,9 @@ struct GDALInit
 			}//end of ext not null or empty
 		}//end of for
 	}//end of constructor
-
-
 };
 
+char* GDALInit::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf", "\0" };
 
 GDALInit* MyGDALFileDataset::_GDALInit = new GDALInit();
 
@@ -130,13 +146,18 @@ bool MyGDALFileDataset::GetSupportedRasterFormatCreatable(int pos)
 
 bool MyGDALFileDataset::IsSupportedRasterFormatExt(const char * ext)
 {
+	if (GDALInit::IsExcludeExt(ext))
+		return false;
+
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
 	{
-		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
-		{
-			if (stricmp((*itt).c_str(), ext) == 0)
-				return true;
-		}
+		if (stricmp((*it).at(0).c_str(), ext) == 0)
+			return true;
+		//for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		//{
+		//	if (stricmp((*itt).c_str(), ext) == 0)
+		//		return true;
+		//}
 	}
 	return false;
 }
@@ -163,13 +184,18 @@ bool MyGDALFileDataset::GetSupportedVectorFormatCreatable(int pos)
 
 bool MyGDALFileDataset::IsSupportedVectorFormatExt(const char * ext)
 {
+	if (GDALInit::IsExcludeExt(ext))
+		return false;
+
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)
 	{
-		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
-		{
-			if (stricmp((*itt).c_str(), ext) == 0)
-				return true;
-		}
+		if (stricmp((*it).at(0).c_str(), ext) == 0)
+			return true;
+		//for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		//{
+		//	if (stricmp((*itt).c_str(), ext) == 0)
+		//		return true;
+		//}
 	}
 	return false;
 }
@@ -198,9 +224,9 @@ const char * MyGDALFileDataset::GetName()
 	return _name.c_str();
 }
 
-const char * MyGDALFileDataset::GetOpenString()
+const char * MyGDALFileDataset::GetCreationString()
 {
-	return _openStr.c_str();
+	return _path.c_str();
 }
 
 bool MyGDALFileDataset::IsOpened()
@@ -212,7 +238,7 @@ void MyGDALFileDataset::Open()
 {
 	if (_dataset == nullptr)
 	{
-		Attach(_openStr.c_str(), _eAccess);
+		Attach(_path.c_str(), _eAccess);
 	}
 }
 
@@ -239,7 +265,7 @@ const OGREnvelope * MyGDALFileDataset::GetEnvelope()
 void MyGDALFileDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
 {
 	_eAccess = eAccess;
-	_openStr = file;
+	_path = file;
 	fs::path dir(file);
 	_name = dir.filename().string();
 	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, eAccess, nullptr, nullptr, nullptr);

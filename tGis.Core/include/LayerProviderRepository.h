@@ -7,13 +7,21 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+struct ILayerProvider;
+
 class TGISCORE_API LayerProviderRepository
 {
 public:
 	static const LayerProviderRepository INSTANCE;
 
 public:
+	int GetLayerProviderCount();
+	ILayerProvider* GetLayerProvider(int);
+	void AddLayerProvider(ILayerProvider*);
+	ILayerProvider* GetLayerProvider(const char* layerType);
 
+	int GetLayerProviderCountSupportDataset(const char* datasetType);
+	void GetLayerProviderSupportDataset(const char* datasetType, int count, ILayerProvider** layerProviders);
 
 private:
 	LayerProviderRepository();

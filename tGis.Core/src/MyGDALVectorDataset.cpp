@@ -27,7 +27,7 @@ MyGDALVectorDataset::MyGDALVectorDataset()
 MyGDALVectorDataset::MyGDALVectorDataset(const char * path, bool delayOpen, GDALAccess eAccess, bool autoClose)
 {
 	_eAccess = eAccess;
-	_openStr = path;
+	_path = path;
 	fs::path dir(path);
 	_name = dir.filename().string();
 	if (delayOpen)

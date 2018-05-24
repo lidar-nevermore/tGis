@@ -17,6 +17,7 @@ struct TGISCORE_API ILayer
 {
 	virtual const char* GetType() = 0;
 	virtual const char* GetName() = 0;
+	virtual const char* GetCreationString() = 0;
 	virtual void SetName(const char*) = 0;
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
