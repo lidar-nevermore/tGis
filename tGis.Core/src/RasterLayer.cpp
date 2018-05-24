@@ -16,13 +16,13 @@ RasterLayer::RasterLayer()
 {
 }
 
-RasterLayer::RasterLayer(MyGDALRasterDataset* dataset)
+RasterLayer::RasterLayer(MyGDALRasterDataset* raster)
 {
-	if (!dataset->IsNorthUp())
+	if (!raster->IsNorthUp())
 	{
 		throw std::exception("不支持非北方朝上的影响！");
 	}
-	_raster = dataset;
+	_raster = raster;
 	_visible = true;
 	_opacity = 1.0;
 	_alpha = 255;
@@ -43,13 +43,18 @@ const OGRSpatialReference * RasterLayer::GetSpatialReference()
 	return _raster->GetSpatialReference();
 }
 
-void RasterLayer::SetDataset(MyGDALRasterDataset * dataset)
+IDataset * RasterLayer::GetDataset()
 {
-	if (!dataset->IsNorthUp())
+	return _raster;
+}
+
+void RasterLayer::SetDataset(MyGDALRasterDataset * raster)
+{
+	if (!raster->IsNorthUp())
 	{
 		throw std::exception("不支持非北方朝上的影响！");
 	}
-	_raster = dataset;
+	_raster = raster;
 }
 
 

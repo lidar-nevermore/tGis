@@ -19,15 +19,16 @@ class TGISCORE_API RasterLayer : public Layer
 {
 public:
 	RasterLayer();
-	RasterLayer(MyGDALRasterDataset* dataset);
+	RasterLayer(MyGDALRasterDataset* raster);
 	virtual ~RasterLayer();
 
 public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
+	virtual IDataset* GetDataset();
 
 protected:
-	void SetDataset(MyGDALRasterDataset* dataset);
+	void SetDataset(MyGDALRasterDataset* raster);
 
 protected:
 	bool PreparePaint(IGeoSurface*);

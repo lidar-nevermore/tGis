@@ -19,8 +19,8 @@ VectorSimpleLayer::VectorSimpleLayer()
 	_CT = nullptr;
 }
 
-VectorSimpleLayer::VectorSimpleLayer(OGRLayer *layer, int geometryField, int labelField)
-	:VectorLayer(layer)
+VectorSimpleLayer::VectorSimpleLayer(MyGDALVectorDataset* vector, OGRLayer *layer, int geometryField, int labelField)
+	:VectorLayer(vector,layer)
 {
 	_geometryField = geometryField;
 	_labelField = labelField;
@@ -38,9 +38,9 @@ VectorSimpleLayer::~VectorSimpleLayer()
 }
 
 
-void VectorSimpleLayer::SetOGRLayer(OGRLayer * layer, int geometryField, int labelField)
+void VectorSimpleLayer::SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer * layer, int geometryField, int labelField)
 {
-	VectorLayer::SetOGRLayer(layer);
+	VectorLayer::SetOGRLayer(vector,layer);
 	_geometryField = geometryField;
 	_labelField = labelField;
 	_surfSpatialRef = nullptr;

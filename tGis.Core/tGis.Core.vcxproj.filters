@@ -164,6 +164,21 @@
     <ClInclude Include="include\VectorLayer.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="include\VectorSimpleLayerProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterGrayScaleLayerProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISymbolLibrary.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SimpleSymbolLibrary.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="include\SymbolLibraryRepository.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -240,6 +255,18 @@
     </ClCompile>
     <ClCompile Include="src\VectorLayer.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterGrayScaleLayerProvider.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VectorSimpleLayerProvider.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SimpleSymbolLibrary.cpp">
+      <Filter>src\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SymbolLibraryRepository.cpp">
+      <Filter>src\Symbol</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

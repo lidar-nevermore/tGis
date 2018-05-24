@@ -1,9 +1,8 @@
 #include "SimpleFillSymbol.h"
+#include "SimpleSymbolLibrary.h"
 
 
 #include "ISurface.h"
-
-#include <cstdlib>
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -21,16 +20,6 @@ SimpleFillSymbol::SimpleFillSymbol(int t)
 	_g = 236;
 	_b = 63;
 	_a = 255;
-
-	_locator[0] = 's';
-	_locator[1] = 'y';
-	_locator[2] = 's';
-	_locator[3] = '_';
-	_locator[4] = 'f';
-	_locator[5] = 'i';
-	_locator[6] = 'l';
-	_locator[7] = 'l';
-	_itoa(t, _locator + 8, 10);
 }
 
 
@@ -38,9 +27,14 @@ SimpleFillSymbol::~SimpleFillSymbol()
 {
 }
 
-const char * SimpleFillSymbol::GetLocator()
+const ISymbolLibrary * SimpleFillSymbol::GetSymbolLibrary()
 {
-	return _locator;
+	return &SimpleSymbolLibrary::INSTANCE;
+}
+
+const int SimpleFillSymbol::GetIdentifier()
+{
+	return IdentifierBegin + _type;
 }
 
 void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)

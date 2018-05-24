@@ -1,9 +1,15 @@
 #pragma once
 
-#ifndef __MAPREPOSITORY_H__
-#define __MAPREPOSITORY_H__
+#ifndef __LAYERPROVIDERREPOSITORY_H__
+#define __LAYERPROVIDERREPOSITORY_H__
 
 #include "Helper.h"
+
+#include <vector>
+#include <map>
+#include <string>
+
+using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -12,7 +18,13 @@ struct ILayerProvider;
 class TGISCORE_API LayerProviderRepository
 {
 public:
-	static const LayerProviderRepository INSTANCE;
+	static LayerProviderRepository INSTANCE;
+
+private:
+	LayerProviderRepository();
+	~LayerProviderRepository();
+	LayerProviderRepository(const LayerProviderRepository &) = delete;
+	LayerProviderRepository &operator=(const LayerProviderRepository &) = delete;
 
 public:
 	int GetLayerProviderCount();
@@ -24,10 +36,9 @@ public:
 	void GetLayerProviderSupportDataset(const char* datasetType, int count, ILayerProvider** layerProviders);
 
 private:
-	LayerProviderRepository();
-	~LayerProviderRepository();
-	LayerProviderRepository(const LayerProviderRepository &) = delete;
-	LayerProviderRepository &operator=(const LayerProviderRepository &) = delete;
+	vector<ILayerProvider*> _vecLayerProvider;
+	map<string, ILayerProvider*> _mapLayerProvider;
+	multimap<string, ILayerProvider*> _mapLayerProviderSupportDataset;
 };
 
 END_NAME_SPACE(tGis, Core)

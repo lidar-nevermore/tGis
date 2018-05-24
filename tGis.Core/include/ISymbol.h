@@ -8,10 +8,13 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISurface;
+struct ISymbolLibrary;
 
 struct TGISCORE_API ISymbol
 {
-	virtual const char* GetLocator() = 0;
+	virtual const ISymbolLibrary* GetSymbolLibrary() = 0;
+
+	virtual const int GetIdentifier() = 0;
 
 	virtual void Paint(ISurface* surf, int count, int* x, int* y, int* z, void* c) = 0;
 
@@ -31,6 +34,8 @@ private:
 		this->Paint(surf, count, x, y, z, (T*)c);
 	}
 };
+
+typedef ISymbol* ISymbolPtr;
 
 END_NAME_SPACE(tGis, Core)
 

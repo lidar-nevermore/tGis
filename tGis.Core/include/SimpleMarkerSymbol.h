@@ -13,6 +13,8 @@ struct ISurface;
 class TGISCORE_API SimpleMarkerSymbol : public TSymbol<char>
 {
 public:
+	static const int IdentifierBegin = 0;
+	static const int IdentifierEnd = 7;
 	static const int Rect = 0;
 	static const int Ellipse = 1;
 	static const int Triangle = 2;
@@ -27,7 +29,9 @@ public:
 	SimpleMarkerSymbol(int t);
 	~SimpleMarkerSymbol();
 
-	const char* GetLocator() override;
+	const ISymbolLibrary* GetSymbolLibrary();
+
+	const int GetIdentifier();
 
 	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
@@ -65,7 +69,6 @@ protected:
 
     int _lineWidth;
 
-	char _locator[32];
 	int _type;
 };
 

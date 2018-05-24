@@ -16,9 +16,11 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class RasterGrayScaleLayerProvider;
 
 class TGISCORE_API MyGDALRasterDataset : public MyGDALFileDataset
 {
+	friend class RasterGrayScaleLayerProvider;
 public:
 	const char* GetType();
 

@@ -21,6 +21,7 @@ struct TGISCORE_API ILayer
 	virtual void SetName(const char*) = 0;
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
+	virtual IDataset* GetDataset() = 0;
 	virtual bool GetVisible() = 0;
 	virtual void SetVisible(bool) = 0;
 	virtual float GetOpacity() = 0;

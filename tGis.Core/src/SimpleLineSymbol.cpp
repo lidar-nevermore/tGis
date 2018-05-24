@@ -1,8 +1,8 @@
 #include "SimpleLineSymbol.h"
+#include "SimpleSymbolLibrary.h"
 
 #include "ISurface.h"
 
-#include <cstdlib>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -19,25 +19,20 @@ SimpleLineSymbol::SimpleLineSymbol(int t)
 	_b = 0;
 	_a = 255;
 	_width = 1;
-
-	_locator[0] = 's';
-	_locator[1] = 'y';
-	_locator[2] = 's';
-	_locator[3] = '_';
-	_locator[4] = 'l';
-	_locator[5] = 'i';
-	_locator[6] = 'n';
-	_locator[7] = 'e';
-	_itoa(t, _locator + 8, 10);
 }
 
 SimpleLineSymbol::~SimpleLineSymbol()
 {
 }
 
-const char * SimpleLineSymbol::GetLocator()
+const ISymbolLibrary * SimpleLineSymbol::GetSymbolLibrary()
 {
-	return _locator;
+	return &SimpleSymbolLibrary::INSTANCE;;
+}
+
+const int SimpleLineSymbol::GetIdentifier()
+{
+	return IdentifierBegin + _type;
 }
 
 void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)

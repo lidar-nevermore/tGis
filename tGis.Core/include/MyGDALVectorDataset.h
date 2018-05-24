@@ -15,11 +15,15 @@
 
 using namespace std;
 
+
+
 BEGIN_NAME_SPACE(tGis, Core)
 
+class VectorSimpleLayerProvider;
 
 class TGISCORE_API MyGDALVectorDataset : public MyGDALFileDataset
 {
+	friend class VectorSimpleLayerProvider;
 public:
 	const char* GetType();
 

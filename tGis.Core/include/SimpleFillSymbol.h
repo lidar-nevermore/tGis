@@ -13,28 +13,32 @@ struct ISurface;
 class TGISCORE_API SimpleFillSymbol : public TSymbol<char>
 {
 public:
-	static const int NoFill = -1;
-	static const int Solid = 0;
-	static const int Dense1 = 1;
-	static const int Dense2 = 2;
-	static const int Dense3 = 3;
-	static const int Dense4 = 4;
-	static const int Dense5 = 5;
-	static const int Dense6 = 6;
-	static const int Dense7 = 7;
-	static const int Horizontal = 8;
-	static const int Vertical = 9;
-	static const int ForwardDiagonal = 10;
-	static const int BackwardDiagonal = 11;
-	static const int Cross = 12;
-	static const int DiagonalCross = 13;
+	static const int IdentifierBegin = 200;
+	static const int IdentifierEnd = 214;
+	static const int NoFill = 0;
+	static const int Solid = 1;
+	static const int Dense1 = 2;
+	static const int Dense2 = 3;
+	static const int Dense3 = 4;
+	static const int Dense4 = 5;
+	static const int Dense5 = 6;
+	static const int Dense6 = 7;
+	static const int Dense7 = 8;
+	static const int Horizontal = 9;
+	static const int Vertical = 10;
+	static const int ForwardDiagonal = 11;
+	static const int BackwardDiagonal = 12;
+	static const int Cross = 13;
+	static const int DiagonalCross = 14;
 
 public:
 	SimpleFillSymbol();
 	SimpleFillSymbol(int t);
 	~SimpleFillSymbol();
 
-	const char* GetLocator() override;
+	const ISymbolLibrary* GetSymbolLibrary();
+
+	const int GetIdentifier();
 
 	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
@@ -48,7 +52,6 @@ protected:
 	unsigned char _b;
 	unsigned char _a;
 
-	char _locator[32];
 	int _type;
 };
 

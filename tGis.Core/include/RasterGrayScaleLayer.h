@@ -16,14 +16,20 @@ class GDALRasterBand;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class RasterGrayScaleLayerProvider;
 
 class TGISCORE_API RasterGrayScaleLayer : public RasterLayer
 {
+	friend class RasterGrayScaleLayerProvider;
 public:
 	RasterGrayScaleLayer();
 	RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band);
 	~RasterGrayScaleLayer();
 	void SetDataset(MyGDALRasterDataset* dataset, int band);
+
+private:
+	RasterGrayScaleLayer(const RasterGrayScaleLayer &) = delete;
+	RasterGrayScaleLayer &operator=(const RasterGrayScaleLayer &) = delete;
 
 private:
 	using RasterLayer::SetDataset;

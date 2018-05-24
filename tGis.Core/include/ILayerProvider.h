@@ -22,6 +22,9 @@ struct TGISCORE_API ILayerProvider
 
 	virtual ILayer* UI_CreateLayer(IDataset* dataset) = 0;
 	virtual ILayer* CreateLayer(IDataset* dataset, const char* creationString) = 0;
+	virtual void ReleaseLayer(ILayer*) = 0;
+
+	virtual void Release() = 0;
 
 	ILayerProvider() {};
 	virtual ~ILayerProvider() {};

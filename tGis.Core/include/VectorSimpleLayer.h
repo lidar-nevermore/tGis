@@ -26,18 +26,25 @@ class OGRCoordinateTransformation;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class VectorSimpleLayerProvider;
+
 class TGISCORE_API VectorSimpleLayer : public VectorLayer
 {
+	friend class VectorSimpleLayerProvider;
 public:
 	VectorSimpleLayer();
-	VectorSimpleLayer(OGRLayer* layer,int geometryField = -1, int labelField = -1);
+	VectorSimpleLayer(MyGDALVectorDataset* vector, OGRLayer* layer,int geometryField = -1, int labelField = -1);
 	~VectorSimpleLayer();
+
+private:
+	VectorSimpleLayer(const VectorSimpleLayer &) = delete;
+	VectorSimpleLayer &operator=(const VectorSimpleLayer &) = delete;
 
 private:
 	using VectorLayer::SetOGRLayer;
 
 public:
-	void SetOGRLayer(OGRLayer* layer, int geometryField, int labelField = -1);
+	void SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer* layer, int geometryField, int labelField = -1);
 
 private:
 	static const char* const _type;

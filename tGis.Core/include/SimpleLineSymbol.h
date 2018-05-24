@@ -13,17 +13,22 @@ struct ISurface;
 class TGISCORE_API SimpleLineSymbol : public TSymbol<char>
 {
 public:
+	static const int IdentifierBegin = 100;
+	static const int IdentifierEnd = 104;
 	static const int Solid = 0;
 	static const int Dash = 1;
 	static const int Dot = 2;
 	static const int DashDot = 3;
 	static const int DashDotDot = 4;
+
 public:
 	SimpleLineSymbol();
 	SimpleLineSymbol(int t);
 	~SimpleLineSymbol();
 
-	const char* GetLocator() override;
+	const ISymbolLibrary* GetSymbolLibrary();
+
+	const int GetIdentifier();
 
 	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
@@ -41,7 +46,6 @@ protected:
 
 	int _width;
 
-	char _locator[32];
 	int _type;
 };
 

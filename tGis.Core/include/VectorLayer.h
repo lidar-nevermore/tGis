@@ -18,21 +18,25 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class MyGDALVectorDataset;
+
 class TGISCORE_API VectorLayer : public Layer
 {
 public:
 	VectorLayer();
-	VectorLayer(OGRLayer*);
+	VectorLayer(MyGDALVectorDataset* vector, OGRLayer* layer);
 	~VectorLayer();
 
 protected:
-	void SetOGRLayer(OGRLayer* layer);
+	void SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer* layer);
 
 public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
+	virtual IDataset* GetDataset();
 
 protected:
+	MyGDALVectorDataset* _vector;
 	OGRLayer* _layer;
 	OGREnvelope _envelope;
 	OGRSpatialReference* _spatialRef;

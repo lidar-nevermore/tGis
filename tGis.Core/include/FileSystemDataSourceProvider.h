@@ -14,7 +14,7 @@ class TGISCORE_API FileSystemDataSourceProvider : public IDataSourceProvider
 {
 	friend class FileSystemDataSource;
 public:
-	typedef char*(*UI)();
+	typedef FileSystemDataSource*(*UI)();
 
 public:
     static FileSystemDataSourceProvider INSTANCE;
@@ -42,8 +42,7 @@ public:
 	const char* GetName();
 	const char* GetType();
 
-	void SetCreateDataSourceUI(const UI ui);
-
+	void SetCreationUI(const UI ui);
 	IDataSource* UI_CreateDataSource();
 	IDataSource* CreateDataSource(const char* path);
 	void ReleaseDataSource(IDataSource*);

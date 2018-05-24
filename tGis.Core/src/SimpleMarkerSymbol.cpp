@@ -1,10 +1,10 @@
 #include "SimpleMarkerSymbol.h"
+#include "SimpleSymbolLibrary.h"
 
 #include "ISurface.h"
 #include "SimpleLineSymbol.h"
 #include "SimpleFillSymbol.h"
 
-#include <cstdlib>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -24,18 +24,6 @@ SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
 	_width = 5;
 	_height = 5;
 	_lineWidth = 1;
-
-	_locator[0] = 's';
-	_locator[1] = 'y';
-	_locator[2] = 's';
-	_locator[3] = '_';
-	_locator[4] = 'm';
-	_locator[5] = 'a';
-	_locator[6] = 'r';
-	_locator[7] = 'k';
-	_locator[8] = 'e';
-	_locator[9] = 'r';
-	_itoa(t, _locator+10, 10);
 }
 
 SimpleMarkerSymbol::~SimpleMarkerSymbol()
@@ -43,9 +31,14 @@ SimpleMarkerSymbol::~SimpleMarkerSymbol()
 
 }
 
-const char * SimpleMarkerSymbol::GetLocator()
+const ISymbolLibrary * SimpleMarkerSymbol::GetSymbolLibrary()
 {
-	return _locator;
+	return &SimpleSymbolLibrary::INSTANCE;;
+}
+
+const int SimpleMarkerSymbol::GetIdentifier()
+{
+	return IdentifierBegin + _type;
 }
 
 void SimpleMarkerSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)
