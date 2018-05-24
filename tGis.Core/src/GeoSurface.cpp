@@ -2,6 +2,8 @@
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
+#include <algorithm>
+#include <cmath>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -65,6 +67,16 @@ void GeoSurface::GetViewPort(double *spatialCenterX, double *spatialCenterY, int
 
 	if (resolution != nullptr)
 		*resolution = _resolution;
+}
+
+void GeoSurface::IncludeEnvelope(const OGREnvelope * envelope)
+{
+	double height = envelope->MaxY - envelope->MinY;
+	double width = envelope->MaxX - envelope->MinX;
+	double resolution = std::max(abs(height / _surfHeight), abs(width / _surfWidth));
+
+	_resolution = resolution;
+	SetViewCenter((envelope->MaxX + envelope->MinX) / 2.0, (envelope->MaxY + envelope->MinY) / 2.0);
 }
 
 void GeoSurface::Surface2Spatial(int surfX, int surfY, double * spatialX, double * spatialY)

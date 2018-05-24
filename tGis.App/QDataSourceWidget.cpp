@@ -154,13 +154,14 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 
 		int layerCount = map->GetLayerCount();
 		map->AddLayer(layer);
+
 		if (layerCount == 0)
 		{
 			const OGREnvelope* envelope = layer->GetEnvelope();
 			geoSurface->SetSpatialReference(layer->GetSpatialReference());
-			geoSurface->SetViewResolution(0.9);
-			geoSurface->SetViewCenter((envelope->MinX + envelope->MaxX) / 2, (envelope->MinY + envelope->MaxY) / 2);
+			geoSurface->IncludeEnvelope(envelope);
 		}
+		
 		mapWidget->RepaintMap();
 	}
 }

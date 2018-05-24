@@ -44,7 +44,11 @@ bool Map::CanTransformFrom(const OGRSpatialReference *spatialRef)
 		return true;
 
 	if (thisSpatialRef != nullptr)
+	{
+		if (spatialRef == nullptr)
+			return false;
 		return thisSpatialRef->IsSame(spatialRef);
+	}
 
 	return true;
 }

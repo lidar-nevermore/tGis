@@ -36,6 +36,8 @@ private:
 	MyGDALVectorDataset _vector;
 	VectorSimpleLayer _vecLayer;
 
+	bool _firstTime;
+
 	Map _map;
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;

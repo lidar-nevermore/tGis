@@ -6,22 +6,25 @@ QMapWidget::QMapWidget(QWidget *parent)
 	:QWidget(parent)
 	,_map()
 {
+	_firstTime = true;
 	_surfBackgroundR = 255;
 	_surfBackgroundG = 255;
 	_surfBackgroundB = 255;
 
 	_vector.Attach("E:\\SpatialData\\全国省市县\\BOUND_A省.shp", GA_ReadOnly);
 	_vecLayer.SetOGRLayer(&_vector,_vector.GetGDALDataset()->GetLayer(0),-1);
+	//_map.AddLayer(&_vecLayer);
 
 	_dataset.Attach("E:\\SpatialData\\SatelliteImage\\Shang\\gf1_pms1_e85.7_n47.2_20150707_L3A0000903873_MTS.tif",GA_ReadOnly);
 	_layer.SetDataset(&_dataset, 1);
-	const OGREnvelope* envelope = _vecLayer.GetEnvelope();
-	_geoSurface.SetSpatialReference(_vecLayer.GetSpatialReference());
+
+	const OGREnvelope* envelope = _layer.GetEnvelope();
+	_geoSurface.SetSpatialReference(_layer.GetSpatialReference());
 	_geoSurface.SetViewResolution(0.9);
 	_geoSurface.SetViewCenter((envelope->MinX + envelope->MaxX) / 2, (envelope->MinY + envelope->MaxY) / 2);
 	_geoSurface.SetBackgroundColor(255, 255, 255);
-	//_map.AddLayer(&_layer);
-	_map.AddLayer(&_vecLayer);
+	_map.AddLayer(&_layer);
+
 	this->AddMapTool(&_mapPanTool);
 	this->AddMapTool(&_mapZoomTool);
 }
@@ -83,6 +86,12 @@ void QMapWidget::resizeEvent(QResizeEvent * e)
 {
 	QSize sz = e->size();
 	_geoSurface.SetViewSize(sz.width(), sz.height());
+	if (_firstTime)
+	{
+		_firstTime = false;
+		const OGREnvelope* envelope = _layer.GetEnvelope();
+		_geoSurface.IncludeEnvelope(envelope);
+	}
 	MapWidget::RepaintMap();
 }
 
