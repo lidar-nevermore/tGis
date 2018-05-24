@@ -30,6 +30,7 @@ private:
 	ILayerProvider &operator=(const ILayerProvider &) = delete;
 };
 
+typedef ILayerProvider* ILayerProviderPtr;
 
 END_NAME_SPACE(tGis, Core)
 

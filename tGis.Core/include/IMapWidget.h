@@ -46,6 +46,7 @@ private:
 	IMapWidget &operator=(const IMapWidget &) = delete;
 };
 
+typedef IMapWidget* IMapWidgetPtr;
 
 END_NAME_SPACE(tGis, Core)
 

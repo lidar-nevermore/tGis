@@ -34,6 +34,7 @@ private:
 	ILayer &operator=(const ILayer &) = delete;
 };
 
+typedef ILayer* ILayerPtr;
 
 END_NAME_SPACE(tGis, Core)
 

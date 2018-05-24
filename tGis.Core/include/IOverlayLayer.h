@@ -29,6 +29,7 @@ private:
 	IOverlayLayer &operator=(const IOverlayLayer &) = delete;
 };
 
+typedef IOverlayLayer* IOverlayLayerPtr;
 
 END_NAME_SPACE(tGis, Core)
 

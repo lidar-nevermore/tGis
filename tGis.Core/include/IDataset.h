@@ -32,6 +32,7 @@ private:
 	IDataset &operator=(const IDataset &) = delete;
 };
 
+typedef IDataset* IDatasetPtr;
 
 END_NAME_SPACE(tGis, Core)
 

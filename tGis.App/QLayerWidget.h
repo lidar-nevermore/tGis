@@ -1,11 +1,14 @@
 #pragma once
 #include <QTreeView>
+#include <QMetaType>
 
 class QStandardItem;
 
 #include "tOrganizer.h"
 
-namespace tg = tGis::Core;
+
+using namespace tGis::Core;
+
 
 class QLayerWidget : public QTreeView
 {
@@ -15,6 +18,7 @@ public:
 	~QLayerWidget();
 
 public:// slots:
-	void LayerAdded(IMap*, ILayer*);
+	void LayerAdded(IMapPtr, ILayerPtr);
 };
+
 

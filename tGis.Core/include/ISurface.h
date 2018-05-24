@@ -28,6 +28,7 @@ private:
 	ISurface &operator=(const ISurface &) = delete;
 };
 
+typedef ISurface* ISurfacePtr;
 
 END_NAME_SPACE(tGis, Core)
 

@@ -36,6 +36,7 @@ private:
 	IGeoSurface &operator=(const IGeoSurface &) = delete;
 };
 
+typedef IGeoSurface* IGeoSurfacePtr;
 
 END_NAME_SPACE(tGis, Core)
 

@@ -35,6 +35,7 @@ private:
 	IMapTool &operator=(const IMapTool &) = delete;
 };
 
+typedef IMapTool* IMapToolPtr;
 
 END_NAME_SPACE(tGis, Core)
 

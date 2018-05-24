@@ -16,6 +16,7 @@ struct TGISCORE_API IOverlayObject
 	virtual ~IOverlayObject() {};
 };
 
+typedef IOverlayObject* IOverlayObjectPtr;
 
 END_NAME_SPACE(tGis, Core)
 

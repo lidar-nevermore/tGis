@@ -4,6 +4,7 @@
 class QStandardItem;
 
 #include "tOrganizer.h"
+#include "tGisMetaType.h"
 
 namespace tg = tGis::Core;
 
@@ -16,7 +17,7 @@ public:
 
 public:
 signals:
-	void LayerAdded(IMap*, ILayer*);
+	void LayerAdded(IMapPtr, ILayerPtr);
 
 private:
 	static const int DataSourceProviderType = 1;

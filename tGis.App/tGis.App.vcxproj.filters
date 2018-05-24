@@ -86,5 +86,8 @@
     <ClInclude Include="MapPanTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tGisMetaType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

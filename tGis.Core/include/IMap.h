@@ -36,6 +36,7 @@ private:
 	IMap &operator=(const IMap &) = delete;
 };
 
+typedef IMap* IMapPtr;
 
 END_NAME_SPACE(tGis, Core)
 

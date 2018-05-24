@@ -34,6 +34,7 @@ private:
 	IDataSourceProvider &operator=(const IDataSourceProvider &) = delete;
 };
 
+typedef IDataSourceProvider* IDataSourceProviderPtr;
 
 END_NAME_SPACE(tGis, Core)
 
