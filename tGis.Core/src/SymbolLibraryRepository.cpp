@@ -1,13 +1,26 @@
 #include "SymbolLibraryRepository.h"
-#include "ISymbolLibrary.h"
 #include "SimpleSymbolLibrary.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-SymbolLibraryRepository SymbolLibraryRepository::INSTANCE;
+SymbolLibraryRepository* SymbolLibraryRepository::_instance = nullptr;
+
+static PtrDestructor<SymbolLibraryRepository> shit(SymbolLibraryRepository::_instance);
+
+SymbolLibraryRepository & SymbolLibraryRepository::INSTANCE()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new SymbolLibraryRepository();
+	}
+
+	return *_instance;
+}
 
 SymbolLibraryRepository::SymbolLibraryRepository()
+	:_mapSymbolLibrary()
 {
+
 }
 
 
@@ -36,7 +49,7 @@ void SymbolLibraryRepository::AddSymbolLibrary(ISymbolLibrary * sl)
 {
 	string type = sl->GetType();
 	_vecSymbolLibrary.push_back(sl);
-	_mapSymbolLibrary.insert(make_pair(type, sl));
+	_mapSymbolLibrary.insert(map<string, ISymbolLibrary*>::value_type(type, sl));
 }
 
 ISymbolLibrary * SymbolLibraryRepository::GetSymbolLibrary(const char * symbolLibraryType)

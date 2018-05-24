@@ -67,13 +67,23 @@ END_NAME_SPACE(tGis, Core)
 
 
 
+// this shit for shit
 
+template<class T>
+struct PtrDestructor
+{
+	PtrDestructor(T* ptr)
+	{
+		_ptr = ptr;
+	}
 
+	~PtrDestructor()
+	{
+		delete _ptr;
+	}
 
-
-
-
-
+	T* _ptr;
+};
 
 
 

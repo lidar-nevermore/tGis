@@ -13,7 +13,7 @@ SimpleSymbolLibrary SimpleSymbolLibrary::INSTANCE;
 
 SimpleSymbolLibrary::SimpleSymbolLibrary()
 {
-	SymbolLibraryRepository::INSTANCE.AddSymbolLibrary(this);
+	SymbolLibraryRepository::INSTANCE().AddSymbolLibrary(this);
 }
 
 
@@ -86,6 +86,7 @@ void SimpleSymbolLibrary::ReclaimSymbol(ISymbol * sym) const
 
 void SimpleSymbolLibrary::Release()
 {
+	delete this;
 }
 
 

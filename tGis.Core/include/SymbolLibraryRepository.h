@@ -18,11 +18,14 @@ struct ISymbolLibrary;
 class SymbolLibraryRepository
 {
 public:
-	static SymbolLibraryRepository INSTANCE;
+	static SymbolLibraryRepository* _instance;
+	static SymbolLibraryRepository& INSTANCE();
+
+public:
+	~SymbolLibraryRepository();
 
 private:
 	SymbolLibraryRepository();
-	~SymbolLibraryRepository();
 	SymbolLibraryRepository(const SymbolLibraryRepository &) = delete;
 	SymbolLibraryRepository &operator=(const SymbolLibraryRepository &) = delete;
 
