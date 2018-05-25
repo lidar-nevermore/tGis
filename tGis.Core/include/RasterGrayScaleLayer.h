@@ -26,13 +26,13 @@ public:
 	RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band);
 	~RasterGrayScaleLayer();
 	void SetDataset(MyGDALRasterDataset* dataset, int band);
+	inline void SetMinMax(double min, double max);
+	inline void RestLutToLinear();
+	inline unsigned char* GetLut();
 
 private:
 	RasterGrayScaleLayer(const RasterGrayScaleLayer &) = delete;
 	RasterGrayScaleLayer &operator=(const RasterGrayScaleLayer &) = delete;
-
-private:
-	using RasterLayer::SetDataset;
 
 private:
 	static const char* const _type;
@@ -40,7 +40,6 @@ private:
 public:
 	virtual const char* GetType();
 	virtual const char* GetCreationString();
-	virtual void SetOpacity(float);
 
 	virtual void Paint(IGeoSurface*);
 
@@ -49,16 +48,15 @@ private:
 	virtual void PaintByIOResample(IGeoSurface*);
 
 private:
-	const static int _bufferAreaWidth = 352;
-
-	//_bufferAreaWidth*_bufferAreaWidth ARGB
-	unsigned char* _surfBuffer;
-	//_bufferAreaWidth*_bufferAreaWidth GRAY
-	unsigned char* _pixBuffer;
-
 	GDALRasterBand* _band;
 	int _bandIndex;
+	int _dataType;
+	int _dataBytes;
 
+	unsigned char _lut[256];
+	double _min;
+	double _max;
+	double _range;
 };
 
 END_NAME_SPACE(tGis, Core)

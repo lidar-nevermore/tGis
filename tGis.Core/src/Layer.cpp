@@ -43,6 +43,8 @@ void Layer::SetOpacity(float opacity)
 {
 	_opacity = opacity;
 	_alpha = unsigned char(255 * _opacity);
+	if (_alpha > 255)
+		_alpha = 255;
 }
 
 

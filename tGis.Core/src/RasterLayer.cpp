@@ -14,18 +14,22 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 RasterLayer::RasterLayer()
 {
+	_visible = true;
+	_opacity = 1.0;
+	_alpha = 255;
 }
 
 RasterLayer::RasterLayer(MyGDALRasterDataset* raster)
 {
+	_visible = true;
+	_opacity = 1.0;
+	_alpha = 255;
+
 	if (!raster->IsNorthUp())
 	{
 		throw std::exception("不支持非北方朝上的影响！");
 	}
 	_raster = raster;
-	_visible = true;
-	_opacity = 1.0;
-	_alpha = 255;
 	_name = raster->GetName();
 }
 
@@ -49,17 +53,18 @@ IDataset * RasterLayer::GetDataset()
 	return _raster;
 }
 
-void RasterLayer::SetDataset(MyGDALRasterDataset * raster)
+inline void RasterLayer::SetDataset(MyGDALRasterDataset * raster)
 {
 	if (!raster->IsNorthUp())
 	{
 		throw std::exception("不支持非北方朝上的影响！");
 	}
 	_raster = raster;
+	_name = raster->GetName();
 }
 
 
-bool RasterLayer::PreparePaint(IGeoSurface* surf)
+inline bool RasterLayer::PreparePaint(IGeoSurface* surf)
 {
 	if (_visible == false)
 		return false;
@@ -102,6 +107,17 @@ bool RasterLayer::PreparePaint(IGeoSurface* surf)
 	_outerResample = _surfPixRatio < 0.1;
 
 	return true;
+}
+
+inline void RasterLayer::SetBufferAlpha(unsigned char * buf, int width, int height)
+{
+	unsigned char* surfBuf = buf +3;
+
+	for (int i = 0; i < width*width; i++)
+	{
+		*surfBuf = _alpha;
+		surfBuf += 4;
+	}
 }
 
 

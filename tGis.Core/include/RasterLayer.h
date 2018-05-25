@@ -28,10 +28,11 @@ public:
 	virtual IDataset* GetDataset();
 
 protected:
-	void SetDataset(MyGDALRasterDataset* raster);
+	inline void SetDataset(MyGDALRasterDataset* raster);
 
 protected:
-	bool PreparePaint(IGeoSurface*);
+	inline bool PreparePaint(IGeoSurface*);
+	inline void SetBufferAlpha(unsigned char* buf, int width, int height);
 	
 protected:
 	MyGDALRasterDataset* _raster;

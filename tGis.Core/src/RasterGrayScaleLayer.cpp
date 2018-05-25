@@ -6,6 +6,8 @@
 #include "ogr_spatialref.h"
 #include <algorithm>
 
+#include "MemoryBufferManager.h"
+
 using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -15,40 +17,69 @@ const char* const RasterGrayScaleLayer::_type = "FCD79E3D-084F-4CB6-8D84-3DB1875
 
 RasterGrayScaleLayer::RasterGrayScaleLayer()
 {
-	//_bufferAreaWidth*_bufferAreaWidth RGBA
-	_surfBuffer = new unsigned char[_bufferAreaWidth*_bufferAreaWidth * 4];
-	//_bufferAreaWidth*_bufferAreaWidth GRAY
-	_pixBuffer = new unsigned char[_bufferAreaWidth*_bufferAreaWidth];
-
-	SetOpacity(1.0);
 }
 
 RasterGrayScaleLayer::RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band)
-	:RasterLayer(dataset)
 {
-	//_bufferAreaWidth*_bufferAreaWidth RGBA
-	_surfBuffer = new unsigned char[_bufferAreaWidth*_bufferAreaWidth*4];
-	//_bufferAreaWidth*_bufferAreaWidth GRAY
-	_pixBuffer = new unsigned char[_bufferAreaWidth*_bufferAreaWidth];
-
-	SetOpacity(1.0);
-
-	_band = dataset->GetGDALDataset()->GetRasterBand(band);
-	_bandIndex = band;
+	SetDataset(dataset, band);
 }
 
 
 RasterGrayScaleLayer::~RasterGrayScaleLayer()
 {
-	delete[] _surfBuffer;
-	delete[] _pixBuffer;
 }
 
 void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int band)
 {
-	SetDataset(dataset);
+	RasterLayer::SetDataset(dataset);
 	_band = dataset->GetGDALDataset()->GetRasterBand(band);
 	_bandIndex = band;
+	_dataType = _band->GetRasterDataType();
+	if (_dataType > 7 || _dataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+	_dataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_dataType);
+	double 	pdfMin;
+	double 	pdfMax;
+	double 	pdfMean;
+	double 	pdfStdDev;
+	_band->GetStatistics(TRUE, FALSE, &pdfMin, &pdfMax, &pdfMean, &pdfStdDev);
+	double diffMin = pdfMean - pdfMin;
+	double diffMax = pdfMax - pdfMin;
+	double ratMinMax = diffMin / diffMax;
+	if (ratMinMax > 2.0 || ratMinMax < 0.5)
+	{
+		_min = pdfMean - pdfStdDev;
+		_max = pdfMean + pdfStdDev;
+	}
+	else
+	{
+		_min = pdfMin;
+		_max = pdfMax;
+	}
+	_range = _max - _min;
+	RestLutToLinear();
+}
+
+inline void RasterGrayScaleLayer::SetMinMax(double min, double max)
+{
+	_min = min;
+	_max = max;
+	_range = _max - _min;
+}
+
+inline void RasterGrayScaleLayer::RestLutToLinear()
+{
+	for (int i = 0; i < 256; i++)
+	{
+		_lut[i] = i;
+	}
+}
+
+inline unsigned char * RasterGrayScaleLayer::GetLut()
+{
+	return _lut;
 }
 
 const char * RasterGrayScaleLayer::GetType()
@@ -61,22 +92,6 @@ const char * RasterGrayScaleLayer::GetCreationString()
 	return nullptr;
 }
 
-void RasterGrayScaleLayer::SetOpacity(float opacity)
-{
-	_opacity = opacity;
-	_alpha = unsigned char(255 * _opacity);
-
-	if (_alpha > 255)
-		_alpha = 255;
-
-	unsigned char* surfBuf = _surfBuffer+3;
-
-	for (int i = 0; i < _bufferAreaWidth*_bufferAreaWidth; i++)
-	{
-		*surfBuf = _alpha;
-		surfBuf += 4;
-	}
-}
 
 void RasterGrayScaleLayer::Paint(IGeoSurface * surf)
 {
@@ -97,6 +112,8 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 {
 	//逐块读取原始像素，创建成和绘制表面一样大小的RGBA缓冲
 
+	int _bufferAreaWidth = MemoryBufferManager::RasterLayerBufferWidth;
+
 	int xRasterSize = _raster->GetGDALDataset()->GetRasterXSize();
 	int yRasterSize = _raster->GetGDALDataset()->GetRasterYSize();
 
@@ -107,6 +124,9 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 
 	int pixBufXCount = (finalPaintingRight - initialPaintingLeft + _bufferAreaWidth - 1) / _bufferAreaWidth;
 	int pixBufYCount = (finalPaintingBottom - initialPaintingTop + _bufferAreaWidth - 1) / _bufferAreaWidth;
+
+	if (pixBufXCount < 1 || pixBufYCount < 1)
+		return;
 
 	//当前正要绘制部分的范围 单位：绘制表面像素
 	int paintingLeft = initialPaintingLeft;
@@ -134,6 +154,10 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 	int readingWidth;
 	int readingHeight;
 
+	unsigned char* surfBuffer = MemoryBufferManager::INSTANCE().AllocRasterSurfaceBuffer();
+	unsigned char* pixBuffer = MemoryBufferManager::INSTANCE().AllocRasterDatasetBuffer(_dataBytes);
+
+	RasterLayer::SetBufferAlpha(surfBuffer, MemoryBufferManager::RasterLayerBufferWidth, MemoryBufferManager::RasterLayerBufferWidth);
 
 	for (int i = 0; i < pixBufYCount; i++)
 	{
@@ -231,9 +255,9 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 			paintingWidth = paintingRight - paintingLeft;
 
 			_band->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
-				_pixBuffer, readingWidth, readingHeight, GDT_Byte, 0, 0);
+				pixBuffer, readingWidth, readingHeight, (GDALDataType)_dataType, 0, 0);
 
-			unsigned char* surfBuf = _surfBuffer;
+			unsigned char* itSurfBuf = surfBuffer;
 			for (int m = 0; m < paintingHeight; m++)
 			{
 				int readBufRow = (int)my_round((m + paintingTop - initialPaintingTop)*_surfPixRatio + initialAlignRmrY + initialReadingTop - readingTop, 0);
@@ -248,28 +272,38 @@ void RasterGrayScaleLayer::PaintByOuterResample(IGeoSurface *surf)
 						readBufCol = 0;
 					if (readBufCol >= readingWidth)
 						readBufCol = readingWidth - 1;
-					int readBufPos = readBufRow*readingWidth + readBufCol;
-					surfBuf[0] = _pixBuffer[readBufPos];
-					surfBuf[1] = surfBuf[0];
-					surfBuf[2] = surfBuf[0];
+					int readBufPos = readBufRow*readingWidth*_dataBytes + readBufCol*_dataBytes;
 
-					surfBuf += 4;
+					double pixValue = MyGDALGetPixelValue((GDALDataType)_dataType, pixBuffer + readBufPos);
+					int lutPos = (int)(256*(pixValue - _min) / _range);
+					if (lutPos < 0) lutPos = 0;
+					else if (lutPos > 255) lutPos = 255;
+
+					itSurfBuf[0] = _lut[lutPos];
+					itSurfBuf[1] = itSurfBuf[0];
+					itSurfBuf[2] = itSurfBuf[0];
+
+					itSurfBuf += 4;
 				}
 			}
 
-			surf->DrawImage(_surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
+			surf->DrawImage(surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
 
 			paintingLeft = paintingRight;
 		}
 
 		paintingTop = paintingBottom;
 	}
+
+	MemoryBufferManager::INSTANCE().FreeRasterSurfaceBuffer(surfBuffer);
+	MemoryBufferManager::INSTANCE().FreeRasterDatasetBuffer(pixBuffer);
 }
 
 //此时影像以原始比例或者缩小显示的
 void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 {
 	//逐块读取原始像素，创建成和绘制表面一样大小的RGBA缓冲
+	int _bufferAreaWidth = MemoryBufferManager::RasterLayerBufferWidth;
 
 	int xRasterSize = _raster->GetGDALDataset()->GetRasterXSize();
 	int yRasterSize = _raster->GetGDALDataset()->GetRasterYSize();
@@ -281,6 +315,9 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 
 	int pixBufXCount = (finalPaintingRight - initialPaintingLeft + _bufferAreaWidth - 1) / _bufferAreaWidth;
 	int pixBufYCount = (finalPaintingBottom - initialPaintingTop + _bufferAreaWidth - 1) / _bufferAreaWidth;
+
+	if (pixBufXCount < 1 || pixBufYCount < 1)
+		return;
 
 	//当前正要绘制部分的范围 单位：绘制表面像素
 	int paintingLeft = initialPaintingLeft;
@@ -299,6 +336,11 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 	//当前正要读取的部分的宽高 单位：影像像素
 	int readingWidth;
 	int readingHeight;
+
+	unsigned char* surfBuffer = MemoryBufferManager::INSTANCE().AllocRasterSurfaceBuffer();
+	unsigned char* pixBuffer = MemoryBufferManager::INSTANCE().AllocRasterDatasetBuffer(_dataBytes);
+
+	RasterLayer::SetBufferAlpha(surfBuffer, MemoryBufferManager::RasterLayerBufferWidth, MemoryBufferManager::RasterLayerBufferWidth);
 
 	while(paintingBottom < finalPaintingBottom)
 	{
@@ -405,17 +447,39 @@ void RasterGrayScaleLayer::PaintByIOResample(IGeoSurface * surf)
 			readingWidth = readingRight - readingLeft;
 			paintingWidth = paintingRight - paintingLeft;
 
-			int panBandMap[3] = { _bandIndex,_bandIndex,_bandIndex };
-			_raster->GetGDALDataset()->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
-				_surfBuffer, paintingWidth, paintingHeight, GDT_Byte, 3, panBandMap, 4, paintingWidth * 4, 1);
+			_band->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
+				pixBuffer, paintingWidth, paintingHeight, (GDALDataType)_dataType, 0, 0);
 
-			surf->DrawImage(_surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
+			unsigned char* itPixBuf = pixBuffer;
+			unsigned char* itSurfBuf = surfBuffer;
+			for (int m = 0; m < paintingHeight; m++)
+			{
+				for (int n = 0; n < paintingWidth; n++)
+				{
+					double pixValue = MyGDALGetPixelValue((GDALDataType)_dataType, itPixBuf);
+					int lutPos = (int)(256*(pixValue - _min) / _range);
+					if (lutPos < 0) lutPos = 0;
+					else if (lutPos > 255) lutPos = 255;
+
+					itSurfBuf[0] = _lut[lutPos];
+					itSurfBuf[1] = itSurfBuf[0];
+					itSurfBuf[2] = itSurfBuf[0];
+
+					itPixBuf += _dataBytes;
+					itSurfBuf += 4;
+				}
+			}
+
+			surf->DrawImage(surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
 
 			paintingLeft = paintingRight;
 		}
 
 		paintingTop = paintingBottom;
 	}
+
+	MemoryBufferManager::INSTANCE().FreeRasterSurfaceBuffer(surfBuffer);
+	MemoryBufferManager::INSTANCE().FreeRasterDatasetBuffer(pixBuffer);
 }
 
 END_NAME_SPACE(tGis, Core)

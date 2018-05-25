@@ -39,6 +39,9 @@
     <Filter Include="src\Visualize">
       <UniqueIdentifier>{6e52a017-7fda-46b0-a299-c349b518b8d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="internal">
+      <UniqueIdentifier>{0634cb39-2006-4d5d-9b76-137a594c0d2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\RasterBandSeqBlockReader.h">
@@ -185,6 +188,9 @@
     <ClInclude Include="include\tVisualize.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
+    <ClInclude Include="internal\MemoryBufferManager.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -276,6 +282,9 @@
     </ClCompile>
     <ClCompile Include="src\Statistics.cpp">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\MemoryBufferManager.cpp">
+      <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

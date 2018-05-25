@@ -40,9 +40,6 @@ private:
 	VectorSimpleLayer(const VectorSimpleLayer &) = delete;
 	VectorSimpleLayer &operator=(const VectorSimpleLayer &) = delete;
 
-private:
-	using VectorLayer::SetOGRLayer;
-
 public:
 	void SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer* layer, int geometryField, int labelField = -1);
 
