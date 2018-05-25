@@ -3,7 +3,7 @@
 #include <QtWidgets/QMainWindow>
 #include "ui_tGisApp.h"
 
-#include "tUtility.h"
+#include "tVisualize.h"
 
 #include "MapPanTool.h"
 #include "MapZoomTool.h"

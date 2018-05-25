@@ -9,26 +9,14 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="include\IO">
-      <UniqueIdentifier>{9fa1e215-36f0-48f3-acdc-21add27f44f2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="include\Entity">
       <UniqueIdentifier>{14988ec6-4961-4fa2-ad0d-b470527d6611}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\Organizer">
       <UniqueIdentifier>{ff866a89-9e1d-4b9c-81c6-86269367443c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Utility">
-      <UniqueIdentifier>{91dc278a-4944-49ea-9b04-d56e1c25bbb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\IO">
-      <UniqueIdentifier>{697b2720-6965-4af5-a726-f16dd026e2f5}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Entity">
       <UniqueIdentifier>{33bf6533-c182-438e-8302-fa06833422b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Utility">
-      <UniqueIdentifier>{6e52a017-7fda-46b0-a299-c349b518b8d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Organizer">
       <UniqueIdentifier>{1d5166c5-3ec5-4ec9-aa51-8bf1d78f0f82}</UniqueIdentifier>
@@ -39,19 +27,28 @@
     <Filter Include="src\Symbol">
       <UniqueIdentifier>{b6080db8-1ca1-404c-b7e9-cb864fa69c8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Utility">
+      <UniqueIdentifier>{9fa1e215-36f0-48f3-acdc-21add27f44f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Utility">
+      <UniqueIdentifier>{697b2720-6965-4af5-a726-f16dd026e2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Visualize">
+      <UniqueIdentifier>{91dc278a-4944-49ea-9b04-d56e1c25bbb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Visualize">
+      <UniqueIdentifier>{6e52a017-7fda-46b0-a299-c349b518b8d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tIo.h">
-      <Filter>include\IO</Filter>
-    </ClInclude>
     <ClInclude Include="include\RasterBandSeqBlockReader.h">
-      <Filter>include\IO</Filter>
+      <Filter>include\Utility</Filter>
     </ClInclude>
     <ClInclude Include="include\RasterBandSeqPixelReader.h">
-      <Filter>include\IO</Filter>
+      <Filter>include\Utility</Filter>
     </ClInclude>
     <ClInclude Include="include\RasterBandStorageBlockGridReader.h">
-      <Filter>include\IO</Filter>
+      <Filter>include\Utility</Filter>
     </ClInclude>
     <ClInclude Include="include\tEntity.h">
       <Filter>include\Entity</Filter>
@@ -71,20 +68,17 @@
     <ClInclude Include="include\tOrganizer.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\tUtility.h">
-      <Filter>include\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="include\IMapTool.h">
-      <Filter>include\Utility</Filter>
+      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\IMapWidget.h">
-      <Filter>include\Utility</Filter>
+      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\MapTool.h">
-      <Filter>include\Utility</Filter>
+      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\MapWidget.h">
-      <Filter>include\Utility</Filter>
+      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\FileSystemDataSource.h">
       <Filter>include\Entity</Filter>
@@ -126,13 +120,13 @@
       <Filter>include\Organizer</Filter>
     </ClInclude>
     <ClInclude Include="include\IOverlayLayer.h">
-      <Filter>include\Utility</Filter>
+      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\IOverlayObject.h">
-      <Filter>include\Utility</Filter>
+      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\OverlayLayer.h">
-      <Filter>include\Utility</Filter>
+      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\ISurface.h">
       <Filter>include\Entity</Filter>
@@ -182,6 +176,15 @@
     <ClInclude Include="include\tSymbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
+    <ClInclude Include="include\Statistics.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tUtility.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tVisualize.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -194,19 +197,19 @@
       <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp">
-      <Filter>src\IO</Filter>
+      <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\RasterBandSeqPixelReader.cpp">
-      <Filter>src\IO</Filter>
+      <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\RasterBandSeqBlockReader.cpp">
-      <Filter>src\IO</Filter>
+      <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\MapTool.cpp">
-      <Filter>src\Utility</Filter>
+      <Filter>src\Visualize</Filter>
     </ClCompile>
     <ClCompile Include="src\MapWidget.cpp">
-      <Filter>src\Utility</Filter>
+      <Filter>src\Visualize</Filter>
     </ClCompile>
     <ClCompile Include="src\RasterLayer.cpp">
       <Filter>src\Entity</Filter>
@@ -233,7 +236,7 @@
       <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\OverlayLayer.cpp">
-      <Filter>src\Utility</Filter>
+      <Filter>src\Visualize</Filter>
     </ClCompile>
     <ClCompile Include="src\SimpleFillSymbol.cpp">
       <Filter>src\Symbol</Filter>
@@ -270,6 +273,9 @@
     </ClCompile>
     <ClCompile Include="src\SymbolLibraryRepository.cpp">
       <Filter>src\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Statistics.cpp">
+      <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

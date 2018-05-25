@@ -3,7 +3,7 @@
 #include <QWidget>
 #include <QPainter>
 
-#include "tUtility.h"
+#include "tVisualize.h"
 #include "QtGeoSurface.h"
 
 using namespace tGis::Core;

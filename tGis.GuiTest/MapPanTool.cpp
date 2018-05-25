@@ -1,5 +1,5 @@
 #include "qevent.h"
-#include "tUtility.h"
+#include "tVisualize.h"
 
 #include "MapPanTool.h"
 

@@ -52,12 +52,13 @@
     <ClInclude Include="include\SimpleLineSymbol.h" />
     <ClInclude Include="include\SimpleMarkerSymbol.h" />
     <ClInclude Include="include\SimpleSymbolLibrary.h" />
+    <ClInclude Include="include\Statistics.h" />
     <ClInclude Include="include\SymbolLibraryRepository.h" />
-    <ClInclude Include="include\tIo.h" />
+    <ClInclude Include="include\tUtility.h" />
     <ClInclude Include="include\tEntity.h" />
     <ClInclude Include="include\tOrganizer.h" />
     <ClInclude Include="include\tSymbol.h" />
-    <ClInclude Include="include\tUtility.h" />
+    <ClInclude Include="include\tVisualize.h" />
     <ClInclude Include="include\RasterBandSeqBlockReader.h" />
     <ClInclude Include="include\RasterBandSeqPixelReader.h" />
     <ClInclude Include="include\RasterBandStorageBlockGridReader.h" />
@@ -92,6 +93,7 @@
     <ClCompile Include="src\SimpleLineSymbol.cpp" />
     <ClCompile Include="src\SimpleMarkerSymbol.cpp" />
     <ClCompile Include="src\SimpleSymbolLibrary.cpp" />
+    <ClCompile Include="src\Statistics.cpp" />
     <ClCompile Include="src\SymbolLibraryRepository.cpp" />
     <ClCompile Include="src\tOrganizer.cpp" />
     <ClCompile Include="src\VectorLayer.cpp" />

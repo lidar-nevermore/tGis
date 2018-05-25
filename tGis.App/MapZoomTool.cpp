@@ -1,7 +1,7 @@
 #include "MapZoomTool.h"
 
 #include "qevent.h"
-#include "tUtility.h"
+#include "tVisualize.h"
 
 
 MapZoomTool::MapZoomTool()

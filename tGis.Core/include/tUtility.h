@@ -1,7 +1,5 @@
-#include "tEntity.h"
-#include "IOverlayLayer.h"
-#include "IMapWidget.h"
-#include "IMapTool.h"
-#include "MapWidget.h"
-#include "MapTool.h"
-
+#include "MyGDALRasterDataset.h"
+#include "RasterBandSeqBlockReader.h"
+#include "RasterBandSeqPixelReader.h"
+#include "RasterBandStorageBlockGridReader.h"
+#include "Statistics.h"
