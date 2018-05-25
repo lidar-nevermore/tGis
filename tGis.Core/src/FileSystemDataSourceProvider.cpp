@@ -39,16 +39,29 @@ const char * FileSystemDataSourceProvider::GetType()
 	return _type;
 }
 
-void FileSystemDataSourceProvider::SetCreationUI(UI ui)
+
+void FileSystemDataSourceProvider::SetCreationUI(const CreationUI ui)
 {
-	_ui = ui;
+	_uiCreation = ui;
 }
 
 IDataSource * FileSystemDataSourceProvider::UI_CreateDataSource()
 {
-	assert(_ui != nullptr);
+	assert(_uiCreation != nullptr);
 
-	return _ui();
+	return _uiCreation();
+}
+
+void FileSystemDataSourceProvider::SetPropertyUI(const PropertyUI ui)
+{
+	_uiProperty = ui;
+}
+
+void FileSystemDataSourceProvider::UI_DataSourceProperty(IDataSource * ds, IDataset * dt)
+{
+	assert(_uiProperty != nullptr);
+
+	_uiProperty(ds,dt);
 }
 
 IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)

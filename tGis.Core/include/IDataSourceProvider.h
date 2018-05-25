@@ -9,6 +9,7 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataSource;
+struct IDataset;
 
 struct TGISCORE_API IDataSourceProvider
 {
@@ -19,6 +20,7 @@ struct TGISCORE_API IDataSourceProvider
 
 
 	virtual IDataSource* UI_CreateDataSource() = 0;
+	virtual void UI_DataSourceProperty(IDataSource*,IDataset*) = 0;
 	virtual IDataSource* CreateDataSource(const char* creationString) = 0;
 	virtual void ReleaseDataSource(IDataSource*) = 0;
 

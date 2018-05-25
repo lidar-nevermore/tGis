@@ -26,6 +26,7 @@ RasterLayer::RasterLayer(MyGDALRasterDataset* raster)
 	_visible = true;
 	_opacity = 1.0;
 	_alpha = 255;
+	_name = raster->GetName();
 }
 
 

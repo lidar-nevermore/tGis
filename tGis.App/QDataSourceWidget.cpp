@@ -46,7 +46,7 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 		int datasourceCount = provider->GetDataSourceCount();
 		for (int i = 0; i < datasourceCount; i++)
 		{
-			AddDataSourceNode(pItem, provider->GetDataSource(i));
+			AddDataSourceNode(pItem, provider->GetDataSource(i),provider);
 		}
 	}
 
@@ -61,7 +61,7 @@ QDataSourceWidget::~QDataSourceWidget()
 {
 }
 
-void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * ds)
+void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * ds,IDataSourceProvider* dsp)
 {
 	QStandardItem* pItem = new QStandardItem();
 	QString dsName = QString::fromLocal8Bit(ds->GetName());
@@ -72,26 +72,31 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * 
 	{
 		pItem->setIcon(*icon);
 	}
-	QVariant userData;
-	userData.setValue<void*>((void*)ds);
-	pItem->setData(userData, DataRole);
-	QVariant userDataType;
-	userDataType.setValue<int>(DataSourceType);
-	pItem->setData(userDataType, DataTypeRole);
+	QVariant udData;
+	udData.setValue<IDataSourcePtr>(ds);
+	pItem->setData(udData, DataRole);
+
+	QVariant udDataType;
+	udDataType.setValue<int>(DataSourceType);
+	pItem->setData(udDataType, DataTypeRole);
+
+	QVariant udDataSourceProvider;
+	udDataSourceProvider.setValue<IDataSourceProviderPtr>(dsp);
+	pItem->setData(udDataSourceProvider, DataSourceProviderRole);
 
 	parent->appendRow(pItem);
 
-	AddDataSourceChildNode(pItem, ds);
+	AddDataSourceChildNode(pItem, ds, dsp);
 }
 
-void QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, tg::IDataSource * ds)
+void QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, IDataSource * ds, IDataSourceProvider* dsp)
 {
 	if (ds->IsConnected())
 	{
 		int subDataSourceCount = ds->GetDataSourceCount();
 		for (int i = 0; i < subDataSourceCount; i++)
 		{
-			AddDataSourceNode(node, ds->GetDataSource(i));
+			AddDataSourceNode(node, ds->GetDataSource(i), dsp);
 		}
 
 		int datasetCount = ds->GetDatasetCount();
@@ -106,12 +111,17 @@ void QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, tg::IDataSo
 			{
 				pDatasetItem->setIcon(*icon);
 			}
-			QVariant userData;
-			userData.setValue<void*>((void*)dt);
-			pDatasetItem->setData(userData, DataRole);
-			QVariant userDataType;
-			userDataType.setValue<int>(DatasetType);
-			pDatasetItem->setData(userDataType, DataTypeRole);
+			QVariant udData;
+			udData.setValue<IDatasetPtr>(dt);
+			pDatasetItem->setData(udData, DataRole);
+
+			QVariant udDataType;
+			udDataType.setValue<int>(DatasetType);
+			pDatasetItem->setData(udDataType, DataTypeRole);
+
+			QVariant udDataSourceProvider;
+			udDataSourceProvider.setValue<IDataSourceProviderPtr>(dsp);
+			pDatasetItem->setData(udDataSourceProvider, DataSourceProviderRole);
 
 			node->appendRow(pDatasetItem);
 		}
@@ -123,21 +133,21 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 	QStandardItemModel* model = (QStandardItemModel*)index.model();
 	QStandardItem* pItem = model->itemFromIndex(index);
 	int type = index.data(DataTypeRole).toInt();
-
+	IDataSourceProvider* dsp = index.data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
 	if (type == DataSourceType)
 	{
-		IDataSource* ds = (IDataSource*)(index.data(DataRole).value<void*>());
+		IDataSource* ds = index.data(DataRole).value<IDataSourcePtr>();
 		if (!ds->IsConnected())
 		{
 			ds->Connect();
-			AddDataSourceChildNode(pItem, ds);
+			AddDataSourceChildNode(pItem, ds, dsp);
 			expand(index);
 		}
 	}
 	else if (type == DatasetType)
 	{
 		//TODO: ÃÌº”œ‘ æ
-		IDataset* dt = (IDataset*)(index.data(DataRole).value<void*>());
+		IDataset* dt = index.data(DataRole).value<IDatasetPtr>();
 		dt->Open();
 
 		if (!dt->IsOpened())
@@ -154,7 +164,7 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 
 		int layerCount = map->GetLayerCount();
 		map->AddLayer(layer);
-
+		emit LayerAdded(map, layer, providers[0]);
 		if (layerCount == 0)
 		{
 			const OGREnvelope* envelope = layer->GetEnvelope();

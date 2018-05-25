@@ -41,16 +41,26 @@ const char * VectorSimpleLayerProvider::GetSupportedDatasetType()
 	return MyGDALVectorDataset::_type;
 }
 
-void VectorSimpleLayerProvider::SetCreationUI(const UI ui)
+void VectorSimpleLayerProvider::SetCreationUI(const CreationUI ui)
 {
-	_ui = ui;
+	_uiCreation = ui;
 }
 
 ILayer * VectorSimpleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
-	assert(_ui != nullptr);
+	return nullptr;
+}
 
-	return _ui();
+void VectorSimpleLayerProvider::SetPropertyUI(const PropertyUI ui)
+{
+	_uiProperty = ui;
+}
+
+void VectorSimpleLayerProvider::UI_LayerProperty(ILayer * layer)
+{
+	assert(_uiProperty != nullptr);
+
+	_uiProperty(layer);
 }
 
 ILayer * VectorSimpleLayerProvider::CreateLayer(MyGDALVectorDataset * vector, OGRLayer * layer, SimpleMarkerSymbol * markerSymbol, SimpleLineSymbol * lineSymbol, SimpleFillSymbol * fillSymbol, int geometryField, int labelField)

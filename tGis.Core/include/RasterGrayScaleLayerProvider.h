@@ -15,7 +15,8 @@ class TGISCORE_API RasterGrayScaleLayer;
 class RasterGrayScaleLayerProvider : public ILayerProvider
 {
 public:
-	typedef RasterGrayScaleLayer*(*UI)();
+	typedef RasterGrayScaleLayer*(*CreationUI)(IDataset*);
+	typedef void(*PropertyUI)(ILayer*);
 
 public:
 	static RasterGrayScaleLayerProvider INSTANCE;
@@ -34,8 +35,10 @@ public:
 
 	const char* GetSupportedDatasetType();
 
-	void SetCreationUI(const UI ui);
+	void SetCreationUI(const CreationUI ui);
 	ILayer* UI_CreateLayer(IDataset* dataset);
+	void SetPropertyUI(const PropertyUI ui);
+	void UI_LayerProperty(ILayer* layer);
 	ILayer* CreateLayer(IDataset* dataset, int band);
 	ILayer* CreateLayer(IDataset* dataset, const char* creationString);
 	void ReleaseLayer(ILayer*);
@@ -43,7 +46,8 @@ public:
 	void Release();
 
 private:
-	UI _ui;
+	CreationUI _uiCreation;
+	PropertyUI _uiProperty;
 
 private:
 	static const char* const _name;

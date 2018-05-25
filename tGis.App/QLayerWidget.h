@@ -3,6 +3,7 @@
 #include <QMetaType>
 
 class QStandardItem;
+class QStandardItemModel;
 
 #include "tOrganizer.h"
 
@@ -17,8 +18,16 @@ public:
 	explicit QLayerWidget(QWidget *parent = 0);
 	~QLayerWidget();
 
-public:// slots:
-	void LayerAdded(IMapPtr, ILayerPtr);
+private:
+	static const int LayerPtrRole = Qt::UserRole + 1;
+	static const int LayerProviderRole = Qt::UserRole + 2;
+
+private:
+	QStandardItemModel* model;
+	QStandardItem* rootNode;
+
+public slots:
+	void LayerAdded(IMapPtr, ILayerPtr, ILayerProviderPtr);
 };
 
 

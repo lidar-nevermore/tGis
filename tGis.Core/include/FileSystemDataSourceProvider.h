@@ -10,11 +10,14 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+struct IDataset;
+
 class TGISCORE_API FileSystemDataSourceProvider : public IDataSourceProvider
 {
 	friend class FileSystemDataSource;
 public:
-	typedef FileSystemDataSource*(*UI)();
+	typedef FileSystemDataSource*(*CreationUI)();
+	typedef void*(*PropertyUI)(IDataSource*,IDataset*);
 
 public:
     static FileSystemDataSourceProvider INSTANCE;
@@ -30,7 +33,8 @@ private:
 	static const char* const _type;
 
 private:
-	UI _ui;
+	CreationUI _uiCreation;
+	PropertyUI _uiProperty;
 	//该集合中只放CreateDataSource和UI_CreateDataSource创建的FileSystemDataSource
 	vector<IDataSource*> _vecDataSource;
 	//该集合中放了所有创建出来的FileSystemDataSource
@@ -42,8 +46,10 @@ public:
 	const char* GetName();
 	const char* GetType();
 
-	void SetCreationUI(const UI ui);
+	void SetCreationUI(const CreationUI ui);
 	IDataSource* UI_CreateDataSource();
+	void SetPropertyUI(const PropertyUI ui);
+	void UI_DataSourceProperty(IDataSource*, IDataset*);
 	IDataSource* CreateDataSource(const char* path);
 	void ReleaseDataSource(IDataSource*);
 

@@ -21,7 +21,8 @@ class SimpleFillSymbol;
 class TGISCORE_API VectorSimpleLayerProvider : public ILayerProvider
 {
 public:
-	typedef VectorSimpleLayer*(*UI)();
+	typedef VectorSimpleLayer*(*CreationUI)(IDataset*);
+	typedef void*(*PropertyUI)(ILayer*);
 
 public:
 	static VectorSimpleLayerProvider INSTANCE;
@@ -40,8 +41,10 @@ public:
 
 	const char* GetSupportedDatasetType();
 
-	void SetCreationUI(const UI ui);
+	void SetCreationUI(const CreationUI ui);
 	ILayer* UI_CreateLayer(IDataset* dataset);
+	void SetPropertyUI(const PropertyUI ui);
+	void UI_LayerProperty(ILayer* layer);
 	ILayer* CreateLayer(MyGDALVectorDataset* vector, OGRLayer* layer, SimpleMarkerSymbol* markerSymbol, SimpleLineSymbol* lineSymbol, SimpleFillSymbol* fillSymbol, int geometryField, int labelField = -1);
 	ILayer* CreateLayer(IDataset* dataset, const char* creationString);
 	void ReleaseLayer(ILayer*);
@@ -49,7 +52,8 @@ public:
 	void Release();
 
 private:
-	UI _ui;
+	CreationUI _uiCreation;
+	PropertyUI _uiProperty;
 
 private:
 	static const char* const _name;

@@ -7,6 +7,10 @@ int main(int argc, char *argv[])
 {
 	qRegisterMetaType<IMapPtr>("IMapPtr");
 	qRegisterMetaType<ILayerPtr>("ILayerPtr");
+	qRegisterMetaType<ILayerProviderPtr>("ILayerProviderPtr");
+	qRegisterMetaType<IDataSourcePtr>("IDataSourcePtr");
+	qRegisterMetaType<IDataSourceProviderPtr>("IDataSourceProviderPtr");
+	qRegisterMetaType<IDatasetPtr>("IDatasetPtr");
 
 	QApplication a(argc, argv);
 	tGisApp w;

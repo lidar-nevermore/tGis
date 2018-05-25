@@ -22,6 +22,11 @@
             "Type":"09DBE03B-7228-49A1-89B5-8970AE3E16C8",
             "Name":"MyGDALVectorDataset",
             "Icon":"{StartupDir}/Images/DataSourceProvider/vector.png"
+        },
+        {
+            "Type":"FCD79E3D-084F-4CB6-8D84-3DB1875075EB",
+            "Name":"RasterGrayScaleLayer",
+            "Icon":"{StartupDir}/Images/LayerProvider/grayscale.png"
         }
     ]
 }

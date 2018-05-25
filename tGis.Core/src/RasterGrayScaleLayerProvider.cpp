@@ -41,18 +41,26 @@ const char * RasterGrayScaleLayerProvider::GetSupportedDatasetType()
 	return MyGDALRasterDataset::_type;
 }
 
-void RasterGrayScaleLayerProvider::SetCreationUI(const UI ui)
+void RasterGrayScaleLayerProvider::SetCreationUI(const CreationUI ui)
 {
-	_ui = ui;
+	_uiCreation = ui;
 }
 
 ILayer * RasterGrayScaleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
-	//assert(_ui != nullptr);
-
-	//return _ui();
-
 	return  new RasterGrayScaleLayer((MyGDALRasterDataset*)dataset, 1);
+}
+
+void RasterGrayScaleLayerProvider::SetPropertyUI(const PropertyUI ui)
+{
+	_uiProperty = ui;
+}
+
+void RasterGrayScaleLayerProvider::UI_LayerProperty(ILayer * layer)
+{
+	assert(_uiProperty != nullptr);
+
+	_uiProperty(layer);
 }
 
 ILayer * RasterGrayScaleLayerProvider::CreateLayer(IDataset * dataset, int band)

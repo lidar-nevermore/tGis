@@ -6,7 +6,7 @@ class QStandardItem;
 #include "tOrganizer.h"
 #include "tGisMetaType.h"
 
-namespace tg = tGis::Core;
+using namespace tGis::Core;
 
 class QDataSourceWidget : public QTreeView
 {
@@ -17,7 +17,7 @@ public:
 
 public:
 signals:
-	void LayerAdded(IMapPtr, ILayerPtr);
+	void LayerAdded(IMapPtr, ILayerPtr, ILayerProviderPtr);
 
 private:
 	static const int DataSourceProviderType = 1;
@@ -26,10 +26,11 @@ private:
 
 	static const int DataTypeRole = Qt::UserRole + 1;
 	static const int DataRole = Qt::UserRole + 2;
+	static const int DataSourceProviderRole = Qt::UserRole + 3;
 
 private:
-	void AddDataSourceNode(QStandardItem* parent, tg::IDataSource* ds);
-	void AddDataSourceChildNode(QStandardItem* node, tg::IDataSource* ds);
+	void AddDataSourceNode(QStandardItem* parent, IDataSource* ds, IDataSourceProvider* dsp);
+	void AddDataSourceChildNode(QStandardItem* node, IDataSource* ds, IDataSourceProvider* dsp);
 
 private slots:
 	void NodeDoubleClicked(const QModelIndex &index);
