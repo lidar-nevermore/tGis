@@ -15,8 +15,8 @@ QMapWidget::QMapWidget(QWidget *parent)
 	_vecLayer.SetOGRLayer(&_vector,_vector.GetGDALDataset()->GetLayer(0),-1);
 	//_map.AddLayer(&_vecLayer);
 
-	_dataset.Attach("E:\\SpatialData\\SatelliteImage\\Shang\\gf1_pms1_e85.7_n47.2_20150707_L3A0000903873_MTS.tif",GA_ReadOnly);
-	_layer.SetDataset(&_dataset, 1);
+	_dataset.Attach("E:\\SpatialData\\SatelliteImage\\fuse\\GF1_PMS1_E118.4_N24.7_20141125_L1A0000476096-PAN1_ortho_fuse.img",GA_ReadOnly);
+	_layer.SetDataset(&_dataset, 1,2,3);
 
 	const OGREnvelope* envelope = _layer.GetEnvelope();
 	_geoSurface.SetSpatialReference(_layer.GetSpatialReference());

@@ -118,7 +118,7 @@ struct GDALInit
 	}//end of constructor
 };
 
-char* GDALInit::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf","png", "\0" };
+char* GDALInit::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf", "\0" };
 
 GDALInit* MyGDALFileDataset::_GDALInit = new GDALInit();
 

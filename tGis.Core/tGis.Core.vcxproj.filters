@@ -191,6 +191,9 @@
     <ClInclude Include="internal\MemoryBufferManager.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="include\RasterRgbLayer.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -285,6 +288,9 @@
     </ClCompile>
     <ClCompile Include="internal\MemoryBufferManager.cpp">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterRgbLayer.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

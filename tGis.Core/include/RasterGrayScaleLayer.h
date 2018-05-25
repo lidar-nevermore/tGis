@@ -25,10 +25,6 @@ public:
 	RasterGrayScaleLayer();
 	RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band);
 	~RasterGrayScaleLayer();
-	void SetDataset(MyGDALRasterDataset* dataset, int band);
-	inline void SetMinMax(double min, double max);
-	inline void RestLutToLinear();
-	inline unsigned char* GetLut();
 
 private:
 	RasterGrayScaleLayer(const RasterGrayScaleLayer &) = delete;
@@ -41,11 +37,19 @@ public:
 	virtual const char* GetType();
 	virtual const char* GetCreationString();
 
-	virtual void Paint(IGeoSurface*);
+public:
+	void SetDataset(MyGDALRasterDataset* dataset, int band);
+	inline void SetMinMax(double min, double max);
+	inline void RestLutToLinear();
+	inline unsigned char* GetLut();
+	inline int GetBand();
 
-private:
-	virtual void PaintByOuterResample(IGeoSurface*);
-	virtual void PaintByIOResample(IGeoSurface*);
+protected:
+	void OuterResample(unsigned char* pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX,int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight,
+		                       unsigned char* surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight) override;
+
+	void IOResample(unsigned char* pixBuffer, int readingLeft, int readingTop, int readingWidth, int readingHeight,
+		                    unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight) override;
 
 private:
 	GDALRasterBand* _band;

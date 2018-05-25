@@ -11,9 +11,12 @@
 
 using namespace std;
 
+class GDALRasterBand;
+
 BEGIN_NAME_SPACE(tGis, Core)
 
 class MyGDALRasterDataset;
+
 
 class TGISCORE_API RasterLayer : public Layer
 {
@@ -22,17 +25,30 @@ public:
 	RasterLayer(MyGDALRasterDataset* raster);
 	virtual ~RasterLayer();
 
+protected:
+	inline void SetDataset(MyGDALRasterDataset* raster);
+	inline void InitialMinMax(GDALRasterBand* band, int dataType, double *min, double *max, double* range);
+
 public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
 	virtual IDataset* GetDataset();
 
-protected:
-	inline void SetDataset(MyGDALRasterDataset* raster);
+	virtual void Paint(IGeoSurface*);
+
+private:
+	inline bool PreparePaint(IGeoSurface*);
+	void PaintByOuterResample(IGeoSurface*);
+	void PaintByIOResample(IGeoSurface*);
 
 protected:
-	inline bool PreparePaint(IGeoSurface*);
 	inline void SetBufferAlpha(unsigned char* buf, int width, int height);
+
+	virtual void OuterResample(unsigned char* pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX, int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight,
+		unsigned char* surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight) = 0;
+
+	virtual void IOResample(unsigned char* pixBuffer, int readingLeft, int readingTop, int readingWidth, int readingHeight,
+		unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight) = 0;
 	
 protected:
 	MyGDALRasterDataset* _raster;
@@ -57,6 +73,9 @@ protected:
 	//当影像缩放到超过1：1时需要将原始像元读取出来再进行重采样
 	//即_surfPixRatio<1时
 	bool _outerResample;
+
+	//需要显示的波段中最大像元字节数
+	int _maxPixDataBytes;
 
 };
 
