@@ -13,7 +13,7 @@ VectorSimpleLayerProvider VectorSimpleLayerProvider::INSTANCE;
 
 VectorSimpleLayerProvider::VectorSimpleLayerProvider()
 {
-	LayerProviderRepository::INSTANCE.AddLayerProvider(this);
+	LayerProviderRepository::INSTANCE().AddLayerProvider(this);
 }
 
 
@@ -50,7 +50,7 @@ ILayer * VectorSimpleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
 	assert(_uiCreation != nullptr);
 
-	_uiCreation(dataset);
+	return _uiCreation(dataset);
 }
 
 void VectorSimpleLayerProvider::SetPropertyUI(const PropertyUI ui)

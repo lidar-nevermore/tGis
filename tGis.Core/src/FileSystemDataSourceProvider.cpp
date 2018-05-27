@@ -11,12 +11,25 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 const char* const FileSystemDataSourceProvider::_name = "FileSystem";
 const char* const FileSystemDataSourceProvider::_type = "13D0E005-C5CD-4210-A5D3-FDD57AB12990";
-FileSystemDataSourceProvider FileSystemDataSourceProvider::INSTANCE;
 
+FileSystemDataSourceProvider* FileSystemDataSourceProvider::_instance = nullptr;
+
+static PtrDestructor<FileSystemDataSourceProvider> shit(FileSystemDataSourceProvider::_instance);
+
+
+FileSystemDataSourceProvider & FileSystemDataSourceProvider::INSTANCE()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new FileSystemDataSourceProvider();
+	}
+
+	return *_instance;
+}
 
 FileSystemDataSourceProvider::FileSystemDataSourceProvider()
 {
-	DataSourceProviderRepository::INSTANCE.AddDataSourceProvider(this);
+	DataSourceProviderRepository::INSTANCE().AddDataSourceProvider(this);
 }
 
 FileSystemDataSourceProvider::~FileSystemDataSourceProvider()

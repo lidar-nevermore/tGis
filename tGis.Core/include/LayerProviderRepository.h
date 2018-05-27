@@ -18,13 +18,16 @@ struct ILayerProvider;
 class TGISCORE_API LayerProviderRepository
 {
 public:
-	static LayerProviderRepository INSTANCE;
+	static LayerProviderRepository* _instance;
+	static LayerProviderRepository& INSTANCE();
 
 private:
 	LayerProviderRepository();
-	~LayerProviderRepository();
 	LayerProviderRepository(const LayerProviderRepository &) = delete;
 	LayerProviderRepository &operator=(const LayerProviderRepository &) = delete;
+
+public:
+	~LayerProviderRepository();
 
 public:
 	int GetLayerProviderCount();

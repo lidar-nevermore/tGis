@@ -4,7 +4,20 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-DataSourceProviderRepository DataSourceProviderRepository::INSTANCE;
+DataSourceProviderRepository* DataSourceProviderRepository::_instance = nullptr;
+
+static PtrDestructor<DataSourceProviderRepository> shit(DataSourceProviderRepository::_instance);
+
+
+DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new DataSourceProviderRepository();
+	}
+
+	return *_instance;
+}
 
 DataSourceProviderRepository::DataSourceProviderRepository()
 {
@@ -22,7 +35,7 @@ DataSourceProviderRepository::~DataSourceProviderRepository()
 		//调用已经析构的对象的成员方法是不对的
 		//
 		//哈哈！但是这个条件判定会导致FileSystemDataSourceProvider一定在DataSourceProviderRepository后析构
-		if (dsp != &FileSystemDataSourceProvider::INSTANCE)
+		if (dsp != &FileSystemDataSourceProvider::INSTANCE())
 			dsp->Release();
 	}
 }

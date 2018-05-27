@@ -18,13 +18,16 @@ struct IDataSourceProvider;
 class TGISCORE_API DataSourceProviderRepository
 {
 public:
-	static DataSourceProviderRepository INSTANCE;
+	static DataSourceProviderRepository* _instance;
+	static DataSourceProviderRepository& INSTANCE();
 
 private:
 	DataSourceProviderRepository();
-	~DataSourceProviderRepository();
 	DataSourceProviderRepository(const DataSourceProviderRepository &) = delete;
 	DataSourceProviderRepository &operator=(const DataSourceProviderRepository &) = delete;
+
+public:
+	~DataSourceProviderRepository();
 
 public:
 	int GetDataSourceProviderCount();

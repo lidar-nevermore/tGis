@@ -41,8 +41,8 @@ FileSystemDataSource::FileSystemDataSource(const char* path)
 		_name = dir.filename().string();
 	}
 
-	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(_path);
-	if (pos != FileSystemDataSourceProvider::INSTANCE._mapDataSource.end())
+	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE()._mapDataSource.find(_path);
+	if (pos != FileSystemDataSourceProvider::INSTANCE()._mapDataSource.end())
 	{
 		FileSystemDataSource* ds = (FileSystemDataSource*)(*pos).second;
 
@@ -111,10 +111,10 @@ void FileSystemDataSource::Connect()
 		if (fs::is_directory(*dir_itr))
 		{
 			string path = subdir.string();
-			map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE._mapDataSource.find(path);
+			map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE()._mapDataSource.find(path);
 
 			IDataSource* ds = nullptr;
-			if (pos != FileSystemDataSourceProvider::INSTANCE._mapDataSource.end())
+			if (pos != FileSystemDataSourceProvider::INSTANCE()._mapDataSource.end())
 			{
 				ds = (*pos).second;
 				_vecDataSource.push_back(ds);
@@ -127,7 +127,7 @@ void FileSystemDataSource::Connect()
 				_vecDataSource.push_back(ds);
 				map<string, IDataSource*>::value_type v(path, ds);
 				_mapDataSource.insert(v);
-				FileSystemDataSourceProvider::INSTANCE._mapDataSource.insert(v);
+				FileSystemDataSourceProvider::INSTANCE()._mapDataSource.insert(v);
 			}			
 		}
 		else
@@ -162,7 +162,7 @@ void FileSystemDataSource::Disconnect()
 	_connected = false;
 	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
 	{
-		FileSystemDataSourceProvider::INSTANCE._mapDataSource.erase((*it)->GetCreationString());
+		FileSystemDataSourceProvider::INSTANCE()._mapDataSource.erase((*it)->GetCreationString());
 		delete (*it);
 	}
 	_vecDataSource.clear();

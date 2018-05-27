@@ -13,7 +13,7 @@ RasterGrayScaleLayerProvider RasterGrayScaleLayerProvider::INSTANCE;
 
 RasterGrayScaleLayerProvider::RasterGrayScaleLayerProvider()
 {
-	LayerProviderRepository::INSTANCE.AddLayerProvider(this);
+	LayerProviderRepository::INSTANCE().AddLayerProvider(this);
 }
 
 

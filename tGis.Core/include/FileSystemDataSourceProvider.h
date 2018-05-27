@@ -20,13 +20,16 @@ public:
 	typedef void*(*PropertyUI)(IDataSource*,IDataset*);
 
 public:
-    static FileSystemDataSourceProvider INSTANCE;
+	static FileSystemDataSourceProvider* _instance;
+	static FileSystemDataSourceProvider& INSTANCE();
 
 private:
 	FileSystemDataSourceProvider();
-	~FileSystemDataSourceProvider();
 	FileSystemDataSourceProvider(const FileSystemDataSourceProvider &) = delete;
 	FileSystemDataSourceProvider &operator=(const FileSystemDataSourceProvider &) = delete;
+
+public:
+	~FileSystemDataSourceProvider();
 
 private:
 	static const char* const _name;

@@ -5,8 +5,20 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-LayerProviderRepository LayerProviderRepository::INSTANCE;
+LayerProviderRepository* LayerProviderRepository::_instance = nullptr;
 
+static PtrDestructor<LayerProviderRepository> shit(LayerProviderRepository::_instance);
+
+
+LayerProviderRepository & LayerProviderRepository::INSTANCE()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new LayerProviderRepository();
+	}
+
+	return *_instance;
+}
 
 LayerProviderRepository::LayerProviderRepository()
 {

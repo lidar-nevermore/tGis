@@ -13,7 +13,7 @@ RasterRgbLayerProvider RasterRgbLayerProvider::INSTANCE;
 
 RasterRgbLayerProvider::RasterRgbLayerProvider()
 {
-	LayerProviderRepository::INSTANCE.AddLayerProvider(this);
+	LayerProviderRepository::INSTANCE().AddLayerProvider(this);
 }
 
 
@@ -50,7 +50,7 @@ ILayer * RasterRgbLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
 	assert(_uiCreation != nullptr);
 
-	_uiCreation(dataset);
+	return _uiCreation(dataset);
 }
 
 void RasterRgbLayerProvider::SetPropertyUI(const PropertyUI ui)
