@@ -21,8 +21,8 @@ class SimpleFillSymbol;
 class TGISCORE_API VectorSimpleLayerProvider : public ILayerProvider
 {
 public:
-	typedef VectorSimpleLayer*(*CreationUI)(IDataset*);
-	typedef void*(*PropertyUI)(ILayer*);
+	typedef ILayer*(*CreationUI)(VectorSimpleLayerProvider*,IDataset*);
+	typedef void*(*PropertyUI)(VectorSimpleLayerProvider*, ILayer*);
 
 public:
 	static VectorSimpleLayerProvider INSTANCE;

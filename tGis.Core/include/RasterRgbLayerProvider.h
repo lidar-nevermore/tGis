@@ -16,8 +16,8 @@ class MyGDALRasterDataset;
 class TGISCORE_API RasterRgbLayerProvider : public ILayerProvider
 {
 public:
-	typedef RasterRgbLayer*(*CreationUI)(IDataset*);
-	typedef void(*PropertyUI)(ILayer*);
+	typedef ILayer*(*CreationUI)(RasterRgbLayerProvider*, IDataset*);
+	typedef void(*PropertyUI)(RasterRgbLayerProvider*, ILayer*);
 
 public:
 	static RasterRgbLayerProvider INSTANCE;

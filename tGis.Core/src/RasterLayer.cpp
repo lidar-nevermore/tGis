@@ -215,7 +215,7 @@ void RasterLayer::PaintByOuterResample(IGeoSurface *surf)
 		double readingTopOrg = _minPixY + (paintingTop - _minSurfY)*_surfPixRatio;
 		double readingTopFloor = floor(readingTopOrg);
 		double readingTopDiff = readingTopFloor + 1 - readingTopOrg;
-		if (readingTopDiff / _surfPixRatio >= 1.0)
+		if (readingTopDiff / _surfPixRatio > 0.5)
 		{
 			readingTop = (int)readingTopFloor;
 		}
@@ -239,13 +239,13 @@ void RasterLayer::PaintByOuterResample(IGeoSurface *surf)
 		double readingBottomOrg = _minPixY + (paintingBottom - _minSurfY)*_surfPixRatio;
 		double readingBottomFloor = floor(readingBottomOrg);
 		double readingBottomDiff = readingBottomOrg - readingBottomFloor;
-		if (readingBottomDiff / _surfPixRatio >= 1.0)
+		if (readingBottomDiff / _surfPixRatio >= 0.5)
 		{
 			readingBottom = (int)readingBottomFloor + 2;
 		}
 		else
 		{
-			readingBottom = (int)readingBottomFloor;
+			readingBottom = (int)readingBottomFloor + 1;
 		}
 
 		if (readingBottom > yRasterSize)
@@ -264,7 +264,7 @@ void RasterLayer::PaintByOuterResample(IGeoSurface *surf)
 			double readingLeftOrg = _minPixX + (paintingLeft - _minSurfX)*_surfPixRatio;
 			double readingLeftFloor = floor(readingLeftOrg);
 			double readingLeftDiff = readingLeftFloor + 1 - readingLeftOrg;
-			if (readingLeftDiff / _surfPixRatio >= 1.0)
+			if (readingLeftDiff / _surfPixRatio > 0.5)
 			{
 				readingLeft = (int)readingLeftFloor;
 			}
@@ -288,7 +288,7 @@ void RasterLayer::PaintByOuterResample(IGeoSurface *surf)
 			double readingRightOrg = _minPixX + (paintingRight - _minSurfX)*_surfPixRatio;
 			double readingRightFloor = floor(readingRightOrg);
 			double readingRightDiff = readingRightOrg - readingRightFloor;
-			if (readingRightDiff / _surfPixRatio >= 1.0)
+			if (readingRightDiff / _surfPixRatio >= 0.5)
 			{
 				readingRight = (int)readingRightFloor + 2;
 			}
@@ -372,7 +372,7 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 		double readingTopFloor = floor(readingTopOrg);
 		double readingTopDiff = readingTopFloor + 1 - readingTopOrg;
 		double readingTopDiffSurfPixCount = readingTopDiff / _surfPixRatio;
-		if (readingTopDiffSurfPixCount >= 1.0)
+		if (readingTopDiffSurfPixCount >= 0.5)
 		{
 			readingTop = (int)readingTopFloor;
 			reCalcPaintTop = true;
@@ -400,13 +400,23 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 		double readingBottomOrg = _minPixY + (paintingBottom - _minSurfY)*_surfPixRatio;
 		double readingBottomFloor = floor(readingBottomOrg);
 		double readingBottomDiff = readingBottomOrg - readingBottomFloor;
-		readingBottom = (int)readingBottomFloor;
+		if (readingBottomDiff / _surfPixRatio >= 0.5)
+		{
+			readingBottom = (int)readingBottomFloor + 1;
+			reCalcPaintingBottom = true;
+		}
+		else
+		{
+			readingBottom = (int)readingBottomFloor;
+		}
+		
 		if (readingBottom > yRasterSize)
 		{
 			readingBottom = yRasterSize;
 			reCalcPaintingBottom = true;
 		}
-		if (reCalcPaintingBottom || readingBottomDiff / _surfPixRatio >= 1.0)
+
+		if (reCalcPaintingBottom)
 		{
 			double paintingBottomOrg = _minSurfY + (readingBottom - _minPixY) / _surfPixRatio;
 			paintingBottom = (int)my_round(paintingBottomOrg, 0);
@@ -427,7 +437,7 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 			double readingLeftDiff = readingLeftFloor + 1 - readingLeftOrg;
 			double readingLeftDiffSurfPixCount = readingLeftDiff / _surfPixRatio;
 
-			if (readingLeftDiffSurfPixCount >= 1.0)
+			if (readingLeftDiffSurfPixCount >= 0.5)
 			{
 				readingLeft = (int)readingLeftFloor;
 				reCalcPaintLeft = true;
@@ -455,13 +465,23 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 			double readingRightOrg = _minPixX + (paintingRight - _minSurfX)*_surfPixRatio;
 			double readingRightFloor = floor(readingRightOrg);
 			double readingRightDiff = readingRightOrg - readingRightFloor;
-			readingRight = (int)readingRightFloor;
+			if (readingRightDiff / _surfPixRatio >= 0.5)
+			{
+				readingRight = (int)readingRightFloor + 1;
+				reCalcPaintingRight = true;
+			}
+			else
+			{
+				readingRight = (int)readingRightFloor;
+			}
+			
 			if (readingRight > xRasterSize)
 			{
 				readingRight = xRasterSize;
 				reCalcPaintingRight = true;
 			}
-			if (reCalcPaintingRight || readingRightDiff / _surfPixRatio >= 1.0)
+
+			if (reCalcPaintingRight)
 			{
 				double paintingRightOrg = _minSurfX + (readingRight - _minPixX) / _surfPixRatio;
 				paintingRight = (int)my_round(paintingRightOrg, 0);

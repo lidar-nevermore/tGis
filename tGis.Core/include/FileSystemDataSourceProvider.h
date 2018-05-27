@@ -16,8 +16,8 @@ class TGISCORE_API FileSystemDataSourceProvider : public IDataSourceProvider
 {
 	friend class FileSystemDataSource;
 public:
-	typedef FileSystemDataSource*(*CreationUI)();
-	typedef void*(*PropertyUI)(IDataSource*,IDataset*);
+	typedef IDataSource*(*CreationUI)(FileSystemDataSourceProvider*);
+	typedef void*(*PropertyUI)(FileSystemDataSourceProvider*,IDataSource*,IDataset*);
 
 public:
 	static FileSystemDataSourceProvider* _instance;

@@ -7,6 +7,7 @@
 
 #include "MapPanTool.h"
 #include "MapZoomTool.h"
+#include "MyMap.h"
 
 using namespace tGis::Core;
 
@@ -18,7 +19,7 @@ public:
 	tGisApp(QWidget *parent = Q_NULLPTR);
 
 private:
-	Map _map;
+	MyMap _map;
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;
 

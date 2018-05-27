@@ -21,9 +21,9 @@ MemoryBufferManager::MemoryBufferManager()
 {
 	elr_mpl_init();
 	_mplRasterLayer = elr_mpl_create_multi_2(NULL, NULL, NULL, 3,
-		(RasterLayerBufferWidth + 2)*(RasterLayerBufferWidth + 2),
-		(RasterLayerBufferWidth + 2)*(RasterLayerBufferWidth + 2) * 4,
-		(RasterLayerBufferWidth + 2)*(RasterLayerBufferWidth + 2) * 8);
+		(RasterLayerBufferWidth + 3)*(RasterLayerBufferWidth + 3),
+		(RasterLayerBufferWidth + 3)*(RasterLayerBufferWidth + 3) * 4,
+		(RasterLayerBufferWidth + 3)*(RasterLayerBufferWidth + 3) * 8);
 }
 
 

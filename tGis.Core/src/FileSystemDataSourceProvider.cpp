@@ -62,7 +62,7 @@ IDataSource * FileSystemDataSourceProvider::UI_CreateDataSource()
 {
 	assert(_uiCreation != nullptr);
 
-	return _uiCreation();
+	return _uiCreation(this);
 }
 
 void FileSystemDataSourceProvider::SetPropertyUI(const PropertyUI ui)
@@ -74,7 +74,7 @@ void FileSystemDataSourceProvider::UI_DataSourceProperty(IDataSource * ds, IData
 {
 	assert(_uiProperty != nullptr);
 
-	_uiProperty(ds,dt);
+	_uiProperty(this,ds,dt);
 }
 
 IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)

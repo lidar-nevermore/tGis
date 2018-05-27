@@ -7,7 +7,7 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const RasterRgbLayerProvider::_name = "RasterGrayScaleLayerProvider";
+const char* const RasterRgbLayerProvider::_name = "RasterRgbLayerProvider";
 const char* const RasterRgbLayerProvider::_type = "FC781B6F-D17D-4B06-8F02-37C1A39C1B3C";
 RasterRgbLayerProvider RasterRgbLayerProvider::INSTANCE;
 
@@ -50,7 +50,7 @@ ILayer * RasterRgbLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
 	assert(_uiCreation != nullptr);
 
-	return _uiCreation(dataset);
+	return _uiCreation(this, dataset);
 }
 
 void RasterRgbLayerProvider::SetPropertyUI(const PropertyUI ui)
@@ -62,7 +62,7 @@ void RasterRgbLayerProvider::UI_LayerProperty(ILayer * layer)
 {
 	assert(_uiProperty != nullptr);
 
-	_uiProperty(layer);
+	_uiProperty(this, layer);
 }
 
 ILayer * RasterRgbLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int r, int g, int b)

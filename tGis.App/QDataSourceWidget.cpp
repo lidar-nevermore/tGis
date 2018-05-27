@@ -3,10 +3,13 @@
 #include <QStandardItemModel>
 #include <QStandardItem>
 #include <QVariant>
+#include <QListWidget>
+#include <QListWidgetItem>
 
 #include "tOrganizer.h"
 
 #include "IconRes.h"
+#include "ListChoiseDialog.h"
 
 using namespace tGis::Core;
 
@@ -17,16 +20,16 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 	for (QFileInfoList::iterator it = roots.begin(); it != roots.end(); it++)
 	{
 		QString path = QDir::toNativeSeparators(it->absolutePath());
-		FileSystemDataSourceProvider::INSTANCE.CreateDataSource(path.toStdString().c_str());
+		FileSystemDataSourceProvider::INSTANCE().CreateDataSource(path.toStdString().c_str());
 	}
 
-	int providerCount = DataSourceProviderRepository::INSTANCE.GetDataSourceProviderCount();
+	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
 
 	QStandardItemModel* model = new QStandardItemModel();
 	QStandardItem* rootNode = model->invisibleRootItem();
 	for (int i = 0; i < providerCount; i++)
 	{
-		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE.GetDataSourceProvider(i);
+		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
 		QStandardItem* pItem = new QStandardItem();
 		pItem->setText(QString::fromLocal8Bit(provider->GetName()));
 		pItem->setEditable(false);
@@ -153,25 +156,43 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 		if (!dt->IsOpened())
 			return;
 
-		int layerProviderCount = LayerProviderRepository::INSTANCE.GetLayerProviderCountSupportDataset(dt->GetType());
+		int layerProviderCount = LayerProviderRepository::INSTANCE().GetLayerProviderCountSupportDataset(dt->GetType());
 		ILayerProviderPtr* providers = new ILayerProviderPtr[layerProviderCount];
-		LayerProviderRepository::INSTANCE.GetLayerProviderSupportDataset(dt->GetType(), layerProviderCount, providers);
-		ILayer* layer = providers[0]->UI_CreateLayer(dt);
-		
-		IMap* map = GetCurrentMap();
-		IMapWidget* mapWidget = GetCurrentMapWidget();
-		IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
+		LayerProviderRepository::INSTANCE().GetLayerProviderSupportDataset(dt->GetType(), layerProviderCount, providers);
 
-		int layerCount = map->GetLayerCount();
-		map->AddLayer(layer);
-		emit LayerAdded(map, layer, providers[0]);
-		if (layerCount == 0)
+		ListChoiseDialog choise((QWidget*)GetMainWindow());
+		QListWidget* list = choise.GetQListWidget();
+
+		for (int i = 0; i < layerProviderCount; i++)
 		{
-			const OGREnvelope* envelope = layer->GetEnvelope();
-			geoSurface->SetSpatialReference(layer->GetSpatialReference());
-			geoSurface->IncludeEnvelope(envelope);
+			QListWidgetItem *item = new QListWidgetItem(QString::fromLocal8Bit(providers[i]->GetName()));
+			QVariant udLayerProvider;
+			udLayerProvider.setValue<ILayerProviderPtr>(providers[i]);
+			item->setData(DataRole, udLayerProvider);
+			list->addItem(item);
 		}
-		
-		mapWidget->RepaintMap();
+
+		if (QDialog::Accepted == choise.exec())
+		{
+			QListWidgetItem *item = list->currentItem();
+			ILayerProviderPtr provider = item->data(DataRole).value<ILayerProviderPtr>();
+			ILayer* layer = provider->UI_CreateLayer(dt);
+
+			if (layer != nullptr) 
+			{
+				IMap* map = GetCurrentMap();
+				IMapWidget* mapWidget = GetCurrentMapWidget();
+				IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
+
+				int layerCount = map->GetLayerCount();
+				map->AddLayer(layer);
+				emit LayerAdded(map, layer, providers[0]);
+				const OGREnvelope* envelope = layer->GetEnvelope();
+				geoSurface->SetSpatialReference(layer->GetSpatialReference());
+				geoSurface->IncludeEnvelope(envelope);
+
+				mapWidget->RepaintMap();
+			}
+		}
 	}
 }

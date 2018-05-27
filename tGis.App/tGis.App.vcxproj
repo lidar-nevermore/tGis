@@ -59,7 +59,6 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
-      <AdditionalOptions>/execution-charset:utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -115,26 +114,39 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ListChoiseDialog.cpp" />
     <ClCompile Include="IconRes.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MapPanTool.cpp" />
     <ClCompile Include="MapZoomTool.cpp" />
+    <ClCompile Include="MyMap.cpp" />
     <ClCompile Include="QDataSourceWidget.cpp" />
     <ClCompile Include="QLayerWidget.cpp" />
     <ClCompile Include="QMapWidget.cpp" />
     <ClCompile Include="QtGeoSurface.cpp" />
+    <ClCompile Include="RasterGrayScaleLayerPropertyDialog.cpp" />
+    <ClCompile Include="RasterRgbLayerPropertyDialog.cpp" />
     <ClCompile Include="tGisApp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="tGisApp.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="ListChoiseDialog.ui" />
+    <QtUic Include="RasterGrayScaleLayerPropertyDialog.ui" />
+    <QtUic Include="RasterRgbLayerPropertyDialog.ui" />
     <QtUic Include="tGisApp.ui" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="tGisApp.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="ListChoiseDialog.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+    </QtMoc>
     <ClInclude Include="IconRes.h" />
     <QtMoc Include="QMapWidget.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
@@ -150,6 +162,9 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
     </QtMoc>
+    <ClInclude Include="MyMap.h" />
+    <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h" />
+    <ClInclude Include="RasterRgbLayerPropertyDialog.h" />
     <ClInclude Include="tGisMetaType.h" />
     <ClInclude Include="QtGeoSurface.h" />
     <QtMoc Include="QDataSourceWidget.h">

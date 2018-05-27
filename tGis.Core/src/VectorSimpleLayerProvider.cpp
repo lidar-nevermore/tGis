@@ -50,7 +50,7 @@ ILayer * VectorSimpleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
 	assert(_uiCreation != nullptr);
 
-	return _uiCreation(dataset);
+	return _uiCreation(this, dataset);
 }
 
 void VectorSimpleLayerProvider::SetPropertyUI(const PropertyUI ui)
@@ -62,7 +62,7 @@ void VectorSimpleLayerProvider::UI_LayerProperty(ILayer * layer)
 {
 	assert(_uiProperty != nullptr);
 
-	_uiProperty(layer);
+	_uiProperty(this, layer);
 }
 
 ILayer * VectorSimpleLayerProvider::CreateLayer(MyGDALVectorDataset * vector, OGRLayer * layer, SimpleMarkerSymbol * markerSymbol, SimpleLineSymbol * lineSymbol, SimpleFillSymbol * fillSymbol, int geometryField, int labelField)
