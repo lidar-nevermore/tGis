@@ -28,12 +28,24 @@ void MapZoomTool::MouseWheel(void *ev)
 
 	QPoint numDegrees = e->angleDelta();
 
-	double newresolution = resolution*(1.0 + numDegrees.ry() / 960.0);
+	int degree = numDegrees.ry();
+	int step = (int)(abs(degree / 120.0));
+	step = step == 0 ? 1 : step;
 
-	if (newresolution < 0.0)
+	double newresolution = resolution;
+
+	for (int i = 0; i < step; i++)
 	{
-		newresolution = 0.0000000000000000001;
+		if (degree > 0)
+		{
+			newresolution *= 1.042; //375/360
+		}
+		else
+		{
+			newresolution *= 0.96; //360/375
+		}
 	}
+
 	surface->SetViewResolution(newresolution);
 
 	double mouseX2;

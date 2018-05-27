@@ -192,7 +192,7 @@
       <Filter>internal</Filter>
     </ClInclude>
     <ClInclude Include="include\RasterRgbLayer.h">
-      <Filter>include</Filter>
+      <Filter>include\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -290,7 +290,7 @@
       <Filter>internal</Filter>
     </ClCompile>
     <ClCompile Include="src\RasterRgbLayer.cpp">
-      <Filter>src</Filter>
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

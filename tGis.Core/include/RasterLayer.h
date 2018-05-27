@@ -44,12 +44,22 @@ private:
 protected:
 	inline void SetBufferAlpha(unsigned char* buf, int width, int height);
 
-	virtual void OuterResample(unsigned char* pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX, int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight,
-		unsigned char* surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight) = 0;
+	typedef void(RasterLayer::*OuterResampleFunc)(unsigned char* pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX, int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight,
+		unsigned char* surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight);
 
-	virtual void IOResample(unsigned char* pixBuffer, int readingLeft, int readingTop, int readingWidth, int readingHeight,
-		unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight) = 0;
-	
+	OuterResampleFunc OuterResample;
+
+	//virtual void OuterResample(unsigned char* pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX, int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight,
+	//	unsigned char* surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight) = 0;
+
+	typedef void (RasterLayer::*IOResampleFunc)(unsigned char* pixBuffer, int readingLeft, int readingTop, int readingWidth, int readingHeight,
+		unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight);
+
+	IOResampleFunc IOResample;
+
+	//virtual void IOResample(unsigned char* pixBuffer, int readingLeft, int readingTop, int readingWidth, int readingHeight,
+	//	unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight) = 0;
+	//
 protected:
 	MyGDALRasterDataset* _raster;
 

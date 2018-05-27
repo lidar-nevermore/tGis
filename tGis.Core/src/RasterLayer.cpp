@@ -305,7 +305,7 @@ void RasterLayer::PaintByOuterResample(IGeoSurface *surf)
 			readingWidth = readingRight - readingLeft;
 			paintingWidth = paintingRight - paintingLeft;
 
-			OuterResample(pixBuffer, readingLeft, initialReadingLeft, initialAlignRmrX, readingTop, initialReadingTop, initialAlignRmrY, readingWidth, readingHeight,
+			(this->*OuterResample)(pixBuffer, readingLeft, initialReadingLeft, initialAlignRmrX, readingTop, initialReadingTop, initialAlignRmrY, readingWidth, readingHeight,
 				surfBuffer, paintingLeft, initialPaintingLeft, paintingTop, initialPaintingTop, paintingWidth, paintingHeight);
 
 			surf->DrawImage(surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
@@ -470,7 +470,7 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 			readingWidth = readingRight - readingLeft;
 			paintingWidth = paintingRight - paintingLeft;
 
-			IOResample(pixBuffer, readingLeft, readingTop, readingWidth, readingHeight,
+			(this->*IOResample)(pixBuffer, readingLeft, readingTop, readingWidth, readingHeight,
 				surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
 
 			surf->DrawImage(surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);

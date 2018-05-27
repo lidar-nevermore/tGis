@@ -46,10 +46,10 @@ public:
 
 protected:
 	void OuterResample(unsigned char* pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX,int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight,
-		                       unsigned char* surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight) override;
+		                       unsigned char* surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight);
 
 	void IOResample(unsigned char* pixBuffer, int readingLeft, int readingTop, int readingWidth, int readingHeight,
-		                    unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight) override;
+		                    unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight);
 
 private:
 	GDALRasterBand* _band;

@@ -16,10 +16,14 @@ const char* const RasterRgbLayer::_type = "EFEB6F2A-7DD0-401D-9762-55F3F3E095D1"
 
 RasterRgbLayer::RasterRgbLayer()
 {
+	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterRgbLayer::OuterResample;
+	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterRgbLayer::IOResample;
 }
 
 RasterRgbLayer::RasterRgbLayer(MyGDALRasterDataset * dataset, int r, int g, int b)
 {
+	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterRgbLayer::OuterResample;
+	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterRgbLayer::IOResample;
 	SetDataset(dataset, r, g, b);
 }
 

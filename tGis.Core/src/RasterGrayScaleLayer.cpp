@@ -16,10 +16,14 @@ const char* const RasterGrayScaleLayer::_type = "FCD79E3D-084F-4CB6-8D84-3DB1875
 
 RasterGrayScaleLayer::RasterGrayScaleLayer()
 {
+	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterGrayScaleLayer::OuterResample;
+	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterGrayScaleLayer::IOResample;
 }
 
 RasterGrayScaleLayer::RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band)
 {
+	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterGrayScaleLayer::OuterResample;
+	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterGrayScaleLayer::IOResample;
 	SetDataset(dataset, band);
 }
 
