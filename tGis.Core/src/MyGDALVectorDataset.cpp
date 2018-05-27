@@ -20,6 +20,11 @@ const char * MyGDALVectorDataset::GetType()
 	return _type;
 }
 
+const char * MyGDALVectorDataset::S_GetType()
+{
+	return _type;
+}
+
 MyGDALVectorDataset::MyGDALVectorDataset()
 {
 }

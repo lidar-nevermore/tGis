@@ -49,6 +49,7 @@
     <ClInclude Include="include\OverlayLayer.h" />
     <ClInclude Include="include\RasterGrayScaleLayerProvider.h" />
     <ClInclude Include="include\RasterRgbLayer.h" />
+    <ClInclude Include="include\RasterRgbLayerProvider.h" />
     <ClInclude Include="include\SimpleFillSymbol.h" />
     <ClInclude Include="include\SimpleLineSymbol.h" />
     <ClInclude Include="include\SimpleMarkerSymbol.h" />
@@ -93,6 +94,7 @@
     <ClCompile Include="src\RasterGrayScaleLayerProvider.cpp" />
     <ClCompile Include="src\RasterLayer.cpp" />
     <ClCompile Include="src\RasterRgbLayer.cpp" />
+    <ClCompile Include="src\RasterRgbLayerProvider.cpp" />
     <ClCompile Include="src\SimpleFillSymbol.cpp" />
     <ClCompile Include="src\SimpleLineSymbol.cpp" />
     <ClCompile Include="src\SimpleMarkerSymbol.cpp" />

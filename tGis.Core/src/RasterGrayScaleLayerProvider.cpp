@@ -33,12 +33,12 @@ const char * RasterGrayScaleLayerProvider::GetName()
 
 const char * RasterGrayScaleLayerProvider::GetSupportedLayerType()
 {
-	return RasterGrayScaleLayer::_type;
+	return RasterGrayScaleLayer::S_GetType();
 }
 
 const char * RasterGrayScaleLayerProvider::GetSupportedDatasetType()
 {
-	return MyGDALRasterDataset::_type;
+	return MyGDALRasterDataset::S_GetType();
 }
 
 void RasterGrayScaleLayerProvider::SetCreationUI(const CreationUI ui)
@@ -63,9 +63,9 @@ void RasterGrayScaleLayerProvider::UI_LayerProperty(ILayer * layer)
 	_uiProperty(layer);
 }
 
-ILayer * RasterGrayScaleLayerProvider::CreateLayer(IDataset * dataset, int band)
+ILayer * RasterGrayScaleLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int band)
 {
-	return new RasterGrayScaleLayer((MyGDALRasterDataset*)dataset,band);
+	return new RasterGrayScaleLayer(dataset,band);
 }
 
 ILayer * RasterGrayScaleLayerProvider::CreateLayer(IDataset * dataset, const char * creationString)

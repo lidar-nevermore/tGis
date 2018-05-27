@@ -23,9 +23,9 @@ class VectorSimpleLayerProvider;
 
 class TGISCORE_API MyGDALVectorDataset : public MyGDALFileDataset
 {
-	friend class VectorSimpleLayerProvider;
 public:
 	const char* GetType();
+	static const char* S_GetType();
 
 private:
 	static const char* const _type;

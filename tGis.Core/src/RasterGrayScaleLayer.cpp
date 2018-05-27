@@ -79,6 +79,11 @@ const char * RasterGrayScaleLayer::GetType()
 	return _type;
 }
 
+const char * RasterGrayScaleLayer::S_GetType()
+{
+	return _type;
+}
+
 const char * RasterGrayScaleLayer::GetCreationString()
 {
 	return nullptr;

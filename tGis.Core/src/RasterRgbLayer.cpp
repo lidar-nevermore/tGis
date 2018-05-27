@@ -37,6 +37,11 @@ const char * RasterRgbLayer::GetType()
 	return _type;
 }
 
+const char * RasterRgbLayer::S_GetType()
+{
+	return _type;
+}
+
 const char * RasterRgbLayer::GetCreationString()
 {
 	return nullptr;

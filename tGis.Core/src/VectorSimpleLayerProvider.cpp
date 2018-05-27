@@ -33,12 +33,12 @@ const char * VectorSimpleLayerProvider::GetName()
 
 const char * VectorSimpleLayerProvider::GetSupportedLayerType()
 {
-	return VectorSimpleLayer::_type;
+	return VectorSimpleLayer::S_GetType();
 }
 
 const char * VectorSimpleLayerProvider::GetSupportedDatasetType()
 {
-	return MyGDALVectorDataset::_type;
+	return MyGDALVectorDataset::S_GetType();
 }
 
 void VectorSimpleLayerProvider::SetCreationUI(const CreationUI ui)
@@ -48,7 +48,9 @@ void VectorSimpleLayerProvider::SetCreationUI(const CreationUI ui)
 
 ILayer * VectorSimpleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
-	return nullptr;
+	assert(_uiCreation != nullptr);
+
+	_uiCreation(dataset);
 }
 
 void VectorSimpleLayerProvider::SetPropertyUI(const PropertyUI ui)

@@ -57,6 +57,7 @@ private:
 
 public:
 	virtual const char* GetType();
+	static const char* S_GetType();
 	virtual const char* GetCreationString();
 
 	virtual void Paint(IGeoSurface*);

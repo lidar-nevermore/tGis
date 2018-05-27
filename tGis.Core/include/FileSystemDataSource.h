@@ -35,6 +35,7 @@ private:
 
 public:
 	const char* GetType();
+	static const char* S_GetType();
 	const char* GetName();
 	const char* GetCreationString();
 

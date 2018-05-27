@@ -20,9 +20,9 @@ class RasterGrayScaleLayerProvider;
 
 class TGISCORE_API MyGDALRasterDataset : public MyGDALFileDataset
 {
-	friend class RasterGrayScaleLayerProvider;
 public:
 	const char* GetType();
+	static const char* S_GetType();
 
 private:
 	static const char* const _type;

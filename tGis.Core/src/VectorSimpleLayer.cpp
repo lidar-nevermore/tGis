@@ -51,6 +51,11 @@ const char * VectorSimpleLayer::GetType()
 	return _type;
 }
 
+const char * VectorSimpleLayer::S_GetType()
+{
+	return _type;
+}
+
 const char * VectorSimpleLayer::GetCreationString()
 {
 	return nullptr;

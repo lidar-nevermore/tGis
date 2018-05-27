@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __RASTERGRAYSCALELAYERPROVIDER_H__
-#define __RASTERGRAYSCALELAYERPROVIDER_H__
+#ifndef __RASTERRGBLAYERPROVIDER_H__
+#define __RASTERRGBLAYERPROVIDER_H__
 
 
 #include "Helper.h"
@@ -10,23 +10,23 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class RasterGrayScaleLayer;
+class RasterRgbLayer;
 class MyGDALRasterDataset;
 
-class TGISCORE_API RasterGrayScaleLayerProvider : public ILayerProvider
+class TGISCORE_API RasterRgbLayerProvider : public ILayerProvider
 {
 public:
-	typedef RasterGrayScaleLayer*(*CreationUI)(IDataset*);
+	typedef RasterRgbLayer*(*CreationUI)(IDataset*);
 	typedef void(*PropertyUI)(ILayer*);
 
 public:
-	static RasterGrayScaleLayerProvider INSTANCE;
+	static RasterRgbLayerProvider INSTANCE;
 
 private:
-	RasterGrayScaleLayerProvider();
-	~RasterGrayScaleLayerProvider();
-	RasterGrayScaleLayerProvider(const RasterGrayScaleLayerProvider &) = delete;
-	RasterGrayScaleLayerProvider &operator=(const RasterGrayScaleLayerProvider &) = delete;
+	RasterRgbLayerProvider();
+	~RasterRgbLayerProvider();
+	RasterRgbLayerProvider(const RasterRgbLayerProvider &) = delete;
+	RasterRgbLayerProvider &operator=(const RasterRgbLayerProvider &) = delete;
 
 public:
 	const char* GetType();
@@ -40,7 +40,7 @@ public:
 	ILayer* UI_CreateLayer(IDataset* dataset);
 	void SetPropertyUI(const PropertyUI ui);
 	void UI_LayerProperty(ILayer* layer);
-	ILayer* CreateLayer(MyGDALRasterDataset* dataset, int band);
+	ILayer* CreateLayer(MyGDALRasterDataset* dataset, int r, int g, int b);
 	ILayer* CreateLayer(IDataset* dataset, const char* creationString);
 	void ReleaseLayer(ILayer*);
 
@@ -54,6 +54,7 @@ private:
 	static const char* const _name;
 	static const char* const _type;
 };
+
 
 END_NAME_SPACE(tGis, Core)
 

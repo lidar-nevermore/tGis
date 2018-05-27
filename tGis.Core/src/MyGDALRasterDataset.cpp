@@ -194,5 +194,10 @@ const char * MyGDALRasterDataset::GetType()
 	return _type;
 }
 
+const char * MyGDALRasterDataset::S_GetType()
+{
+	return _type;
+}
+
 
 END_NAME_SPACE(tGis, Core)

@@ -194,6 +194,9 @@
     <ClInclude Include="include\RasterRgbLayer.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="include\RasterRgbLayerProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -291,6 +294,9 @@
     </ClCompile>
     <ClCompile Include="src\RasterRgbLayer.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterRgbLayerProvider.cpp">
+      <Filter>src\Organizer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

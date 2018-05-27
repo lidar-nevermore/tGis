@@ -71,6 +71,11 @@ const char * FileSystemDataSource::GetType()
 	return FileSystemDataSource::_type;
 }
 
+const char * FileSystemDataSource::S_GetType()
+{
+	return _type;
+}
+
 const char * FileSystemDataSource::GetName()
 {
 	return _name.c_str();
