@@ -92,20 +92,23 @@ const char * RasterGrayScaleLayer::GetCreationString()
 
 void RasterGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX, int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight)
 {
+	GDALRasterIOExtraArg arg;
+	INIT_RASTERIO_EXTRA_ARG(arg);
+	arg.eResampleAlg = GRIORA_NearestNeighbour;
 	_band->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
-		pixBuffer, readingWidth, readingHeight, (GDALDataType)_dataType, 0, 0);
+		pixBuffer, readingWidth, readingHeight, (GDALDataType)_dataType, 0, 0, &arg);
 
 	unsigned char* itSurfBuf = surfBuffer;
 	for (int m = 0; m < paintingHeight; m++)
 	{
-		int readBufRow = (int)my_round((m + paintingTop - initialPaintingTop)*_surfPixRatio + initialAlignRmrY + initialReadingTop - readingTop, 0);
+		int readBufRow = (int)floor((m + paintingTop - initialPaintingTop + 0.4999999999)*_surfPixRatio + initialAlignRmrY + initialReadingTop - readingTop);
 		if (readBufRow < 0)
 			readBufRow = 0;
 		if (readBufRow >= readingHeight)
 			readBufRow = readingHeight - 1;
 		for (int n = 0; n < paintingWidth; n++)
 		{
-			int readBufCol = (int)my_round((n + paintingLeft - initialPaintingLeft)*_surfPixRatio + initialAlignRmrX + initialReadingLeft - readingLeft, 0);
+			int readBufCol = (int)floor((n + paintingLeft - initialPaintingLeft + 0.4999999999)*_surfPixRatio + initialAlignRmrX + initialReadingLeft - readingLeft);
 			if (readBufCol < 0)
 				readBufCol = 0;
 			if (readBufCol >= readingWidth)
@@ -137,14 +140,14 @@ void RasterGrayScaleLayer::IOResample(unsigned char * pixBuffer, int readingLeft
 	unsigned char* itSurfBuf = surfBuffer;
 	for (int m = 0; m < paintingHeight; m++)
 	{
-		int readBufRow = (int)my_round(((m + paintingTop - initialPaintingTop)*_surfPixRatio + initialAlignRmrY - readingTop + initialReadingTop)*readingHeight/(readingBottom - readingTop), 0);
+		int readBufRow = (int)floor(m);
 		if (readBufRow < 0)
 			readBufRow = 0;
 		if (readBufRow >= readingHeight)
 			readBufRow = readingHeight - 1;
 		for (int n = 0; n < paintingWidth; n++)
 		{
-			int readBufCol = (int)my_round(((n + paintingLeft - initialPaintingLeft)*_surfPixRatio + initialAlignRmrX - readingLeft + initialReadingLeft)*readingWidth/(readingRight - readingLeft), 0);
+			int readBufCol = (int)floor(n);
 			if (readBufCol < 0)
 				readBufCol = 0;
 			if (readBufCol >= readingWidth)
