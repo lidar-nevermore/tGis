@@ -12,8 +12,10 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.mapWidget->SetMap(&_map);
 	SetCurrentMap(&_map);
 	SetCurrentMapWidget((IMapWidget*)ui.mapWidget);
-	ui.mapWidget->AddMapTool(&_mapPanTool);
+	//ui.mapWidget->AddMapTool(&_mapPanTool);
 	ui.mapWidget->AddMapTool(&_mapZoomTool);
+	//ui.mapWidget->AddMapTool(&_drawRectTool);
+	ui.mapWidget->AddMapTool(&_rectZoomTool);
 	QDesktopWidget * desktop = QApplication::desktop();
 	int curMonitor = desktop->screenNumber(this);
 	QRect rect = desktop->screenGeometry(curMonitor);

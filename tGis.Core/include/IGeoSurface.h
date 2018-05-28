@@ -19,6 +19,7 @@ struct TGISCORE_API IGeoSurface : public ISurface
 	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, int surfW, int surfH, double resolution) = 0;
 	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, int *surfW, int *surfH, double *resolution) = 0;
 	virtual void IncludeEnvelope(const OGREnvelope*) = 0;
+	virtual void IncludeEnvelope(double spatialLeft, double spatialTop, double spatialRight, double spatialBottom) = 0;
 
 	virtual void Surface2Spatial(int surfX, int surfY, double *spatialX, double *spatialY) = 0;
 	virtual void Spatial2Surface(double spatialX, double spatialY, double *surfX, double *surfY) = 0;

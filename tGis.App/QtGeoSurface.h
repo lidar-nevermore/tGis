@@ -16,6 +16,7 @@ public:
 	void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
 
 private:
+	bool _paintOnAttachedQPainter;
 	QPainter* _painter;
 	QPixmap* _osSurf4Paint;
 	QPixmap* _osSurf4Present;
@@ -36,6 +37,8 @@ public:
 	void DetachQPainter();
 	void PresentSurface();
 	void SwithSurface();
+	void BeginPaintOnAttachedQPainter();
+	void EndPaintOnAttachedQPainter();
 
 
 	void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);

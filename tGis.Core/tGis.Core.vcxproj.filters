@@ -200,6 +200,9 @@
     <ClInclude Include="internal\elr_mtx.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="include\OverlayRect.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -298,14 +301,17 @@
     <ClCompile Include="src\RasterRgbLayerProvider.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="include\tVisualize.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="internal\VisualizeBufferManager.cpp">
       <Filter>internal</Filter>
     </ClCompile>
     <ClCompile Include="internal\elr_mtx.c">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="include\tVisualize.cpp">
+      <Filter>src\Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OverlayRect.cpp">
+      <Filter>src\Visualize</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -11,6 +11,9 @@ struct IGeoSurface;
 
 struct TGISCORE_API IOverlayObject
 {
+	virtual bool GetVisible() = 0;
+	virtual void SetVisible(bool) = 0;
+
 	virtual void Paint(IGeoSurface*) = 0;
 
 	virtual ~IOverlayObject() {};

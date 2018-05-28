@@ -3,6 +3,9 @@
 #include <QApplication>
 #include "qevent.h"
 
+#include "tVisualize.h"
+
+using namespace tGis::Core;
 
 QMapWidget::QMapWidget(QWidget *parent)
 	:QWidget(parent)
@@ -65,6 +68,9 @@ void QMapWidget::paintEvent(QPaintEvent *)
 	painter.fillRect(0, 0, sz.width(), sz.height(), QColor(_surfBackgroundR, _surfBackgroundG, _surfBackgroundB));
 	_geoSurface.AttachQPainter(&painter);
 	_geoSurface.PresentSurface();
+	_geoSurface.BeginPaintOnAttachedQPainter();
+	_overlayLayer.Paint((IGeoSurface*)&_geoSurface);
+	_geoSurface.EndPaintOnAttachedQPainter();
 	_geoSurface.DetachQPainter();
 }
 

@@ -43,7 +43,8 @@ void OverlayLayer::Paint(IGeoSurface * surf)
 {
 	for (vector<IOverlayObject*>::reverse_iterator it = _vecOverlayObject.rbegin(); it != _vecOverlayObject.rend(); ++it)
 	{
-		(*it)->Paint(surf);
+		if((*it)->GetVisible())
+			(*it)->Paint(surf);
 	}
 }
 

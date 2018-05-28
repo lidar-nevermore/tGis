@@ -18,9 +18,8 @@ public:
 
 	virtual void SetMapWidget(IMapWidget* mapWidget);
 
-	virtual bool IsCompatible(IMapTool*);
-
-	virtual void CleanUp();
+	virtual void SetEnabled(bool enabled);
+	virtual bool GetEnabled();
 
 	virtual void MouseDown(void*);
 	virtual void MouseMove(void*);
@@ -35,6 +34,9 @@ public:
 
 protected:
 	IMapWidget* _mapWidget;
+
+private:
+	bool _enabled;
 };
 
 

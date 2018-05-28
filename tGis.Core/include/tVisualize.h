@@ -4,6 +4,7 @@
 #include "IMapTool.h"
 #include "MapWidget.h"
 #include "MapTool.h"
+#include "OverlayRect.h"
 
 
 BEGIN_NAME_SPACE(tGis, Core)

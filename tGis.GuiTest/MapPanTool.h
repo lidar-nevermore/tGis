@@ -15,20 +15,6 @@ public:
 	void MouseMove(void*);
 	void MouseUp(void*);
 
-	using MapTool::SetMapWidget;
-
-	using MapTool::IsCompatible;
-
-	using MapTool::CleanUp;
-
-	using MapTool::MouseClicked;
-	using MapTool::MouseDoubleClicked;
-	using MapTool::MouseWheel;
-
-	using MapTool::KeyDown;
-	using MapTool::KeyUp;
-	using MapTool::KeyPress;
-
 private:
 	int _mouseDownX;
 	int _mouseDownY;

@@ -8,6 +8,8 @@
 #include "MapPanTool.h"
 #include "MapZoomTool.h"
 #include "MyMap.h"
+#include "DrawRectTool.h"
+#include "RectZoomTool.h"
 
 using namespace tGis::Core;
 
@@ -22,6 +24,8 @@ private:
 	MyMap _map;
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;
+	DrawRectTool _drawRectTool;
+	RectZoomTool _rectZoomTool;
 
 private:
 	Ui::tGisAppClass ui;

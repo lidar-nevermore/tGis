@@ -25,6 +25,7 @@ public:
 	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, int surfW, int surfH, double resolution);
 	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, int *surfW, int *surfH, double *resolution);
 	virtual void IncludeEnvelope(const OGREnvelope*);
+	virtual void IncludeEnvelope(double spatialLeft, double spatialTop, double spatialRight, double spatialBottom);
 	virtual void Surface2Spatial(int surfX, int surfY, double *spatialX, double *spatialY);
 	virtual void Spatial2Surface(double spatialX, double spatialY, double *surfX, double *surfY);
 	virtual void Spatial2Surface(double spatialX, double spatialY, int *surfX, int *surfY);

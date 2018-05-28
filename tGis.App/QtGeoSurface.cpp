@@ -5,6 +5,7 @@
 
 QtGeoSurface::QtGeoSurface()
 {
+	_paintOnAttachedQPainter = false;
 	_painter = nullptr;
 	_osSurf4Paint = nullptr;
 	_osSurf4Present = nullptr;
@@ -143,16 +144,78 @@ void QtGeoSurface::SwithSurface()
 	_osSurf4Paint = nullptr;
 }
 
+void QtGeoSurface::BeginPaintOnAttachedQPainter()
+{
+	_paintOnAttachedQPainter = true;
+}
+
+void QtGeoSurface::EndPaintOnAttachedQPainter()
+{
+	_paintOnAttachedQPainter = false;
+}
+
+static class QPainterPtrFreeHelper
+{
+public:
+	QPainterPtrFreeHelper()
+	{
+		_autoDelte = false;
+	}
+
+	~QPainterPtrFreeHelper()
+	{
+		if (_autoDelte)
+			delete _painter;
+	}
+
+	operator QPainter&() {
+		return *_painter;
+	}
+
+	QPainter& operator*() {
+		return *_painter;
+	}
+
+	QPainterPtrFreeHelper &operator=(QPainter* painter)
+	{
+		_painter = painter;
+		return *this;
+	}
+
+private:
+	QPainterPtrFreeHelper(const QPainterPtrFreeHelper &) = delete;
+	QPainterPtrFreeHelper &operator=(const QPainterPtrFreeHelper &) = delete;
+
+public:
+	bool _autoDelte;
+	QPainter* _painter;
+};
+
 void QtGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
 {
-	EnsurePaintSurfaceValid();
-	if (_osSurf4Paint == nullptr)
-		return;
+	QPainterPtrFreeHelper painter_ptr;
+
+	if (_paintOnAttachedQPainter)
+	{
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
+	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
 
 	QPoint* qpt = CreateQPoints(count, surfX, surfY);
-
-	QPainter painter(_osSurf4Paint);
+	QPainter& painter = painter_ptr;
 	QPen pen(QColor(r, g, b, a), lw, TranslateLineStyle(lt));
+
 	painter.setPen(pen);
 	painter.setBrush(Qt::NoBrush);
 	painter.drawPolyline(qpt, count);
@@ -162,13 +225,27 @@ void QtGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned ch
 
 void QtGeoSurface::DrawPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
 {
-	EnsurePaintSurfaceValid();
-	if (_osSurf4Paint == nullptr)
-		return;
+	QPainterPtrFreeHelper painter_ptr;
+
+	if (_paintOnAttachedQPainter)
+	{
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
+	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
 
 	QPoint* qpt = CreateQPoints(count, surfX, surfY);
-
-	QPainter painter(_osSurf4Paint);
+	QPainter& painter = painter_ptr;
 	QPen pen(QColor(r, g, b, a), lw, TranslateLineStyle(lt));
 
 	painter.setPen(pen);
@@ -180,13 +257,27 @@ void QtGeoSurface::DrawPolygon(int count, int * surfX, int * surfY, unsigned cha
 
 void QtGeoSurface::FillPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
 {
-	EnsurePaintSurfaceValid();
-	if (_osSurf4Paint == nullptr)
-		return;
+	QPainterPtrFreeHelper painter_ptr;
+
+	if (_paintOnAttachedQPainter)
+	{
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
+	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
 
 	QPoint* qpt = CreateQPoints(count, surfX, surfY);
-
-	QPainter painter(_osSurf4Paint);
+	QPainter& painter = painter_ptr;
 	QBrush brush(QColor(r, g, b, a), TranslateFillStyle(ft));
 	painter.setBrush(brush);
 	painter.setPen(Qt::NoPen);
@@ -197,11 +288,26 @@ void QtGeoSurface::FillPolygon(int count, int * surfX, int * surfY, unsigned cha
 
 void QtGeoSurface::DrawEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
 {
-	EnsurePaintSurfaceValid();
-	if (_osSurf4Paint == nullptr)
-		return;
+	QPainterPtrFreeHelper painter_ptr;
 
-	QPainter painter(_osSurf4Paint);
+	if (_paintOnAttachedQPainter)
+	{
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
+	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
+
+	QPainter& painter = painter_ptr;
 	QPen pen(QColor(r, g, b, a), lw, TranslateLineStyle(lt));
 	painter.setPen(pen);
 	painter.setBrush(Qt::NoBrush);
@@ -210,11 +316,26 @@ void QtGeoSurface::DrawEllipse(int surfX, int surfY, int width, int height, unsi
 
 void QtGeoSurface::FillEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
 {
-	EnsurePaintSurfaceValid();
-	if (_osSurf4Paint == nullptr)
-		return;
+	QPainterPtrFreeHelper painter_ptr;
 
-	QPainter painter(_osSurf4Paint);
+	if (_paintOnAttachedQPainter)
+	{
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
+	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
+
+	QPainter& painter = painter_ptr;
 	QBrush brush(QColor(r, g, b, a),TranslateFillStyle(ft));
 	painter.setBrush(brush);
 	painter.setPen(Qt::NoPen);
@@ -223,11 +344,26 @@ void QtGeoSurface::FillEllipse(int surfX, int surfY, int width, int height, unsi
 
 void QtGeoSurface::DrawRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
 {
-	EnsurePaintSurfaceValid();
-	if (_osSurf4Paint == nullptr)
-		return;
+	QPainterPtrFreeHelper painter_ptr;
 
-	QPainter painter(_osSurf4Paint);
+	if (_paintOnAttachedQPainter)
+	{
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
+	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
+
+	QPainter& painter = painter_ptr;
 	QPen pen(QColor(r, g, b, a), lw, TranslateLineStyle(lt));
 	painter.setPen(pen);
 	painter.setBrush(Qt::NoBrush);
@@ -236,11 +372,26 @@ void QtGeoSurface::DrawRect(int surfX, int surfY, int width, int height, unsigne
 
 void QtGeoSurface::FillRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
 {
-	EnsurePaintSurfaceValid();
-	if (_osSurf4Paint == nullptr)
-		return;
+	QPainterPtrFreeHelper painter_ptr;
 
-	QPainter painter(_osSurf4Paint);
+	if (_paintOnAttachedQPainter)
+	{
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
+	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
+
+	QPainter& painter = painter_ptr;
 	QBrush brush(QColor(r, g, b, a), TranslateFillStyle(ft));
 	painter.setPen(Qt::NoPen);
 	painter.fillRect(surfX, surfY, width, height, brush);
@@ -248,11 +399,26 @@ void QtGeoSurface::FillRect(int surfX, int surfY, int width, int height, unsigne
 
 void QtGeoSurface::DrawImage(const unsigned char * buf, int surfX, int surfY, int width, int height)
 {
-	EnsurePaintSurfaceValid();
-	if(_osSurf4Paint != nullptr)
+	QPainterPtrFreeHelper painter_ptr;
+
+	if (_paintOnAttachedQPainter)
 	{
-		QPainter painter(_osSurf4Paint);
-		QImage img(buf, width, height, QImage::Format_ARGB32);
-		painter.drawImage(QRect(surfX, surfY,width,height), img, QRect(0, 0, width, height));
+		if (_painter == nullptr)
+			return;
+
+		painter_ptr = _painter;
 	}
+	else
+	{
+		EnsurePaintSurfaceValid();
+		if (_osSurf4Paint == nullptr)
+			return;
+		painter_ptr = new QPainter(_osSurf4Paint);
+		painter_ptr._autoDelte = true;
+
+	}
+
+	QPainter& painter = painter_ptr;
+	QImage img(buf, width, height, QImage::Format_ARGB32);
+	painter.drawImage(QRect(surfX, surfY, width, height), img, QRect(0, 0, width, height));
 }

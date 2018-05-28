@@ -13,10 +13,10 @@ struct IMapWidget;
 struct TGISCORE_API IMapTool
 {
 	virtual void SetMapWidget(IMapWidget* mapWidget) = 0;
-	//响应相同消息的两个工具不兼容
-	virtual bool IsCompatible(IMapTool*) = 0;
 
-	virtual void CleanUp() = 0;
+	virtual void SetEnabled(bool enabled) = 0;
+	virtual bool GetEnabled() = 0;
+
 	virtual void MouseDown(void*) = 0;
 	virtual void MouseMove(void*) = 0;
 	virtual void MouseUp(void*) = 0;

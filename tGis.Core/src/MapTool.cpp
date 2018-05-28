@@ -6,6 +6,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 MapTool::MapTool()
 {
 	_mapWidget = nullptr;
+	_enabled = true;
 }
 
 
@@ -18,13 +19,14 @@ void MapTool::SetMapWidget(IMapWidget * mapWidget)
 	_mapWidget = mapWidget;
 }
 
-bool MapTool::IsCompatible(IMapTool *)
+void MapTool::SetEnabled(bool enabled)
 {
-	return true;
+	_enabled = enabled;
 }
 
-void MapTool::CleanUp()
+bool MapTool::GetEnabled()
 {
+	return _enabled && _mapWidget != nullptr;
 }
 
 void MapTool::MouseDown(void *)
