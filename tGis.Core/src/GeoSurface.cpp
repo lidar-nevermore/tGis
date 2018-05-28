@@ -41,6 +41,12 @@ void GeoSurface::SetViewSize(int surfW, int surfH)
 	UpdateViewPort();
 }
 
+void GeoSurface::GetViewSize(int * surfW, int * surfH)
+{
+	*surfW = _surfWidth;
+	*surfH = _surfHeight;
+}
+
 void GeoSurface::SetViewPort(double spatialCenterX, double spatialCenterY, int surfW, int surfH, double resolution)
 {
 	_spatialCenterX = spatialCenterX;

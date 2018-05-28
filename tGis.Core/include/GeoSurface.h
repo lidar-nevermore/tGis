@@ -22,6 +22,7 @@ public:
 	virtual void SetViewResolution(double resolution);
 	virtual void SetViewCenter(double spatialCenterX, double spatialCenterY);
 	virtual void SetViewSize(int surfW, int surfH);
+	virtual void GetViewSize(int* surfW, int* surfH);
 	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, int surfW, int surfH, double resolution);
 	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, int *surfW, int *surfH, double *resolution);
 	virtual void IncludeEnvelope(const OGREnvelope*);

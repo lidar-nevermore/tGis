@@ -48,13 +48,13 @@ void RasterRgbLayerPropertyDialog::SetDataset(MyGDALRasterDataset * dataset)
 		QPushButton* button = ui.buttonBox->button(QDialogButtonBox::StandardButton::Ok);
 		button->setEnabled(true);
 		int bandIndex = 0;
-		ui.cboBandR->setCurrentIndex(bandIndex);
+		ui.cboBandB->setCurrentIndex(bandIndex);
 		bandIndex++;
 		bandIndex = bandIndex >= bandCount ? bandCount - 1 : bandIndex;
 		ui.cboBandG->setCurrentIndex(bandIndex);
 		bandIndex++;
 		bandIndex = bandIndex >= bandCount ? bandCount - 1 : bandIndex;
-		ui.cboBandB->setCurrentIndex(bandIndex);
+		ui.cboBandR->setCurrentIndex(bandIndex);
 	}
 }
 
