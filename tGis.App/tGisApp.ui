@@ -49,6 +49,13 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="zoomInAction"/>
+   <addaction name="zoomOutAction"/>
+   <addaction name="zoomFreeAction"/>
+   <addaction name="zoomRectAction"/>
+   <addaction name="panAction"/>
+   <addaction name="entireMapAction"/>
+   <addaction name="refreshMapAction"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -131,6 +138,99 @@
     </layout>
    </widget>
   </widget>
+  <action name="zoomInAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/Zoomin.png</normaloff>:/tGisApp/Resources/Zoomin.png</iconset>
+   </property>
+   <property name="text">
+    <string>放大</string>
+   </property>
+   <property name="toolTip">
+    <string>放大</string>
+   </property>
+  </action>
+  <action name="zoomOutAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/Zoomout.png</normaloff>:/tGisApp/Resources/Zoomout.png</iconset>
+   </property>
+   <property name="text">
+    <string>缩小</string>
+   </property>
+   <property name="toolTip">
+    <string>缩小</string>
+   </property>
+  </action>
+  <action name="zoomFreeAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/ZoomFree.png</normaloff>:/tGisApp/Resources/ZoomFree.png</iconset>
+   </property>
+   <property name="text">
+    <string>自由缩放</string>
+   </property>
+   <property name="toolTip">
+    <string>自由缩放</string>
+   </property>
+  </action>
+  <action name="zoomRectAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/ZoomRect.png</normaloff>:/tGisApp/Resources/ZoomRect.png</iconset>
+   </property>
+   <property name="text">
+    <string>拉框放大</string>
+   </property>
+   <property name="toolTip">
+    <string>拉框放大</string>
+   </property>
+  </action>
+  <action name="panAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/Pan.png</normaloff>:/tGisApp/Resources/Pan.png</iconset>
+   </property>
+   <property name="text">
+    <string>自由移动</string>
+   </property>
+   <property name="toolTip">
+    <string>自由移动</string>
+   </property>
+  </action>
+  <action name="entireMapAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/Entire.png</normaloff>:/tGisApp/Resources/Entire.png</iconset>
+   </property>
+   <property name="text">
+    <string>全图</string>
+   </property>
+   <property name="toolTip">
+    <string>全图</string>
+   </property>
+  </action>
+  <action name="refreshMapAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/RefreshMap.png</normaloff>:/tGisApp/Resources/RefreshMap.png</iconset>
+   </property>
+   <property name="text">
+    <string>刷新地图</string>
+   </property>
+   <property name="toolTip">
+    <string>刷新地图</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

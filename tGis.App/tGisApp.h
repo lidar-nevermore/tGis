@@ -24,8 +24,16 @@ private:
 	MyMap _map;
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;
-	DrawRectTool _drawRectTool;
 	RectZoomTool _rectZoomTool;
+
+private slots:
+	void on_zoomInAction_triggered(bool checked);
+	void on_zoomOutAction_triggered(bool checked);
+	void on_entireMapAction_triggered(bool checked);
+	void on_refreshMapAction_triggered(bool checked);
+	void on_zoomFreeAction_toggled(bool checked);
+	void on_zoomRectAction_toggled(bool checked);
+	void on_panAction_toggled(bool checked);
 
 private:
 	Ui::tGisAppClass ui;

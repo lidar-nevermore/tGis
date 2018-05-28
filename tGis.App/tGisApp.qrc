@@ -1,4 +1,11 @@
 <RCC>
-    <qresource prefix="tGisApp">
-    </qresource>
+  <qresource prefix="tGisApp">
+    <file>Resources/Entire.png</file>
+    <file>Resources/Pan.png</file>
+    <file>Resources/RefreshMap.png</file>
+    <file>Resources/ZoomFree.png</file>
+    <file>Resources/Zoomin.png</file>
+    <file>Resources/Zoomout.png</file>
+    <file>Resources/ZoomRect.png</file>
+  </qresource>
 </RCC>
