@@ -188,14 +188,17 @@
     <ClInclude Include="include\tVisualize.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="internal\MemoryBufferManager.h">
-      <Filter>internal</Filter>
-    </ClInclude>
     <ClInclude Include="include\RasterRgbLayer.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
     <ClInclude Include="include\RasterRgbLayerProvider.h">
       <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\VisualizeBufferManager.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\elr_mtx.h">
+      <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -289,14 +292,20 @@
     <ClCompile Include="src\Statistics.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="internal\MemoryBufferManager.cpp">
-      <Filter>internal</Filter>
-    </ClCompile>
     <ClCompile Include="src\RasterRgbLayer.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\RasterRgbLayerProvider.cpp">
       <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="include\tVisualize.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\VisualizeBufferManager.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\elr_mtx.c">
+      <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

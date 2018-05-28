@@ -69,10 +69,13 @@
     <ClInclude Include="include\VectorLayer.h" />
     <ClInclude Include="include\VectorSimpleLayer.h" />
     <ClInclude Include="include\VectorSimpleLayerProvider.h" />
-    <ClInclude Include="internal\MemoryBufferManager.h" />
+    <ClInclude Include="internal\elr_mtx.h" />
+    <ClInclude Include="internal\VisualizeBufferManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="internal\MemoryBufferManager.cpp" />
+    <ClCompile Include="include\tVisualize.cpp" />
+    <ClCompile Include="internal\elr_mtx.c" />
+    <ClCompile Include="internal\VisualizeBufferManager.cpp" />
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\FileSystemDataSource.cpp" />

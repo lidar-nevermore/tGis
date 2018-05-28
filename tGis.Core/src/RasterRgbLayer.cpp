@@ -149,22 +149,25 @@ inline int RasterRgbLayer::GetBandB()
 	return _bBandIndex;
 }
 
-void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, int initialReadingLeft, double initialAlignRmrX, int readingTop, int initialReadingTop, double initialAlignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int initialPaintingLeft, int paintingTop, int initialPaintingTop, int paintingWidth, int paintingHeight)
+void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
 {
+	GDALRasterIOExtraArg arg;
+	INIT_RASTERIO_EXTRA_ARG(arg);
+	arg.eResampleAlg = GRIORA_NearestNeighbour;
 	_rBand->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
-		pixBuffer, readingWidth, readingHeight, (GDALDataType)_rDataType, 0, 0);
+		pixBuffer, readingWidth, readingHeight, (GDALDataType)_rDataType, 0, 0, &arg);
 
 	unsigned char* itSurfBuf = surfBuffer;
 	for (int m = 0; m < paintingHeight; m++)
 	{
-		int readBufRow = (int)my_round((m + paintingTop - initialPaintingTop)*_surfPixRatio + initialAlignRmrY + initialReadingTop - readingTop, 0);
+		int readBufRow = (int)my_round((m + 0.4999999999)*_surfPixRatio + alignRmrY, 0);
 		if (readBufRow < 0)
 			readBufRow = 0;
 		if (readBufRow >= readingHeight)
 			readBufRow = readingHeight - 1;
 		for (int n = 0; n < paintingWidth; n++)
 		{
-			int readBufCol = (int)my_round((n + paintingLeft - initialPaintingLeft)*_surfPixRatio + initialAlignRmrX + initialReadingLeft - readingLeft, 0);
+			int readBufCol = (int)my_round((n + 0.4999999999)*_surfPixRatio + alignRmrX, 0);
 			if (readBufCol < 0)
 				readBufCol = 0;
 			if (readBufCol >= readingWidth)
@@ -189,19 +192,19 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, i
 	if (_gBandIndex != _rBandIndex)
 	{
 		_gBand->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
-			pixBuffer, readingWidth, readingHeight, (GDALDataType)_gDataType, 0, 0);
+			pixBuffer, readingWidth, readingHeight, (GDALDataType)_gDataType, 0, 0, &arg);
 
 		unsigned char* itSurfBuf = surfBuffer;
 		for (int m = 0; m < paintingHeight; m++)
 		{
-			int readBufRow = (int)my_round((m + paintingTop - initialPaintingTop)*_surfPixRatio + initialAlignRmrY + initialReadingTop - readingTop, 0);
+			int readBufRow = (int)my_round((m + 0.4999999999)*_surfPixRatio + alignRmrY, 0);
 			if (readBufRow < 0)
 				readBufRow = 0;
 			if (readBufRow >= readingHeight)
 				readBufRow = readingHeight - 1;
 			for (int n = 0; n < paintingWidth; n++)
 			{
-				int readBufCol = (int)my_round((n + paintingLeft - initialPaintingLeft)*_surfPixRatio + initialAlignRmrX + initialReadingLeft - readingLeft, 0);
+				int readBufCol = (int)my_round((n + 0.4999999999)*_surfPixRatio + alignRmrX, 0);
 				if (readBufCol < 0)
 					readBufCol = 0;
 				if (readBufCol >= readingWidth)
@@ -225,19 +228,19 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, i
 	if (_bBandIndex != _rBandIndex && _bBandIndex != _gBandIndex)
 	{
 		_bBand->RasterIO(GF_Read, readingLeft, readingTop, readingWidth, readingHeight,
-			pixBuffer, readingWidth, readingHeight, (GDALDataType)_bDataType, 0, 0);
+			pixBuffer, readingWidth, readingHeight, (GDALDataType)_bDataType, 0, 0, &arg);
 
 		unsigned char* itSurfBuf = surfBuffer;
 		for (int m = 0; m < paintingHeight; m++)
 		{
-			int readBufRow = (int)my_round((m + paintingTop - initialPaintingTop)*_surfPixRatio + initialAlignRmrY + initialReadingTop - readingTop, 0);
+			int readBufRow = (int)my_round((m + 0.4999999999)*_surfPixRatio + alignRmrY, 0);
 			if (readBufRow < 0)
 				readBufRow = 0;
 			if (readBufRow >= readingHeight)
 				readBufRow = readingHeight - 1;
 			for (int n = 0; n < paintingWidth; n++)
 			{
-				int readBufCol = (int)my_round((n + paintingLeft - initialPaintingLeft)*_surfPixRatio + initialAlignRmrX + initialReadingLeft - readingLeft, 0);
+				int readBufCol = (int)my_round((n + 0.4999999999)*_surfPixRatio + alignRmrX, 0);
 				if (readBufCol < 0)
 					readBufCol = 0;
 				if (readBufCol >= readingWidth)
@@ -257,29 +260,21 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, i
 	}
 }
 
-void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int readingTop, int readingRight, int readingBottom, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, double alignRmrX, int paintingTop, double alignRmrY, int paintingWidth, int paintingHeight)
+void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int readingTop, int readingRight, int readingBottom, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
 {
+	GDALRasterIOExtraArg arg;
+	INIT_RASTERIO_EXTRA_ARG(arg);
+	arg.eResampleAlg = GRIORA_NearestNeighbour;
 	_rBand->RasterIO(GF_Read, readingLeft, readingTop, readingRight - readingLeft, readingBottom - readingTop,
-		pixBuffer, readingWidth, readingHeight, (GDALDataType)_rDataType, 0, 0);
+		pixBuffer, paintingWidth, paintingHeight, (GDALDataType)_rDataType, 0, 0, &arg);
 
+	unsigned char* itPixBuf = pixBuffer;
 	unsigned char* itSurfBuf = surfBuffer;
 	for (int m = 0; m < paintingHeight; m++)
 	{
-		int readBufRow = (int)my_round((m + alignRmrY)*_surfPixRatio*readingHeight / (readingBottom - readingTop), 0);
-		if (readBufRow < 0)
-			readBufRow = 0;
-		if (readBufRow >= readingHeight)
-			readBufRow = readingHeight - 1;
 		for (int n = 0; n < paintingWidth; n++)
 		{
-			int readBufCol = (int)my_round((n + alignRmrX)*_surfPixRatio*readingWidth / (readingRight - readingLeft), 0);
-			if (readBufCol < 0)
-				readBufCol = 0;
-			if (readBufCol >= readingWidth)
-				readBufCol = readingWidth - 1;
-			int readBufPos = readBufRow*readingWidth*_rDataBytes + readBufCol*_rDataBytes;
-
-			double pixValue = MyGDALGetPixelValue((GDALDataType)_rDataType, pixBuffer + readBufPos);
+			double pixValue = MyGDALGetPixelValue((GDALDataType)_rDataType, itPixBuf);
 			int lutPos = (int)(256 * (pixValue - _rMin) / _rRange);
 			if (lutPos < 0) lutPos = 0;
 			else if (lutPos > 255) lutPos = 255;
@@ -290,6 +285,7 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 			if (_bBandIndex == _rBandIndex)
 				itSurfBuf[0] = itSurfBuf[2];
 
+			itPixBuf += _rDataBytes;
 			itSurfBuf += 4;
 		}
 	}
@@ -297,26 +293,15 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 	if (_gBandIndex != _rBandIndex)
 	{
 		_gBand->RasterIO(GF_Read, readingLeft, readingTop, readingRight - readingLeft, readingBottom - readingTop,
-			pixBuffer, readingWidth, readingHeight, (GDALDataType)_gDataType, 0, 0);
+			pixBuffer, paintingWidth, paintingHeight, (GDALDataType)_gDataType, 0, 0);
 
+		unsigned char* itPixBuf = pixBuffer;
 		unsigned char* itSurfBuf = surfBuffer;
 		for (int m = 0; m < paintingHeight; m++)
 		{
-			int readBufRow = (int)my_round((m + alignRmrY)*_surfPixRatio*readingHeight / (readingBottom - readingTop), 0);
-			if (readBufRow < 0)
-				readBufRow = 0;
-			if (readBufRow >= readingHeight)
-				readBufRow = readingHeight - 1;
 			for (int n = 0; n < paintingWidth; n++)
 			{
-				int readBufCol = (int)my_round((n + alignRmrX)*_surfPixRatio*readingWidth / (readingRight - readingLeft), 0);
-				if (readBufCol < 0)
-					readBufCol = 0;
-				if (readBufCol >= readingWidth)
-					readBufCol = readingWidth - 1;
-				int readBufPos = readBufRow*readingWidth*_gDataBytes + readBufCol*_gDataBytes;
-
-				double pixValue = MyGDALGetPixelValue((GDALDataType)_gDataType, pixBuffer + readBufPos);
+				double pixValue = MyGDALGetPixelValue((GDALDataType)_gDataType, itPixBuf);
 				int lutPos = (int)(256 * (pixValue - _gMin) / _gRange);
 				if (lutPos < 0) lutPos = 0;
 				else if (lutPos > 255) lutPos = 255;
@@ -325,6 +310,7 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 				if (_bBandIndex == _rBandIndex)
 					itSurfBuf[0] = itSurfBuf[1];
 
+				itPixBuf += _gDataBytes;
 				itSurfBuf += 4;
 			}
 		}
@@ -333,32 +319,22 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 	if (_bBandIndex != _rBandIndex && _bBandIndex != _gBandIndex)
 	{
 		_bBand->RasterIO(GF_Read, readingLeft, readingTop, readingRight - readingLeft, readingBottom - readingTop,
-			pixBuffer, readingWidth, readingHeight, (GDALDataType)_bDataType, 0, 0);
+			pixBuffer, paintingWidth, paintingHeight, (GDALDataType)_bDataType, 0, 0);
 
+		unsigned char* itPixBuf = pixBuffer;
 		unsigned char* itSurfBuf = surfBuffer;
 		for (int m = 0; m < paintingHeight; m++)
 		{
-			int readBufRow = (int)my_round((m + alignRmrY)*_surfPixRatio*readingHeight / (readingBottom - readingTop), 0);
-			if (readBufRow < 0)
-				readBufRow = 0;
-			if (readBufRow >= readingHeight)
-				readBufRow = readingHeight - 1;
 			for (int n = 0; n < paintingWidth; n++)
 			{
-				int readBufCol = (int)my_round((n + alignRmrX)*_surfPixRatio*readingWidth / (readingRight - readingLeft), 0);
-				if (readBufCol < 0)
-					readBufCol = 0;
-				if (readBufCol >= readingWidth)
-					readBufCol = readingWidth - 1;
-				int readBufPos = readBufRow*readingWidth*_bDataBytes + readBufCol*_bDataBytes;
-
-				double pixValue = MyGDALGetPixelValue((GDALDataType)_bDataType, pixBuffer + readBufPos);
+				double pixValue = MyGDALGetPixelValue((GDALDataType)_bDataType, itPixBuf);
 				int lutPos = (int)(256 * (pixValue - _bMin) / _bRange);
 				if (lutPos < 0) lutPos = 0;
 				else if (lutPos > 255) lutPos = 255;
 
 				itSurfBuf[0] = _bLut[lutPos];
 
+				itPixBuf += _bDataBytes;
 				itSurfBuf += 4;
 			}
 		}

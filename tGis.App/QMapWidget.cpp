@@ -1,4 +1,6 @@
 #include "QMapWidget.h"
+#include <QDesktopWidget>
+#include <QApplication>
 #include "qevent.h"
 
 
@@ -70,6 +72,10 @@ void QMapWidget::resizeEvent(QResizeEvent * e)
 {
 	QSize sz = e->size();
 	_geoSurface.SetViewSize(sz.width(), sz.height());
+	QDesktopWidget * desktop = QApplication::desktop();
+	int curMonitor = desktop->screenNumber(this);
+	QRect rect = desktop->screenGeometry(curMonitor);
+	SetMaxSurfaceSize(rect.width(), rect.height());
 	MapWidget::RepaintMap();
 }
 
