@@ -57,9 +57,12 @@
    <addaction name="entireMapAction"/>
    <addaction name="refreshMapAction"/>
    <addaction name="separator"/>
+   <addaction name="layerVisibleAction"/>
    <addaction name="zoomLayerAction"/>
    <addaction name="zoomOriginalAction"/>
+   <addaction name="layerAttributeAction"/>
    <addaction name="removeLayerAction"/>
+   <addaction name="removeAllLayersAction"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -269,6 +272,45 @@
    </property>
    <property name="toolTip">
     <string>原始比例图层</string>
+   </property>
+  </action>
+  <action name="layerVisibleAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/LayerVisible.png</normaloff>:/tGisApp/Resources/LayerVisible.png</iconset>
+   </property>
+   <property name="text">
+    <string>图层可见</string>
+   </property>
+   <property name="toolTip">
+    <string>图层是否可见</string>
+   </property>
+  </action>
+  <action name="layerAttributeAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/LayerAttribute.png</normaloff>:/tGisApp/Resources/LayerAttribute.png</iconset>
+   </property>
+   <property name="text">
+    <string>图层属性</string>
+   </property>
+   <property name="toolTip">
+    <string>图层属性</string>
+   </property>
+  </action>
+  <action name="removeAllLayersAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/RemoveAllLayers.png</normaloff>:/tGisApp/Resources/RemoveAllLayers.png</iconset>
+   </property>
+   <property name="text">
+    <string>移除所有图层</string>
+   </property>
+   <property name="toolTip">
+    <string>移除所有图层</string>
    </property>
   </action>
  </widget>

@@ -25,7 +25,7 @@ struct TGIS_API IMap
 	virtual bool InsertLayer(int, ILayer*) = 0;
 	virtual void RemoveLayer(int) = 0;
 	virtual void RemoveLayer(ILayer*) = 0;
-
+	virtual void ClearLayers() = 0;
 
 	virtual void Paint(IGeoSurface*) = 0;
 

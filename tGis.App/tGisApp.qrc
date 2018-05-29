@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="tGisApp">
+    <file>Resources/LayerAttribute.png</file>
+    <file>Resources/LayerVisible.png</file>
+    <file>Resources/RemoveAllLayers.png</file>
     <file>Resources/ZoomLayer.png</file>
     <file>Resources/ZoomOriginal.png</file>
     <file>Resources/RemoveLayer.png</file>

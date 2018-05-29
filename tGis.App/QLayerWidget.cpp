@@ -60,6 +60,8 @@ void QLayerWidget::RemoveSelectedLayer()
 
 void QLayerWidget::RemoveAllLayers()
 {
+	_map->ClearLayers();
+	rootNode->setRowCount(0);
 }
 
 void QLayerWidget::selectionChanged(const QItemSelection & sel, const QItemSelection & deselected)

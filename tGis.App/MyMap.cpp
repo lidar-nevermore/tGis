@@ -18,3 +18,14 @@ MyMap::~MyMap()
 		provider->ReleaseLayer(layer);
 	}
 }
+
+void MyMap::ClearLayers()
+{
+	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
+	{
+		ILayer* layer = *it;
+		ILayerProvider* provider = LayerProviderRepository::INSTANCE().GetLayerProvider(layer->GetType());
+		provider->ReleaseLayer(layer);
+	}
+	_vecLayer.clear();
+}

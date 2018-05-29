@@ -10,5 +10,8 @@ class MyMap : public Map
 public:
 	MyMap();
 	~MyMap();
+
+public:
+	void ClearLayers();
 };
 

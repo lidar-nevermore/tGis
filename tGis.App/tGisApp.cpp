@@ -31,6 +31,8 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.zoomLayerAction->setEnabled(false);
 	ui.zoomOriginalAction->setEnabled(false);
 	ui.removeLayerAction->setEnabled(false);
+	ui.layerVisibleAction->setEnabled(false);
+	ui.layerAttributeAction->setEnabled(false);
 }
 
 void tGisApp::on_zoomInAction_triggered(bool checked)
@@ -116,13 +118,35 @@ void tGisApp::on_removeLayerAction_triggered(bool checked)
 	ui.mapWidget->RepaintMap();
 }
 
+void tGisApp::on_layerVisibleAction_toggled(bool checked)
+{
+	ILayer* layer = ui.layerWidget->GetSelectedLayer();
+	if (layer != nullptr)
+	{
+		layer->SetVisible(checked);
+		ui.mapWidget->RepaintMap();
+	}
+}
+
+void tGisApp::on_layerAttributeAction_triggered(bool checked)
+{
+}
+
+void tGisApp::on_removeAllLayersAction_triggered(bool checked)
+{
+	ui.layerWidget->RemoveAllLayers();
+	ui.mapWidget->RepaintMap();
+}
+
 void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
 {
 	ui.zoomLayerAction->setEnabled(layer != nullptr);
 	ui.removeLayerAction->setEnabled(layer != nullptr);
-
+	ui.layerVisibleAction->setEnabled(layer != nullptr);
+	ui.layerAttributeAction->setEnabled(layer != nullptr);
 	if (layer != nullptr)
 	{
+		ui.layerVisibleAction->setChecked(layer->GetVisible());
 		IDataset* dataset = layer->GetDataset();
 		if (strcmp(MyGDALRasterDataset::S_GetType(), dataset->GetType()) == 0)
 		{

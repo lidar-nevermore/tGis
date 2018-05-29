@@ -38,6 +38,9 @@ private slots:
 	void on_zoomLayerAction_triggered(bool checked);
 	void on_zoomOriginalAction_triggered(bool checked);
 	void on_removeLayerAction_triggered(bool checked);
+	void on_layerVisibleAction_toggled(bool checked);
+	void on_layerAttributeAction_triggered(bool checked);
+	void on_removeAllLayersAction_triggered(bool checked);
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 
 private:
