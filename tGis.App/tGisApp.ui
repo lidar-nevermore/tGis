@@ -28,7 +28,7 @@
      <number>1</number>
     </property>
     <item>
-     <widget class="QMapWidget" name="mapWidget" native="true"/>
+     <widget class="tGis::Utility::QMapWidget" name="mapWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -56,6 +56,10 @@
    <addaction name="panAction"/>
    <addaction name="entireMapAction"/>
    <addaction name="refreshMapAction"/>
+   <addaction name="separator"/>
+   <addaction name="zoomLayerAction"/>
+   <addaction name="zoomOriginalAction"/>
+   <addaction name="removeLayerAction"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -231,6 +235,42 @@
     <string>刷新地图</string>
    </property>
   </action>
+  <action name="removeLayerAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/RemoveLayer.png</normaloff>:/tGisApp/Resources/RemoveLayer.png</iconset>
+   </property>
+   <property name="text">
+    <string>移除图层</string>
+   </property>
+   <property name="toolTip">
+    <string>移除图层</string>
+   </property>
+  </action>
+  <action name="zoomLayerAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/ZoomLayer.png</normaloff>:/tGisApp/Resources/ZoomLayer.png</iconset>
+   </property>
+   <property name="text">
+    <string>缩放至图层</string>
+   </property>
+   <property name="toolTip">
+    <string>缩放至图层</string>
+   </property>
+  </action>
+  <action name="zoomOriginalAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/ZoomOriginal.png</normaloff>:/tGisApp/Resources/ZoomOriginal.png</iconset>
+   </property>
+   <property name="text">
+    <string>原始比例图层</string>
+   </property>
+   <property name="toolTip">
+    <string>原始比例图层</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -240,15 +280,15 @@
    <header>qdatasourcewidget.h</header>
   </customwidget>
   <customwidget>
-   <class>QMapWidget</class>
-   <extends>QWidget</extends>
-   <header>qmapwidget.h</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>QLayerWidget</class>
    <extends>QTreeView</extends>
    <header>qlayerwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>tGis::Utility::QMapWidget</class>
+   <extends>QWidget</extends>
+   <header>qmapwidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

@@ -10,6 +10,7 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.setupUi(this);
 
 	ui.mapWidget->SetMap(&_map);
+	ui.layerWidget->SetMap(&_map);
 	SetCurrentMap(&_map);
 	SetCurrentMapWidget((IMapWidget*)ui.mapWidget);
 	ui.mapWidget->AddMapTool(&_mapPanTool);
@@ -23,9 +24,13 @@ tGisApp::tGisApp(QWidget *parent)
 	SetMaxSurfaceSize(rect.width(), rect.height());
 
 	connect(ui.dataSourceWidget, &QDataSourceWidget::LayerAdded, ui.layerWidget,&QLayerWidget::LayerAdded);
+	connect(ui.layerWidget, &QLayerWidget::LayerSelectionChanged, this, &tGisApp::on_layerWidget_LayerSelectionChanged);
 
 	ui.zoomFreeAction->setChecked(true);
 	ui.panAction->setChecked(true);
+	ui.zoomLayerAction->setEnabled(false);
+	ui.zoomOriginalAction->setEnabled(false);
+	ui.removeLayerAction->setEnabled(false);
 }
 
 void tGisApp::on_zoomInAction_triggered(bool checked)
@@ -75,4 +80,57 @@ void tGisApp::on_panAction_toggled(bool checked)
 {
 	_mapPanTool.SetEnabled(checked);
 	ui.zoomRectAction->setChecked(!checked);
+}
+
+void tGisApp::on_zoomLayerAction_triggered(bool checked)
+{
+	ILayer* layer = ui.layerWidget->GetSelectedLayer();
+	if (layer != nullptr)
+	{
+		IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
+		surface->IncludeEnvelope(layer->GetEnvelope());
+		ui.mapWidget->RepaintMap();
+	}
+}
+
+void tGisApp::on_zoomOriginalAction_triggered(bool checked)
+{
+	ILayer* layer = ui.layerWidget->GetSelectedLayer();
+	if (layer != nullptr)
+	{
+		IDataset* dataset = layer->GetDataset();
+		if (strcmp(MyGDALRasterDataset::S_GetType(), dataset->GetType()) == 0)
+		{
+			MyGDALRasterDataset* gdalDataset = (MyGDALRasterDataset*)dataset;
+			double res = gdalDataset->GetGeoTransform()[1];
+			IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
+			surface->SetViewResolution(res);
+			ui.mapWidget->RepaintMap();
+		}
+	}
+}
+
+void tGisApp::on_removeLayerAction_triggered(bool checked)
+{
+	ui.layerWidget->RemoveSelectedLayer();
+	ui.mapWidget->RepaintMap();
+}
+
+void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
+{
+	ui.zoomLayerAction->setEnabled(layer != nullptr);
+	ui.removeLayerAction->setEnabled(layer != nullptr);
+
+	if (layer != nullptr)
+	{
+		IDataset* dataset = layer->GetDataset();
+		if (strcmp(MyGDALRasterDataset::S_GetType(), dataset->GetType()) == 0)
+		{
+			ui.zoomOriginalAction->setEnabled(true);
+		}
+	}
+	else
+	{
+		ui.zoomOriginalAction->setEnabled(layer != nullptr);
+	}
 }

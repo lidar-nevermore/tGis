@@ -35,6 +35,10 @@ private slots:
 	void on_zoomFreeAction_toggled(bool checked);
 	void on_zoomRectAction_toggled(bool checked);
 	void on_panAction_toggled(bool checked);
+	void on_zoomLayerAction_triggered(bool checked);
+	void on_zoomOriginalAction_triggered(bool checked);
+	void on_removeLayerAction_triggered(bool checked);
+	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 
 private:
 	Ui::tGisAppClass ui;
