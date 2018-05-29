@@ -7,7 +7,7 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGISCORE_API ISurface
+struct TGIS_API ISurface
 {
 	virtual void SetViewSize(int surfW, int surfH) = 0;
 	virtual void GetViewSize(int* surfW, int* surfH) = 0;

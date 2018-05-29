@@ -14,10 +14,10 @@
 
 //exports helper
 
-#ifdef TGISCORE_EXPORTS
-#define TGISCORE_API __declspec(dllexport)
+#ifdef TGIS_EXPORTS
+#define TGIS_API __declspec(dllexport)
 #else
-#define TGISCORE_API __declspec(dllimport)
+#define TGIS_API __declspec(dllimport)
 #endif
 
 

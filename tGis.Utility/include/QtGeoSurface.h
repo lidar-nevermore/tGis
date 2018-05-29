@@ -1,12 +1,17 @@
 #pragma once
 
+#ifndef __QTGEOSURFACE_H__
+#define __QTGEOSURFACE_H__
+
 #include <QPainter>
 #include <QPixmap>
 #include "tEntity.h"
 
 using namespace tGis::Core;
 
-class QtGeoSurface : public GeoSurface
+BEGIN_NAME_SPACE(tGis, Utility)
+
+class TGIS_API QtGeoSurface : public GeoSurface
 {
 public:
 	QtGeoSurface();
@@ -51,4 +56,10 @@ public:
 
 	void DrawImage(const unsigned char* buf, int surfX, int surfY, int width, int height);
 };
+
+
+END_NAME_SPACE(tGis, Utility)
+
+
+#endif
 

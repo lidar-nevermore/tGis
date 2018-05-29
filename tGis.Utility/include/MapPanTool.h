@@ -1,10 +1,15 @@
 #pragma once
 
+#ifndef __MAPPANTOOL_H__
+#define __MAPPANTOOL_H__
+
 #include "tVisualize.h"
 
 using namespace tGis::Core;
 
-class MapPanTool : public MapTool
+BEGIN_NAME_SPACE(tGis, Utility)
+
+class TGIS_API MapPanTool : public MapTool
 {
 public:
 	MapPanTool();
@@ -22,4 +27,10 @@ private:
 	double _mouseDownSpatialX;
 	double _mouseDownSpatialY;
 };
+
+
+END_NAME_SPACE(tGis, Utility)
+
+
+#endif
 

@@ -18,7 +18,7 @@ class SimpleMarkerSymbol;
 class SimpleLineSymbol;
 class SimpleFillSymbol;
 
-class TGISCORE_API VectorSimpleLayerProvider : public ILayerProvider
+class TGIS_API VectorSimpleLayerProvider : public ILayerProvider
 {
 public:
 	typedef ILayer*(*CreationUI)(VectorSimpleLayerProvider*,IDataset*);

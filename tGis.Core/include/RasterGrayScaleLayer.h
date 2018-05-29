@@ -18,7 +18,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class RasterGrayScaleLayerProvider;
 
-class TGISCORE_API RasterGrayScaleLayer : public RasterLayer
+class TGIS_API RasterGrayScaleLayer : public RasterLayer
 {
 	friend class RasterGrayScaleLayerProvider;
 public:

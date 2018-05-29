@@ -1,6 +1,8 @@
 #include "RectZoomTool.h"
 
 
+BEGIN_NAME_SPACE(tGis, Utility)
+
 
 RectZoomTool::RectZoomTool()
 {
@@ -24,3 +26,6 @@ void RectZoomTool::MouseUp(void * ev)
 	_rect.SetVisible(false);
 	_mapWidget->RepaintMap();
 }
+
+END_NAME_SPACE(tGis, Utility)
+

@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef __QMAPWIDGET_H__
+#define __QMAPWIDGET_H__
+
+
 #include <QWidget>
 #include <QPainter>
 
@@ -8,8 +12,9 @@
 
 using namespace tGis::Core;
 
+BEGIN_NAME_SPACE(tGis, Utility)
 
-class QMapWidget : public QWidget,public MapWidget
+class TGIS_API QMapWidget : public QWidget,public MapWidget
 {
 	Q_OBJECT
 public:
@@ -44,3 +49,8 @@ protected:
 	void wheelEvent(QWheelEvent *);
 };
 
+
+END_NAME_SPACE(tGis, Utility)
+
+
+#endif

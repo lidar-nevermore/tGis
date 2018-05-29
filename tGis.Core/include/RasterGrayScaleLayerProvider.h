@@ -13,7 +13,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 class RasterGrayScaleLayer;
 class MyGDALRasterDataset;
 
-class TGISCORE_API RasterGrayScaleLayerProvider : public ILayerProvider
+class TGIS_API RasterGrayScaleLayerProvider : public ILayerProvider
 {
 public:
 	typedef ILayer*(*CreationUI)(RasterGrayScaleLayerProvider*,IDataset*);

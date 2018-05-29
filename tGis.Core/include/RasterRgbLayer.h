@@ -16,7 +16,7 @@ class GDALRasterBand;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGISCORE_API RasterRgbLayer : public RasterLayer
+class TGIS_API RasterRgbLayer : public RasterLayer
 {
 public:
 	RasterRgbLayer();

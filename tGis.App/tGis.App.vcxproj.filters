@@ -11,18 +11,6 @@
     <ClCompile Include="QDataSourceWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="QMapWidget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="QtGeoSurface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MapPanTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MapZoomTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="QLayerWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -36,12 +24,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MyMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawRectTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RectZoomTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,9 +56,6 @@
     <QtMoc Include="QDataSourceWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="QMapWidget.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="QLayerWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -107,31 +86,13 @@
     <ClInclude Include="IconRes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="QtGeoSurface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MapZoomTool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MapPanTool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tGisMetaType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RasterRgbLayerPropertyDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MyMap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawRectTool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RectZoomTool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

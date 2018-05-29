@@ -21,7 +21,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class VectorSimpleLayerProvider;
 
-class TGISCORE_API MyGDALVectorDataset : public MyGDALFileDataset
+class TGIS_API MyGDALVectorDataset : public MyGDALFileDataset
 {
 public:
 	const char* GetType();

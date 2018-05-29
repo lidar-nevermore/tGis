@@ -10,7 +10,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct ISurface;
 struct ISymbolLibrary;
 
-struct TGISCORE_API ISymbol
+struct TGIS_API ISymbol
 {
 	virtual const ISymbolLibrary* GetSymbolLibrary() = 0;
 

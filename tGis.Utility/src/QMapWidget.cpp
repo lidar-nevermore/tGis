@@ -7,6 +7,8 @@
 
 using namespace tGis::Core;
 
+BEGIN_NAME_SPACE(tGis, Utility)
+
 QMapWidget::QMapWidget(QWidget *parent)
 	:QWidget(parent)
 {
@@ -104,3 +106,8 @@ void QMapWidget::wheelEvent(QWheelEvent * e)
 {
 	MapWidget::MouseWheel(e);
 }
+
+
+
+END_NAME_SPACE(tGis, Utility)
+

@@ -3,6 +3,8 @@
 
 #include "MapPanTool.h"
 
+BEGIN_NAME_SPACE(tGis, Utility)
+
 MapPanTool::MapPanTool()
 {
 	_mouseDownX = -1;
@@ -55,3 +57,6 @@ void MapPanTool::MouseUp(void* ev)
 {
 	_mapWidget->RepaintMap();
 }
+
+END_NAME_SPACE(tGis, Utility)
+

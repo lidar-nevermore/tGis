@@ -5,6 +5,7 @@
 #include <QVariant>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QMessageBox>
 
 #include "tOrganizer.h"
 
@@ -185,13 +186,22 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 				IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
 
 				int layerCount = map->GetLayerCount();
-				map->AddLayer(layer);
-				emit LayerAdded(map, layer, providers[0]);
-				const OGREnvelope* envelope = layer->GetEnvelope();
-				geoSurface->SetSpatialReference(layer->GetSpatialReference());
-				geoSurface->IncludeEnvelope(envelope);
+				if (map->AddLayer(layer))
+				{
+					emit LayerAdded(map, layer, providers[0]);
+					const OGREnvelope* envelope = layer->GetEnvelope();
+					geoSurface->SetSpatialReference(layer->GetSpatialReference());
+					geoSurface->IncludeEnvelope(envelope);
 
-				mapWidget->RepaintMap();
+					mapWidget->RepaintMap();
+				}
+				else
+				{
+					QMessageBox::information((QWidget*)GetMainWindow(),
+						QStringLiteral("Warning"),
+						QStringLiteral("投影不一致，其无法转换。图层添加失败！"),
+						QMessageBox::Yes, QMessageBox::Yes);
+				}
 			}
 		}
 	}

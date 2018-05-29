@@ -9,7 +9,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IGeoSurface;
 
-struct TGISCORE_API IOverlayObject
+struct TGIS_API IOverlayObject
 {
 	virtual bool GetVisible() = 0;
 	virtual void SetVisible(bool) = 0;

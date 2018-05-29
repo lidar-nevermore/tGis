@@ -12,6 +12,7 @@
 #include "RectZoomTool.h"
 
 using namespace tGis::Core;
+using namespace tGis::Utility;
 
 class tGisApp : public QMainWindow
 {

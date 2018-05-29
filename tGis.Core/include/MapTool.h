@@ -10,7 +10,7 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGISCORE_API MapTool : public IMapTool
+class TGIS_API MapTool : public IMapTool
 {
 public:
 	MapTool();

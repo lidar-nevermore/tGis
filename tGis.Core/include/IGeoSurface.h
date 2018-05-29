@@ -12,7 +12,7 @@ class OGRSpatialReference;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGISCORE_API IGeoSurface : public ISurface
+struct TGIS_API IGeoSurface : public ISurface
 {
 	virtual void SetViewResolution(double resolution) = 0;
 	virtual void SetViewCenter(double spatialCenterX, double spatialCenterY) = 0;

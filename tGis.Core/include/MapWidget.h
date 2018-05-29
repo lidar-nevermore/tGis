@@ -15,7 +15,7 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGISCORE_API MapWidget : public IMapWidget
+class TGIS_API MapWidget : public IMapWidget
 {
 public:
 	MapWidget();

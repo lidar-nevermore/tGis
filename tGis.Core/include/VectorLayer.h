@@ -20,7 +20,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class MyGDALVectorDataset;
 
-class TGISCORE_API VectorLayer : public Layer
+class TGIS_API VectorLayer : public Layer
 {
 public:
 	VectorLayer();

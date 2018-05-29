@@ -14,12 +14,12 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IMapWidget;
 
-TGISCORE_API void SetCurrentMap(IMap*);
+TGIS_API void SetCurrentMap(IMap*);
 
-TGISCORE_API IMap*  GetCurrentMap();
+TGIS_API IMap*  GetCurrentMap();
 
-TGISCORE_API void SetCurrentMapWidget(IMapWidget*);
+TGIS_API void SetCurrentMapWidget(IMapWidget*);
 
-TGISCORE_API IMapWidget*  GetCurrentMapWidget();
+TGIS_API IMapWidget*  GetCurrentMapWidget();
 
 END_NAME_SPACE(tGis, Core)

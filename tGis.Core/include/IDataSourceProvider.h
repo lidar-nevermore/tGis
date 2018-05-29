@@ -11,7 +11,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataSource;
 struct IDataset;
 
-struct TGISCORE_API IDataSourceProvider
+struct TGIS_API IDataSourceProvider
 {
 	virtual const char* GetType() = 0;
 	virtual const char* GetName() = 0;

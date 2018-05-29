@@ -18,7 +18,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class RasterGrayScaleLayerProvider;
 
-class TGISCORE_API MyGDALRasterDataset : public MyGDALFileDataset
+class TGIS_API MyGDALRasterDataset : public MyGDALFileDataset
 {
 public:
 	const char* GetType();

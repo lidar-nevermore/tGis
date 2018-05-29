@@ -3,6 +3,7 @@
 #include "qevent.h"
 #include "tVisualize.h"
 
+BEGIN_NAME_SPACE(tGis, Utility)
 
 DrawRectTool::DrawRectTool()
 {
@@ -61,3 +62,5 @@ void DrawRectTool::MouseUp(void *)
 	_rect.SetVisible(false);
 	_mapWidget->PresentSurface();
 }
+
+END_NAME_SPACE(tGis, Utility)

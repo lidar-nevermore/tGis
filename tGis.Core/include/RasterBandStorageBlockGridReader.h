@@ -14,7 +14,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 //根据按块读取波段时读取块的大小计算出最佳的存储块缓存矩阵大小和存储块遍历方式
 //然后按照块遍历方式读取文件中的所有存储块
 //存储块表示按照分块存储方式存储栅格数据时所划分出的数据块
-class TGISCORE_API RasterBandStorageBlockGridReader
+class TGIS_API RasterBandStorageBlockGridReader
 {
 public:
 	// width 每次需要读取块的宽度 单位像素

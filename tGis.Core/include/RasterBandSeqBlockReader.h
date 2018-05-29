@@ -13,7 +13,7 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGISCORE_API RasterBandSeqBlockReader
+class TGIS_API RasterBandSeqBlockReader
 {
 public:
 	typedef void(*FOREACHBLOCK_FUNC)(void* user, GDALRasterBand* band, void* block, int x, int y);

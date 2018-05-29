@@ -2,6 +2,8 @@
 #include "SimpleLineSymbol.h"
 #include "SimpleFillSymbol.h"
 
+BEGIN_NAME_SPACE(tGis, Utility)
+
 
 QtGeoSurface::QtGeoSurface()
 {
@@ -422,3 +424,6 @@ void QtGeoSurface::DrawImage(const unsigned char * buf, int surfX, int surfY, in
 	QImage img(buf, width, height, QImage::Format_ARGB32);
 	painter.drawImage(QRect(surfX, surfY, width, height), img, QRect(0, 0, width, height));
 }
+
+
+END_NAME_SPACE(tGis, Utility)

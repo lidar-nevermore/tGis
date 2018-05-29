@@ -7,7 +7,7 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGISCORE_API Statistics
+struct TGIS_API Statistics
 {
 	double max;
 	double min;

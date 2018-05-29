@@ -11,7 +11,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataset;
 struct IGeoSurface;
 
-struct TGISCORE_API IMap
+struct TGIS_API IMap
 {
 	virtual const char* GetName() = 0;
 	virtual void SetName(const char*) = 0;

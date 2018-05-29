@@ -15,7 +15,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataSourceProvider;
 
-class TGISCORE_API DataSourceProviderRepository
+class TGIS_API DataSourceProviderRepository
 {
 public:
 	static DataSourceProviderRepository* _instance;

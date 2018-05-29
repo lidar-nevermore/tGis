@@ -1,10 +1,15 @@
 #pragma once
 
+#ifndef __DRAWRECTTOOL_H__
+#define __DRAWRECTTOOL_H__
+
 #include "tVisualize.h"
 
 using namespace tGis::Core;
 
-class DrawRectTool : public MapTool
+BEGIN_NAME_SPACE(tGis, Utility)
+
+class TGIS_API DrawRectTool : public MapTool
 {
 public:
 	DrawRectTool();
@@ -21,4 +26,9 @@ public:
 protected:
 	OverlayRect _rect;
 };
+
+END_NAME_SPACE(tGis, Utility)
+
+
+#endif
 

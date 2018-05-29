@@ -18,7 +18,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 class MyGDALRasterDataset;
 
 
-class TGISCORE_API RasterLayer : public Layer
+class TGIS_API RasterLayer : public Layer
 {
 public:
 	RasterLayer();

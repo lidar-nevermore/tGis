@@ -7,22 +7,22 @@ static IMap* g_CurrentMap = nullptr;
 
 static IMapWidget* g_CurrentMapWidget = nullptr;
 
-TGISCORE_API void SetCurrentMap(IMap* map)
+TGIS_API void SetCurrentMap(IMap* map)
 {
 	g_CurrentMap = map;
 }
 
-TGISCORE_API IMap* GetCurrentMap()
+TGIS_API IMap* GetCurrentMap()
 {
 	return g_CurrentMap;
 }
 
-TGISCORE_API void SetCurrentMapWidget(IMapWidget * mapwidget)
+TGIS_API void SetCurrentMapWidget(IMapWidget * mapwidget)
 {
 	g_CurrentMapWidget = mapwidget;
 }
 
-TGISCORE_API IMapWidget * GetCurrentMapWidget()
+TGIS_API IMapWidget * GetCurrentMapWidget()
 {
 	return g_CurrentMapWidget;
 }

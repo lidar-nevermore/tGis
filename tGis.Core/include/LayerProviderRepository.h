@@ -15,7 +15,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ILayerProvider;
 
-class TGISCORE_API LayerProviderRepository
+class TGIS_API LayerProviderRepository
 {
 public:
 	static LayerProviderRepository* _instance;

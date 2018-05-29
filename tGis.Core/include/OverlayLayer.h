@@ -14,7 +14,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class OverlayLayer : public IOverlayLayer
+class TGIS_API OverlayLayer : public IOverlayLayer
 {
 public:
 	OverlayLayer();

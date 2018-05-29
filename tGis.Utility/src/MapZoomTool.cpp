@@ -4,6 +4,9 @@
 #include "tVisualize.h"
 
 
+BEGIN_NAME_SPACE(tGis, Utility)
+
+
 MapZoomTool::MapZoomTool()
 {
 }
@@ -64,3 +67,6 @@ void MapZoomTool::MouseWheel(void *ev)
 		_mapWidget->PresentSurface();
 	}
 }
+
+END_NAME_SPACE(tGis, Utility)
+

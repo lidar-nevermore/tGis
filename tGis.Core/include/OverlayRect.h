@@ -12,7 +12,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IGeoSurface;
 struct ISymbol;
 
-class TGISCORE_API OverlayRect : public IOverlayObject
+class TGIS_API OverlayRect : public IOverlayObject
 {
 public:
 	OverlayRect();

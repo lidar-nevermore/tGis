@@ -12,7 +12,7 @@
 using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
-class TGISCORE_API GeoSurface : IGeoSurface
+class TGIS_API GeoSurface : IGeoSurface
 {
 public:
 	GeoSurface();

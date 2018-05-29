@@ -36,7 +36,7 @@ typedef struct _StorageBlockBuffer
 } StorageBlockBuffer;
 
 
-class TGISCORE_API RasterBandSeqPixelReader
+class TGIS_API RasterBandSeqPixelReader
 {
 public:
 	typedef void(*FOREACHPIXEL_FUNC)(void* user, GDALRasterBand* band, double pix, int x, int y, void* orgPix, StorageBlockBuffer* block, int xPosIB, int yPosIB);

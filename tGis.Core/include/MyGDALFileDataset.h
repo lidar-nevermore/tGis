@@ -19,7 +19,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct GDALInit;
 
-class TGISCORE_API MyGDALFileDataset : public IDataset
+class TGIS_API MyGDALFileDataset : public IDataset
 {
 	friend class FileSystemDataSource;
 

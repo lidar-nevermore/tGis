@@ -10,7 +10,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISurface;
 
-class TGISCORE_API SimpleFillSymbol : public TSymbol<char>
+class TGIS_API SimpleFillSymbol : public TSymbol<char>
 {
 public:
 	static const int IdentifierBegin = 200;

@@ -28,7 +28,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class VectorSimpleLayerProvider;
 
-class TGISCORE_API VectorSimpleLayer : public VectorLayer
+class TGIS_API VectorSimpleLayer : public VectorLayer
 {
 	friend class VectorSimpleLayerProvider;
 public:

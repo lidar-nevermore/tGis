@@ -14,7 +14,7 @@ struct IGeoSurface;
 struct IMapTool;
 struct IOverlayLayer;
 
-struct TGISCORE_API IMapWidget
+struct TGIS_API IMapWidget
 {
 	virtual void SetMap(IMap*) = 0;
 	virtual IMap* GetMap() = 0;

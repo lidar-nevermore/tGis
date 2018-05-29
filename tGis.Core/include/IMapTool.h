@@ -10,7 +10,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IMapWidget;
 
-struct TGISCORE_API IMapTool
+struct TGIS_API IMapTool
 {
 	virtual void SetMapWidget(IMapWidget* mapWidget) = 0;
 

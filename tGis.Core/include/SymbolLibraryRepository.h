@@ -15,7 +15,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISymbolLibrary;
 
-class SymbolLibraryRepository
+class TGIS_API SymbolLibraryRepository
 {
 public:
 	static SymbolLibraryRepository* _instance;
