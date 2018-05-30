@@ -3,13 +3,10 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include "boost/filesystem.hpp" 
-#include "boost/algorithm/string/classification.hpp"
-#include "boost/algorithm/string/split.hpp"
+
 
 using namespace std;
 
-namespace fs = boost::filesystem;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -19,12 +16,19 @@ MyGDALRasterDataset::MyGDALRasterDataset()
 {
 }
 
-MyGDALRasterDataset::MyGDALRasterDataset(const char* path, bool delayOpen, GDALAccess eAccess, bool autoClose)
+MyGDALRasterDataset::MyGDALRasterDataset(const char* path, GDALAccess eAccess, bool delayOpen, bool autoClose)
 {
 	_eAccess = eAccess;
 	_path = path;
-	fs::path dir(path);
-	_name = dir.filename().string();
+	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+	if (pos == _path.npos)
+	{
+		_name = _path;
+	}
+	else
+	{
+		_name = _path.substr(pos+1);
+	}
 	if (delayOpen)
 	{
 		_dataset = nullptr;
@@ -88,8 +92,15 @@ void MyGDALRasterDataset::Attach(const char * file, GDALAccess eAccess, bool aut
 {
 	_eAccess = eAccess;
 	_path = file;
-	fs::path dir(file);
-	_name = dir.filename().string();
+	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+	if (pos == _path.npos)
+	{
+		_name = _path;
+	}
+	else
+	{
+		_name = _path.substr(pos+1);
+	}
 	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, eAccess, nullptr, nullptr, nullptr);//(GDALDataset*)GDALOpen(file, eAccess);
 	if (dataset != nullptr)
 	{
@@ -101,8 +112,15 @@ void MyGDALRasterDataset::Attach(const char* file, GDALAccess eAccess, double no
 {
 	_eAccess = eAccess;
 	_path = file;
-	fs::path dir(file);
-	_name = dir.filename().string();
+	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+	if (pos == _path.npos)
+	{
+		_name = _path;
+	}
+	else
+	{
+		_name = _path.substr(pos+1);
+	}
 	GDALDataset *dataset = (GDALDataset*)GDALOpen(file, eAccess);
 	if (dataset != nullptr)
 	{
@@ -139,11 +157,22 @@ void MyGDALRasterDataset::AttachHDF(const char* file,GDALAccess eAccess,const in
 				{
 					std::string tmpstr = std::string(papszSUBDATASETS[i]);  
 					_path = tmpstr.substr(tmpstr.find_first_of("=") + 1);
-					fs::path dir(file);
+					
 					char subset[32] = { 0 };
 					strcpy(subset, ":SUBDATASET_");
 					_itoa(subdataset, subset + 12, 10);
-					_name = dir.filename().string() + subset;
+					string file_path(file);
+					size_t pos = file_path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+					if (pos == _path.npos)
+					{
+						_name = file_path + subset;
+					}
+					else
+					{
+						_name = file_path.substr(pos+1) + subset;
+					}
+					
+
 					GDALDataset *dataset = (GDALDataset*)GDALOpen(_path.c_str(), eAccess);
 					Attach(dataset,autoClose);
 					break;

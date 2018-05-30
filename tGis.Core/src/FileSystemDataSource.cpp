@@ -7,9 +7,8 @@
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
-#include "boost/filesystem.hpp" 
+#include <io.h>
 
-namespace fs = boost::filesystem;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -21,24 +20,34 @@ FileSystemDataSource::FileSystemDataSource(const char* path)
 	_path = path;
 
 
-	wchar_t sepc[2] = { fs::path::preferred_separator, 0 };
-	wstring sep;
-	sep.append(sepc);
-	fs::path sepp(sep);
-	string sepstr = sepp.string();
+	string sepstr(TGIS_PATH_SEPARATOR_STR);
 
 	size_t spos = _path.size() - sepstr.size();
 
 	if (_path.find(sepstr, spos) == spos)
 	{
-		string seppath = _path.substr(0, spos);
-		fs::path dir(seppath);
-		_name = dir.filename().string();
+		_path = _path.substr(0, spos);
+		size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+		if (pos == _path.npos)
+		{
+			_name = _path;
+		}
+		else
+		{
+			_name = _path.substr(pos+1);
+		}
 	}
 	else
 	{
-		fs::path dir(_path);
-		_name = dir.filename().string();
+		size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+		if (pos == _path.npos)
+		{
+			_name = _path;
+		}
+		else
+		{
+			_name = _path.substr(pos+1);
+		}
 	}
 
 	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE()._mapDataSource.find(_path);
@@ -96,63 +105,71 @@ void FileSystemDataSource::Connect()
 	if (_connected)
 		return;
 
-	fs::path dir(_path);
-	fs::directory_iterator end_iter;
-	for (fs::directory_iterator dir_itr(dir); dir_itr != end_iter; ++dir_itr)
+	string find_path = _path + TGIS_PATH_SEPARATOR_STR + "*";
+	_finddata_t file;
+	intptr_t flag;
+	intptr_t handle;
+	flag = handle = _findfirst(find_path.c_str(), &file);
+	while (flag != -1)
 	{
-		//fs::file_status status = fs::detail::status(*dir_itr);
-		//fs::perms perm = status.permissions();
-		//if (perm&(fs::perms::owner_read | fs::perms::group_read | fs::perms::others_read) == 0)
-		//	continue;
-		fs::path subdir = (*dir_itr).path();
-		if (subdir.filename_is_dot() || subdir.filename_is_dot_dot())
-			continue;
+		string subpath = _path + TGIS_PATH_SEPARATOR_STR + file.name;
 
-		if (fs::is_directory(*dir_itr))
+		if (strcmp(file.name, ".") != 0 
+			&& strcmp(file.name, "..") != 0 
+			&& !(file.attrib&_A_HIDDEN)
+			&& !(file.attrib&_A_SYSTEM)
+			)
 		{
-			string path = subdir.string();
-			map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE()._mapDataSource.find(path);
-
-			IDataSource* ds = nullptr;
-			if (pos != FileSystemDataSourceProvider::INSTANCE()._mapDataSource.end())
+			if (file.attrib&_A_SUBDIR)
 			{
-				ds = (*pos).second;
-				_vecDataSource.push_back(ds);
-				map<string, IDataSource*>::value_type v(path, ds);
-				_mapDataSource.insert(v);
+				map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE()._mapDataSource.find(subpath.c_str());
+
+				IDataSource* ds = nullptr;
+				if (pos != FileSystemDataSourceProvider::INSTANCE()._mapDataSource.end())
+				{
+					ds = (*pos).second;
+					_vecDataSource.push_back(ds);
+					map<string, IDataSource*>::value_type v(subpath, ds);
+					_mapDataSource.insert(v);
+				}
+				else
+				{
+					ds = new FileSystemDataSource(subpath.c_str());
+					_vecDataSource.push_back(ds);
+					map<string, IDataSource*>::value_type v(subpath, ds);
+					_mapDataSource.insert(v);
+					FileSystemDataSourceProvider::INSTANCE()._mapDataSource.insert(v);
+				}
 			}
 			else
 			{
-				ds = new FileSystemDataSource(path.c_str());
-				_vecDataSource.push_back(ds);
-				map<string, IDataSource*>::value_type v(path, ds);
-				_mapDataSource.insert(v);
-				FileSystemDataSourceProvider::INSTANCE()._mapDataSource.insert(v);
-			}			
-		}
-		else
-		{
-			if (fs::is_regular_file(*dir_itr) && (*dir_itr).path().has_extension())
-			{
-				string path = subdir.string();
-				string ext = subdir.extension().string().substr(1);
-				if (MyGDALFileDataset::IsSupportedRasterFormatExt(ext.c_str()))
+				size_t pos = subpath.find_last_of(TGIS_EXT_SEPARATOR_CHAR);
+				if (pos != subpath.npos)
 				{
-					MyGDALRasterDataset* dt = new MyGDALRasterDataset(path.c_str());
-					dt->_dataSource = this;
-					_vecDataset.push_back(dt);
-					_mapDataset.insert(map<string, IDataset*>::value_type(path, dt));
-				}
-				else if (MyGDALFileDataset::IsSupportedVectorFormatExt(ext.c_str()))
-				{
-					MyGDALVectorDataset* dt = new MyGDALVectorDataset(path.c_str());
-					dt->_dataSource = this;
-					_vecDataset.push_back(dt);
-					_mapDataset.insert(map<string, IDataset*>::value_type(path, dt));
+					string ext = subpath.substr(pos+1);
+					GDALAccess eAccess = (file.attrib&_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
+
+					if (MyGDALFileDataset::IsSupportedRasterFormatExt(ext.c_str()))
+					{
+						MyGDALRasterDataset* dt = new MyGDALRasterDataset(subpath.c_str(), eAccess);
+						dt->_dataSource = this;
+						_vecDataset.push_back(dt);
+						_mapDataset.insert(map<string, IDataset*>::value_type(subpath, dt));
+					}
+					else if (MyGDALFileDataset::IsSupportedVectorFormatExt(ext.c_str()))
+					{
+						MyGDALVectorDataset* dt = new MyGDALVectorDataset(subpath.c_str(), eAccess);
+						dt->_dataSource = this;
+						_vecDataset.push_back(dt);
+						_mapDataset.insert(map<string, IDataset*>::value_type(subpath, dt));
+					}
 				}
 			}
 		}
-	}
+
+		flag = _findnext(handle, &file);
+	};
+	_findclose(handle);
 
 	_connected = true;
 }

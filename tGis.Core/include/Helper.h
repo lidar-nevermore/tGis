@@ -14,19 +14,52 @@
 
 //exports helper
 
-#ifdef TGIS_EXPORTS
-#define TGIS_API __declspec(dllexport)
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#define TGIS_SYMBOL_IMPORT __declspec(dllimport)
+#define TGIS_SYMBOL_EXPORT __declspec(dllexport)
 #else
-#define TGIS_API __declspec(dllimport)
+#if __GNUC__ >= 4
+#define TGIS_SYMBOL_IMPORT __attribute__ ((visibility ("default")))
+#define TGIS_SYMBOL_EXPORT __attribute__ ((visibility ("default")))
+#else
+#define TGIS_SYMBOL_IMPORT __attribute__((dllimport))
+#define TGIS_SYMBOL_EXPORT __attribute__((dllexport))
+#endif
 #endif
 
+#ifdef TGIS_EXPORTS
+#define TGIS_API TGIS_SYMBOL_EXPORT
+#else
+#define TGIS_API TGIS_SYMBOL_IMPORT
+#endif
+
+
+#if defined(_MSC_VER) || defined(__MINGW32__)
+
+#include <direct.h>
+#include <stdlib.h>
+
+#define TGIS_MAX_PATH _MAX_PATH 
+
+#define TGIS_PATH_SEPARATOR_CHAR  '\\'
+
+#define TGIS_PATH_SEPARATOR_STR  "\\"
+
+#define TGIS_EXT_SEPARATOR_CHAR  '.'
+
+#define TGIS_EXT_SEPARATOR_STR  "."
+
+#define my_getcwd(buf,len) _getcwd(buf,len)
+
+#endif
 
 
 //custom round method
 
 #include <math.h>
 #include <float.h>
-
+#include <string>
+#include <vector>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -58,6 +91,17 @@ inline double my_round(double val, int places) {
 	x = t / f;
 
 	return !my_isnan(x) ? x : t;
+}
+
+
+inline void str_split(char* str, const char *delim, std::vector<std::string>& out)
+{
+	char * p = std::strtok(str, delim);
+	while (p != 0)
+	{
+		out.push_back(std::string(p));
+		p = std::strtok(NULL, delim);
+	}
 }
 
 

@@ -2,13 +2,10 @@
 #include "ogrsf_frmts.h"
 
 #include <string>
-#include "boost/filesystem.hpp" 
-#include "boost/algorithm/string/classification.hpp"
-#include "boost/algorithm/string/split.hpp"
+
 
 using namespace std;
 
-namespace fs = boost::filesystem;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -29,12 +26,19 @@ MyGDALVectorDataset::MyGDALVectorDataset()
 {
 }
 
-MyGDALVectorDataset::MyGDALVectorDataset(const char * path, bool delayOpen, GDALAccess eAccess, bool autoClose)
+MyGDALVectorDataset::MyGDALVectorDataset(const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
 {
 	_eAccess = eAccess;
 	_path = path;
-	fs::path dir(path);
-	_name = dir.filename().string();
+	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+	if (pos == _path.npos)
+	{
+		_name = _path;
+	}
+	else
+	{
+		_name = _path.substr(pos+1);
+	}
 	if (delayOpen)
 	{
 		_dataset = nullptr;
@@ -55,8 +59,15 @@ void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool aut
 {
 	_eAccess = eAccess;
 	_path = file;
-	fs::path dir(file);
-	_name = dir.filename().string();
+	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+	if (pos == _path.npos)
+	{
+		_name = _path;
+	}
+	else
+	{
+		_name = _path.substr(pos + 1);
+	}
 	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, eAccess, nullptr, nullptr, nullptr);
 	if (dataset != nullptr)
 	{

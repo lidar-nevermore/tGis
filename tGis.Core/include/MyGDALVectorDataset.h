@@ -32,7 +32,7 @@ private:
 
 public:
 	MyGDALVectorDataset();
-	MyGDALVectorDataset(const char* path, bool delayOpen = true, GDALAccess eAccess = GA_Update, bool autoClose = true);
+	MyGDALVectorDataset(const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	~MyGDALVectorDataset();
 
 public:

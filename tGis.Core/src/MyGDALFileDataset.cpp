@@ -3,13 +3,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include "boost/filesystem.hpp" 
-#include "boost/algorithm/string/classification.hpp"
-#include "boost/algorithm/string/split.hpp"
 
 using namespace std;
-
-namespace fs = boost::filesystem;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -31,7 +26,7 @@ struct GDALInit
 		char* e = _excludeExt[i];
 		while(strcmp(e, "\0") != 0)
 		{
-			if (stricmp(e, ext) == 0)
+			if (_stricmp(e, ext) == 0)
 				return true;
 
 			i++;
@@ -46,18 +41,21 @@ struct GDALInit
 		OGRRegisterAll();
 		CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");  //支持中文路径
 
-		fs::path exePath = fs::initial_path<boost::filesystem::path>();
+		char exePathBuffer[TGIS_MAX_PATH];
+		my_getcwd(exePathBuffer, TGIS_MAX_PATH);
 
-		fs::path dataPath(exePath);
-		dataPath.append("gdal-data");
+		string dataPath(exePathBuffer);
+		dataPath.append(TGIS_PATH_SEPARATOR_STR);
+		dataPath.append("gdal_data");
 
-		fs::path pluginPath(exePath);
+		string pluginPath(exePathBuffer);
+		pluginPath.append(TGIS_PATH_SEPARATOR_STR);
 		pluginPath.append("gdalplugins");
 
 
-		CPLSetConfigOption("GDAL_DATA", dataPath.string().c_str());
-		CPLSetConfigOption("GEOTIFF_CSV", dataPath.string().c_str());
-		CPLSetConfigOption("GDAL_DRIVER_PATH", pluginPath.string().c_str());
+		CPLSetConfigOption("GDAL_DATA", dataPath.c_str());
+		CPLSetConfigOption("GEOTIFF_CSV", dataPath.c_str());
+		CPLSetConfigOption("GDAL_DRIVER_PATH", pluginPath.c_str());
 
 		GDALDriverManager* dm = GetGDALDriverManager();
 		int drc = dm->GetDriverCount();
@@ -69,7 +67,7 @@ struct GDALInit
 			{
 				vector<string> dstext;
 				string strext = ext;
-				boost::split(dstext, strext, boost::is_any_of(" ,.|/\\"), boost::token_compress_on);
+				str_split(const_cast<char*>(strext.c_str()), " ,.|/\\", dstext);
 				for (vector<string>::iterator it = dstext.begin(); it != dstext.end();)
 				{
 					if ((*it).empty())
@@ -151,11 +149,11 @@ bool MyGDALFileDataset::IsSupportedRasterFormatExt(const char * ext)
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
 	{
-		if (stricmp((*it).at(0).c_str(), ext) == 0)
+		if (_stricmp((*it).at(0).c_str(), ext) == 0)
 			return true;
 		//for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
 		//{
-		//	if (stricmp((*itt).c_str(), ext) == 0)
+		//	if (_stricmp((*itt).c_str(), ext) == 0)
 		//		return true;
 		//}
 	}
@@ -189,7 +187,7 @@ bool MyGDALFileDataset::IsSupportedVectorFormatExt(const char * ext)
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)
 	{
-		if (stricmp((*it).at(0).c_str(), ext) == 0)
+		if (_stricmp((*it).at(0).c_str(), ext) == 0)
 			return true;
 		//for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
 		//{
@@ -206,6 +204,13 @@ MyGDALFileDataset::MyGDALFileDataset()
 	_dataset = nullptr;
 	_autoClose = false;
 	_eAccess = GA_ReadOnly;
+}
+
+MyGDALFileDataset::MyGDALFileDataset(bool isReadOnly)
+{
+	_dataset = nullptr;
+	_autoClose = false;
+	_eAccess = isReadOnly ? GA_ReadOnly : GA_Update;
 }
 
 
@@ -227,6 +232,11 @@ const char * MyGDALFileDataset::GetName()
 const char * MyGDALFileDataset::GetCreationString()
 {
 	return _path.c_str();
+}
+
+bool MyGDALFileDataset::IsReadOnly()
+{
+	return _eAccess == GA_ReadOnly;;
 }
 
 bool MyGDALFileDataset::IsOpened()

@@ -196,13 +196,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;TGIS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(BOOSTDIR);$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ELRMPL);$(GDALDIR)\lib;$(BOOSTDIR)\lib64-msvc-14.0;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ELRMPL);$(GDALDIR)\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>gdal_i.lib;elr_mpl.lib;</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -234,7 +234,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;TGIS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(BOOSTDIR);$(ProjectDir)\include;$(ProjectDir)\internal;</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -243,7 +243,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>gdal_i.lib;elr_mpl.lib;</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ELRMPL);$(GDALDIR)\lib;$(BOOSTDIR)\lib64-msvc-14.0;</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ELRMPL);$(GDALDIR)\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

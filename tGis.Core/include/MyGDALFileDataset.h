@@ -27,6 +27,7 @@ public:
 	virtual const char* GetName();
 	virtual const char* GetCreationString();
 
+	virtual bool IsReadOnly();
 	virtual bool IsOpened();
 	virtual void Open();
 	virtual void Close();
@@ -66,6 +67,7 @@ protected:
 
 public:
 	MyGDALFileDataset();
+	MyGDALFileDataset(bool isReadOnly);
 	virtual ~MyGDALFileDataset();
 
 public:
