@@ -19,7 +19,7 @@ MyMap::~MyMap()
 	}
 }
 
-void MyMap::ClearLayers()
+void MyMap::ClearLayers(LayerFunc func)
 {
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
 	{

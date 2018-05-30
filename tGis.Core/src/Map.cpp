@@ -63,7 +63,7 @@ ILayer * Map::GetLayer(int pos)
 	return _vecLayer.at(pos);
 }
 
-bool Map::AddLayer(ILayer *layer)
+int Map::AddLayer(ILayer *layer)
 {
 	bool canAdd = false;
 	const OGRSpatialReference* clayerSpatialRef = layer->GetSpatialReference();
@@ -85,15 +85,18 @@ bool Map::AddLayer(ILayer *layer)
 	}
 
 	if(canAdd)
-		_vecLayer.insert(_vecLayer.begin(), layer);
+		_vecLayer.push_back(layer);
 
-	return canAdd;
+	return canAdd ? _vecLayer.size() - 1 : -1;
 }
 
-void Map::RemoveLayer(int pos)
+ILayer* Map::RemoveLayer(int pos)
 {
-	_vecLayer.erase(_vecLayer.begin() + pos);
+	vector<ILayer*>::iterator it = _vecLayer.begin() + pos;
+	ILayer* layer = *it;
+	_vecLayer.erase(it);
 	MergeEnvelope();
+	return layer;
 }
 
 void Map::RemoveLayer(ILayer * layer)
@@ -131,6 +134,16 @@ bool Map::InsertLayer(int pos, ILayer * layer)
 		_vecLayer.insert(_vecLayer.begin()+pos, layer);
 
 	return canAdd;
+}
+
+void Map::ClearLayers(LayerFunc func)
+{
+	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
+	{
+		ILayer* layer = *it;
+		func(layer);
+	}
+	_vecLayer.clear();
 }
 
 void Map::Paint(IGeoSurface * surf)

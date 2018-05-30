@@ -31,11 +31,11 @@ public:
 	virtual bool CanTransformFrom(const OGRSpatialReference*);
 	virtual int GetLayerCount();
 	virtual ILayer* GetLayer(int);
-	virtual bool AddLayer(ILayer*);
-	virtual void RemoveLayer(int);
+	virtual int AddLayer(ILayer*);
+	virtual ILayer* RemoveLayer(int);
 	virtual void RemoveLayer(ILayer*);
 	virtual bool InsertLayer(int, ILayer*);
-
+	virtual void ClearLayers(LayerFunc func = nullptr);
 	virtual void Paint(IGeoSurface*);
 
 protected:

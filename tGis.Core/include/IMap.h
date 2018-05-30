@@ -13,6 +13,8 @@ struct IGeoSurface;
 
 struct TGIS_API IMap
 {
+	typedef void(*LayerFunc)(ILayer*);
+
 	virtual const char* GetName() = 0;
 	virtual void SetName(const char*) = 0;
 	virtual const OGREnvelope* GetEnvelope() = 0;
@@ -21,11 +23,11 @@ struct TGIS_API IMap
 
 	virtual int GetLayerCount() = 0;
 	virtual ILayer* GetLayer(int) = 0;
-	virtual bool AddLayer(ILayer*) = 0;
+	virtual int AddLayer(ILayer*) = 0;
 	virtual bool InsertLayer(int, ILayer*) = 0;
-	virtual void RemoveLayer(int) = 0;
+	virtual ILayer* RemoveLayer(int) = 0;
 	virtual void RemoveLayer(ILayer*) = 0;
-	virtual void ClearLayers() = 0;
+	virtual void ClearLayers(LayerFunc func = nullptr) = 0;
 
 	virtual void Paint(IGeoSurface*) = 0;
 

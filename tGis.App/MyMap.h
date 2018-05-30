@@ -12,6 +12,6 @@ public:
 	~MyMap();
 
 public:
-	void ClearLayers();
+	void ClearLayers(LayerFunc func = nullptr);
 };
 

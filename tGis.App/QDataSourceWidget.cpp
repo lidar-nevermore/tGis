@@ -186,7 +186,7 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 				IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
 
 				int layerCount = map->GetLayerCount();
-				if (map->AddLayer(layer))
+				if (map->AddLayer(layer) > 0)
 				{
 					emit LayerAdded(map, layer, providers[0]);
 					const OGREnvelope* envelope = layer->GetEnvelope();
