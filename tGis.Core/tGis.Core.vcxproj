@@ -38,6 +38,7 @@
     <ClInclude Include="include\ISurface.h" />
     <ClInclude Include="include\ISymbol.h" />
     <ClInclude Include="include\ISymbolLibrary.h" />
+    <ClInclude Include="include\ITGisObject.h" />
     <ClInclude Include="include\Layer.h" />
     <ClInclude Include="include\LayerProviderRepository.h" />
     <ClInclude Include="include\Map.h" />
@@ -82,6 +83,7 @@
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
     <ClCompile Include="src\GeoSurface.cpp" />
+    <ClCompile Include="src\ITGisObject.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerProviderRepository.cpp" />
     <ClCompile Include="src\Map.cpp" />

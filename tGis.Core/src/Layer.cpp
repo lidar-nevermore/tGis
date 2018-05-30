@@ -24,6 +24,16 @@ void Layer::SetName(const char * name)
 	_name = name;
 }
 
+IMap * Layer::GetMap()
+{
+	return _map;
+}
+
+void Layer::SetMap(IMap * map)
+{
+	_map = map;
+}
+
 bool Layer::GetVisible()
 {
 	return _visible;

@@ -23,6 +23,7 @@ class OGRMultiPoint;
 class OGRMultiLineString;
 class OGRMultiPolygon;
 class OGRCoordinateTransformation;
+class OGRSimpleCurve;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -47,8 +48,6 @@ private:
 	static const char* const _type;
 
 private:
-	OGRSpatialReference* _surfSpatialRef;
-	OGRCoordinateTransformation* _CT;
 	int _geometryField;
 	int _labelField;
 	SimpleMarkerSymbol _simpleMarkerSymbol;
@@ -63,17 +62,17 @@ public:
 	virtual void Paint(IGeoSurface*);
 
 private:
-	inline void PrepareCT(IGeoSurface*);
-
 	inline OGRGeometry* GetGeometry(OGRFeature*);
 	inline const char* GetLabel(OGRFeature*);
 
-	inline void DrawPoint(IGeoSurface*, OGRPoint*);
-	inline void DrawLineString(IGeoSurface*, OGRLineString*);
-	inline void DrawPolygon(IGeoSurface*, OGRPolygon*);
-	inline void DrawMultiPoint(IGeoSurface*, OGRMultiPoint*);
-	inline void DrawMultiLineString(IGeoSurface*, OGRMultiLineString*);
-	inline void DrawMultiPolygon(IGeoSurface*, OGRMultiPolygon*);
+	inline void DrawPoint(int* x, int* y, IGeoSurface*, OGRPoint*);
+	inline int TransferGeometryPoints(int* x, int* y, IGeoSurface*, OGRSimpleCurve*);
+	inline void DrawLineString(int* x, int* y, IGeoSurface*, OGRLineString*);
+	inline void DrawPolygon(int* x, int* y, IGeoSurface*, OGRPolygon*);
+	inline void DrawMultiPoint(int* x, int* y, IGeoSurface*, OGRMultiPoint*);
+	inline void DrawMultiLineString(int* x, int* y, IGeoSurface*, OGRMultiLineString*);
+	inline void DrawMultiPolygon(int* x, int* y, IGeoSurface*, OGRMultiPolygon*);
+
 };
 
 

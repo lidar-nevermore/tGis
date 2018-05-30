@@ -203,6 +203,9 @@
     <ClInclude Include="include\OverlayRect.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
+    <ClInclude Include="include\ITGisObject.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -312,6 +315,9 @@
     </ClCompile>
     <ClCompile Include="src\OverlayRect.cpp">
       <Filter>src\Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ITGisObject.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

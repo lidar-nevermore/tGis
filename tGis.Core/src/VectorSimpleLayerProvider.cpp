@@ -48,9 +48,13 @@ void VectorSimpleLayerProvider::SetCreationUI(const CreationUI ui)
 
 ILayer * VectorSimpleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
-	assert(_uiCreation != nullptr);
+	//assert(_uiCreation != nullptr);
 
-	return _uiCreation(this, dataset);
+	//return _uiCreation(this, dataset);
+	MyGDALVectorDataset* vector = (MyGDALVectorDataset*)dataset;
+	VectorSimpleLayer* layer = new VectorSimpleLayer(vector, vector->GetGDALDataset()->GetLayer(0));
+	layer->SetName(vector->GetName());
+	return layer;
 }
 
 void VectorSimpleLayerProvider::SetPropertyUI(const PropertyUI ui)
@@ -75,8 +79,9 @@ ILayer * VectorSimpleLayerProvider::CreateLayer(IDataset * dataset, const char *
 	return nullptr;
 }
 
-void VectorSimpleLayerProvider::ReleaseLayer(ILayer *)
+void VectorSimpleLayerProvider::ReleaseLayer(ILayer *layer)
 {
+	delete layer;
 }
 
 void VectorSimpleLayerProvider::Release()

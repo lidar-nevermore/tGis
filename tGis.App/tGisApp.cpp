@@ -121,7 +121,7 @@ void tGisApp::on_removeLayerAction_triggered(bool checked)
 void tGisApp::on_layerVisibleAction_toggled(bool checked)
 {
 	ILayer* layer = ui.layerWidget->GetSelectedLayer();
-	if (layer != nullptr)
+	if (layer != nullptr && layer->GetVisible() != checked)
 	{
 		layer->SetVisible(checked);
 		ui.mapWidget->RepaintMap();

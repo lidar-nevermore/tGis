@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "ITGisObject.h"
 #include "ogr_spatialref.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -39,18 +40,7 @@ const OGRSpatialReference * Map::GetSpatialReference()
 
 bool Map::CanTransformFrom(const OGRSpatialReference *spatialRef)
 {
-	const OGRSpatialReference * thisSpatialRef = _spatialRef;
-	if (thisSpatialRef == spatialRef)
-		return true;
-
-	if (thisSpatialRef != nullptr)
-	{
-		if (spatialRef == nullptr)
-			return false;
-		return thisSpatialRef->IsSame(spatialRef);
-	}
-
-	return true;
+	return ITGisObject::CanTransform(spatialRef, _spatialRef);
 }
 
 int Map::GetLayerCount()
@@ -78,14 +68,17 @@ int Map::AddLayer(ILayer *layer)
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}
-	else if(CanTransformFrom(clayerSpatialRef))
+	else if(layer->CanTransformTo(_spatialRef))
 	{
 		canAdd = true;
 		MergeEnvelope(layerSpatialRef, layer->GetEnvelope());
 	}
 
-	if(canAdd)
+	if (canAdd)
+	{
 		_vecLayer.push_back(layer);
+		layer->SetMap(this);
+	}
 
 	return canAdd ? _vecLayer.size() - 1 : -1;
 }
@@ -94,6 +87,7 @@ ILayer* Map::RemoveLayer(int pos)
 {
 	vector<ILayer*>::iterator it = _vecLayer.begin() + pos;
 	ILayer* layer = *it;
+	layer->SetMap(nullptr);
 	_vecLayer.erase(it);
 	MergeEnvelope();
 	return layer;
@@ -105,6 +99,7 @@ void Map::RemoveLayer(ILayer * layer)
 	{
 		if (*it == layer)
 		{
+			layer->SetMap(nullptr);
 			_vecLayer.erase(it);
 			MergeEnvelope();
 			break;
@@ -130,8 +125,11 @@ bool Map::InsertLayer(int pos, ILayer * layer)
 		MergeEnvelope(layerSpatialRef, layer->GetEnvelope());
 	}
 
-	if(canAdd)
-		_vecLayer.insert(_vecLayer.begin()+pos, layer);
+	if (canAdd)
+	{
+		_vecLayer.insert(_vecLayer.begin() + pos, layer);
+		layer->SetMap(this);
+	}
 
 	return canAdd;
 }
@@ -141,6 +139,7 @@ void Map::ClearLayers(LayerFunc func)
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
 	{
 		ILayer* layer = *it;
+		layer->SetMap(nullptr);
 		func(layer);
 	}
 	_vecLayer.clear();
@@ -148,7 +147,7 @@ void Map::ClearLayers(LayerFunc func)
 
 void Map::Paint(IGeoSurface * surf)
 {
-	for (vector<ILayer*>::reverse_iterator it = _vecLayer.rbegin(); it != _vecLayer.rend(); ++it)
+	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
 	{
 		(*it)->Paint(surf);
 	}

@@ -32,6 +32,11 @@
             "Type":"EFEB6F2A-7DD0-401D-9762-55F3F3E095D1",
             "Name":"RasterRgbLayer",
             "Icon":"{StartupDir}/Images/LayerProvider/rgb.png"
+        },
+        {
+            "Type":"57D45D8B-E28E-4D5F-A588-1A55347A0C68",
+            "Name":"VectorSimpleLayer",
+            "Icon":"{StartupDir}/Images/LayerProvider/simplevector.png"
         }
     ]
 }

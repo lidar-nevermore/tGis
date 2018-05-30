@@ -15,7 +15,6 @@ public:
 	explicit QDataSourceWidget(QWidget *parent = 0);
 	~QDataSourceWidget();
 
-public:
 signals:
 	void LayerAdded(IMapPtr, ILayerPtr, ILayerProviderPtr);
 

@@ -32,6 +32,7 @@ protected:
 public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
+	virtual bool CanTransformTo(const OGRSpatialReference*);
 	virtual IDataset* GetDataset();
 
 	virtual void Paint(IGeoSurface*);

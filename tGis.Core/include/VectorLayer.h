@@ -33,13 +33,19 @@ protected:
 public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
+	virtual bool CanTransformTo(const OGRSpatialReference*);
 	virtual IDataset* GetDataset();
+
+protected:
+	inline void PrepareCT();
 
 protected:
 	MyGDALVectorDataset* _vector;
 	OGRLayer* _layer;
 	OGREnvelope _envelope;
 	OGRSpatialReference* _spatialRef;
+	OGRSpatialReference* _mapSpatialRef;
+	OGRCoordinateTransformation* _CT;
 };
 
 

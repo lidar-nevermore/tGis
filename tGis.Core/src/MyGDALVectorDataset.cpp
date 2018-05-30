@@ -68,7 +68,12 @@ void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool aut
 	{
 		_name = _path.substr(pos + 1);
 	}
-	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, eAccess, nullptr, nullptr, nullptr);
+	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, _eAccess, nullptr, nullptr, nullptr);
+	if (dataset == nullptr && _eAccess == GA_Update)
+	{
+		_eAccess = GA_ReadOnly;
+		dataset = (GDALDataset*)GDALOpenEx(file, _eAccess, nullptr, nullptr, nullptr);
+	}
 	if (dataset != nullptr)
 	{
 		Attach(dataset, autoClose);

@@ -1,7 +1,7 @@
 #include "RasterLayer.h"
 #include "MyGDALRasterDataset.h"
 #include "IGeoSurface.h"
-
+#include "ITGisObject.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -48,6 +48,18 @@ const OGREnvelope * RasterLayer::GetEnvelope()
 const OGRSpatialReference * RasterLayer::GetSpatialReference()
 {
 	return _raster->GetSpatialReference();
+}
+
+
+bool RasterLayer::CanTransformTo(const OGRSpatialReference * spatialRef)
+{
+	const OGRSpatialReference * thisSpatialRef = _raster->GetSpatialReference();
+	if (thisSpatialRef == spatialRef
+		|| (spatialRef != nullptr && thisSpatialRef != nullptr && thisSpatialRef->IsSame(spatialRef)))
+	{
+		return true;
+	}
+	return false;
 }
 
 IDataset * RasterLayer::GetDataset()

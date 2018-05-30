@@ -20,6 +20,7 @@ struct IDataset;
 
 class TGIS_API Layer : public ILayer
 {
+	friend class Map;
 public:
 	Layer();
 	virtual ~Layer();
@@ -27,6 +28,8 @@ public:
 public:
 	virtual const char* GetName();
 	virtual void SetName(const char* name);
+	virtual IMap* GetMap();
+	virtual void SetMap(IMap*);
 	virtual bool GetVisible();
 	virtual void SetVisible(bool);
 	virtual float GetOpacity();
@@ -37,6 +40,7 @@ protected:
 	bool _visible;
 	float _opacity;
 	unsigned char _alpha;
+	IMap* _map;
 };
 
 END_NAME_SPACE(tGis, Core)

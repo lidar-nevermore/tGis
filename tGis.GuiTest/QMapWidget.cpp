@@ -13,19 +13,14 @@ QMapWidget::QMapWidget(QWidget *parent)
 
 	_dataset.Attach("E:\\杂项\\9.jpg", GA_ReadOnly);
 	_layer.SetDataset(&_dataset, 1, 2, 3);
+	//_map.AddLayer(&_layer);
 
-	_vector.Attach("E:\\SpatialData\\全国省市县\\BOUND_A省.shp", GA_ReadOnly);
+	_vector.Attach("E:\\SpatialData\\全国重点水体\\RIVER_A1双线河、湖泊、水库.shp", GA_ReadOnly);
 	_vecLayer.SetOGRLayer(&_vector,_vector.GetGDALDataset()->GetLayer(0),-1);
-	//_map.AddLayer(&_vecLayer);
+	_map.AddLayer(&_vecLayer);
 
-
-
-	const OGREnvelope* envelope = _layer.GetEnvelope();
-	_geoSurface.SetSpatialReference(_layer.GetSpatialReference());
-	_geoSurface.SetViewResolution(0.9);
-	_geoSurface.SetViewCenter((envelope->MinX + envelope->MaxX) / 2, (envelope->MinY + envelope->MaxY) / 2);
 	_geoSurface.SetBackgroundColor(255, 255, 255);
-	_map.AddLayer(&_layer);
+	
 
 	this->AddMapTool(&_mapPanTool);
 	this->AddMapTool(&_mapZoomTool);
@@ -91,7 +86,7 @@ void QMapWidget::resizeEvent(QResizeEvent * e)
 	if (_firstTime)
 	{
 		_firstTime = false;
-		const OGREnvelope* envelope = _layer.GetEnvelope();
+		const OGREnvelope* envelope = _vecLayer.GetEnvelope();
 		_geoSurface.IncludeEnvelope(envelope);
 	}
 	MapWidget::RepaintMap();

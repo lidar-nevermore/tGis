@@ -184,13 +184,17 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 				IMap* map = GetCurrentMap();
 				IMapWidget* mapWidget = GetCurrentMapWidget();
 				IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
-
-				int layerCount = map->GetLayerCount();
-				if (map->AddLayer(layer) > 0)
+				
+				if (map->AddLayer(layer) > -1)
 				{
+					int layerCount = map->GetLayerCount();
 					emit LayerAdded(map, layer, providers[0]);
+					if (layerCount == 0)
+					{
+						geoSurface->SetSpatialReference(layer->GetSpatialReference());
+					}
 					const OGREnvelope* envelope = layer->GetEnvelope();
-					geoSurface->SetSpatialReference(layer->GetSpatialReference());
+					
 					geoSurface->IncludeEnvelope(envelope);
 
 					mapWidget->RepaintMap();

@@ -101,6 +101,6 @@ void QLayerWidget::LayerAdded(IMapPtr map, ILayerPtr layer, ILayerProviderPtr la
 	udLayerProvider.setValue<ILayerProviderPtr>(layerProvider);
 	pItem->setData(udLayerProvider, LayerProviderRole);
 
-	rootNode->appendRow(pItem);
+	rootNode->insertRow(0,pItem);
 }
 
