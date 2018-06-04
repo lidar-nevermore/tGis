@@ -32,6 +32,7 @@ public:
 	IMapPtr GetMap();
 
 	ILayerPtr GetSelectedLayer();
+	void SelectedLayerPropertyUI();
 	void RemoveSelectedLayer();
 	void RemoveAllLayers();
 

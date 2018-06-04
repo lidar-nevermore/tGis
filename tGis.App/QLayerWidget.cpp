@@ -45,6 +45,17 @@ ILayerPtr QLayerWidget::GetSelectedLayer()
 	return nullptr;
 }
 
+void QLayerWidget::SelectedLayerPropertyUI()
+{
+	QModelIndexList selected = selectedIndexes();
+	if (selected.size() > 0)
+	{
+		ILayer* layer = selected[0].data(LayerPtrRole).value<ILayerPtr>();
+		ILayerProvider* provider = selected[0].data(LayerProviderRole).value<ILayerProviderPtr>();
+		provider->UI_LayerProperty(layer);
+	}
+}
+
 void QLayerWidget::RemoveSelectedLayer()
 {
 	QModelIndexList selected = selectedIndexes();

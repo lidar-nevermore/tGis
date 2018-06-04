@@ -32,20 +32,22 @@ RasterGrayScaleLayer::~RasterGrayScaleLayer()
 {
 }
 
-void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int band)
+void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandIndex)
 {
-	RasterLayer::SetDataset(dataset);
-	RestLutToLinear();
-
-	_band = dataset->GetGDALDataset()->GetRasterBand(band);
-	_bandIndex = band;
-	_dataType = _band->GetRasterDataType();
-	if (_dataType > 7 || _dataType == 0)
+	GDALRasterBand* band = dataset->GetGDALDataset()->GetRasterBand(bandIndex);
+	GDALDataType dataType = band->GetRasterDataType();
+	if (dataType > 7 || dataType == 0)
 	{
 		throw std::exception("不支持复数和未定义的像素格式");
 	}
+	RasterLayer::SetDataset(dataset);
+
+	_band = band;
+	_dataType = dataType;
+	_bandIndex = bandIndex;
 	_dataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_dataType);
 	_maxPixDataBytes = _dataBytes;
+	RestLutToLinear();
 	RasterLayer::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
 }
 
@@ -54,6 +56,12 @@ inline void RasterGrayScaleLayer::SetMinMax(double min, double max)
 	_min = min;
 	_max = max;
 	_range = _max - _min;
+}
+
+inline void RasterGrayScaleLayer::GetMinMax(double* min, double* max)
+{
+	*min = _min;
+	*max = _max;
 }
 
 inline void RasterGrayScaleLayer::RestLutToLinear()

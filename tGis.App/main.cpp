@@ -26,6 +26,7 @@ QMainWindow* GetMainWindow()
 int main(int argc, char *argv[])
 {
 	RasterGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer);
+	RasterGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty);
 	RasterRgbLayerProvider::INSTANCE.SetCreationUI(&RasterRgbLayerPropertyDialog::CreateRasterRgbLayer);
 	qRegisterMetaType<IMapPtr>("IMapPtr");
 	qRegisterMetaType<ILayerPtr>("ILayerPtr");

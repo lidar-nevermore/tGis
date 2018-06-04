@@ -95,5 +95,8 @@
     <ClInclude Include="MyMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

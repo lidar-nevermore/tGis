@@ -50,39 +50,47 @@ const char * RasterRgbLayer::GetCreationString()
 
 void RasterRgbLayer::SetDataset(MyGDALRasterDataset * dataset, int r, int g, int b)
 {
-	RasterLayer::SetDataset(dataset);
-	RestLutToLinear();
-
-	_rBand = dataset->GetGDALDataset()->GetRasterBand(r);
-	_rBandIndex = r;
-	_rDataType = _rBand->GetRasterDataType();
-	if (_rDataType > 7 || _rDataType == 0)
+	GDALRasterBand* rBand = dataset->GetGDALDataset()->GetRasterBand(r);	
+	GDALDataType rDataType = rBand->GetRasterDataType();
+	if (rDataType > 7 || rDataType == 0)
 	{
 		throw std::exception("不支持复数和未定义的像素格式");
 	}
+
+	GDALRasterBand* gBand = dataset->GetGDALDataset()->GetRasterBand(g);
+	GDALDataType gDataType = gBand->GetRasterDataType();
+	if (gDataType > 7 || gDataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+	
+
+	GDALRasterBand* bBand = dataset->GetGDALDataset()->GetRasterBand(b);
+	GDALDataType bDataType = bBand->GetRasterDataType();
+	if (bDataType > 7 || bDataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+
+	RasterLayer::SetDataset(dataset);
+	_rBand = rBand;
+	_rDataType = rDataType;
+	_rBandIndex = r;
 	_rDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_rDataType);
 
-
-	_gBand = dataset->GetGDALDataset()->GetRasterBand(g);
+	_gBand = gBand;
+	_gDataType = gDataType;
 	_gBandIndex = g;
-	_gDataType = _gBand->GetRasterDataType();
-	if (_gDataType > 7 || _gDataType == 0)
-	{
-		throw std::exception("不支持复数和未定义的像素格式");
-	}
 	_gDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_gDataType);
 
-	_bBand = dataset->GetGDALDataset()->GetRasterBand(b);
+	_bBand = bBand;
+	_bDataType = bDataType;
 	_bBandIndex = b;
-	_bDataType = _bBand->GetRasterDataType();
-	if (_bDataType > 7 || _bDataType == 0)
-	{
-		throw std::exception("不支持复数和未定义的像素格式");
-	}
 	_bDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_bDataType);
 
 	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
 
+	RestLutToLinear();
 	RasterLayer::InitialMinMax(_rBand, _rDataType, &_rMin, &_rMax, &_rRange);
 	RasterLayer::InitialMinMax(_gBand, _gDataType, &_gMin, &_gMax, &_gRange);
 	RasterLayer::InitialMinMax(_bBand, _bDataType, &_bMin, &_bMax, &_bRange);

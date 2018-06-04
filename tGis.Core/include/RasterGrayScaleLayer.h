@@ -41,6 +41,7 @@ public:
 public:
 	void SetDataset(MyGDALRasterDataset* dataset, int band);
 	inline void SetMinMax(double min, double max);
+	inline void GetMinMax(double* min, double* max);
 	inline void RestLutToLinear();
 	inline unsigned char* GetLut();
 	inline int GetBand();

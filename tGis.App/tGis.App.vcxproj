@@ -152,6 +152,7 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
     </QtMoc>
     <ClInclude Include="MyMap.h" />
+    <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h" />
     <ClInclude Include="RasterRgbLayerPropertyDialog.h" />
     <ClInclude Include="tGisMetaType.h" />
     <QtMoc Include="QDataSourceWidget.h">

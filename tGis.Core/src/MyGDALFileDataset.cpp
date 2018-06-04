@@ -149,13 +149,13 @@ bool MyGDALFileDataset::IsSupportedRasterFormatExt(const char * ext)
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
 	{
-		if (_stricmp((*it).at(0).c_str(), ext) == 0)
-			return true;
-		//for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
-		//{
-		//	if (_stricmp((*itt).c_str(), ext) == 0)
-		//		return true;
-		//}
+		//if (_stricmp((*it).at(0).c_str(), ext) == 0)
+		//	return true;
+		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		{
+			if (_stricmp((*itt).c_str(), ext) == 0)
+				return true;
+		}
 	}
 	return false;
 }

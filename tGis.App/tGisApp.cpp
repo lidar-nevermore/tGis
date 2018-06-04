@@ -130,6 +130,8 @@ void tGisApp::on_layerVisibleAction_toggled(bool checked)
 
 void tGisApp::on_layerAttributeAction_triggered(bool checked)
 {
+	ui.layerWidget->SelectedLayerPropertyUI();
+	ui.mapWidget->RepaintMap();
 }
 
 void tGisApp::on_removeAllLayersAction_triggered(bool checked)
