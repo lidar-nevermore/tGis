@@ -5,6 +5,7 @@
 #include "FileSystemDataSourceProvider.h"
 #include "DataSourceProviderRepository.h"
 #include "RasterGrayScaleLayerProvider.h"
+#include "RasterBinaryGrayScaleLayerProvider.h"
 #include "RasterRgbLayerProvider.h"
 #include "VectorSimpleLayerProvider.h"
 #include "LayerProviderRepository.h"

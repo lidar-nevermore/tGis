@@ -50,7 +50,7 @@ ILayer * RasterGrayScaleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
 	assert(_uiCreation != nullptr);
 
-	return _uiCreation(this, dataset);
+	return _uiCreation(this, (MyGDALRasterDataset*)dataset);
 }
 
 void RasterGrayScaleLayerProvider::SetPropertyUI(const PropertyUI ui)
@@ -62,7 +62,7 @@ void RasterGrayScaleLayerProvider::UI_LayerProperty(ILayer * layer)
 {
 	assert(_uiProperty != nullptr);
 
-	_uiProperty(this, layer);
+	_uiProperty(this, (RasterGrayScaleLayer*)layer);
 }
 
 ILayer * RasterGrayScaleLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int band)

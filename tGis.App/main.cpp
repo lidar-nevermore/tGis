@@ -4,6 +4,7 @@
 #include "tGisMetaType.h"
 #include "RasterGrayScaleLayerPropertyDialog.h"
 #include "RasterRgbLayerPropertyDialog.h"
+#include "RasterBinaryGrayScaleLayerPropertyDialog.h"
 
 #include "tOrganizer.h"
 
@@ -27,6 +28,9 @@ int main(int argc, char *argv[])
 {
 	RasterGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer);
 	RasterGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty);
+	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLayer);
+	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerProperty);
+
 	RasterRgbLayerProvider::INSTANCE.SetCreationUI(&RasterRgbLayerPropertyDialog::CreateRasterRgbLayer);
 	qRegisterMetaType<IMapPtr>("IMapPtr");
 	qRegisterMetaType<ILayerPtr>("ILayerPtr");

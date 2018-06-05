@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __RASTERGRAYSCALELAYERPROVIDER_H__
-#define __RASTERGRAYSCALELAYERPROVIDER_H__
+#ifndef __RASTERBINARYGRAYSCALELAYERPROVIDER_H__
+#define __RASTERBINARYGRAYSCALELAYERPROVIDER_H__
 
 
 #include "Helper.h"
@@ -10,23 +10,23 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class RasterGrayScaleLayer;
 class MyGDALRasterDataset;
+class RasterBinaryGrayScaleLayer;
 
-class TGIS_API RasterGrayScaleLayerProvider : public ILayerProvider
+class TGIS_API RasterBinaryGrayScaleLayerProvider : public ILayerProvider
 {
 public:
-	typedef ILayer*(*CreationUI)(RasterGrayScaleLayerProvider*, MyGDALRasterDataset*);
-	typedef void(*PropertyUI)(RasterGrayScaleLayerProvider*, RasterGrayScaleLayer*);
+	typedef ILayer*(*CreationUI)(RasterBinaryGrayScaleLayerProvider*, MyGDALRasterDataset*);
+	typedef void(*PropertyUI)(RasterBinaryGrayScaleLayerProvider*, RasterBinaryGrayScaleLayer*);
 
 public:
-	static RasterGrayScaleLayerProvider INSTANCE;
+	static RasterBinaryGrayScaleLayerProvider INSTANCE;
 
 private:
-	RasterGrayScaleLayerProvider();
-	~RasterGrayScaleLayerProvider();
-	RasterGrayScaleLayerProvider(const RasterGrayScaleLayerProvider &) = delete;
-	RasterGrayScaleLayerProvider &operator=(const RasterGrayScaleLayerProvider &) = delete;
+	RasterBinaryGrayScaleLayerProvider();
+	~RasterBinaryGrayScaleLayerProvider();
+	RasterBinaryGrayScaleLayerProvider(const RasterBinaryGrayScaleLayerProvider &) = delete;
+	RasterBinaryGrayScaleLayerProvider &operator=(const RasterBinaryGrayScaleLayerProvider &) = delete;
 
 public:
 	const char* GetType();
@@ -54,6 +54,7 @@ private:
 	static const char* const _name;
 	static const char* const _type;
 };
+
 
 END_NAME_SPACE(tGis, Core)
 

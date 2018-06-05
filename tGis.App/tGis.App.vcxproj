@@ -121,6 +121,7 @@
     <ClCompile Include="MyMap.cpp" />
     <ClCompile Include="QDataSourceWidget.cpp" />
     <ClCompile Include="QLayerWidget.cpp" />
+    <ClCompile Include="RasterBinaryGrayScaleLayerPropertyDialog.cpp" />
     <ClCompile Include="RasterGrayScaleLayerPropertyDialog.cpp" />
     <ClCompile Include="RasterRgbLayerPropertyDialog.cpp" />
     <ClCompile Include="tGisApp.cpp" />
@@ -130,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="ListChoiseDialog.ui" />
+    <QtUic Include="RasterBinaryGrayScaleLayerPropertyDialog.ui" />
     <QtUic Include="RasterGrayScaleLayerPropertyDialog.ui" />
     <QtUic Include="RasterRgbLayerPropertyDialog.ui" />
     <QtUic Include="tGisApp.ui" />
@@ -152,6 +154,7 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
     </QtMoc>
     <ClInclude Include="MyMap.h" />
+    <ClInclude Include="RasterBinaryGrayScaleLayerPropertyDialog.h" />
     <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h" />
     <ClInclude Include="RasterRgbLayerPropertyDialog.h" />
     <ClInclude Include="tGisMetaType.h" />

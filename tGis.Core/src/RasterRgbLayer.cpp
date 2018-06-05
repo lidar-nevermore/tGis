@@ -90,7 +90,9 @@ void RasterRgbLayer::SetDataset(MyGDALRasterDataset * dataset, int r, int g, int
 
 	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
 
-	RestLutToLinear();
+	RasterLayer::RestLutToLinear(_rLut);
+	RasterLayer::RestLutToLinear(_gLut);
+	RasterLayer::RestLutToLinear(_bLut);
 	RasterLayer::InitialMinMax(_rBand, _rDataType, &_rMin, &_rMax, &_rRange);
 	RasterLayer::InitialMinMax(_gBand, _gDataType, &_gMin, &_gMax, &_gRange);
 	RasterLayer::InitialMinMax(_bBand, _bDataType, &_bMin, &_bMax, &_bRange);
@@ -115,16 +117,6 @@ inline void RasterRgbLayer::SetMinMaxB(double min, double max)
 	_bMin = min;
 	_bMax = max;
 	_bRange = max - min;
-}
-
-inline void RasterRgbLayer::RestLutToLinear()
-{
-	for (int i = 0; i < 256; i++)
-	{
-		_rLut[i] = i;
-		_gLut[i] = i;
-		_bLut[i] = i;
-	}
 }
 
 inline unsigned char * RasterRgbLayer::GetLutR()

@@ -26,6 +26,9 @@
     <ClCompile Include="MyMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RasterBinaryGrayScaleLayerPropertyDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -76,6 +79,9 @@
     <QtUic Include="RasterRgbLayerPropertyDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="RasterBinaryGrayScaleLayerPropertyDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="tGisApp.qrc">
@@ -96,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RasterBinaryGrayScaleLayerPropertyDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

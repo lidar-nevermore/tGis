@@ -32,7 +32,7 @@ RasterGrayScaleLayer::~RasterGrayScaleLayer()
 {
 }
 
-void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandIndex)
+inline void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandIndex)
 {
 	GDALRasterBand* band = dataset->GetGDALDataset()->GetRasterBand(bandIndex);
 	GDALDataType dataType = band->GetRasterDataType();
@@ -47,7 +47,7 @@ void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandInd
 	_bandIndex = bandIndex;
 	_dataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_dataType);
 	_maxPixDataBytes = _dataBytes;
-	RestLutToLinear();
+	RasterLayer::RestLutToLinear(_lut);
 	RasterLayer::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
 }
 
@@ -62,14 +62,6 @@ inline void RasterGrayScaleLayer::GetMinMax(double* min, double* max)
 {
 	*min = _min;
 	*max = _max;
-}
-
-inline void RasterGrayScaleLayer::RestLutToLinear()
-{
-	for (int i = 0; i < 256; i++)
-	{
-		_lut[i] = i;
-	}
 }
 
 inline unsigned char * RasterGrayScaleLayer::GetLut()

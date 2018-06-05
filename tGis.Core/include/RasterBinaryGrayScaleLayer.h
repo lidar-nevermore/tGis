@@ -1,30 +1,30 @@
 #pragma once
+#pragma once
 
 
-#ifndef __RASTERGRAYSCALELAYER_H__
-#define __RASTERGRAYSCALELAYER_H__
+#ifndef __RASTERBINARYGRAYSCALELAYER_H__
+#define __RASTERBINARYGRAYSCALELAYER_H__
 
 #include "Helper.h"
 
 #include "RasterLayer.h"
 
+
 class GDALRasterBand;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class RasterGrayScaleLayerProvider;
 
-class TGIS_API RasterGrayScaleLayer : public RasterLayer
+class TGIS_API RasterBinaryGrayScaleLayer : public RasterLayer
 {
-	friend class RasterGrayScaleLayerProvider;
 public:
-	RasterGrayScaleLayer();
-	RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band);
-	~RasterGrayScaleLayer();
+	RasterBinaryGrayScaleLayer();
+	RasterBinaryGrayScaleLayer(MyGDALRasterDataset* dataset, int band);
+	~RasterBinaryGrayScaleLayer();
 
 private:
-	RasterGrayScaleLayer(const RasterGrayScaleLayer &) = delete;
-	RasterGrayScaleLayer &operator=(const RasterGrayScaleLayer &) = delete;
+	RasterBinaryGrayScaleLayer(const RasterBinaryGrayScaleLayer &) = delete;
+	RasterBinaryGrayScaleLayer &operator=(const RasterBinaryGrayScaleLayer &) = delete;
 
 private:
 	static const char* const _type;
@@ -36,10 +36,15 @@ public:
 
 public:
 	inline void SetDataset(MyGDALRasterDataset* dataset, int band);
-	inline void SetMinMax(double min, double max);
-	inline void GetMinMax(double* min, double* max);
+	inline void SetMinPivotMax(double min, double pivot, double max);
+	inline void GetMinPivotMax(double* min, double* pivot, double* max);
 	inline unsigned char* GetLut();
 	inline int GetBand();
+
+	inline void SetLeftChannel(bool r, bool g, bool b);
+	inline void GetLeftChannel(bool* r, bool* g, bool* b);
+	inline void SetRightChannel(bool r, bool g, bool b);
+	inline void GetRightChannel(bool* r, bool* g, bool* b);
 
 protected:
 	void OuterResample(unsigned char* pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight,
@@ -57,9 +62,21 @@ private:
 	unsigned char _lut[256];
 	double _min;
 	double _max;
+	double _pivot;
 	double _range;
+	double _leftRange;
+	double _rightRange;
+	bool leftRChannel;
+	bool leftGChannel;
+	bool leftBChannel;
+	bool rightRChannel;
+	bool rightGChannel;
+	bool rightBChannel;
 };
+
+
 
 END_NAME_SPACE(tGis, Core)
 
 #endif
+

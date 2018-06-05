@@ -109,6 +109,14 @@ inline void RasterLayer::InitialMinMax(GDALRasterBand * band, int dataType, doub
 	}
 }
 
+inline void RasterLayer::RestLutToLinear(unsigned char lut[256])
+{
+	for (int i = 0; i < 256; i++)
+	{
+		lut[i] = i;
+	}
+}
+
 void RasterLayer::Paint(IGeoSurface * surf)
 {
 	if (PreparePaint(surf))

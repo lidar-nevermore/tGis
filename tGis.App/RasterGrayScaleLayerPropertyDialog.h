@@ -18,11 +18,11 @@ public:
 	~RasterGrayScaleLayerPropertyDialog();
 
 public:
-	static ILayer* CreateRasterGrayScaleLayer(RasterGrayScaleLayerProvider*, IDataset*);
-	static void RasterGrayScaleLayerProperty(RasterGrayScaleLayerProvider*, ILayer*);
+	void SetDataset(MyGDALRasterDataset* dataset, int band);
 
 public:
-	void SetDataset(MyGDALRasterDataset* dataset, int band);
+	static ILayer* CreateRasterGrayScaleLayer(RasterGrayScaleLayerProvider*, MyGDALRasterDataset*);
+	static void RasterGrayScaleLayerProperty(RasterGrayScaleLayerProvider*, RasterGrayScaleLayer*);
 
 private:
 	Ui::RasterGrayScaleLayerPropertyDialog ui;

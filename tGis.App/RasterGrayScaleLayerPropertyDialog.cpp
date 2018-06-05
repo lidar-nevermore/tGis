@@ -5,6 +5,7 @@
 
 
 RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerPropertyDialog(QWidget *parent)
+	:QDialog(parent)
 {
 	ui.setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
@@ -22,10 +23,28 @@ RasterGrayScaleLayerPropertyDialog::~RasterGrayScaleLayerPropertyDialog()
 
 }
 
-ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(RasterGrayScaleLayerProvider* provider, IDataset * dataset)
+
+void RasterGrayScaleLayerPropertyDialog::SetDataset(MyGDALRasterDataset * dataset, int band)
+{
+	GDALDataset* gdt = dataset->GetGDALDataset();
+	int bandCount = gdt->GetRasterCount();
+	for (int i = 0; i < bandCount; i++)
+	{
+		ui.cboBand->addItem(QString::asprintf("band %d", i + 1));
+	}
+
+	if (bandCount >= band)
+	{
+		ui.cboBand->setCurrentIndex(band - 1);
+		QPushButton* button = ui.buttonBox->button(QDialogButtonBox::StandardButton::Ok);
+		button->setEnabled(true);
+	}
+}
+
+ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(RasterGrayScaleLayerProvider* provider, MyGDALRasterDataset * dataset)
 {
 	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
-	dlg.SetDataset((MyGDALRasterDataset*)dataset, 1);
+	dlg.SetDataset(dataset, 1);
 	if (QDialog::Accepted == dlg.exec())
 	{
 		int band = dlg.ui.cboBand->currentIndex() + 1;
@@ -47,9 +66,8 @@ ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(RasterGr
 	return nullptr;
 }
 
-void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(RasterGrayScaleLayerProvider* provider, ILayer * v)
+void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(RasterGrayScaleLayerProvider* provider, RasterGrayScaleLayer * layer)
 {
-	RasterGrayScaleLayer* layer = (RasterGrayScaleLayer*)v;
 	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBand());
 	double min;
@@ -76,19 +94,3 @@ void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(RasterGray
 	}
 }
 
-void RasterGrayScaleLayerPropertyDialog::SetDataset(MyGDALRasterDataset * dataset, int band)
-{
-	GDALDataset* gdt = dataset->GetGDALDataset();
-	int bandCount = gdt->GetRasterCount();
-	for (int i = 0; i < bandCount; i++)
-	{
-		ui.cboBand->addItem(QString::asprintf("band %d", i + 1));
-	}
-
-	if (bandCount >= band)
-	{
-		ui.cboBand->setCurrentIndex(band-1);
-		QPushButton* button = ui.buttonBox->button(QDialogButtonBox::StandardButton::Ok);
-		button->setEnabled(true);
-	}
-}

@@ -28,6 +28,7 @@ public:
 protected:
 	inline void SetDataset(MyGDALRasterDataset* raster);
 	inline void InitialMinMax(GDALRasterBand* band, int dataType, double *min, double *max, double* range);
+	inline void RestLutToLinear(unsigned char lut[256]);
 
 public:
 	virtual const OGREnvelope* GetEnvelope();

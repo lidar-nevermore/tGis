@@ -206,6 +206,12 @@
     <ClInclude Include="include\ITGisObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="include\RasterBinaryGrayScaleLayer.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterBinaryGrayScaleLayerProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -318,6 +324,12 @@
     </ClCompile>
     <ClCompile Include="src\ITGisObject.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterBinaryGrayScaleLayer.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterBinaryGrayScaleLayerProvider.cpp">
+      <Filter>src\Organizer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
