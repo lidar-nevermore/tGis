@@ -419,10 +419,7 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 	unsigned char* surfBuffer = VisualizeBufferManager::INSTANCE().AllocSurfaceBuffer();
 	unsigned char* pixBuffer = VisualizeBufferManager::INSTANCE().AllocDatasetBuffer(_maxPixDataBytes);
 
-	int surfW;
-	int surfH;
-	surf->GetViewSize(&surfW, &surfH);
-	RasterLayer::SetBufferAlpha(surfBuffer, surfW, surfH);
+	RasterLayer::SetBufferAlpha(surfBuffer, paintingWidth, paintingHeight);
 
 	(this->*IOResample)(pixBuffer, readingLeft, readingTop, readingRight, readingBottom,
 		surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
@@ -438,7 +435,7 @@ inline void RasterLayer::SetBufferAlpha(unsigned char * buf, int width, int heig
 {
 	unsigned char* surfBuf = buf +3;
 
-	for (int i = 0; i < width*width; i++)
+	for (int i = 0; i < width*height; i++)
 	{
 		*surfBuf = _alpha;
 		surfBuf += 4;
