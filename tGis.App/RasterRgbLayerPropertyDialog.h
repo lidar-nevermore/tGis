@@ -15,14 +15,11 @@ public:
 	~RasterRgbLayerPropertyDialog();
 
 public:
-	static ILayer* CreateRasterRgbLayer(RasterRgbLayerProvider*, IDataset*);
-	static void RasterRgbLayerProperty(RasterRgbLayerProvider*, ILayer*);
+	static ILayer* CreateRasterRgbLayer(RasterRgbLayerProvider*, MyGDALRasterDataset*);
+	static void RasterRgbLayerProperty(RasterRgbLayerProvider*, RasterRgbLayer*);
 
 public:
-	void SetDataset(MyGDALRasterDataset* dataset);
-	int GetBandIndexR();
-	int GetBandIndexG();
-	int GetBandIndexB();
+	void SetDataset(MyGDALRasterDataset* dataset, int r, int g, int b);
 
 private:
 	Ui::RasterRgbLayerPropertyDialog ui;

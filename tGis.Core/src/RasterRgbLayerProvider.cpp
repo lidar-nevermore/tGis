@@ -50,7 +50,7 @@ ILayer * RasterRgbLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
 	assert(_uiCreation != nullptr);
 
-	return _uiCreation(this, dataset);
+	return _uiCreation(this, (MyGDALRasterDataset*)dataset);
 }
 
 void RasterRgbLayerProvider::SetPropertyUI(const PropertyUI ui)
@@ -62,7 +62,7 @@ void RasterRgbLayerProvider::UI_LayerProperty(ILayer * layer)
 {
 	assert(_uiProperty != nullptr);
 
-	_uiProperty(this, layer);
+	_uiProperty(this, (RasterRgbLayer*)layer);
 }
 
 ILayer * RasterRgbLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int r, int g, int b)

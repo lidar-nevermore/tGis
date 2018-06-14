@@ -119,6 +119,24 @@ inline void RasterRgbLayer::SetMinMaxB(double min, double max)
 	_bRange = max - min;
 }
 
+inline void RasterRgbLayer::GetMinMaxR(double * min, double * max)
+{
+	*min = _rMin;
+	*max = _rMax;
+}
+
+inline void RasterRgbLayer::GetMinMaxG(double * min, double * max)
+{
+	*min = _gMin;
+	*max = _gMax;
+}
+
+inline void RasterRgbLayer::GetMinMaxB(double * min, double * max)
+{
+	*min = _bMin;
+	*max = _bMax;
+}
+
 inline unsigned char * RasterRgbLayer::GetLutR()
 {
 	return _rLut;

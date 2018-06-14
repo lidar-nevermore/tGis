@@ -17,6 +17,7 @@ RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerPropertyDial
 	ui.leMax->setValidator(minMaxValidator);
 	ui.leMin->setValidator(minMaxValidator);
 	ui.lePivot->setValidator(minMaxValidator);
+	ui.pteData->setReadOnly(true);
 }
 
 RasterBinaryGrayScaleLayerPropertyDialog::~RasterBinaryGrayScaleLayerPropertyDialog()
@@ -44,6 +45,7 @@ ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLa
 {
 	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset(dataset, 1);
+	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(dataset->GetCreationString()));
 	if (QDialog::Accepted == dlg.exec())
 	{
 		int band = dlg.ui.cboBand->currentIndex() + 1;
@@ -79,6 +81,7 @@ void RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerPropert
 {
 	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBand());
+	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));
 	double min;
 	double max;
 	double pivot;

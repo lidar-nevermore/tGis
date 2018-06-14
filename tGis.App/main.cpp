@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
 	RasterGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty);
 	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLayer);
 	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerProperty);
-
 	RasterRgbLayerProvider::INSTANCE.SetCreationUI(&RasterRgbLayerPropertyDialog::CreateRasterRgbLayer);
+	RasterRgbLayerProvider::INSTANCE.SetPropertyUI(&RasterRgbLayerPropertyDialog::RasterRgbLayerProperty);
 	qRegisterMetaType<IMapPtr>("IMapPtr");
 	qRegisterMetaType<ILayerPtr>("ILayerPtr");
 	qRegisterMetaType<ILayerProviderPtr>("ILayerProviderPtr");

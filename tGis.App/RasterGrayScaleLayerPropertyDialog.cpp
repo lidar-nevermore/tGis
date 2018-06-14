@@ -15,6 +15,7 @@ RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerPropertyDialog(QWidget *
 	QValidator* minMaxValidator = new QRegExpValidator(regx, this);
 	ui.leMax->setValidator(minMaxValidator);
 	ui.leMin->setValidator(minMaxValidator);
+	ui.pteData->setReadOnly(true);
 }
 
 
@@ -45,6 +46,7 @@ ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(RasterGr
 {
 	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset(dataset, 1);
+	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(dataset->GetCreationString()));
 	if (QDialog::Accepted == dlg.exec())
 	{
 		int band = dlg.ui.cboBand->currentIndex() + 1;
@@ -52,13 +54,13 @@ ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(RasterGr
 		QString minStr = dlg.ui.leMin->text();
 		QString maxStr = dlg.ui.leMax->text();
 		unsigned char opacity = (unsigned char)dlg.ui.sdOpacity->value();
+		layer->SetOpacity(opacity / 255.0);
 		double min = minStr.toDouble();
 		double max = maxStr.toDouble();
 		if (min < max)
 		{
 			layer->SetMinMax(min, max);
-		}
-		layer->SetOpacity(opacity / 255.0);
+		}		
 
 		return layer;
 	}
@@ -70,6 +72,7 @@ void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(RasterGray
 {
 	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBand());
+	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));
 	double min;
 	double max;
 	layer->GetMinMax(&min, &max);
@@ -81,16 +84,18 @@ void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(RasterGray
 		int band = dlg.ui.cboBand->currentIndex() + 1;
 		layer->SetDataset((MyGDALRasterDataset*)layer->GetDataset(), band);
 
+		unsigned char opacity = (unsigned char)dlg.ui.sdOpacity->value();
+		layer->SetOpacity(opacity / 255.0);
+
 		QString minStr = dlg.ui.leMin->text();
 		QString maxStr = dlg.ui.leMax->text();
-		unsigned char opacity = (unsigned char)dlg.ui.sdOpacity->value();
+		
 		min = minStr.toDouble();
 		max = maxStr.toDouble();
 		if (min < max)
 		{
 			layer->SetMinMax(min, max);
-		}
-		layer->SetOpacity(opacity / 255.0);
+		}		
 	}
 }
 

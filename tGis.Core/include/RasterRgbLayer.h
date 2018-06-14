@@ -40,6 +40,9 @@ public:
 	inline void SetMinMaxR(double min, double max);
 	inline void SetMinMaxG(double min, double max);
 	inline void SetMinMaxB(double min, double max);
+	inline void GetMinMaxR(double* min, double* max);
+	inline void GetMinMaxG(double* min, double* max);
+	inline void GetMinMaxB(double* min, double* max);
 
 	inline unsigned char* GetLutR();
 	inline unsigned char* GetLutG();
