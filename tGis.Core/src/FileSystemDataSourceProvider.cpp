@@ -1,6 +1,5 @@
 #include "FileSystemDataSourceProvider.h"
 #include "FileSystemDataSource.h"
-#include "DataSourceProviderRepository.h"
 
 #include <cassert>
 
@@ -29,7 +28,6 @@ FileSystemDataSourceProvider & FileSystemDataSourceProvider::INSTANCE()
 
 FileSystemDataSourceProvider::FileSystemDataSourceProvider()
 {
-	DataSourceProviderRepository::INSTANCE().AddDataSourceProvider(this);
 }
 
 FileSystemDataSourceProvider::~FileSystemDataSourceProvider()
@@ -40,6 +38,11 @@ FileSystemDataSourceProvider::~FileSystemDataSourceProvider()
 const char * FileSystemDataSourceProvider::GetSupportedDataSourceType()
 {
 	return FileSystemDataSource::_type;
+}
+
+bool FileSystemDataSourceProvider::IsRoot()
+{
+	return true;
 }
 
 const char * FileSystemDataSourceProvider::GetName()
@@ -77,18 +80,45 @@ void FileSystemDataSourceProvider::UI_DataSourceProperty(IDataSource * ds, IData
 	_uiProperty(this,ds,dt);
 }
 
-IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
+
+IDataSource * FileSystemDataSourceProvider::CreateDataSourceNoHost(const char * path)
 {
 	string strPath(path);
 	map<string, IDataSource*>::iterator pos = _mapDataSource.find(strPath);
 
 	if (pos != _mapDataSource.end())
-		return (*pos).second;
+	{
+		IDataSource *ds = (*pos).second;
+		const char* t = ds->GetType();
+		if (strcmp(t, FileSystemDataSource::S_GetType()) != 0)
+		{
+			throw exception("Already connected as DataSource of different Type!");
+		}
+		return ds;
+	}
 
 	FileSystemDataSource* ds = new FileSystemDataSource(path);
-	_vecDataSource.push_back(ds);
+
 	_mapDataSource.insert(map<string, IDataSource*>::value_type(strPath, ds));
 
+	return ds;
+}
+
+
+IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
+{
+	bool exist = false;
+	IDataSource* ds = CreateDataSourceNoHost(path);
+	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); ++it)
+	{
+		if (*it == ds)
+		{
+			exist = true;
+			break;
+		}
+	}
+	if(exist == false)
+		_vecDataSource.push_back(ds);
 	return ds;
 }
 

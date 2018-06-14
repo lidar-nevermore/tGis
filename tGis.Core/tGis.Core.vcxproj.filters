@@ -212,6 +212,12 @@
     <ClInclude Include="include\RasterBinaryGrayScaleLayerProvider.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
+    <ClInclude Include="include\ObjectSampleDataSource.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ObjectSampleDataSourceProvider.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -329,6 +335,12 @@
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\RasterBinaryGrayScaleLayerProvider.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ObjectSampleDataSource.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ObjectSampleDataSourceProvider.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
   </ItemGroup>

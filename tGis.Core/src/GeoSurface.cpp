@@ -109,8 +109,8 @@ void GeoSurface::Spatial2Surface(double spatialX, double spatialY, double * surf
 
 void GeoSurface::Spatial2Surface(double spatialX, double spatialY, int * surfX, int * surfY)
 {
-	*surfX = (int)my_round((spatialX - _spatialLeft) / _resolution, 0);
-	*surfY = (int)my_round((_spatialTop - spatialY) / _resolution, 0);
+	*surfX = (int)_tgis_round((spatialX - _spatialLeft) / _resolution, 0);
+	*surfY = (int)_tgis_round((_spatialTop - spatialY) / _resolution, 0);
 }
 
 const OGREnvelope * GeoSurface::GetEnvelope()
@@ -165,10 +165,10 @@ void GeoSurface::UpdateViewPort()
 	Spatial2Surface(_osSurf4PresentSpatialLeft, _osSurf4PresentSpatialTop, &osSurfPresentPosLeft, &osSurfPresentPosTop);
 	Spatial2Surface(_osSurf4PresentSpatialRight, _osSurf4PresentSpatialBottom, &osSurfPresentPosRight, &osSurfPresentPosBottom);
 
-	_osSurfPresentPosX = (int)my_round(osSurfPresentPosLeft, 0);
-	_osSurfPresentPosY = (int)my_round(osSurfPresentPosTop, 0);
-	_osSurfPresentWidth = (int)my_round(osSurfPresentPosRight - osSurfPresentPosLeft, 0);
-	_osSurfPresentHeight = (int)my_round(osSurfPresentPosBottom - osSurfPresentPosTop, 0);
+	_osSurfPresentPosX = (int)_tgis_round(osSurfPresentPosLeft, 0);
+	_osSurfPresentPosY = (int)_tgis_round(osSurfPresentPosTop, 0);
+	_osSurfPresentWidth = (int)_tgis_round(osSurfPresentPosRight - osSurfPresentPosLeft, 0);
+	_osSurfPresentHeight = (int)_tgis_round(osSurfPresentPosBottom - osSurfPresentPosTop, 0);
 }
 
 END_NAME_SPACE(tGis, Core)

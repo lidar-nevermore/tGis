@@ -42,7 +42,7 @@ struct GDALInit
 		CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");  //支持中文路径
 
 		char exePathBuffer[TGIS_MAX_PATH];
-		my_getcwd(exePathBuffer, TGIS_MAX_PATH);
+		_tgis_getcwd(exePathBuffer, TGIS_MAX_PATH);
 
 		string dataPath(exePathBuffer);
 		dataPath.append(TGIS_PATH_SEPARATOR_STR);
@@ -67,7 +67,7 @@ struct GDALInit
 			{
 				vector<string> dstext;
 				string strext = ext;
-				str_split(const_cast<char*>(strext.c_str()), " ,.|/\\", dstext);
+				_tgis_str_split(const_cast<char*>(strext.c_str()), " ,.|/\\", dstext);
 				for (vector<string>::iterator it = dstext.begin(); it != dstext.end();)
 				{
 					if ((*it).empty())

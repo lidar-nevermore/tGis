@@ -1,6 +1,7 @@
 #include "DataSourceProviderRepository.h"
 #include "IDataSourceProvider.h"
 #include "FileSystemDataSourceProvider.h"
+#include "ObjectSampleDataSourceProvider.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -14,6 +15,8 @@ DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new DataSourceProviderRepository();
+		_instance->AddDataSourceProvider(&FileSystemDataSourceProvider::INSTANCE());
+		_instance->AddDataSourceProvider(&ObjectSampleDataSourceProvider::INSTANCE());
 	}
 
 	return *_instance;

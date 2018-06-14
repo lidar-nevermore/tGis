@@ -10,6 +10,7 @@
 #include "MyGDALRasterDataset.h"
 #include "MyGDALVectorDataset.h"
 #include "FileSystemDataSource.h"
+#include "ObjectSampleDataSource.h"
 
 #include "Layer.h"
 #include "RasterLayer.h"

@@ -25,17 +25,28 @@ RasterRgbLayerPropertyDialog::~RasterRgbLayerPropertyDialog()
 {
 }
 
-ILayer * RasterRgbLayerPropertyDialog::CreateRasterRgbLayer(RasterRgbLayerProvider * provider, MyGDALRasterDataset * dataset)
+ILayer * RasterRgbLayerPropertyDialog::CreateRasterRgbLayer(RasterRgbLayerProvider * provider, MyGDALRasterDataset * dataset_)
 {
 	RasterRgbLayerPropertyDialog dlg((QWidget*)GetMainWindow());
-	dlg.SetDataset((MyGDALRasterDataset*)dataset,3,2,1);
+	MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dataset_;
+	GDALDataset* gdt = dataset->GetGDALDataset();
+	if (gdt == nullptr)
+		return nullptr;
+	if (gdt->GetRasterCount() == 0)
+		return nullptr;
+	GDALRasterBand* rBand = gdt->GetRasterBand(1);
+	GDALDataType rDataType = rBand->GetRasterDataType();
+	if(rDataType == GDT_Byte)
+		dlg.SetDataset(dataset, 1, 2, 3);
+	else
+		dlg.SetDataset(dataset, 3, 2, 1);
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(dataset->GetCreationString()));
 	if (QDialog::Accepted == dlg.exec())
 	{
 		int rBand = dlg.ui.cboBandR->currentIndex() + 1;
 		int gBand = dlg.ui.cboBandG->currentIndex() + 1;
 		int bBand = dlg.ui.cboBandB->currentIndex() + 1;
-		RasterRgbLayer* layer = (RasterRgbLayer*)provider->CreateLayer((MyGDALRasterDataset*)dataset, rBand, gBand, bBand);
+		RasterRgbLayer* layer = (RasterRgbLayer*)provider->CreateLayer(dataset, rBand, gBand, bBand);
 
 		unsigned char opacity = (unsigned char)dlg.ui.sdOpacity->value();
 		layer->SetOpacity(opacity / 255.0);

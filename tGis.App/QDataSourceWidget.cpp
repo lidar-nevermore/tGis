@@ -31,26 +31,30 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 	for (int i = 0; i < providerCount; i++)
 	{
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
-		QStandardItem* pItem = new QStandardItem();
-		pItem->setText(QString::fromLocal8Bit(provider->GetName()));
-		pItem->setEditable(false);
-		const QIcon* icon = IconRes::INSTANCE.GetIcon(provider->GetType());
-		if (icon != nullptr)
-		{
-			pItem->setIcon(*icon);
-		}
-		QVariant userData;
-		userData.setValue<void*>((void*)provider);
-		pItem->setData(userData,DataRole);
-		QVariant userDataType;
-		userDataType.setValue<int>(DataSourceProviderType);
-		pItem->setData(userDataType, DataTypeRole);
-		rootNode->appendRow(pItem);
 
-		int datasourceCount = provider->GetDataSourceCount();
-		for (int i = 0; i < datasourceCount; i++)
+		if (provider->IsRoot())
 		{
-			AddDataSourceNode(pItem, provider->GetDataSource(i),provider);
+			QStandardItem* pItem = new QStandardItem();
+			pItem->setText(QString::fromLocal8Bit(provider->GetName()));
+			pItem->setEditable(false);
+			const QIcon* icon = IconRes::INSTANCE.GetIcon(provider->GetType());
+			if (icon != nullptr)
+			{
+				pItem->setIcon(*icon);
+			}
+			QVariant userData;
+			userData.setValue<void*>((void*)provider);
+			pItem->setData(userData, DataRole);
+			QVariant userDataType;
+			userDataType.setValue<int>(DataSourceProviderType);
+			pItem->setData(userDataType, DataTypeRole);
+			rootNode->appendRow(pItem);
+
+			int datasourceCount = provider->GetDataSourceCount();
+			for (int i = 0; i < datasourceCount; i++)
+			{
+				AddDataSourceNode(pItem, provider->GetDataSource(i), provider);
+			}
 		}
 	}
 

@@ -47,6 +47,8 @@
     <ClInclude Include="include\MyGDALFileDataset.h" />
     <ClInclude Include="include\MyGDALRasterDataset.h" />
     <ClInclude Include="include\MyGDALVectorDataset.h" />
+    <ClInclude Include="include\ObjectSampleDataSource.h" />
+    <ClInclude Include="include\ObjectSampleDataSourceProvider.h" />
     <ClInclude Include="include\OverlayLayer.h" />
     <ClInclude Include="include\OverlayRect.h" />
     <ClInclude Include="include\RasterBinaryGrayScaleLayer.h" />
@@ -94,6 +96,8 @@
     <ClCompile Include="src\MyGDALFileDataset.cpp" />
     <ClCompile Include="src\MyGDALRasterDataset.cpp" />
     <ClCompile Include="src\MyGDALVectorDataset.cpp" />
+    <ClCompile Include="src\ObjectSampleDataSource.cpp" />
+    <ClCompile Include="src\ObjectSampleDataSourceProvider.cpp" />
     <ClCompile Include="src\OverlayLayer.cpp" />
     <ClCompile Include="src\OverlayRect.cpp" />
     <ClCompile Include="src\RasterBandSeqBlockReader.cpp" />

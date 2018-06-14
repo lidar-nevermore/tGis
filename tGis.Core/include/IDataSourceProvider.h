@@ -17,7 +17,7 @@ struct TGIS_API IDataSourceProvider
 	virtual const char* GetName() = 0;
 
 	virtual const char* GetSupportedDataSourceType() = 0;
-
+	virtual bool IsRoot() = 0;
 
 	virtual IDataSource* UI_CreateDataSource() = 0;
 	virtual void UI_DataSourceProperty(IDataSource*,IDataset*) = 0;

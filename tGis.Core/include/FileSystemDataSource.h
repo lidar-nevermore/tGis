@@ -15,14 +15,17 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_API FileSystemDataSource : public IDataSource
 {
 	friend class FileSystemDataSourceProvider;
-public:
+
+protected:
 	FileSystemDataSource(const char* path);
+
+public:
 	~FileSystemDataSource();
 
 private:
 	static const char* const _type;
 
-private:
+protected:
 	string _path;
 	string _name;
 	bool _connected;
@@ -34,22 +37,22 @@ private:
 	map<string, IDataset*> _mapDataset;
 
 public:
-	const char* GetType();
+	virtual const char* GetType();
 	static const char* S_GetType();
-	const char* GetName();
-	const char* GetCreationString();
+	virtual const char* GetName();
+	virtual const char* GetCreationString();
 
-	bool IsConnected();
-	void Connect();
-	void Disconnect();
+	virtual bool IsConnected();
+	virtual void Connect();
+	virtual void Disconnect();
 
-	int GetDatasetCount();
-	IDataset* GetDataset(int);
-	IDataset* GetDataset(const char*);
+	virtual int GetDatasetCount();
+	virtual IDataset* GetDataset(int);
+	virtual IDataset* GetDataset(const char*);
 
-	int GetDataSourceCount();
-	IDataSource* GetDataSource(int);
-	IDataSource* GetDataSource(const char*);
+	virtual int GetDataSourceCount();
+	virtual IDataSource* GetDataSource(int);
+	virtual IDataSource* GetDataSource(const char*);
 };
 
 

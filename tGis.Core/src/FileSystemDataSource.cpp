@@ -1,6 +1,7 @@
 #include "FileSystemDataSource.h"
 #include "IDataset.h"
 #include "FileSystemDataSourceProvider.h"
+#include "ObjectSampleDataSourceProvider.h"
 #include "MyGDALRasterDataset.h"
 #include "MyGDALVectorDataset.h"
 
@@ -18,55 +19,25 @@ const char* const FileSystemDataSource::_type = "9357FB74-8ED4-4666-9D91-8B32220
 FileSystemDataSource::FileSystemDataSource(const char* path)
 {
 	_path = path;
-
-
 	string sepstr(TGIS_PATH_SEPARATOR_STR);
-
 	size_t spos = _path.size() - sepstr.size();
 
 	if (_path.find(sepstr, spos) == spos)
 	{
 		_path = _path.substr(0, spos);
-		size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
-		if (pos == _path.npos)
-		{
-			_name = _path;
-		}
-		else
-		{
-			_name = _path.substr(pos+1);
-		}
+	}
+
+	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+	if (pos == _path.npos)
+	{
+		_name = _path;
 	}
 	else
 	{
-		size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
-		if (pos == _path.npos)
-		{
-			_name = _path;
-		}
-		else
-		{
-			_name = _path.substr(pos+1);
-		}
+		_name = _path.substr(pos + 1);
 	}
 
-	map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE()._mapDataSource.find(_path);
-	if (pos != FileSystemDataSourceProvider::INSTANCE()._mapDataSource.end())
-	{
-		FileSystemDataSource* ds = (FileSystemDataSource*)(*pos).second;
-
-		_vecDataSource = ds->_vecDataSource;
-		_mapDataSource = ds->_mapDataSource;
-
-		_vecDataset = ds->_vecDataset;
-		_mapDataset = ds->_mapDataset;
-
-		_connected = ds->IsConnected();
-	}
-	else
-	{
-		_connected = false;
-	}
+	_connected = false;
 }
 
 
@@ -105,41 +76,32 @@ void FileSystemDataSource::Connect()
 	if (_connected)
 		return;
 
+	_connected = true;
 	string find_path = _path + TGIS_PATH_SEPARATOR_STR + "*";
-	_finddata_t file;
+	_tgis_finddata_t file;
 	intptr_t flag;
 	intptr_t handle;
-	flag = handle = _findfirst(find_path.c_str(), &file);
+	flag = handle = _tgis_findfirst(find_path.c_str(), &file);
 	while (flag != -1)
 	{
 		string subpath = _path + TGIS_PATH_SEPARATOR_STR + file.name;
 
 		if (strcmp(file.name, ".") != 0 
 			&& strcmp(file.name, "..") != 0 
-			&& !(file.attrib&_A_HIDDEN)
-			&& !(file.attrib&_A_SYSTEM)
+			&& !(file.attrib&_TGIS_A_HIDDEN)
+			&& !(file.attrib&_TGIS_A_SYSTEM)
 			)
 		{
-			if (file.attrib&_A_SUBDIR)
+			if (file.attrib&_TGIS_A_SUBDIR)
 			{
-				map<string, IDataSource*>::iterator pos = FileSystemDataSourceProvider::INSTANCE()._mapDataSource.find(subpath.c_str());
-
 				IDataSource* ds = nullptr;
-				if (pos != FileSystemDataSourceProvider::INSTANCE()._mapDataSource.end())
-				{
-					ds = (*pos).second;
-					_vecDataSource.push_back(ds);
-					map<string, IDataSource*>::value_type v(subpath, ds);
-					_mapDataSource.insert(v);
-				}
+				if (ObjectSampleDataSourceProvider::IsObjectSampleDataSource(subpath.c_str()))
+					ds = ObjectSampleDataSourceProvider::INSTANCE().CreateDataSourceNoHost(subpath.c_str());
 				else
-				{
-					ds = new FileSystemDataSource(subpath.c_str());
-					_vecDataSource.push_back(ds);
-					map<string, IDataSource*>::value_type v(subpath, ds);
-					_mapDataSource.insert(v);
-					FileSystemDataSourceProvider::INSTANCE()._mapDataSource.insert(v);
-				}
+					ds = FileSystemDataSourceProvider::INSTANCE().CreateDataSourceNoHost(subpath.c_str());
+				_vecDataSource.push_back(ds);
+				map<string, IDataSource*>::value_type v(subpath, ds);
+				_mapDataSource.insert(v);
 			}
 			else
 			{
@@ -147,7 +109,7 @@ void FileSystemDataSource::Connect()
 				if (pos != subpath.npos)
 				{
 					string ext = subpath.substr(pos+1);
-					GDALAccess eAccess = (file.attrib&_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
+					GDALAccess eAccess = (file.attrib&_TGIS_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
 
 					if (MyGDALFileDataset::IsSupportedRasterFormatExt(ext.c_str()))
 					{
@@ -167,11 +129,9 @@ void FileSystemDataSource::Connect()
 			}
 		}
 
-		flag = _findnext(handle, &file);
+		flag = _tgis_findnext(handle, &file);
 	};
-	_findclose(handle);
-
-	_connected = true;
+	_tgis_findclose(handle);
 }
 
 void FileSystemDataSource::Disconnect()

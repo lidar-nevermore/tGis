@@ -184,17 +184,17 @@ void RasterLayer::PaintByOuterResample(IGeoSurface *surf)
 	int xRasterSize = _raster->GetGDALDataset()->GetRasterXSize();
 	int yRasterSize = _raster->GetGDALDataset()->GetRasterYSize();
 
-	int totalPaintingWidth = (int)my_round(_maxSurfX - _minSurfX, 0);
-	int totalPaintingHeight = (int)my_round(_maxSurfY - _minSurfY, 0);
+	int totalPaintingWidth = (int)_tgis_round(_maxSurfX - _minSurfX, 0);
+	int totalPaintingHeight = (int)_tgis_round(_maxSurfY - _minSurfY, 0);
 
 	if (totalPaintingWidth < 1 || totalPaintingHeight < 1)
 		return;
 
 	//绘制部分的范围 单位：绘制表面像素
-	int paintingLeft = (int)my_round(_minSurfX, 0);
-	int paintingTop = (int)my_round(_minSurfY, 0);
-	int paintingBottom = (int)my_round(_maxSurfY, 0);
-	int paintingRight = (int)my_round(_maxSurfX, 0);
+	int paintingLeft = (int)_tgis_round(_minSurfX, 0);
+	int paintingTop = (int)_tgis_round(_minSurfY, 0);
+	int paintingBottom = (int)_tgis_round(_maxSurfY, 0);
+	int paintingRight = (int)_tgis_round(_maxSurfX, 0);
 	//绘制的部分的宽高 单位：绘制表面像素
 	int paintingWidth;
 	int paintingHeight;
@@ -311,17 +311,17 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 	int xRasterSize = _raster->GetGDALDataset()->GetRasterXSize();
 	int yRasterSize = _raster->GetGDALDataset()->GetRasterYSize();
 
-	int totalPaintingWidth = (int)my_round(_maxSurfX - _minSurfX, 0);
-	int totalPaintingHeight = (int)my_round(_maxSurfY - _minSurfY, 0);
+	int totalPaintingWidth = (int)_tgis_round(_maxSurfX - _minSurfX, 0);
+	int totalPaintingHeight = (int)_tgis_round(_maxSurfY - _minSurfY, 0);
 
 	if (totalPaintingWidth < 1 || totalPaintingHeight < 1)
 		return;
 
 	//绘制部分的范围 单位：绘制表面像素
-	int paintingLeft = (int)my_round(_minSurfX, 0);
-	int paintingTop = (int)my_round(_minSurfY, 0);
-	int paintingBottom = (int)my_round(_maxSurfY, 0);
-	int paintingRight = (int)my_round(_maxSurfX, 0);
+	int paintingLeft = (int)_tgis_round(_minSurfX, 0);
+	int paintingTop = (int)_tgis_round(_minSurfY, 0);
+	int paintingBottom = (int)_tgis_round(_maxSurfY, 0);
+	int paintingRight = (int)_tgis_round(_maxSurfX, 0);
 	//绘制的部分的宽高 单位：绘制表面像素
 	int paintingWidth;
 	int paintingHeight;
