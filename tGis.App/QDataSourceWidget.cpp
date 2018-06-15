@@ -26,8 +26,8 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 
 	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
 
-	QStandardItemModel* model = new QStandardItemModel();
-	QStandardItem* rootNode = model->invisibleRootItem();
+	QStandardItemModel* _model = new QStandardItemModel();
+	QStandardItem* rootNode = _model->invisibleRootItem();
 	for (int i = 0; i < providerCount; i++)
 	{
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
@@ -58,9 +58,11 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 		}
 	}
 
-	setModel(model);
+	setModel(_model);
 	expandAll();
 	connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(NodeDoubleClicked(const QModelIndex&)));
+	connect(this, &QDataSourceWidget::expanded, this, &QDataSourceWidget::ExpandedOrCollapsed);
+	connect(this, &QDataSourceWidget::collapsed, this, &QDataSourceWidget::ExpandedOrCollapsed);
 }
 
 
@@ -189,6 +191,11 @@ bool QDataSourceWidget::ConnectDataSource(QStandardItem* pItem, IDataSource* ds,
 		QMessageBox::Yes, QMessageBox::Yes);
 
 	return false;
+}
+
+void QDataSourceWidget::ExpandedOrCollapsed(const QModelIndex & index)
+{
+	resizeColumnToContents(0);
 }
 
 void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)

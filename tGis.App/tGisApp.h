@@ -42,6 +42,7 @@ private slots:
 	void on_layerAttributeAction_triggered(bool checked);
 	void on_removeAllLayersAction_triggered(bool checked);
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
+	void on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 
 private:
 	Ui::tGisAppClass ui;

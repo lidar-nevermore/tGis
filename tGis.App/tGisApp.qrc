@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="tGisApp">
+    <file>Resources/LayerBottom.png</file>
+    <file>Resources/LayerDown.png</file>
+    <file>Resources/LayerTop.png</file>
+    <file>Resources/LayerUp.png</file>
     <file>Resources/LayerAttribute.png</file>
     <file>Resources/LayerVisible.png</file>
     <file>Resources/RemoveAllLayers.png</file>

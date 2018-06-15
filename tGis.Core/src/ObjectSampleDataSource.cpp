@@ -67,10 +67,10 @@ void ObjectSampleDataSource::Connect()
 					meta.Label = std::stoi(fileds[1]);
 					meta.MinPixelSize = std::stof(fileds[2]);
 					meta.MaxPixelSize = std::stof(fileds[3]);
-					meta.MinImageWidth = std::stof(fileds[4]);
-					meta.MaxImageWidth = std::stof(fileds[5]);
-					meta.MinImageHeight = std::stof(fileds[6]);
-					meta.MaxImageHeight = std::stof(fileds[7]);
+					meta.MinObjectWidth = std::stof(fileds[4]);
+					meta.MaxObjectWidth = std::stof(fileds[5]);
+					meta.MinObjectHeight = std::stof(fileds[6]);
+					meta.MaxObjectHeight = std::stof(fileds[7]);
 				}
 
 				line = buffer + i + 1;
@@ -82,6 +82,8 @@ void ObjectSampleDataSource::Connect()
 			memcpy(buffer, buffer + (totalSize - remainSize), remainSize);
 		}
 	}
+
+	fclose(fp);
 
 	FileSystemDataSource::Connect();
 }
@@ -129,6 +131,64 @@ ObjectSampleMetadata* ObjectSampleDataSource::AddObjectSampleMetadata(ObjectSamp
 	_mapObjectSampleMetadata.insert(map<int, ObjectSampleMetadata*>::value_type(meta->Label, meta));
 
 	return meta;
+}
+
+void ObjectSampleDataSource::SaveObjectSampleMetadata()
+{
+	char buffer[20];
+	string path = _path;
+	path.append(TGIS_PATH_SEPARATOR_STR);
+	path.append("tgis.sample");
+
+	FILE *fp = fopen(path.c_str(), "wb");
+	if (fp == NULL)
+	{
+		throw exception("样本库元数据文件写入失败！");
+	}
+	for (vector<ObjectSampleMetadata*>::iterator it = _vecObjectSampleMetadata.begin(); it != _vecObjectSampleMetadata.end(); it++)
+	{
+		ObjectSampleMetadata* meta = *it;
+		int len = strlen(meta->Name);
+		fwrite(meta->Name, len, 1, fp);
+		fwrite("   ", 3, 1, fp);
+
+		sprintf(buffer, "%d", meta->Label);
+		len = strlen(buffer);
+		fwrite(buffer, len, 1, fp);
+		fwrite("   ", 3, 1, fp);
+
+		sprintf(buffer, "%d", meta->MinPixelSize);
+		len = strlen(buffer);
+		fwrite(buffer, len, 1, fp);
+		fwrite("   ", 3, 1, fp);
+
+		sprintf(buffer, "%d", meta->MaxPixelSize);
+		len = strlen(buffer);
+		fwrite(buffer, len, 1, fp);
+		fwrite("   ", 3, 1, fp);
+
+		sprintf(buffer, "%.3f", meta->MinObjectWidth);
+		len = strlen(buffer);
+		fwrite(buffer, len, 1, fp);
+		fwrite("   ", 3, 1, fp);
+
+		sprintf(buffer, "%.3f", meta->MaxObjectWidth);
+		len = strlen(buffer);
+		fwrite(buffer, len, 1, fp);
+		fwrite("   ", 3, 1, fp);
+
+		sprintf(buffer, "%.3f", meta->MinObjectHeight);
+		len = strlen(buffer);
+		fwrite(buffer, len, 1, fp);
+		fwrite("   ", 3, 1, fp);
+
+		sprintf(buffer, "%.3f", meta->MaxObjectHeight);
+		len = strlen(buffer);
+		fwrite(buffer, len, 1, fp);
+		fwrite("   \n", 3, 1, fp);
+	}
+
+	fclose(fp);
 }
 
 END_NAME_SPACE(tGis, Core)

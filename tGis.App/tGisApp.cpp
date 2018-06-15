@@ -11,6 +11,7 @@ tGisApp::tGisApp(QWidget *parent)
 
 	ui.mapWidget->SetMap(&_map);
 	ui.layerWidget->SetMap(&_map);
+	ui.layerWidget->SetMapWidget(ui.mapWidget);
 	SetCurrentMap(&_map);
 	SetCurrentMapWidget((IMapWidget*)ui.mapWidget);
 	ui.mapWidget->AddMapTool(&_mapPanTool);
@@ -120,12 +121,7 @@ void tGisApp::on_removeLayerAction_triggered(bool checked)
 
 void tGisApp::on_layerVisibleAction_toggled(bool checked)
 {
-	ILayer* layer = ui.layerWidget->GetSelectedLayer();
-	if (layer != nullptr && layer->GetVisible() != checked)
-	{
-		layer->SetVisible(checked);
-		ui.mapWidget->RepaintMap();
-	}
+	ui.layerWidget->SetSelectedLayerVisible(checked);
 }
 
 void tGisApp::on_layerAttributeAction_triggered(bool checked)
@@ -158,5 +154,15 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 	else
 	{
 		ui.zoomOriginalAction->setEnabled(layer != nullptr);
+	}
+}
+
+void tGisApp::on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
+{
+	ILayer* sellayer = ui.layerWidget->GetSelectedLayer();
+	ui.mapWidget->RepaintMap();
+	if (sellayer == layer)
+	{
+		ui.layerVisibleAction->setChecked(layer->GetVisible());
 	}
 }

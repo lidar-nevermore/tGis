@@ -40,5 +40,6 @@ private:
 
 private slots:
 	void NodeDoubleClicked(const QModelIndex &index);
+	void ExpandedOrCollapsed(const QModelIndex &index);
 };
 

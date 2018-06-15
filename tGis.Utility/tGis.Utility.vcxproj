@@ -74,6 +74,10 @@
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -97,6 +101,10 @@
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
+    <QtUic>
+      <ExecutionDescription>Uic'ing %(Identity)...</ExecutionDescription>
+      <OutputFile>.\GeneratedFiles\ui_%(Filename).h</OutputFile>
+    </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\DrawRectTool.cpp" />
@@ -105,16 +113,21 @@
     <ClCompile Include="src\QMapWidget.cpp" />
     <ClCompile Include="src\QtGeoSurface.cpp" />
     <ClCompile Include="src\RectZoomTool.cpp" />
+    <ClCompile Include="src\TakeObjectSampleTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h" />
     <ClInclude Include="include\MapPanTool.h" />
     <ClInclude Include="include\MapZoomTool.h" />
+    <ClInclude Include="include\TakeObjectSampleTool.h" />
     <QtMoc Include="include\QMapWidget.h" />
     <ClInclude Include="include\QtGeoSurface.h" />
     <ClInclude Include="include\RectZoomTool.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtUic Include="form\ObjectSampleDialog.ui">
+      <FileType>Document</FileType>
+    </QtUic>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

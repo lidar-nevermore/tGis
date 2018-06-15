@@ -58,6 +58,10 @@
    <addaction name="refreshMapAction"/>
    <addaction name="separator"/>
    <addaction name="layerVisibleAction"/>
+   <addaction name="layerUpAction"/>
+   <addaction name="layerDownAction"/>
+   <addaction name="layerTopAction"/>
+   <addaction name="layerBottonAction"/>
    <addaction name="zoomLayerAction"/>
    <addaction name="zoomOriginalAction"/>
    <addaction name="layerAttributeAction"/>
@@ -73,7 +77,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>图层</string>
+    <string>数据源</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
@@ -93,13 +97,28 @@
       <number>1</number>
      </property>
      <item>
-      <widget class="QLayerWidget" name="layerWidget">
+      <widget class="QDataSourceWidget" name="dataSourceWidget">
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
        <property name="textElideMode">
         <enum>Qt::ElideNone</enum>
+       </property>
+       <property name="horizontalScrollMode">
+        <enum>QAbstractItemView::ScrollPerPixel</enum>
        </property>
        <property name="headerHidden">
         <bool>true</bool>
        </property>
+       <property name="expandsOnDoubleClick">
+        <bool>false</bool>
+       </property>
+       <attribute name="headerStretchLastSection">
+        <bool>true</bool>
+       </attribute>
       </widget>
      </item>
     </layout>
@@ -113,7 +132,7 @@
     <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>数据源</string>
+    <string>工具箱</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>2</number>
@@ -133,15 +152,60 @@
       <number>1</number>
      </property>
      <item>
-      <widget class="QDataSourceWidget" name="dataSourceWidget">
-       <property name="textElideMode">
-        <enum>Qt::ElideNone</enum>
-       </property>
-       <property name="headerHidden">
-        <bool>true</bool>
-       </property>
-       <property name="expandsOnDoubleClick">
+      <widget class="QTreeView" name="treeView"/>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="dockWidget_3">
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>图层</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <property name="leftMargin">
+      <number>1</number>
+     </property>
+     <property name="topMargin">
+      <number>1</number>
+     </property>
+     <property name="rightMargin">
+      <number>1</number>
+     </property>
+     <property name="bottomMargin">
+      <number>1</number>
+     </property>
+     <item>
+      <widget class="QLayerWidget" name="layerWidget">
+       <property name="acceptDrops">
         <bool>false</bool>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>false</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::NoDragDrop</enum>
+       </property>
+       <property name="defaultDropAction">
+        <enum>Qt::MoveAction</enum>
+       </property>
+       <property name="selectionBehavior">
+        <enum>QAbstractItemView::SelectRows</enum>
+       </property>
+       <property name="selectionRectVisible">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -316,6 +380,51 @@
     <string>移除所有图层</string>
    </property>
   </action>
+  <action name="layerUpAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/LayerUp.png</normaloff>:/tGisApp/Resources/LayerUp.png</iconset>
+   </property>
+   <property name="text">
+    <string>上移一层</string>
+   </property>
+   <property name="toolTip">
+    <string>上移一层</string>
+   </property>
+  </action>
+  <action name="layerTopAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/LayerTop.png</normaloff>:/tGisApp/Resources/LayerTop.png</iconset>
+   </property>
+   <property name="text">
+    <string>移动到顶</string>
+   </property>
+   <property name="toolTip">
+    <string>移动到顶</string>
+   </property>
+  </action>
+  <action name="layerDownAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/LayerDown.png</normaloff>:/tGisApp/Resources/LayerDown.png</iconset>
+   </property>
+   <property name="text">
+    <string>下移一层</string>
+   </property>
+   <property name="toolTip">
+    <string>下移一层</string>
+   </property>
+  </action>
+  <action name="layerBottonAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/LayerBottom.png</normaloff>:/tGisApp/Resources/LayerBottom.png</iconset>
+   </property>
+   <property name="text">
+    <string>移动到底</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -325,15 +434,15 @@
    <header>qdatasourcewidget.h</header>
   </customwidget>
   <customwidget>
-   <class>QLayerWidget</class>
-   <extends>QTreeView</extends>
-   <header>qlayerwidget.h</header>
-  </customwidget>
-  <customwidget>
    <class>tGis::Utility::QMapWidget</class>
    <extends>QWidget</extends>
    <header>qmapwidget.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QLayerWidget</class>
+   <extends>QListView</extends>
+   <header>qlayerwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

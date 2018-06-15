@@ -38,7 +38,6 @@ void DrawRectTool::MouseDown(void * ev)
 	Qt::MouseButtons buttons = e->buttons();
 	if (buttons & Qt::LeftButton)
 	{
-		IGeoSurface* surface = _mapWidget->GetGeoSurface();
 		_rect.SetVisible(true);
 		_rect._left = e->x();
 		_rect._top = e->y();
