@@ -56,6 +56,9 @@ const char * VectorSimpleLayer::GetCreationString()
 
 void VectorSimpleLayer::Paint(IGeoSurface * surf)
 {
+	if (_visible == false)
+		return;
+
 	OGRFeature* feature = nullptr;
 	OGRGeometry* geometry = nullptr;
 	unsigned char* surfBuffer = VisualizeBufferManager::INSTANCE().AllocSurfaceBuffer();
