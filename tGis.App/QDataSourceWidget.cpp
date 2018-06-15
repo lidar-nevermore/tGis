@@ -49,7 +49,7 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 			userDataType.setValue<int>(DataSourceProviderType);
 			pItem->setData(userDataType, DataTypeRole);
 			rootNode->appendRow(pItem);
-
+			
 			int datasourceCount = provider->GetDataSourceCount();
 			for (int i = 0; i < datasourceCount; i++)
 			{
@@ -60,7 +60,6 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 
 	setModel(model);
 	expandAll();
-
 	connect(this, SIGNAL(doubleClicked(const QModelIndex&)), this, SLOT(NodeDoubleClicked(const QModelIndex&)));
 }
 
@@ -75,7 +74,7 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * 
 	QString dsName = QString::fromLocal8Bit(ds->GetName());
 	pItem->setText(dsName);
 	pItem->setEditable(false);
-	const QIcon* icon = IconRes::INSTANCE.GetIcon(ds->GetType());
+	const QIcon* icon = IconRes::INSTANCE.GetIcon(ds->GetType(),(ds->IsConnected()?"Connected":"Default"));
 	if (icon != nullptr)
 	{
 		pItem->setIcon(*icon);
@@ -97,8 +96,9 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * 
 	AddDataSourceChildNode(pItem, ds, dsp);
 }
 
-void QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, IDataSource * ds, IDataSourceProvider* dsp)
+bool QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, IDataSource * ds, IDataSourceProvider* dsp)
 {
+	node->setRowCount(0);
 	if (ds->IsConnected())
 	{
 		int subDataSourceCount = ds->GetDataSourceCount();
@@ -114,7 +114,7 @@ void QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, IDataSource
 			QStandardItem* pDatasetItem = new QStandardItem();
 			pDatasetItem->setText(QString::fromLocal8Bit(dt->GetName()));
 			pDatasetItem->setEditable(false);
-			const QIcon* icon = IconRes::INSTANCE.GetIcon(dt->GetType());
+			const QIcon* icon = IconRes::INSTANCE.GetIcon(dt->GetType(), (dt->IsOpened() ? "Opened" : "Default"));
 			if (icon != nullptr)
 			{
 				pDatasetItem->setIcon(*icon);
@@ -133,7 +133,62 @@ void QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, IDataSource
 
 			node->appendRow(pDatasetItem);
 		}
+
+		return true;
 	}
+
+	return false;
+}
+
+bool QDataSourceWidget::OpenDataset(QStandardItem* pItem, IDataset* dt)
+{
+	if (dt->IsOpened())
+		return true;
+
+	dt->Open();
+
+	if (dt->IsOpened())
+	{
+		const QIcon* icon = IconRes::INSTANCE.GetIcon(dt->GetType(),"Opened");
+		if (icon != nullptr)
+		{
+			pItem->setIcon(*icon);
+		}
+		return true;
+	}
+
+	QMessageBox::information((QWidget*)GetMainWindow(),
+		QStringLiteral("Warning"),
+		QStringLiteral("数据集打开失败！"),
+		QMessageBox::Yes, QMessageBox::Yes);
+
+	return false;
+}
+
+bool QDataSourceWidget::ConnectDataSource(QStandardItem* pItem, IDataSource* ds, IDataSourceProvider* dsp)
+{
+	if (ds->IsConnected())
+		return true;
+
+	ds->Connect();
+	if (ds->IsConnected())
+	{
+		AddDataSourceChildNode(pItem, ds, dsp);
+		const QIcon* icon = IconRes::INSTANCE.GetIcon(ds->GetType(), "Connected");
+		if (icon != nullptr)
+		{
+			pItem->setIcon(*icon);
+		}
+		setExpanded(pItem->index(), true);
+		return true;
+	}
+
+	QMessageBox::information((QWidget*)GetMainWindow(),
+		QStringLiteral("Warning"),
+		QStringLiteral("数据源连接失败！"),
+		QMessageBox::Yes, QMessageBox::Yes);
+
+	return false;
 }
 
 void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
@@ -141,24 +196,18 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 	QStandardItemModel* model = (QStandardItemModel*)index.model();
 	QStandardItem* pItem = model->itemFromIndex(index);
 	int type = index.data(DataTypeRole).toInt();
-	IDataSourceProvider* dsp = index.data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
+	
 	if (type == DataSourceType)
 	{
+		IDataSourceProvider* dsp = index.data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
 		IDataSource* ds = index.data(DataRole).value<IDataSourcePtr>();
-		if (!ds->IsConnected())
-		{
-			ds->Connect();
-			AddDataSourceChildNode(pItem, ds, dsp);
-			expand(index);
-		}
+		ConnectDataSource(pItem, ds, dsp);
 	}
 	else if (type == DatasetType)
 	{
-		//TODO: 添加显示
 		IDataset* dt = index.data(DataRole).value<IDatasetPtr>();
-		dt->Open();
 
-		if (!dt->IsOpened())
+		if (!OpenDataset(pItem, dt))
 			return;
 
 		int layerProviderCount = LayerProviderRepository::INSTANCE().GetLayerProviderCountSupportDataset(dt->GetType());
