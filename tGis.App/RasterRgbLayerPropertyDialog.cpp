@@ -25,10 +25,12 @@ RasterRgbLayerPropertyDialog::~RasterRgbLayerPropertyDialog()
 {
 }
 
-ILayer * RasterRgbLayerPropertyDialog::CreateRasterRgbLayer(RasterRgbLayerProvider * provider, MyGDALRasterDataset * dataset_)
+ILayer * RasterRgbLayerPropertyDialog::CreateRasterRgbLayer(ILayerProvider * provider_,IDataset* dataset_)
 {
-	RasterRgbLayerPropertyDialog dlg((QWidget*)GetMainWindow());
+	RasterRgbLayerProvider * provider = (RasterRgbLayerProvider*)provider_;
 	MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dataset_;
+
+	RasterRgbLayerPropertyDialog dlg((QWidget*)GetMainWindow());	
 	GDALDataset* gdt = dataset->GetGDALDataset();
 	if (gdt == nullptr)
 		return nullptr;
@@ -84,8 +86,10 @@ ILayer * RasterRgbLayerPropertyDialog::CreateRasterRgbLayer(RasterRgbLayerProvid
 	return nullptr;
 }
 
-void RasterRgbLayerPropertyDialog::RasterRgbLayerProperty(RasterRgbLayerProvider *provider, RasterRgbLayer *layer)
+void RasterRgbLayerPropertyDialog::RasterRgbLayerProperty(ILayerProvider *provider_, ILayer *layer_)
 {
+	RasterRgbLayerProvider* provider = (RasterRgbLayerProvider*)provider_;
+	RasterRgbLayer* layer = (RasterRgbLayer*)layer_;
 	RasterRgbLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBandR(), layer->GetBandG(), layer->GetBandB());
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));

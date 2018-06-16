@@ -15,8 +15,8 @@ public:
 	~RasterRgbLayerPropertyDialog();
 
 public:
-	static ILayer* CreateRasterRgbLayer(RasterRgbLayerProvider*, MyGDALRasterDataset*);
-	static void RasterRgbLayerProperty(RasterRgbLayerProvider*, RasterRgbLayer*);
+	static ILayer* CreateRasterRgbLayer(ILayerProvider*, IDataset*);
+	static void RasterRgbLayerProperty(ILayerProvider*, ILayer*);
 
 public:
 	void SetDataset(MyGDALRasterDataset* dataset, int r, int g, int b);

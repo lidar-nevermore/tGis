@@ -41,8 +41,10 @@ void RasterBinaryGrayScaleLayerPropertyDialog::SetDataset(MyGDALRasterDataset * 
 	}
 }
 
-ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLayer(RasterBinaryGrayScaleLayerProvider * provider, MyGDALRasterDataset *dataset)
+ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLayer(ILayerProvider* provider_,IDataset* dataset_)
 {
+	RasterBinaryGrayScaleLayerProvider * provider = (RasterBinaryGrayScaleLayerProvider*)provider_;
+	MyGDALRasterDataset * dataset = (MyGDALRasterDataset*)dataset_;
 	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset(dataset, 1);
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(dataset->GetCreationString()));
@@ -77,8 +79,10 @@ ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLa
 	return nullptr;
 }
 
-void RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerProperty(RasterBinaryGrayScaleLayerProvider *provider, RasterBinaryGrayScaleLayer *layer)
+void RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerProperty(ILayerProvider *provider_, ILayer *layer_)
 {
+	RasterBinaryGrayScaleLayerProvider *provider = (RasterBinaryGrayScaleLayerProvider*)provider_;
+	RasterBinaryGrayScaleLayer *layer = (RasterBinaryGrayScaleLayer*)layer_;
 	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBand());
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));

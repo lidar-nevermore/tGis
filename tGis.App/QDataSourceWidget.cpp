@@ -217,9 +217,9 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 		if (!OpenDataset(pItem, dt))
 			return;
 
-		int layerProviderCount = LayerProviderRepository::INSTANCE().GetLayerProviderCountSupportDataset(dt->GetType());
+		int layerProviderCount = LayerProviderRepository::INSTANCE().GetLayerProviderCountSupportDataset(dt);
 		ILayerProviderPtr* providers = new ILayerProviderPtr[layerProviderCount];
-		LayerProviderRepository::INSTANCE().GetLayerProviderSupportDataset(dt->GetType(), layerProviderCount, providers);
+		LayerProviderRepository::INSTANCE().GetLayerProviderSupportDataset(dt, layerProviderCount, providers);
 
 		ListChoiseDialog choise((QWidget*)GetMainWindow());
 		QListWidget* list = choise.GetQListWidget();

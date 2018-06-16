@@ -42,15 +42,17 @@ void RasterGrayScaleLayerPropertyDialog::SetDataset(MyGDALRasterDataset * datase
 	}
 }
 
-ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(RasterGrayScaleLayerProvider* provider, MyGDALRasterDataset * dataset)
+ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(ILayerProvider* provider_, IDataset* dataset_)
 {
+	RasterGrayScaleLayerProvider* provider = (RasterGrayScaleLayerProvider*)provider_;
+	MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dataset_;
 	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset(dataset, 1);
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(dataset->GetCreationString()));
 	if (QDialog::Accepted == dlg.exec())
 	{
 		int band = dlg.ui.cboBand->currentIndex() + 1;
-		RasterGrayScaleLayer* layer = (RasterGrayScaleLayer*)provider->CreateLayer((MyGDALRasterDataset*)dataset, band);
+		RasterGrayScaleLayer* layer = (RasterGrayScaleLayer*)provider->CreateLayer(dataset, band);
 		QString minStr = dlg.ui.leMin->text();
 		QString maxStr = dlg.ui.leMax->text();
 		unsigned char opacity = (unsigned char)dlg.ui.sdOpacity->value();
@@ -68,8 +70,10 @@ ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(RasterGr
 	return nullptr;
 }
 
-void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(RasterGrayScaleLayerProvider* provider, RasterGrayScaleLayer * layer)
+void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(ILayerProvider* provider_, ILayer * layer_)
 {
+	RasterGrayScaleLayerProvider* provider = (RasterGrayScaleLayerProvider*)provider_;
+	RasterGrayScaleLayer * layer = (RasterGrayScaleLayer*)layer_;
 	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBand());
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));

@@ -30,7 +30,7 @@ public:
 
 private:
 	QtGeoSurface _geoSurface;
-	MyGDALRasterDataset _dataset;
+	MyGDALFileRasterDataset _dataset;
 	RasterRgbLayer _layer;
 
 	MyGDALVectorDataset _vector;

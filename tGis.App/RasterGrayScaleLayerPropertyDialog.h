@@ -21,8 +21,8 @@ public:
 	void SetDataset(MyGDALRasterDataset* dataset, int band);
 
 public:
-	static ILayer* CreateRasterGrayScaleLayer(RasterGrayScaleLayerProvider*, MyGDALRasterDataset*);
-	static void RasterGrayScaleLayerProperty(RasterGrayScaleLayerProvider*, RasterGrayScaleLayer*);
+	static ILayer* CreateRasterGrayScaleLayer(ILayerProvider*, IDataset*);
+	static void RasterGrayScaleLayerProperty(ILayerProvider*, ILayer*);
 
 private:
 	Ui::RasterGrayScaleLayerPropertyDialog ui;
