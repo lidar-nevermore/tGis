@@ -14,6 +14,7 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ILayerProvider;
+struct IDataset;
 
 class TGIS_API LayerProviderRepository
 {
@@ -35,13 +36,12 @@ public:
 	void AddLayerProvider(ILayerProvider*);
 	ILayerProvider* GetLayerProvider(const char* layerType);
 
-	int GetLayerProviderCountSupportDataset(const char* datasetType);
-	void GetLayerProviderSupportDataset(const char* datasetType, int count, ILayerProvider** layerProviders);
+	int GetLayerProviderCountSupportDataset(IDataset* dataset);
+	void GetLayerProviderSupportDataset(IDataset* dataset, int count, ILayerProvider** layerProviders);
 
 private:
 	vector<ILayerProvider*> _vecLayerProvider;
 	map<string, ILayerProvider*> _mapLayerProvider;
-	multimap<string, ILayerProvider*> _mapLayerProviderSupportDataset;
 };
 
 END_NAME_SPACE(tGis, Core)

@@ -19,7 +19,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct GDALInit;
 
-class TGIS_API MyGDALFileDataset : public IDataset
+class TGIS_API MyGDALDataset : public IDataset
 {
 	friend class FileSystemDataSource;
 
@@ -29,7 +29,6 @@ public:
 
 	virtual bool IsReadOnly();
 	virtual bool IsOpened();
-	virtual void Open();
 	virtual void Close();
 	virtual IDataSource* GetDataSource();
 	virtual const OGRSpatialReference* GetSpatialReference();
@@ -66,15 +65,15 @@ protected:
 	GDALAccess _eAccess;
 
 public:
-	MyGDALFileDataset();
-	MyGDALFileDataset(bool isReadOnly);
-	virtual ~MyGDALFileDataset();
+	MyGDALDataset();
+	MyGDALDataset(bool isReadOnly);
+	virtual ~MyGDALDataset();
 
 public:
-
 	GDALDataset* GetGDALDataset();
 
-	virtual void Attach(const char* file, GDALAccess eAccess, bool autoClose = true) = 0;
+protected:
+	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true);
 
 	void Detach();
 

@@ -4,6 +4,7 @@
 #define __I_DATASET_H__
 
 #include "Helper.h"
+#include "ITGisObject.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -12,9 +13,8 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataSource;
 
-struct TGIS_API IDataset
+struct TGIS_API IDataset : public ITGisObject
 {
-	virtual const char* GetType() = 0;
 	virtual const char* GetName() = 0;
 	virtual const char* GetCreationString() = 0;
 

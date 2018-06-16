@@ -9,9 +9,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="include\Entity">
-      <UniqueIdentifier>{14988ec6-4961-4fa2-ad0d-b470527d6611}</UniqueIdentifier>
-    </Filter>
     <Filter Include="include\Organizer">
       <UniqueIdentifier>{ff866a89-9e1d-4b9c-81c6-86269367443c}</UniqueIdentifier>
     </Filter>
@@ -41,6 +38,9 @@
     </Filter>
     <Filter Include="internal">
       <UniqueIdentifier>{0634cb39-2006-4d5d-9b76-137a594c0d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Entity">
+      <UniqueIdentifier>{14988ec6-4961-4fa2-ad0d-b470527d6611}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -146,9 +146,6 @@
     <ClInclude Include="include\SimpleMarkerSymbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\MyGDALFileDataset.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="include\MyGDALVectorDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
@@ -218,6 +215,15 @@
     <ClInclude Include="include\ObjectSampleDataSourceProvider.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
+    <ClInclude Include="include\MyGDALDataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyGDALFileRasterDataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MyGDALMemRasterDataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -280,9 +286,6 @@
     <ClCompile Include="src\SimpleMarkerSymbol.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyGDALFileDataset.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="src\MyGDALVectorDataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
@@ -342,6 +345,15 @@
     </ClCompile>
     <ClCompile Include="src\ObjectSampleDataSourceProvider.cpp">
       <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGDALDataset.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGDALMemRasterDataset.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MyGDALFileRasterDataset.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

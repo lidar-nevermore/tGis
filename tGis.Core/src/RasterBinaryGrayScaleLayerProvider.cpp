@@ -36,9 +36,9 @@ const char * RasterBinaryGrayScaleLayerProvider::GetSupportedLayerType()
 	return RasterBinaryGrayScaleLayer::S_GetType();
 }
 
-const char * RasterBinaryGrayScaleLayerProvider::GetSupportedDatasetType()
+bool RasterBinaryGrayScaleLayerProvider::IsSupportDataset(IDataset * dataset)
 {
-	return MyGDALRasterDataset::S_GetType();
+	return dataset->IsTypeOf(MyGDALRasterDataset::S_GetType());
 }
 
 void RasterBinaryGrayScaleLayerProvider::SetCreationUI(const CreationUI ui)

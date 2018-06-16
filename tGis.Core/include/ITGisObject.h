@@ -16,6 +16,10 @@ struct TGIS_API ITGisObject
 
 	static bool CanTransform(const OGRSpatialReference* from, const OGRSpatialReference* to);
 
+	virtual const char* GetType() = 0;
+	virtual bool IsTypeOf(const char* type) = 0;
+	virtual bool IsTypeOf(ITGisObject* object) = 0;
+
 private:
 	ITGisObject(const ITGisObject &) = delete;
 	ITGisObject &operator=(const ITGisObject &) = delete;

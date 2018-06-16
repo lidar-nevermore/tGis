@@ -1,4 +1,4 @@
-#include "MyGDALFileDataset.h"
+#include "MyGDALDataset.h"
 
 #include <algorithm>
 #include <string>
@@ -118,31 +118,31 @@ struct GDALInit
 
 char* GDALInit::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf", "\0" };
 
-GDALInit* MyGDALFileDataset::_GDALInit = new GDALInit();
+GDALInit* MyGDALDataset::_GDALInit = new GDALInit();
 
 
 
-int MyGDALFileDataset::GetSupportedRasterFormatCount()
+int MyGDALDataset::GetSupportedRasterFormatCount()
 {
 	return _GDALInit->_SupportedRasterFormatExt.size();
 }
 
-const vector<string>& MyGDALFileDataset::GetSupportedRasterFormatExt(int pos)
+const vector<string>& MyGDALDataset::GetSupportedRasterFormatExt(int pos)
 {
 	return _GDALInit->_SupportedRasterFormatExt.at(pos);
 }
 
-const char * MyGDALFileDataset::GetSupportedRasterFormatName(int pos)
+const char * MyGDALDataset::GetSupportedRasterFormatName(int pos)
 {
 	return _GDALInit->_SupportedRasterFormatName.at(pos).c_str();
 }
 
-bool MyGDALFileDataset::GetSupportedRasterFormatCreatable(int pos)
+bool MyGDALDataset::GetSupportedRasterFormatCreatable(int pos)
 {
 	return _GDALInit->_SupportedRasterFormatCreatable.at(pos) == 1;
 }
 
-bool MyGDALFileDataset::IsSupportedRasterFormatExt(const char * ext)
+bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
 {
 	if (GDALInit::IsExcludeExt(ext))
 		return false;
@@ -160,27 +160,27 @@ bool MyGDALFileDataset::IsSupportedRasterFormatExt(const char * ext)
 	return false;
 }
 
-int MyGDALFileDataset::GetSupportedVectorFormatCount()
+int MyGDALDataset::GetSupportedVectorFormatCount()
 {
 	return _GDALInit->_SupportedVectorFormatExt.size();
 }
 
-const vector<string>& MyGDALFileDataset::GetSupportedVectorFormatExt(int pos)
+const vector<string>& MyGDALDataset::GetSupportedVectorFormatExt(int pos)
 {
 	return _GDALInit->_SupportedVectorFormatExt.at(pos);
 }
 
-const char * MyGDALFileDataset::GetSupportedVectorFormatName(int pos)
+const char * MyGDALDataset::GetSupportedVectorFormatName(int pos)
 {
 	return _GDALInit->_SupportedVectorFormatName.at(pos).c_str();
 }
 
-bool MyGDALFileDataset::GetSupportedVectorFormatCreatable(int pos)
+bool MyGDALDataset::GetSupportedVectorFormatCreatable(int pos)
 {
 	return _GDALInit->_SupportedVectorFormatCreatable.at(pos)==1;
 }
 
-bool MyGDALFileDataset::IsSupportedVectorFormatExt(const char * ext)
+bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)
 {
 	if (GDALInit::IsExcludeExt(ext))
 		return false;
@@ -199,14 +199,14 @@ bool MyGDALFileDataset::IsSupportedVectorFormatExt(const char * ext)
 }
 
 
-MyGDALFileDataset::MyGDALFileDataset()
+MyGDALDataset::MyGDALDataset()
 {
 	_dataset = nullptr;
 	_autoClose = false;
 	_eAccess = GA_ReadOnly;
 }
 
-MyGDALFileDataset::MyGDALFileDataset(bool isReadOnly)
+MyGDALDataset::MyGDALDataset(bool isReadOnly)
 {
 	_dataset = nullptr;
 	_autoClose = false;
@@ -214,65 +214,87 @@ MyGDALFileDataset::MyGDALFileDataset(bool isReadOnly)
 }
 
 
-MyGDALFileDataset::~MyGDALFileDataset()
+MyGDALDataset::~MyGDALDataset()
 {
 	Detach();
 }
 
-GDALDataset * MyGDALFileDataset::GetGDALDataset()
+GDALDataset * MyGDALDataset::GetGDALDataset()
 {
 	return _dataset;
 }
 
-const char * MyGDALFileDataset::GetName()
+void MyGDALDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
+{
+	_eAccess = eAccess;
+	_path = file;
+	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+	if (pos == _path.npos)
+	{
+		_name = _path;
+	}
+	else
+	{
+		_name = _path.substr(pos + 1);
+	}
+	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, _eAccess, nullptr, nullptr, nullptr);//(GDALDataset*)GDALOpen(file, eAccess);
+	if (dataset == nullptr && _eAccess == GA_Update)
+	{
+		_eAccess = GA_ReadOnly;
+		dataset = (GDALDataset*)GDALOpenEx(file, _eAccess, nullptr, nullptr, nullptr);
+	}
+	if (dataset != nullptr)
+	{
+		_dataset = dataset;
+		_autoClose = autoClose;
+	}
+	else
+	{
+		throw std::exception("不支持打开此格式的影像！");
+	}
+}
+
+const char * MyGDALDataset::GetName()
 {
 	return _name.c_str();
 }
 
-const char * MyGDALFileDataset::GetCreationString()
+const char * MyGDALDataset::GetCreationString()
 {
 	return _path.c_str();
 }
 
-bool MyGDALFileDataset::IsReadOnly()
+bool MyGDALDataset::IsReadOnly()
 {
 	return _eAccess == GA_ReadOnly;;
 }
 
-bool MyGDALFileDataset::IsOpened()
+bool MyGDALDataset::IsOpened()
 {
 	return _dataset != nullptr;
 }
 
-void MyGDALFileDataset::Open()
-{
-	if (_dataset == nullptr)
-	{
-		Attach(_path.c_str(), _eAccess);
-	}
-}
-
-void MyGDALFileDataset::Close()
+void MyGDALDataset::Close()
 {
 	Detach();
 }
 
-IDataSource * MyGDALFileDataset::GetDataSource()
+IDataSource * MyGDALDataset::GetDataSource()
 {
 	return _dataSource;
 }
 
-const OGRSpatialReference * MyGDALFileDataset::GetSpatialReference()
+const OGRSpatialReference * MyGDALDataset::GetSpatialReference()
 {
 	return _spatialRef;
 }
 
-const OGREnvelope * MyGDALFileDataset::GetEnvelope()
+const OGREnvelope * MyGDALDataset::GetEnvelope()
 {
 	return &_envelope;
 }
 
-void MyGDALFileDataset::Detach()
+void MyGDALDataset::Detach()
 {
 	if (_autoClose && _dataset != nullptr)
 	{
@@ -282,12 +304,12 @@ void MyGDALFileDataset::Detach()
 	_autoClose = false;
 }
 
-void MyGDALFileDataset::SetAutoClose(bool autoClose)
+void MyGDALDataset::SetAutoClose(bool autoClose)
 {
 	_autoClose = autoClose;
 }
 
-bool MyGDALFileDataset::GetAutoClose()
+bool MyGDALDataset::GetAutoClose()
 {
 	return _autoClose;
 }

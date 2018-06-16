@@ -34,8 +34,7 @@ public:
 
 	const char* GetSupportedLayerType();
 
-	const char* GetSupportedDatasetType();
-
+	bool IsSupportDataset(IDataset* dataset);
 	void SetCreationUI(const CreationUI ui);
 	ILayer* UI_CreateLayer(IDataset* dataset);
 	void SetPropertyUI(const PropertyUI ui);

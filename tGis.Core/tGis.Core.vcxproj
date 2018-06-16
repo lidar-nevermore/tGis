@@ -44,7 +44,9 @@
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MapTool.h" />
     <ClInclude Include="include\MapWidget.h" />
-    <ClInclude Include="include\MyGDALFileDataset.h" />
+    <ClInclude Include="include\MyGDALDataset.h" />
+    <ClInclude Include="include\MyGDALFileRasterDataset.h" />
+    <ClInclude Include="include\MyGDALMemRasterDataset.h" />
     <ClInclude Include="include\MyGDALRasterDataset.h" />
     <ClInclude Include="include\MyGDALVectorDataset.h" />
     <ClInclude Include="include\ObjectSampleDataSource.h" />
@@ -93,7 +95,9 @@
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
     <ClCompile Include="src\MapWidget.cpp" />
-    <ClCompile Include="src\MyGDALFileDataset.cpp" />
+    <ClCompile Include="src\MyGDALDataset.cpp" />
+    <ClCompile Include="src\MyGDALFileRasterDataset.cpp" />
+    <ClCompile Include="src\MyGDALMemRasterDataset.cpp" />
     <ClCompile Include="src\MyGDALRasterDataset.cpp" />
     <ClCompile Include="src\MyGDALVectorDataset.cpp" />
     <ClCompile Include="src\ObjectSampleDataSource.cpp" />

@@ -36,9 +36,9 @@ const char * RasterRgbLayerProvider::GetSupportedLayerType()
 	return RasterRgbLayer::S_GetType();
 }
 
-const char * RasterRgbLayerProvider::GetSupportedDatasetType()
+bool RasterRgbLayerProvider::IsSupportDataset(IDataset * dataset)
 {
-	return MyGDALRasterDataset::S_GetType();
+	return dataset->IsTypeOf(MyGDALRasterDataset::S_GetType());
 }
 
 void RasterRgbLayerProvider::SetCreationUI(const CreationUI ui)

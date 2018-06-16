@@ -49,10 +49,8 @@ ILayerProvider * LayerProviderRepository::GetLayerProvider(int pos)
 void LayerProviderRepository::AddLayerProvider(ILayerProvider * lp)
 {
 	string layerType = lp->GetSupportedLayerType();
-	string datasetType = lp->GetSupportedDatasetType();
 	_vecLayerProvider.push_back(lp);
 	_mapLayerProvider.insert(map<string, ILayerProvider*>::value_type(layerType, lp));
-	_mapLayerProviderSupportDataset.insert(make_pair(datasetType, lp));
 }
 
 ILayerProvider * LayerProviderRepository::GetLayerProvider(const char * layerType)
@@ -64,30 +62,34 @@ ILayerProvider * LayerProviderRepository::GetLayerProvider(const char * layerTyp
 	return nullptr;
 }
 
-int LayerProviderRepository::GetLayerProviderCountSupportDataset(const char * datasetType)
+int LayerProviderRepository::GetLayerProviderCountSupportDataset(IDataset* dataset)
 {
 	int count = 0;
-	pair<multimap<string, ILayerProvider*>::iterator, multimap<string, ILayerProvider*>::iterator> 
-		range = _mapLayerProviderSupportDataset.equal_range(datasetType);
-	for (multimap<string, ILayerProvider*>::iterator it = range.first; it != range.second; ++it)
+	for (vector<ILayerProvider*>::iterator it = _vecLayerProvider.begin(); it != _vecLayerProvider.end(); it++)
 	{
-		count++;
+		ILayerProvider* lp = *it;
+
+		if (lp->IsSupportDataset(dataset))
+			count++;
 	}
 	return count;
 }
 
-void LayerProviderRepository::GetLayerProviderSupportDataset(const char * datasetType, int count, ILayerProvider ** layerProviders)
+void LayerProviderRepository::GetLayerProviderSupportDataset(IDataset* dataset, int count, ILayerProvider ** layerProviders)
 {
 	int i = 0;
 
 	memset(layerProviders, 0, count * sizeof(ILayerProvider*));
-	pair<multimap<string, ILayerProvider*>::iterator, multimap<string, ILayerProvider*>::iterator>
-		range = _mapLayerProviderSupportDataset.equal_range(datasetType);
-	for (multimap<string, ILayerProvider*>::iterator it = range.first; it != range.second; ++it)
+	for (vector<ILayerProvider*>::iterator it = _vecLayerProvider.begin(); it != _vecLayerProvider.end(); it++)
 	{
-		layerProviders[i] = (*it).second;
-		i++;
-		if (i == count) 
+		ILayerProvider* lp = *it;
+
+		if (lp->IsSupportDataset(dataset))
+		{
+			layerProviders[i] = lp;
+			i++;
+		}
+		if (i == count)
 		{
 			break;
 		}

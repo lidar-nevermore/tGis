@@ -17,6 +17,28 @@ const char * MyGDALVectorDataset::GetType()
 	return _type;
 }
 
+bool MyGDALVectorDataset::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return false;
+}
+
+bool MyGDALVectorDataset::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return false;
+}
+
+void MyGDALVectorDataset::Open()
+{
+	if (_dataset == nullptr)
+	{
+		Attach(_path.c_str(), _eAccess);
+	}
+}
+
 const char * MyGDALVectorDataset::S_GetType()
 {
 	return _type;
@@ -46,7 +68,7 @@ MyGDALVectorDataset::MyGDALVectorDataset(const char * path, GDALAccess eAccess, 
 	}
 	else
 	{
-		Attach(path, eAccess, autoClose);
+		MyGDALDataset::Attach(path, eAccess, autoClose);
 	}
 }
 
@@ -57,27 +79,8 @@ MyGDALVectorDataset::~MyGDALVectorDataset()
 
 void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
 {
-	_eAccess = eAccess;
-	_path = file;
-	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
-	if (pos == _path.npos)
-	{
-		_name = _path;
-	}
-	else
-	{
-		_name = _path.substr(pos + 1);
-	}
-	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, _eAccess, nullptr, nullptr, nullptr);
-	if (dataset == nullptr && _eAccess == GA_Update)
-	{
-		_eAccess = GA_ReadOnly;
-		dataset = (GDALDataset*)GDALOpenEx(file, _eAccess, nullptr, nullptr, nullptr);
-	}
-	if (dataset != nullptr)
-	{
-		Attach(dataset, autoClose);
-	}
+	MyGDALDataset::Attach(file, eAccess, autoClose);
+	Attach(_dataset, autoClose);
 }
 
 void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)

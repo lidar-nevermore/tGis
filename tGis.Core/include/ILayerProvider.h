@@ -18,8 +18,7 @@ struct TGIS_API ILayerProvider
 
 	virtual const char* GetSupportedLayerType() = 0;
 
-	virtual const char* GetSupportedDatasetType() = 0;
-
+	virtual bool IsSupportDataset(IDataset* dataset) = 0;
 	virtual ILayer* UI_CreateLayer(IDataset* dataset) = 0;
 	virtual void UI_LayerProperty(ILayer* layer) = 0;
 	virtual ILayer* CreateLayer(IDataset* dataset, const char* creationString) = 0;

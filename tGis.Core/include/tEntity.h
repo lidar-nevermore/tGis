@@ -6,8 +6,10 @@
 #include "Map.h"
 #include "GeoSurface.h"
 
-#include "MyGDALFileDataset.h"
+#include "MyGDALDataset.h"
 #include "MyGDALRasterDataset.h"
+#include "MyGDALFileRasterDataset.h"
+#include "MyGDALMemRasterDataset.h"
 #include "MyGDALVectorDataset.h"
 #include "FileSystemDataSource.h"
 #include "ObjectSampleDataSource.h"

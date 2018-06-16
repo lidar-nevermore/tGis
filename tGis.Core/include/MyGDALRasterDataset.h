@@ -6,7 +6,7 @@
 #include "Helper.h"
 
 #include "IDataset.h"
-#include "MyGDALFileDataset.h"
+#include "MyGDALDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -16,40 +16,32 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class RasterGrayScaleLayerProvider;
-
-class TGIS_API MyGDALRasterDataset : public MyGDALFileDataset
+class TGIS_API MyGDALRasterDataset : public MyGDALDataset
 {
 public:
-	const char* GetType();
+	virtual const char* GetType();
 	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
 
 private:
 	static const char* const _type;
 
-private:
-	double _geoTransform[6];
-
 public:
 	MyGDALRasterDataset();
-   	MyGDALRasterDataset(const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	~MyGDALRasterDataset();
 
+protected:
+	double _geoTransform[6];
+
+
 public:
-	using MyGDALFileDataset::GetGDALDataset;
-	using MyGDALFileDataset::Detach;
-	using MyGDALFileDataset::SetAutoClose;
-	using MyGDALFileDataset::GetAutoClose;
+	using MyGDALDataset::GetGDALDataset;
+	using MyGDALDataset::Detach;
+	using MyGDALDataset::SetAutoClose;
+	using MyGDALDataset::GetAutoClose;
 
-	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true) override;
-
-	void Attach(const char* file, GDALAccess eAccess, double noDataVale, bool autoClose = true);
-
-	void AttachHDF(const char* file,GDALAccess eAccess,const int subdataset,bool autoClose = true);
-
-	void Attach(GDALDataset* dataset,bool autoClose = false);
-
-	void Attach(GDALDataset* dataset,double noDataVale,bool autoClose = false);
+	void Attach(GDALDataset* dataset, bool autoClose = false, double noDataValue = NAN);
 
 	//Spatial position of the upper left corner of the pixel.
 	void Pixel2Spatial(int pixX,int pixY,double *projX, double *projY);

@@ -36,9 +36,9 @@ const char * VectorSimpleLayerProvider::GetSupportedLayerType()
 	return VectorSimpleLayer::S_GetType();
 }
 
-const char * VectorSimpleLayerProvider::GetSupportedDatasetType()
+bool VectorSimpleLayerProvider::IsSupportDataset(IDataset * dataset)
 {
-	return MyGDALVectorDataset::S_GetType();
+	return dataset->IsTypeOf(MyGDALVectorDataset::S_GetType());
 }
 
 void VectorSimpleLayerProvider::SetCreationUI(const CreationUI ui)

@@ -6,7 +6,7 @@
 #include "Helper.h"
 
 #include "IDataset.h"
-#include "MyGDALFileDataset.h"
+#include "MyGDALDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -19,13 +19,15 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class VectorSimpleLayerProvider;
 
-class TGIS_API MyGDALVectorDataset : public MyGDALFileDataset
+class TGIS_API MyGDALVectorDataset : public MyGDALDataset
 {
 public:
 	const char* GetType();
 	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
+	virtual void Open();
 
 private:
 	static const char* const _type;
@@ -36,19 +38,17 @@ public:
 	~MyGDALVectorDataset();
 
 public:
-	using MyGDALFileDataset::GetGDALDataset;
-	using MyGDALFileDataset::Detach;
-	using MyGDALFileDataset::SetAutoClose;
-	using MyGDALFileDataset::GetAutoClose;
+	using MyGDALDataset::GetGDALDataset;
+	using MyGDALDataset::Detach;
+	using MyGDALDataset::SetAutoClose;
+	using MyGDALDataset::GetAutoClose;
 
-	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true) override;
-	void Attach(GDALDataset* dataset, bool autoClose = false) ;
+	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true);
+	void Attach(GDALDataset* dataset, bool autoClose = false);
 
 private:
 	CPL_DISALLOW_COPY_ASSIGN(MyGDALVectorDataset)
 };
-
-
 
 
 END_NAME_SPACE(tGis, Core)

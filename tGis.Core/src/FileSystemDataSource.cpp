@@ -2,7 +2,7 @@
 #include "IDataset.h"
 #include "FileSystemDataSourceProvider.h"
 #include "ObjectSampleDataSourceProvider.h"
-#include "MyGDALRasterDataset.h"
+#include "MyGDALFileRasterDataset.h"
 #include "MyGDALVectorDataset.h"
 
 #include "gdal.h"
@@ -111,14 +111,14 @@ void FileSystemDataSource::Connect()
 					string ext = subpath.substr(pos+1);
 					GDALAccess eAccess = (file.attrib&_TGIS_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
 
-					if (MyGDALFileDataset::IsSupportedRasterFormatExt(ext.c_str()))
+					if (MyGDALDataset::IsSupportedRasterFormatExt(ext.c_str()))
 					{
-						MyGDALRasterDataset* dt = new MyGDALRasterDataset(subpath.c_str(), eAccess);
+						MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(subpath.c_str(), eAccess);
 						dt->_dataSource = this;
 						_vecDataset.push_back(dt);
 						_mapDataset.insert(map<string, IDataset*>::value_type(subpath, dt));
 					}
-					else if (MyGDALFileDataset::IsSupportedVectorFormatExt(ext.c_str()))
+					else if (MyGDALDataset::IsSupportedVectorFormatExt(ext.c_str()))
 					{
 						MyGDALVectorDataset* dt = new MyGDALVectorDataset(subpath.c_str(), eAccess);
 						dt->_dataSource = this;
