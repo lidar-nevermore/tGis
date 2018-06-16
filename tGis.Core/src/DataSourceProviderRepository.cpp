@@ -2,6 +2,7 @@
 #include "IDataSourceProvider.h"
 #include "FileSystemDataSourceProvider.h"
 #include "ObjectSampleDataSourceProvider.h"
+#include "MemoryDataSourceProvider.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -17,6 +18,7 @@ DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
 		_instance = new DataSourceProviderRepository();
 		_instance->AddDataSourceProvider(&FileSystemDataSourceProvider::INSTANCE());
 		_instance->AddDataSourceProvider(&ObjectSampleDataSourceProvider::INSTANCE());
+		_instance->AddDataSourceProvider(&MemoryDataSourceProvider::INSTANCE());
 	}
 
 	return *_instance;
@@ -56,7 +58,7 @@ IDataSourceProvider * DataSourceProviderRepository::GetDataSourceProvider(int po
 void DataSourceProviderRepository::AddDataSourceProvider(IDataSourceProvider* dsp)
 {
 	string dataSourceType = dsp->GetSupportedDataSourceType();
-	_vecDataSourceProvider.push_back(dsp);	
+	_vecDataSourceProvider.insert(_vecDataSourceProvider.begin(), dsp);
 	_mapDataSourceProvider.insert(map<string, IDataSourceProvider*>::value_type(dataSourceType, dsp));
 }
 

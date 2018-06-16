@@ -1,4 +1,5 @@
 #include "MemoryDataSourceProvider.h"
+#include "MemoryDataSource.h"
 
 #include <cassert>
 
@@ -36,7 +37,7 @@ MemoryDataSourceProvider::~MemoryDataSourceProvider()
 
 const char * MemoryDataSourceProvider::GetSupportedDataSourceType()
 {
-	return nullptr;
+	return MemoryDataSource::S_GetType();
 }
 
 bool MemoryDataSourceProvider::IsRoot()

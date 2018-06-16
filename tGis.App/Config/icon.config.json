@@ -30,6 +30,14 @@
             }
         },
         {
+            "Type":"5EE4C82D-7773-4BA9-BF97-D5DD2EF4DFAD",
+            "Name":"MemoryDataSourceProvider",
+            "Icon":
+            {
+                "Default":"{StartupDir}/Images/DataSourceProvider/mem.png"
+            }
+        },
+        {
             "Type":"AB56EFC6-4940-4CF8-AC48-01F830DA8C0D",
             "Name":"MyGDALRasterDataset",
             "Icon":
