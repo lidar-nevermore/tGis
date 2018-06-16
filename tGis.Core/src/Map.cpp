@@ -53,6 +53,21 @@ ILayer * Map::GetLayer(int pos)
 	return _vecLayer.at(pos);
 }
 
+int Map::GetLayerIndex(ILayer * layer)
+{
+	int i = 0;
+	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
+	{
+		if (*it == layer)
+		{
+			break;
+		}
+		i++;
+	}
+
+	return i;
+}
+
 int Map::AddLayer(ILayer *layer)
 {
 	bool canAdd = false;
@@ -132,6 +147,28 @@ bool Map::InsertLayer(int pos, ILayer * layer)
 	}
 
 	return canAdd;
+}
+
+void Map::MoveLayer(int from, int to)
+{
+	if (from < to)
+	{
+		for (int i = from; i < to; i++)
+		{
+			ILayer* temp = _vecLayer[i];
+			_vecLayer[i] = _vecLayer[i + 1];
+			_vecLayer[i + 1] = temp;
+		}
+	}
+	else
+	{
+		for (int i = from; i > to; i--)
+		{
+			ILayer* temp = _vecLayer[i];
+			_vecLayer[i] = _vecLayer[i - 1];
+			_vecLayer[i - 1] = temp;
+		}
+	}
 }
 
 void Map::ClearLayers(LayerFunc func)

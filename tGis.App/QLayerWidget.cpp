@@ -25,6 +25,31 @@ QLayerWidget::~QLayerWidget()
 {
 }
 
+QStandardItem * QLayerWidget::CreateLayerItem(ILayer * layer, ILayerProvider * provider)
+{
+	QStandardItem* pItem = new QStandardItem();
+	QString dsName = QString::fromLocal8Bit(layer->GetName());
+	pItem->setText(dsName);
+	pItem->setEditable(false);
+	pItem->setCheckable(true);
+	pItem->setCheckState(Qt::CheckState::Checked);
+	const QIcon* icon = IconRes::INSTANCE.GetIcon(layer->GetType());
+	if (icon != nullptr)
+	{
+		pItem->setIcon(*icon);
+	}
+
+	QVariant udLayer;
+	udLayer.setValue<ILayerPtr>(layer);
+	pItem->setData(udLayer, LayerPtrRole);
+
+	QVariant udLayerProvider;
+	udLayerProvider.setValue<ILayerProviderPtr>(provider);
+	pItem->setData(udLayerProvider, LayerProviderRole);
+
+	return pItem;
+}
+
 void QLayerWidget::SetMap(IMapPtr map)
 {
 	_map = map;
@@ -47,35 +72,26 @@ IMapWidgetPtr QLayerWidget::GetMapWidget()
 
 ILayerPtr QLayerWidget::GetSelectedLayer()
 {
-	QModelIndexList selected = selectedIndexes();
-	if (selected.size() > 0)
-	{
-		return selected[0].data(LayerPtrRole).value<ILayerPtr>();
-	}
-	return nullptr;
+	return _selectedLayer;
 }
 
 void QLayerWidget::SelectedLayerPropertyUI()
 {
-	QModelIndexList selected = selectedIndexes();
-	if (selected.size() > 0)
+	if (_selectedLayer != nullptr)
 	{
-		ILayer* layer = selected[0].data(LayerPtrRole).value<ILayerPtr>();
-		ILayerProvider* provider = selected[0].data(LayerProviderRole).value<ILayerProviderPtr>();
-		provider->UI_LayerProperty(layer);
+		_selectedLayerProvider->UI_LayerProperty(_selectedLayer);
 	}
 }
 
 void QLayerWidget::RemoveSelectedLayer()
 {
-	QModelIndexList selected = selectedIndexes();
-	if (selected.size() > 0)
+	
+	if (_selectedLayer != nullptr)
 	{
-		ILayer* layer = selected[0].data(LayerPtrRole).value<ILayerPtr>();
-		ILayerProvider* provider = selected[0].data(LayerProviderRole).value<ILayerProviderPtr>();
-		_map->RemoveLayer(layer);
-		provider->ReleaseLayer(layer);
-		_model->removeRow(selected[0].row());
+		_map->RemoveLayer(_selectedLayer);
+		_selectedLayerProvider->ReleaseLayer(_selectedLayer);
+
+		_model->removeRow(_selectedItem->row());
 	}
 }
 
@@ -86,35 +102,136 @@ void QLayerWidget::RemoveAllLayers()
 }
 
 void QLayerWidget::SetSelectedLayerVisible(bool visible)
-{
-	QModelIndexList selected = selectedIndexes();
-	if (selected.size() > 0)
+{	
+	if (_selectedLayer != nullptr)
 	{
-		QStandardItem* pItem = _model->itemFromIndex(selected[0]);
-		ILayer* layer = pItem->data(LayerPtrRole).value<ILayerPtr>();
-		ILayerProvider* provider = pItem->data(LayerProviderRole).value<ILayerProviderPtr>();
-		bool checked = pItem->checkState() == Qt::CheckState::Checked;
+		bool checked = _selectedLayer->GetVisible();
 		if (visible != checked)
 		{
-			pItem->setCheckState(visible ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
-			layer->SetVisible(visible);
-			emit LayerVisibleChanged(_map, layer, provider);
+			_selectedItem->setCheckState(visible ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+
+			_selectedLayer->SetVisible(visible);
+			emit LayerVisibleChanged(_map, _selectedLayer, _selectedLayerProvider);
 		}
+	}
+}
+
+bool QLayerWidget::CanMoveSelectedLayerUp()
+{
+	return _selectedLayerIndex > -1 
+		   && _selectedLayerIndex < _map->GetLayerCount()-1;
+}
+
+bool QLayerWidget::CanMoveSelectedLayerDown()
+{
+	return _selectedLayerIndex > 0;
+}
+
+void QLayerWidget::MoveSelectedLayerUp()
+{
+	if (_selectedLayer != nullptr)
+	{
+		QStandardItem* selectedItem = _selectedItem;
+		ILayer* selectedLayer = _selectedLayer;
+		ILayerProvider* selectedLayerProvider = _selectedLayerProvider;
+		int selectedLayerIndex = _selectedLayerIndex;
+
+		_selectedLayer = nullptr;
+		_selectedLayerProvider = nullptr;
+		_selectedLayerIndex = -1;
+		_selectedItem = nullptr;
+
+		_map->MoveLayer(selectedLayerIndex, selectedLayerIndex + 1);
+		QStandardItem* pItem = CreateLayerItem(selectedLayer, selectedLayerProvider);
+		int row = selectedItem->row();
+		_model->insertRow(row-1, pItem);
+		_model->removeRow(selectedItem->row());
+	}
+}
+
+void QLayerWidget::MoveSelectedLayerDown()
+{
+	if (_selectedLayer != nullptr)
+	{
+		QStandardItem* selectedItem = _selectedItem;
+		ILayer* selectedLayer = _selectedLayer;
+		ILayerProvider* selectedLayerProvider = _selectedLayerProvider;
+		int selectedLayerIndex = _selectedLayerIndex;
+
+		_selectedLayer = nullptr;
+		_selectedLayerProvider = nullptr;
+		_selectedLayerIndex = -1;
+		_selectedItem = nullptr;
+
+		_map->MoveLayer(selectedLayerIndex, selectedLayerIndex - 1);
+		QStandardItem* pItem = CreateLayerItem(selectedLayer, selectedLayerProvider);
+		int row = selectedItem->row();
+		_model->insertRow(row + 2, pItem);
+		_model->removeRow(selectedItem->row());
+	}
+}
+
+void QLayerWidget::MoveSelectedLayerTop()
+{
+	if (_selectedLayer != nullptr)
+	{
+		QStandardItem* selectedItem = _selectedItem;
+		ILayer* selectedLayer = _selectedLayer;
+		ILayerProvider* selectedLayerProvider = _selectedLayerProvider;
+		int selectedLayerIndex = _selectedLayerIndex;
+
+		_selectedLayer = nullptr;
+		_selectedLayerProvider = nullptr;
+		_selectedLayerIndex = -1;
+		_selectedItem = nullptr;
+
+		_map->MoveLayer(selectedLayerIndex, _map->GetLayerCount() - 1);
+		QStandardItem* pItem = CreateLayerItem(selectedLayer, selectedLayerProvider);
+		_model->insertRow(0, pItem);
+		_model->removeRow(selectedItem->row());		
+	}
+}
+
+void QLayerWidget::MoveSelectedLayerBottom()
+{
+	if (_selectedLayer != nullptr)
+	{
+		QStandardItem* selectedItem = _selectedItem;
+		ILayer* selectedLayer = _selectedLayer;
+		ILayerProvider* selectedLayerProvider = _selectedLayerProvider;
+		int selectedLayerIndex = _selectedLayerIndex;
+
+		_selectedLayer = nullptr;
+		_selectedLayerProvider = nullptr;
+		_selectedLayerIndex = -1;
+		_selectedItem = nullptr;
+
+		_map->MoveLayer(selectedLayerIndex, 0);
+		QStandardItem* pItem = CreateLayerItem(selectedLayer, selectedLayerProvider);
+		_model->appendRow(pItem);
+		_model->removeRow(selectedItem->row());		
 	}
 }
 
 void QLayerWidget::selectionChanged(const QItemSelection & sel, const QItemSelection & deselected)
 {
-	ILayer* layer = nullptr;
-	ILayerProvider* provider = nullptr;
 	QModelIndexList selected = sel.indexes();
 	if (selected.size() > 0)
 	{
-		layer = selected[0].data(LayerPtrRole).value<ILayerPtr>();
-		provider = selected[0].data(LayerProviderRole).value<ILayerProviderPtr>();
+		_selectedItem = _model->itemFromIndex(selected[0]);
+		_selectedLayer = _selectedItem->data(LayerPtrRole).value<ILayerPtr>();
+		_selectedLayerProvider = selected[0].data(LayerProviderRole).value<ILayerProviderPtr>();
+		_selectedLayerIndex = _map->GetLayerIndex(_selectedLayer);
+	}
+	else
+	{
+		_selectedLayer = nullptr;
+		_selectedLayerProvider = nullptr;
+		_selectedLayerIndex = -1;
+		_selectedItem = nullptr;
 	}
 
-	emit LayerSelectionChanged(_map, layer, provider);
+	emit LayerSelectionChanged(_map, _selectedLayer, _selectedLayerProvider);
 }
 
 void QLayerWidget::LayerClicked(const QModelIndex & index)
@@ -139,26 +256,7 @@ void QLayerWidget::LayerAdded(IMapPtr map, ILayerPtr layer, ILayerProviderPtr la
 	if (_map != map)
 		return;
 
-	QStandardItem* pItem = new QStandardItem();
-	QString dsName = QString::fromLocal8Bit(layer->GetName());
-	pItem->setText(dsName);
-	pItem->setEditable(false);
-	pItem->setCheckable(true);
-	pItem->setCheckState(Qt::CheckState::Checked);
-	const QIcon* icon = IconRes::INSTANCE.GetIcon(layer->GetType());
-	if (icon != nullptr)
-	{
-		pItem->setIcon(*icon);
-	}
-
-	QVariant udLayer;
-	udLayer.setValue<ILayerPtr>(layer);
-	pItem->setData(udLayer, LayerPtrRole);
-
-	QVariant udLayerProvider;
-	udLayerProvider.setValue<ILayerProviderPtr>(layerProvider);
-	pItem->setData(udLayerProvider, LayerProviderRole);
-
+	QStandardItem* pItem = CreateLayerItem(layer, layerProvider);
 	_model->insertRow(0,pItem);
 }
 

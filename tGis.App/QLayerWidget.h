@@ -33,6 +33,15 @@ private:
 	IMapPtr _map;
 	IMapWidgetPtr _mapWidget;
 
+	ILayer* _selectedLayer;
+	ILayerProvider* _selectedLayerProvider;
+	int _selectedLayerIndex;
+
+	QStandardItem* _selectedItem;
+
+private:
+	QStandardItem* CreateLayerItem(ILayer* layer, ILayerProvider* provider);
+
 public:
 	void SetMap(IMapPtr map);
 	IMapPtr GetMap();
@@ -46,6 +55,13 @@ public:
 	void RemoveSelectedLayer();
 	void RemoveAllLayers();
 	void SetSelectedLayerVisible(bool visible);
+
+	bool CanMoveSelectedLayerUp();
+	bool CanMoveSelectedLayerDown();
+	void MoveSelectedLayerUp();
+	void MoveSelectedLayerDown();
+	void MoveSelectedLayerTop();
+	void MoveSelectedLayerBottom();
 
 protected:
 	virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);

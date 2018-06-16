@@ -61,7 +61,7 @@
    <addaction name="layerUpAction"/>
    <addaction name="layerDownAction"/>
    <addaction name="layerTopAction"/>
-   <addaction name="layerBottonAction"/>
+   <addaction name="layerBottomAction"/>
    <addaction name="zoomLayerAction"/>
    <addaction name="zoomOriginalAction"/>
    <addaction name="layerAttributeAction"/>
@@ -381,6 +381,9 @@
    </property>
   </action>
   <action name="layerUpAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
      <normaloff>:/tGisApp/Resources/LayerUp.png</normaloff>:/tGisApp/Resources/LayerUp.png</iconset>
@@ -393,6 +396,9 @@
    </property>
   </action>
   <action name="layerTopAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
      <normaloff>:/tGisApp/Resources/LayerTop.png</normaloff>:/tGisApp/Resources/LayerTop.png</iconset>
@@ -405,6 +411,9 @@
    </property>
   </action>
   <action name="layerDownAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
      <normaloff>:/tGisApp/Resources/LayerDown.png</normaloff>:/tGisApp/Resources/LayerDown.png</iconset>
@@ -416,7 +425,10 @@
     <string>下移一层</string>
    </property>
   </action>
-  <action name="layerBottonAction">
+  <action name="layerBottomAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
      <normaloff>:/tGisApp/Resources/LayerBottom.png</normaloff>:/tGisApp/Resources/LayerBottom.png</iconset>

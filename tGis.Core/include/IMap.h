@@ -21,12 +21,14 @@ struct TGIS_API IMap
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 	virtual bool CanTransformFrom(const OGRSpatialReference*) = 0;
 
-	virtual int GetLayerCount() = 0;
+	virtual int GetLayerCount() = 0;	
 	virtual ILayer* GetLayer(int) = 0;
+	virtual int GetLayerIndex(ILayer*) = 0;
 	virtual int AddLayer(ILayer*) = 0;
 	virtual bool InsertLayer(int, ILayer*) = 0;
 	virtual ILayer* RemoveLayer(int) = 0;
 	virtual void RemoveLayer(ILayer*) = 0;
+	virtual void MoveLayer(int from, int to) = 0;
 	virtual void ClearLayers(LayerFunc func = nullptr) = 0;
 
 	virtual void Paint(IGeoSurface*) = 0;

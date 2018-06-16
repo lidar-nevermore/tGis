@@ -31,10 +31,12 @@ public:
 	virtual bool CanTransformFrom(const OGRSpatialReference*);
 	virtual int GetLayerCount();
 	virtual ILayer* GetLayer(int);
+	virtual int GetLayerIndex(ILayer*);
 	virtual int AddLayer(ILayer*);
 	virtual ILayer* RemoveLayer(int);
 	virtual void RemoveLayer(ILayer*);
 	virtual bool InsertLayer(int, ILayer*);
+	virtual void MoveLayer(int from, int to);
 	virtual void ClearLayers(LayerFunc func = nullptr);
 	virtual void Paint(IGeoSurface*);
 

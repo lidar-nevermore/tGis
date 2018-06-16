@@ -136,6 +136,30 @@ void tGisApp::on_removeAllLayersAction_triggered(bool checked)
 	ui.mapWidget->RepaintMap();
 }
 
+void tGisApp::on_layerUpAction_triggered(bool checked)
+{
+	ui.layerWidget->MoveSelectedLayerUp();
+	ui.mapWidget->RepaintMap();
+}
+
+void tGisApp::on_layerTopAction_triggered(bool checked)
+{
+	ui.layerWidget->MoveSelectedLayerTop();
+	ui.mapWidget->RepaintMap();
+}
+
+void tGisApp::on_layerDownAction_triggered(bool checked)
+{
+	ui.layerWidget->MoveSelectedLayerDown();
+	ui.mapWidget->RepaintMap();
+}
+
+void tGisApp::on_layerBottomAction_triggered(bool checked)
+{
+	ui.layerWidget->MoveSelectedLayerBottom();
+	ui.mapWidget->RepaintMap();
+}
+
 void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
 {
 	ui.zoomLayerAction->setEnabled(layer != nullptr);
@@ -144,6 +168,10 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 	ui.layerAttributeAction->setEnabled(layer != nullptr);
 	if (layer != nullptr)
 	{
+		ui.layerUpAction->setEnabled(ui.layerWidget->CanMoveSelectedLayerUp());
+		ui.layerTopAction->setEnabled(ui.layerWidget->CanMoveSelectedLayerUp());
+		ui.layerDownAction->setEnabled(ui.layerWidget->CanMoveSelectedLayerDown());
+		ui.layerBottomAction->setEnabled(ui.layerWidget->CanMoveSelectedLayerDown());
 		ui.layerVisibleAction->setChecked(layer->GetVisible());
 		IDataset* dataset = layer->GetDataset();
 		if (strcmp(MyGDALRasterDataset::S_GetType(), dataset->GetType()) == 0)
@@ -153,7 +181,11 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 	}
 	else
 	{
-		ui.zoomOriginalAction->setEnabled(layer != nullptr);
+		ui.zoomOriginalAction->setEnabled(false);
+		ui.layerUpAction->setEnabled(false);
+		ui.layerTopAction->setEnabled(false);
+		ui.layerDownAction->setEnabled(false);
+		ui.layerBottomAction->setEnabled(false);
 	}
 }
 

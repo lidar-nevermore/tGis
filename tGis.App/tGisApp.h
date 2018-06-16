@@ -41,6 +41,11 @@ private slots:
 	void on_layerVisibleAction_toggled(bool checked);
 	void on_layerAttributeAction_triggered(bool checked);
 	void on_removeAllLayersAction_triggered(bool checked);
+	void on_layerUpAction_triggered(bool checked);
+	void on_layerTopAction_triggered(bool checked);
+	void on_layerDownAction_triggered(bool checked);
+	void on_layerBottomAction_triggered(bool checked);
+
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 	void on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 
