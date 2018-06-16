@@ -1,5 +1,9 @@
 #pragma once
 
+#ifndef __OBJECTSAMPLEDATASOURCE_H__
+#define __OBJECTSAMPLEDATASOURCE_H__
+
+
 #include "FileSystemDataSource.h"
 
 #include "Helper.h"
@@ -66,5 +70,8 @@ private:
 
 
 END_NAME_SPACE(tGis, Core)
+
+#endif
+
 
 

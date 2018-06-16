@@ -41,52 +41,21 @@ bool VectorSimpleLayerProvider::IsSupportDataset(IDataset * dataset)
 	return dataset->IsTypeOf(MyGDALVectorDataset::S_GetType());
 }
 
-void VectorSimpleLayerProvider::SetCreationUI(const CreationUI ui)
-{
-	_uiCreation = ui;
-}
 
 ILayer * VectorSimpleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
-	//assert(_uiCreation != nullptr);
-
-	//return _uiCreation(this, dataset);
 	MyGDALVectorDataset* vector = (MyGDALVectorDataset*)dataset;
 	VectorSimpleLayer* layer = new VectorSimpleLayer(vector, vector->GetGDALDataset()->GetLayer(0));
 	layer->SetName(vector->GetName());
 	return layer;
 }
 
-void VectorSimpleLayerProvider::SetPropertyUI(const PropertyUI ui)
-{
-	_uiProperty = ui;
-}
-
-void VectorSimpleLayerProvider::UI_LayerProperty(ILayer * layer)
-{
-	assert(_uiProperty != nullptr);
-
-	_uiProperty(this, layer);
-}
 
 ILayer * VectorSimpleLayerProvider::CreateLayer(MyGDALVectorDataset * vector, OGRLayer * layer, SimpleMarkerSymbol * markerSymbol, SimpleLineSymbol * lineSymbol, SimpleFillSymbol * fillSymbol, int geometryField, int labelField)
 {
 	return nullptr;
 }
 
-ILayer * VectorSimpleLayerProvider::CreateLayer(IDataset * dataset, const char * creationString)
-{
-	return nullptr;
-}
-
-void VectorSimpleLayerProvider::ReleaseLayer(ILayer *layer)
-{
-	delete layer;
-}
-
-void VectorSimpleLayerProvider::Release()
-{
-}
 
 END_NAME_SPACE(tGis, Core)
 

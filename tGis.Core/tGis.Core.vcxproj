@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\DataSource.h" />
+    <ClInclude Include="include\DataSourceProvider.h" />
     <ClInclude Include="include\DataSourceProviderRepository.h" />
     <ClInclude Include="include\FileSystemDataSource.h" />
     <ClInclude Include="include\FileSystemDataSourceProvider.h" />
@@ -40,10 +42,13 @@
     <ClInclude Include="include\ISymbolLibrary.h" />
     <ClInclude Include="include\ITGisObject.h" />
     <ClInclude Include="include\Layer.h" />
+    <ClInclude Include="include\LayerProvider.h" />
     <ClInclude Include="include\LayerProviderRepository.h" />
     <ClInclude Include="include\Map.h" />
     <ClInclude Include="include\MapTool.h" />
     <ClInclude Include="include\MapWidget.h" />
+    <ClInclude Include="include\MemoryDataSource.h" />
+    <ClInclude Include="include\MemoryDataSourceProvider.h" />
     <ClInclude Include="include\MyGDALDataset.h" />
     <ClInclude Include="include\MyGDALFileRasterDataset.h" />
     <ClInclude Include="include\MyGDALMemRasterDataset.h" />
@@ -84,6 +89,8 @@
     <ClCompile Include="include\tVisualize.cpp" />
     <ClCompile Include="internal\elr_mtx.c" />
     <ClCompile Include="internal\VisualizeBufferManager.cpp" />
+    <ClCompile Include="src\DataSource.cpp" />
+    <ClCompile Include="src\DataSourceProvider.cpp" />
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\FileSystemDataSource.cpp" />
@@ -91,10 +98,13 @@
     <ClCompile Include="src\GeoSurface.cpp" />
     <ClCompile Include="src\ITGisObject.cpp" />
     <ClCompile Include="src\Layer.cpp" />
+    <ClCompile Include="src\LayerProvider.cpp" />
     <ClCompile Include="src\LayerProviderRepository.cpp" />
     <ClCompile Include="src\Map.cpp" />
     <ClCompile Include="src\MapTool.cpp" />
     <ClCompile Include="src\MapWidget.cpp" />
+    <ClCompile Include="src\MemoryDataSource.cpp" />
+    <ClCompile Include="src\MemoryDataSourceProvider.cpp" />
     <ClCompile Include="src\MyGDALDataset.cpp" />
     <ClCompile Include="src\MyGDALFileRasterDataset.cpp" />
     <ClCompile Include="src\MyGDALMemRasterDataset.cpp" />

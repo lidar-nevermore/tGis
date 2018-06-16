@@ -6,18 +6,18 @@
 
 #include "Helper.h"
 
-#include "ILayerProvider.h"
+#include "LayerProvider.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 class RasterGrayScaleLayer;
 class MyGDALRasterDataset;
 
-class TGIS_API RasterGrayScaleLayerProvider : public ILayerProvider
+class TGIS_API RasterGrayScaleLayerProvider : public LayerProvider
 {
-public:
-	typedef ILayer*(*CreationUI)(RasterGrayScaleLayerProvider*, MyGDALRasterDataset*);
-	typedef void(*PropertyUI)(RasterGrayScaleLayerProvider*, RasterGrayScaleLayer*);
+private:
+	static const char* const _name;
+	static const char* const _type;
 
 public:
 	static RasterGrayScaleLayerProvider INSTANCE;
@@ -35,23 +35,8 @@ public:
 	const char* GetSupportedLayerType();
 
 	bool IsSupportDataset(IDataset* dataset);
-	void SetCreationUI(const CreationUI ui);
-	ILayer* UI_CreateLayer(IDataset* dataset);
-	void SetPropertyUI(const PropertyUI ui);
-	void UI_LayerProperty(ILayer* layer);
+
 	ILayer* CreateLayer(MyGDALRasterDataset* dataset, int band);
-	ILayer* CreateLayer(IDataset* dataset, const char* creationString);
-	void ReleaseLayer(ILayer*);
-
-	void Release();
-
-private:
-	CreationUI _uiCreation;
-	PropertyUI _uiProperty;
-
-private:
-	static const char* const _name;
-	static const char* const _type;
 };
 
 END_NAME_SPACE(tGis, Core)

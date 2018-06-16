@@ -14,10 +14,6 @@ class TGIS_API ObjectSampleDataSourceProvider : public FileSystemDataSourceProvi
 {
 	friend class FileSystemDataSource;
 public:
-	typedef IDataSource*(*CreationUI)(ObjectSampleDataSourceProvider*);
-	typedef void*(*PropertyUI)(ObjectSampleDataSourceProvider*, IDataSource*, IDataset*);
-
-public:
 	static ObjectSampleDataSourceProvider* _instance;
 	static ObjectSampleDataSourceProvider& INSTANCE();
 
@@ -36,10 +32,6 @@ private:
 	static const char* const _type;
 
 private:
-	CreationUI _uiCreation;
-	PropertyUI _uiProperty;
-
-private:
 	IDataSource* CreateDataSourceNoHost(const char* path);
 
 public:
@@ -48,10 +40,6 @@ public:
 	virtual const char* GetName();
 	virtual const char* GetType();
 
-	void SetCreationUI(const CreationUI ui);
-	virtual IDataSource* UI_CreateDataSource();
-	void SetPropertyUI(const PropertyUI ui);
-	virtual void UI_DataSourceProperty(IDataSource*, IDataset*);
 	virtual IDataSource* CreateDataSource(const char* path);
 };
 

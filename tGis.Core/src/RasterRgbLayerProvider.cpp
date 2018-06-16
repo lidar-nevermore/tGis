@@ -41,49 +41,10 @@ bool RasterRgbLayerProvider::IsSupportDataset(IDataset * dataset)
 	return dataset->IsTypeOf(MyGDALRasterDataset::S_GetType());
 }
 
-void RasterRgbLayerProvider::SetCreationUI(const CreationUI ui)
-{
-	_uiCreation = ui;
-}
-
-ILayer * RasterRgbLayerProvider::UI_CreateLayer(IDataset * dataset)
-{
-	assert(_uiCreation != nullptr);
-
-	return _uiCreation(this, (MyGDALRasterDataset*)dataset);
-}
-
-void RasterRgbLayerProvider::SetPropertyUI(const PropertyUI ui)
-{
-	_uiProperty = ui;
-}
-
-void RasterRgbLayerProvider::UI_LayerProperty(ILayer * layer)
-{
-	assert(_uiProperty != nullptr);
-
-	_uiProperty(this, (RasterRgbLayer*)layer);
-}
-
 ILayer * RasterRgbLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int r, int g, int b)
 {
 	return new RasterRgbLayer(dataset,r,g,b);
 }
-
-ILayer * RasterRgbLayerProvider::CreateLayer(IDataset * dataset, const char * creationString)
-{
-	return nullptr;
-}
-
-void RasterRgbLayerProvider::ReleaseLayer(ILayer * layer)
-{
-	delete layer;
-}
-
-void RasterRgbLayerProvider::Release()
-{
-}
-
 
 
 END_NAME_SPACE(tGis, Core)

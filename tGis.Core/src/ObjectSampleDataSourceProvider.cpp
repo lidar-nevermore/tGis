@@ -44,6 +44,7 @@ bool ObjectSampleDataSourceProvider::IsObjectSampleDataSource(const char * path_
 	return false;
 }
 
+
 ObjectSampleDataSourceProvider::ObjectSampleDataSourceProvider()
 {
 }
@@ -71,30 +72,6 @@ const char * ObjectSampleDataSourceProvider::GetName()
 const char * ObjectSampleDataSourceProvider::GetType()
 {
 	return _type;
-}
-
-void ObjectSampleDataSourceProvider::SetCreationUI(const CreationUI ui)
-{
-	_uiCreation = ui;
-}
-
-IDataSource * ObjectSampleDataSourceProvider::UI_CreateDataSource()
-{
-	assert(_uiCreation != nullptr);
-
-	return _uiCreation(this);
-}
-
-void ObjectSampleDataSourceProvider::SetPropertyUI(const PropertyUI ui)
-{
-	_uiProperty = ui;
-}
-
-void ObjectSampleDataSourceProvider::UI_DataSourceProperty(IDataSource *ds, IDataset *dt)
-{
-	assert(_uiProperty != nullptr);
-
-	_uiProperty(this, ds, dt);
 }
 
 IDataSource * ObjectSampleDataSourceProvider::CreateDataSourceNoHost(const char * path)

@@ -56,19 +56,9 @@ const char * FileSystemDataSource::S_GetType()
 	return _type;
 }
 
-const char * FileSystemDataSource::GetName()
-{
-	return _name.c_str();
-}
-
 const char * FileSystemDataSource::GetCreationString()
 {
 	return _path.c_str();
-}
-
-bool FileSystemDataSource::IsConnected()
-{
-	return _connected;
 }
 
 void FileSystemDataSource::Connect()
@@ -152,43 +142,6 @@ void FileSystemDataSource::Disconnect()
 	_mapDataset.clear();
 }
 
-int FileSystemDataSource::GetDatasetCount()
-{
-	return _vecDataset.size();
-}
-
-IDataset * FileSystemDataSource::GetDataset(int pos)
-{
-	return _vecDataset.at(pos);
-}
-
-IDataset * FileSystemDataSource::GetDataset(const char * name)
-{
-	map<string, IDataset*>::iterator pos = _mapDataset.find(name);
-
-	if (pos != _mapDataset.end())
-		return (*pos).second;
-	return nullptr;
-}
-
-int FileSystemDataSource::GetDataSourceCount()
-{
-	return _vecDataSource.size();
-}
-
-IDataSource * FileSystemDataSource::GetDataSource(int pos)
-{
-	return _vecDataSource.at(pos);
-}
-
-IDataSource * FileSystemDataSource::GetDataSource(const char * path)
-{
-	map<string, IDataSource*>::iterator pos = _mapDataSource.find(path);
-
-	if (pos != _mapDataSource.end())
-		return (*pos).second;
-	return nullptr;
-}
 
 END_NAME_SPACE(tGis, Core)
 

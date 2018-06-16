@@ -41,47 +41,9 @@ bool RasterGrayScaleLayerProvider::IsSupportDataset(IDataset * dataset)
 	return dataset->IsTypeOf(MyGDALRasterDataset::S_GetType());
 }
 
-void RasterGrayScaleLayerProvider::SetCreationUI(const CreationUI ui)
-{
-	_uiCreation = ui;
-}
-
-ILayer * RasterGrayScaleLayerProvider::UI_CreateLayer(IDataset * dataset)
-{
-	assert(_uiCreation != nullptr);
-
-	return _uiCreation(this, (MyGDALRasterDataset*)dataset);
-}
-
-void RasterGrayScaleLayerProvider::SetPropertyUI(const PropertyUI ui)
-{
-	_uiProperty = ui;
-}
-
-void RasterGrayScaleLayerProvider::UI_LayerProperty(ILayer * layer)
-{
-	assert(_uiProperty != nullptr);
-
-	_uiProperty(this, (RasterGrayScaleLayer*)layer);
-}
-
 ILayer * RasterGrayScaleLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int band)
 {
 	return new RasterGrayScaleLayer(dataset,band);
-}
-
-ILayer * RasterGrayScaleLayerProvider::CreateLayer(IDataset * dataset, const char * creationString)
-{
-	return nullptr;
-}
-
-void RasterGrayScaleLayerProvider::ReleaseLayer(ILayer * layer)
-{
-	delete layer;
-}
-
-void RasterGrayScaleLayerProvider::Release()
-{
 }
 
 
