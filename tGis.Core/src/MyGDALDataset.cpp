@@ -198,21 +198,10 @@ bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)
 	return false;
 }
 
-
-MyGDALDataset::MyGDALDataset()
+MyGDALDataset::MyGDALDataset(IDataSource * ds)
+	:Dataset(ds)
 {
-	_dataset = nullptr;
-	_autoClose = false;
-	_eAccess = GA_ReadOnly;
 }
-
-MyGDALDataset::MyGDALDataset(bool isReadOnly)
-{
-	_dataset = nullptr;
-	_autoClose = false;
-	_eAccess = isReadOnly ? GA_ReadOnly : GA_Update;
-}
-
 
 MyGDALDataset::~MyGDALDataset()
 {

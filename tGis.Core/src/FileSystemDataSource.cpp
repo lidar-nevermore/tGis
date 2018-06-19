@@ -17,6 +17,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 const char* const FileSystemDataSource::_type = "9357FB74-8ED4-4666-9D91-8B322208D60A";
 
 FileSystemDataSource::FileSystemDataSource(const char* path)
+	:DataSource(&FileSystemDataSourceProvider::INSTANCE())
 {
 	_path = path;
 	string sepstr(TGIS_PATH_SEPARATOR_STR);
@@ -56,6 +57,20 @@ const char * FileSystemDataSource::S_GetType()
 	return _type;
 }
 
+bool FileSystemDataSource::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return false;
+}
+
+bool FileSystemDataSource::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return false;
+}
+
 const char * FileSystemDataSource::GetCreationString()
 {
 	return _path.c_str();
@@ -84,14 +99,8 @@ void FileSystemDataSource::Connect()
 		{
 			if (file.attrib&_TGIS_A_SUBDIR)
 			{
-				IDataSource* ds = nullptr;
-				if (ObjectSampleDataSourceProvider::IsObjectSampleDataSource(subpath.c_str()))
-					ds = ObjectSampleDataSourceProvider::INSTANCE().CreateDataSourceNoHost(subpath.c_str());
-				else
-					ds = FileSystemDataSourceProvider::INSTANCE().CreateDataSourceNoHost(subpath.c_str());
+				IDataSource* ds = FileSystemDataSourceProvider::INSTANCE().CreateDataSource(subpath.c_str());
 				_vecDataSource.push_back(ds);
-				map<string, IDataSource*>::value_type v(subpath, ds);
-				_mapDataSource.insert(v);
 			}
 			else
 			{
@@ -103,17 +112,13 @@ void FileSystemDataSource::Connect()
 
 					if (MyGDALDataset::IsSupportedRasterFormatExt(ext.c_str()))
 					{
-						MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(subpath.c_str(), eAccess);
-						dt->_dataSource = this;
+						MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(this,subpath.c_str(), eAccess);
 						_vecDataset.push_back(dt);
-						_mapDataset.insert(map<string, IDataset*>::value_type(subpath, dt));
 					}
 					else if (MyGDALDataset::IsSupportedVectorFormatExt(ext.c_str()))
 					{
-						MyGDALVectorDataset* dt = new MyGDALVectorDataset(subpath.c_str(), eAccess);
-						dt->_dataSource = this;
+						MyGDALVectorDataset* dt = new MyGDALVectorDataset(this,subpath.c_str(), eAccess);
 						_vecDataset.push_back(dt);
-						_mapDataset.insert(map<string, IDataset*>::value_type(subpath, dt));
 					}
 				}
 			}
@@ -129,17 +134,15 @@ void FileSystemDataSource::Disconnect()
 	_connected = false;
 	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
 	{
-		FileSystemDataSourceProvider::INSTANCE()._mapDataSource.erase((*it)->GetCreationString());
-		delete (*it);
+		IDataSourceProvider* provider = (*it)->GetProvider();
+		provider->ReleaseDataSource(*it);
 	}
 	_vecDataSource.clear();
-	_mapDataSource.clear();
 	for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
 	{
 		delete (*it);
 	}
 	_vecDataset.clear();
-	_mapDataset.clear();
 }
 
 

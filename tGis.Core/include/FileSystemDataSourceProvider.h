@@ -27,20 +27,23 @@ protected:
 public:
 	~FileSystemDataSourceProvider();
 
+protected:
+	//该集合中放了所有创建出来的DataSource
+	map<string, IDataSource*> _mapDataSource;
+
 private:
 	static const char* const _name;
 	static const char* const _type;
 
-private:
-	IDataSource* CreateDataSourceNoHost(const char* path);
-
 public:
 	virtual const char* GetSupportedDataSourceType();
-	virtual bool IsRoot();
 	virtual const char* GetName();
 	virtual const char* GetType();
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
 
 	virtual IDataSource* CreateDataSource(const char* path);
+	virtual void ReleaseDataSource(IDataSource*);
 };
 
 END_NAME_SPACE(tGis, Core)

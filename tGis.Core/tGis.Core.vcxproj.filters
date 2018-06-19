@@ -239,6 +239,9 @@
     <ClInclude Include="include\DataSource.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="include\Dataset.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -383,6 +386,9 @@
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\DataSource.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Dataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>

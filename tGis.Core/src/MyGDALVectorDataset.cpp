@@ -45,10 +45,12 @@ const char * MyGDALVectorDataset::S_GetType()
 }
 
 MyGDALVectorDataset::MyGDALVectorDataset()
+	:MyGDALDataset(nullptr)
 {
 }
 
-MyGDALVectorDataset::MyGDALVectorDataset(const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+MyGDALVectorDataset::MyGDALVectorDataset(IDataSource* ds, const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+	:MyGDALDataset(ds)
 {
 	_eAccess = eAccess;
 	_path = path;

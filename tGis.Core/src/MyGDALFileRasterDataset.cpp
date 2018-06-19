@@ -23,10 +23,12 @@ const char * MyGDALFileRasterDataset::S_GetType()
 }
 
 MyGDALFileRasterDataset::MyGDALFileRasterDataset()
+	:MyGDALRasterDataset(nullptr)
 {
 }
 
-MyGDALFileRasterDataset::MyGDALFileRasterDataset(const char* path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+MyGDALFileRasterDataset::MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+	:MyGDALRasterDataset(ds)
 {
 	_eAccess = eAccess;
 	_path = path;

@@ -17,8 +17,6 @@ public:
 	static ObjectSampleDataSourceProvider* _instance;
 	static ObjectSampleDataSourceProvider& INSTANCE();
 
-	static bool IsObjectSampleDataSource(const char* path);
-
 protected:
 	ObjectSampleDataSourceProvider();
 	ObjectSampleDataSourceProvider(const ObjectSampleDataSourceProvider &) = delete;
@@ -32,13 +30,14 @@ private:
 	static const char* const _type;
 
 private:
-	IDataSource* CreateDataSourceNoHost(const char* path);
+	bool IsObjectSampleDataSource(const char* path);
 
 public:
 	virtual const char* GetSupportedDataSourceType();
-	virtual bool IsRoot();
 	virtual const char* GetName();
 	virtual const char* GetType();
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
 
 	virtual IDataSource* CreateDataSource(const char* path);
 };

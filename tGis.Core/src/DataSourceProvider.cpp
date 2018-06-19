@@ -12,12 +12,28 @@ DataSourceProvider::DataSourceProvider()
 
 DataSourceProvider::~DataSourceProvider()
 {
-	Release();
 }
 
-bool DataSourceProvider::IsRoot()
+void DataSourceProvider::AddOpenedDataset(IDataset * dt)
 {
-	return false;
+	_vecOpenedDataset.push_back(dt);
+}
+
+void DataSourceProvider::RemoveOpenedDataset(IDataset * dt)
+{
+	for (vector<IDataset*>::iterator it = _vecOpenedDataset.begin(); it != _vecOpenedDataset.end(); it++)
+	{
+		if (dt == *it)
+		{
+			_vecOpenedDataset.erase(it);
+			break;
+		}
+	}
+}
+
+void DataSourceProvider::AddSubProvider(IDataSourceProvider * provider)
+{
+	_vecSubProvider.push_back(provider);
 }
 
 void DataSourceProvider::SetCreationUI(const CreationUI ui)
@@ -46,34 +62,35 @@ void DataSourceProvider::UI_DataSourceProperty(IDataSource *ds, IDataset *dt)
 
 IDataSource * DataSourceProvider::CreateDataSource(const char * creationString)
 {
+	for (vector<IDataSourceProvider*>::iterator it = _vecSubProvider.begin(); it != _vecSubProvider.end(); it++)
+	{
+		IDataSource* ds = (*it)->CreateDataSource(creationString);
+		if (ds != nullptr)
+		{
+			return ds;
+		}
+	}
 	return nullptr;
 }
 
 void DataSourceProvider::ReleaseDataSource(IDataSource *ds)
 {
-	map<string, IDataSource*>::iterator pos = _mapDataSource.find(ds->GetCreationString());
-
-	if (pos != _mapDataSource.end())
-		delete (*pos).second;
+	delete ds;
 }
 
-int DataSourceProvider::GetDataSourceCount()
+int DataSourceProvider::GetOpenedDatasetCount()
 {
-	return _vecDataSource.size();
+	return _vecOpenedDataset.size();
 }
 
-IDataSource * DataSourceProvider::GetDataSource(int pos)
+IDataset * DataSourceProvider::GetOpenedDataset(int pos)
 {
-	return _vecDataSource.at(pos);
+	return _vecOpenedDataset.at(pos);
 }
 
 void DataSourceProvider::Release()
 {
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
-	{
-		delete (*it);
-	}
-	_vecDataSource.clear();
+	delete this;
 }
 
 

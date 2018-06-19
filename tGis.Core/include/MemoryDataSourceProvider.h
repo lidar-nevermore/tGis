@@ -38,9 +38,10 @@ private:
 
 public:
 	virtual const char* GetSupportedDataSourceType();
-	virtual bool IsRoot();
 	virtual const char* GetName();
 	virtual const char* GetType();
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
 
 	virtual IDataSource* CreateDataSource(const char* creationString);
 };

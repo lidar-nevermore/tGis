@@ -40,11 +40,6 @@ const char * MemoryDataSourceProvider::GetSupportedDataSourceType()
 	return MemoryDataSource::S_GetType();
 }
 
-bool MemoryDataSourceProvider::IsRoot()
-{
-	return true;
-}
-
 const char * MemoryDataSourceProvider::GetName()
 {
 	return _name;
@@ -54,6 +49,22 @@ const char * MemoryDataSourceProvider::GetType()
 {
 	return _type;
 }
+
+
+bool MemoryDataSourceProvider::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return false;
+}
+
+bool MemoryDataSourceProvider::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return false;
+}
+
 
 
 IDataSource * MemoryDataSourceProvider::CreateDataSource(const char * creationString)

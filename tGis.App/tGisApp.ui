@@ -84,41 +84,98 @@
    </attribute>
    <widget class="QWidget" name="dockWidgetContents">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="spacing">
+      <number>0</number>
+     </property>
      <property name="leftMargin">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="topMargin">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="rightMargin">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="bottomMargin">
-      <number>1</number>
+      <number>0</number>
      </property>
      <item>
-      <widget class="QDataSourceWidget" name="dataSourceWidget">
-       <property name="horizontalScrollBarPolicy">
-        <enum>Qt::ScrollBarAsNeeded</enum>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="tabPosition">
+        <enum>QTabWidget::South</enum>
        </property>
-       <property name="editTriggers">
-        <set>QAbstractItemView::NoEditTriggers</set>
+       <property name="currentIndex">
+        <number>0</number>
        </property>
-       <property name="textElideMode">
-        <enum>Qt::ElideNone</enum>
-       </property>
-       <property name="horizontalScrollMode">
-        <enum>QAbstractItemView::ScrollPerPixel</enum>
-       </property>
-       <property name="headerHidden">
-        <bool>true</bool>
-       </property>
-       <property name="expandsOnDoubleClick">
-        <bool>false</bool>
-       </property>
-       <attribute name="headerStretchLastSection">
-        <bool>true</bool>
-       </attribute>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>目录</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetNoConstraint</enum>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QDataSourceWidget" name="dataSourceWidget">
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="textElideMode">
+            <enum>Qt::ElideNone</enum>
+           </property>
+           <property name="horizontalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
+           <property name="headerHidden">
+            <bool>true</bool>
+           </property>
+           <property name="expandsOnDoubleClick">
+            <bool>false</bool>
+           </property>
+           <attribute name="headerStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>已打开</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_4">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QListWidget" name="listWidget"/>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </item>
     </layout>
@@ -138,7 +195,7 @@
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_2">
-    <layout class="QHBoxLayout" name="horizontalLayout_3">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
      <property name="leftMargin">
       <number>1</number>
      </property>
@@ -171,7 +228,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="dockWidgetContents_3">
-    <layout class="QHBoxLayout" name="horizontalLayout_4">
+    <layout class="QVBoxLayout" name="verticalLayout_3">
      <property name="leftMargin">
       <number>1</number>
      </property>

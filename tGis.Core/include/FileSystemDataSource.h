@@ -18,7 +18,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_API FileSystemDataSource : public DataSource
 {
 	friend class FileSystemDataSourceProvider;
-
 protected:
 	FileSystemDataSource(const char* path);
 
@@ -34,6 +33,8 @@ protected:
 public:
 	virtual const char* GetType();
 	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
 
 	virtual const char* GetCreationString();
 

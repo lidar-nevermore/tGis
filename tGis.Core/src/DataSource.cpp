@@ -4,12 +4,31 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-DataSource::DataSource()
+DataSource::DataSource(IDataSourceProvider * provider)
 {
+	_provider = provider;
 }
 
 DataSource::~DataSource()
 {
+}
+
+
+void DataSource::AddOpenedDataset(IDataset * dt)
+{
+	_vecOpenedDataset.push_back(dt);
+}
+
+void DataSource::RemoveOpenedDataset(IDataset * dt)
+{
+	for (vector<IDataset*>::iterator it = _vecOpenedDataset.begin(); it != _vecOpenedDataset.end(); it++)
+	{
+		if (dt == *it)
+		{
+			_vecOpenedDataset.erase(it);
+			break;
+		}
+	}
 }
 
 const char * DataSource::GetName()
@@ -20,6 +39,11 @@ const char * DataSource::GetName()
 const char * DataSource::GetCreationString()
 {
 	return nullptr;
+}
+
+IDataSourceProvider * DataSource::GetProvider()
+{
+	return _provider;
 }
 
 bool DataSource::IsConnected()
@@ -45,15 +69,6 @@ IDataset * DataSource::GetDataset(int pos)
 	return _vecDataset.at(pos);
 }
 
-IDataset * DataSource::GetDataset(const char * name)
-{
-	map<string, IDataset*>::iterator pos = _mapDataset.find(name);
-
-	if (pos != _mapDataset.end())
-		return (*pos).second;
-	return nullptr;
-}
-
 int DataSource::GetDataSourceCount()
 {
 	return _vecDataSource.size();
@@ -64,15 +79,15 @@ IDataSource * DataSource::GetDataSource(int pos)
 	return _vecDataSource.at(pos);
 }
 
-IDataSource * DataSource::GetDataSource(const char * name)
+int DataSource::GetOpenedDatasetCount()
 {
-	map<string, IDataSource*>::iterator pos = _mapDataSource.find(name);
-
-	if (pos != _mapDataSource.end())
-		return (*pos).second;
-	return nullptr;
+	return _vecOpenedDataset.size();
 }
 
+IDataset * DataSource::GetOpenedDataset(int pos)
+{
+	return _vecOpenedDataset.at(pos);
+}
 
 
 END_NAME_SPACE(tGis, Core)

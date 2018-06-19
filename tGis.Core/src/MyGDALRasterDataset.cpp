@@ -37,13 +37,13 @@ const char * MyGDALRasterDataset::S_GetType()
 	return _type;
 }
 
-MyGDALRasterDataset::MyGDALRasterDataset()
+MyGDALRasterDataset::MyGDALRasterDataset(IDataSource * ds)
+	:MyGDALDataset(ds)
 {
 }
 
 MyGDALRasterDataset::~MyGDALRasterDataset()
 {
-
 }
 
 void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose, double noDataValue)

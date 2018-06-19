@@ -31,7 +31,7 @@ private:
 
 public:
 	MyGDALFileRasterDataset();
-	MyGDALFileRasterDataset(const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
+	MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	~MyGDALFileRasterDataset();
 
 public:

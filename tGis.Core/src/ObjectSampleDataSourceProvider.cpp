@@ -25,6 +25,15 @@ ObjectSampleDataSourceProvider & ObjectSampleDataSourceProvider::INSTANCE()
 	return *_instance;
 }
 
+ObjectSampleDataSourceProvider::ObjectSampleDataSourceProvider()
+{
+}
+
+
+ObjectSampleDataSourceProvider::~ObjectSampleDataSourceProvider()
+{
+}
+
 
 bool ObjectSampleDataSourceProvider::IsObjectSampleDataSource(const char * path_)
 {
@@ -44,24 +53,9 @@ bool ObjectSampleDataSourceProvider::IsObjectSampleDataSource(const char * path_
 	return false;
 }
 
-
-ObjectSampleDataSourceProvider::ObjectSampleDataSourceProvider()
-{
-}
-
-
-ObjectSampleDataSourceProvider::~ObjectSampleDataSourceProvider()
-{
-}
-
 const char * ObjectSampleDataSourceProvider::GetSupportedDataSourceType()
 {
 	return ObjectSampleDataSource::S_GetType();
-}
-
-bool ObjectSampleDataSourceProvider::IsRoot()
-{
-	return false;
 }
 
 const char * ObjectSampleDataSourceProvider::GetName()
@@ -74,42 +68,46 @@ const char * ObjectSampleDataSourceProvider::GetType()
 	return _type;
 }
 
-IDataSource * ObjectSampleDataSourceProvider::CreateDataSourceNoHost(const char * path)
+bool ObjectSampleDataSourceProvider::IsTypeOf(const char * type)
 {
+	if (strcmp(type, _type) == 0)
+		return true;
+	return FileSystemDataSourceProvider::IsTypeOf(type);
+}
+
+bool ObjectSampleDataSourceProvider::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return FileSystemDataSourceProvider::IsTypeOf(object);
+}
+
+IDataSource * ObjectSampleDataSourceProvider::CreateDataSource(const char * path)
+{
+	IDataSource *ds = nullptr;
 	string strPath(path);
 	map<string, IDataSource*>::iterator pos = _mapDataSource.find(strPath);
 
 	if (pos != _mapDataSource.end())
 	{
-		IDataSource *ds = (*pos).second;
-		const char* t = ds->GetType();
-		if (strcmp(t, ObjectSampleDataSource::S_GetType()) != 0)
+		ds = (*pos).second;
+		if (ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
 		{
 			throw exception("Already connected as DataSource of different Type!");
 		}
 		return ds;
 	}
 
-	ObjectSampleDataSource* ds = new ObjectSampleDataSource(path);
-	_mapDataSource.insert(map<string, IDataSource*>::value_type(strPath, ds));
+	ds = DataSourceProvider::CreateDataSource(path);
+	if (ds != nullptr)
+		return ds;
 
-	return ds;
-}
-
-IDataSource * ObjectSampleDataSourceProvider::CreateDataSource(const char * path)
-{
-	bool exist = false;
-	IDataSource* ds = CreateDataSourceNoHost(path);
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); ++it)
+	if (IsObjectSampleDataSource(path))
 	{
-		if (*it == ds)
-		{
-			exist = true;
-			break;
-		}
+		ds = new ObjectSampleDataSource(path);
+		_mapDataSource.insert(map<string, IDataSource*>::value_type(strPath, ds));
 	}
-	if (exist == false)
-		_vecDataSource.push_back(ds);
+
 	return ds;
 }
 

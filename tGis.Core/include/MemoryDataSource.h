@@ -19,7 +19,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_API MemoryDataSource : public DataSource
 {
 	friend class MemoryDataSourceProvider;
-
 protected:
 	MemoryDataSource(const char* name);
 

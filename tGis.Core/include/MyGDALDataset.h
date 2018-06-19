@@ -5,7 +5,7 @@
 
 #include "Helper.h"
 
-#include "IDataset.h"
+#include "Dataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -18,11 +18,10 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct GDALInit;
+struct IDataSource;
 
-class TGIS_API MyGDALDataset : public IDataset
+class TGIS_API MyGDALDataset : public Dataset
 {
-	friend class FileSystemDataSource;
-
 public:
 	virtual const char* GetName();
 	virtual const char* GetCreationString();
@@ -41,7 +40,6 @@ protected:
 protected:
 	string _path;
 	string _name;
-	IDataSource* _dataSource;
 
 private:
 	static GDALInit* _GDALInit;
@@ -65,8 +63,7 @@ protected:
 	GDALAccess _eAccess;
 
 public:
-	MyGDALDataset();
-	MyGDALDataset(bool isReadOnly);
+	MyGDALDataset(IDataSource* ds);
 	virtual ~MyGDALDataset();
 
 public:

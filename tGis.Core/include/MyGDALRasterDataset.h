@@ -16,6 +16,8 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+struct IDataSource;
+
 class TGIS_API MyGDALRasterDataset : public MyGDALDataset
 {
 public:
@@ -28,8 +30,8 @@ private:
 	static const char* const _type;
 
 public:
-	MyGDALRasterDataset();
-	~MyGDALRasterDataset();
+	MyGDALRasterDataset(IDataSource* ds);
+	virtual ~MyGDALRasterDataset();
 
 protected:
 	double _geoTransform[6];

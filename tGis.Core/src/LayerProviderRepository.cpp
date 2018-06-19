@@ -1,6 +1,7 @@
 #include "LayerProviderRepository.h"
 #include "ILayerProvider.h"
 #include "RasterGrayScaleLayerProvider.h"
+#include "RasterBinaryGrayScaleLayerProvider.h"
 #include "VectorSimpleLayerProvider.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -31,7 +32,9 @@ LayerProviderRepository::~LayerProviderRepository()
 	{
 		ILayerProvider* lp = *it;
 
-		if (lp != &RasterGrayScaleLayerProvider::INSTANCE && lp != &VectorSimpleLayerProvider::INSTANCE)
+		if (lp != &RasterGrayScaleLayerProvider::INSTANCE 
+			&& lp != &VectorSimpleLayerProvider::INSTANCE
+			&& lp != &RasterBinaryGrayScaleLayerProvider::INSTANCE)
 			lp->Release();
 	}
 }

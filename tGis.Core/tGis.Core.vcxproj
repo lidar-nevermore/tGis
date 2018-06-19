@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Dataset.h" />
     <ClInclude Include="include\DataSource.h" />
     <ClInclude Include="include\DataSourceProvider.h" />
     <ClInclude Include="include\DataSourceProviderRepository.h" />
@@ -89,6 +90,7 @@
     <ClCompile Include="include\tVisualize.cpp" />
     <ClCompile Include="internal\elr_mtx.c" />
     <ClCompile Include="internal\VisualizeBufferManager.cpp" />
+    <ClCompile Include="src\Dataset.cpp" />
     <ClCompile Include="src\DataSource.cpp" />
     <ClCompile Include="src\DataSourceProvider.cpp" />
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />

@@ -17,23 +17,30 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_API DataSource : public IDataSource
 {
+	friend class Dataset;
 public:
-	DataSource();
+	DataSource(IDataSourceProvider*);
 	virtual ~DataSource();
 
 protected:
 	string _name;
 	bool _connected;
+	IDataSourceProvider* _provider;
 
 	vector<IDataSource*> _vecDataSource;
-	map<string, IDataSource*> _mapDataSource;
 
 	vector<IDataset*> _vecDataset;
-	map<string, IDataset*> _mapDataset;
+
+	//该集合中存放直接归属本数据源的所有打开的数据集
+	vector<IDataset*> _vecOpenedDataset;
+
+	void AddOpenedDataset(IDataset*);
+	void RemoveOpenedDataset(IDataset*);
 
 public:
 	virtual const char* GetName();
 	virtual const char* GetCreationString();
+	virtual IDataSourceProvider* GetProvider();
 
 	virtual bool IsConnected();
 	virtual void Connect();
@@ -41,11 +48,12 @@ public:
 
 	virtual int GetDatasetCount();
 	virtual IDataset* GetDataset(int);
-	virtual IDataset* GetDataset(const char* name);
 
 	virtual int GetDataSourceCount();
 	virtual IDataSource* GetDataSource(int);
-	virtual IDataSource* GetDataSource(const char* name);
+
+	virtual int GetOpenedDatasetCount();
+	virtual IDataset* GetOpenedDataset(int);
 };
 
 

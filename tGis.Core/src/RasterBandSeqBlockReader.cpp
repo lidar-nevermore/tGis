@@ -1,6 +1,6 @@
 
 #include "RasterBandSeqBlockReader.h"
-#include "MyGDALRasterDataset.h"
+#include "MyGDALFileRasterDataset.h"
 #include <cassert>
 #include <algorithm>
 
@@ -97,11 +97,11 @@ RasterBandSeqBlockReader::RasterBandSeqBlockReader( GDALDataset* raster,GDALRast
 			_aoiNoDataValue = INT_MIN;
 		}
 
-		MyGDALRasterDataset myAoiRaster;
+		MyGDALFileRasterDataset myAoiRaster;
 		myAoiRaster.Attach(_aoiRaster);
 		OGREnvelope aoienvelope = *(myAoiRaster.GetEnvelope());
 
-		MyGDALRasterDataset myInRaster;
+		MyGDALFileRasterDataset myInRaster;
 		myInRaster.Attach(raster);
 		if (!myInRaster.IsNorthUp())
 		{

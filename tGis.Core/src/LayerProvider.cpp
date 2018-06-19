@@ -11,7 +11,7 @@ LayerProvider::LayerProvider()
 
 LayerProvider::~LayerProvider()
 {
-	Release();
+
 }
 
 void LayerProvider::SetCreationUI(const CreationUI ui)
@@ -50,6 +50,7 @@ void LayerProvider::ReleaseLayer(ILayer * layer)
 
 void LayerProvider::Release()
 {
+	delete this;
 }
 
 END_NAME_SPACE(tGis, Core)

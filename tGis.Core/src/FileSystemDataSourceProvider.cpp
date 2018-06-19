@@ -1,4 +1,5 @@
 #include "FileSystemDataSourceProvider.h"
+#include "ObjectSampleDataSourceProvider.h"
 #include "FileSystemDataSource.h"
 
 #include <cassert>
@@ -21,6 +22,7 @@ FileSystemDataSourceProvider & FileSystemDataSourceProvider::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new FileSystemDataSourceProvider();
+		_instance->AddSubProvider(&ObjectSampleDataSourceProvider::INSTANCE());
 	}
 
 	return *_instance;
@@ -36,12 +38,7 @@ FileSystemDataSourceProvider::~FileSystemDataSourceProvider()
 
 const char * FileSystemDataSourceProvider::GetSupportedDataSourceType()
 {
-	return FileSystemDataSource::_type;
-}
-
-bool FileSystemDataSourceProvider::IsRoot()
-{
-	return true;
+	return FileSystemDataSource::S_GetType();
 }
 
 const char * FileSystemDataSourceProvider::GetName()
@@ -54,45 +51,57 @@ const char * FileSystemDataSourceProvider::GetType()
 	return _type;
 }
 
-IDataSource * FileSystemDataSourceProvider::CreateDataSourceNoHost(const char * path)
+
+bool FileSystemDataSourceProvider::IsTypeOf(const char * type)
 {
+	if (strcmp(type, _type) == 0)
+		return true;
+	return false;
+}
+
+bool FileSystemDataSourceProvider::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return false;
+}
+
+IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
+{
+	IDataSource *ds = nullptr;
 	string strPath(path);
 	map<string, IDataSource*>::iterator pos = _mapDataSource.find(strPath);
 
 	if (pos != _mapDataSource.end())
 	{
-		IDataSource *ds = (*pos).second;
-		const char* t = ds->GetType();
-		if (strcmp(t, FileSystemDataSource::S_GetType()) != 0)
+		ds = (*pos).second;
+		if (ds->IsTypeOf(FileSystemDataSource::S_GetType()))
 		{
 			throw exception("Already connected as DataSource of different Type!");
 		}
 		return ds;
 	}
 
-	FileSystemDataSource* ds = new FileSystemDataSource(path);
+	ds = DataSourceProvider::CreateDataSource(path);
+	if (ds != nullptr)
+		return ds;
+
+	ds = new FileSystemDataSource(path);
 
 	_mapDataSource.insert(map<string, IDataSource*>::value_type(strPath, ds));
 
 	return ds;
 }
 
-
-IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
+void FileSystemDataSourceProvider::ReleaseDataSource(IDataSource * ds)
 {
-	bool exist = false;
-	IDataSource* ds = CreateDataSourceNoHost(path);
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); ++it)
+	map<string, IDataSource*>::iterator pos = _mapDataSource.find(ds->GetCreationString());
+
+	if (pos != _mapDataSource.end())
 	{
-		if (*it == ds)
-		{
-			exist = true;
-			break;
-		}
+		delete (*pos).second;
+		_mapDataSource.erase(pos);
 	}
-	if(exist == false)
-		_vecDataSource.push_back(ds);
-	return ds;
 }
 
 END_NAME_SPACE(tGis, Core)

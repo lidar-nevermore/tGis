@@ -1,5 +1,6 @@
 #pragma once
 #include <QTreeView>
+#include <QList>
 
 class QStandardItem;
 
@@ -14,6 +15,9 @@ class QDataSourceWidget : public QTreeView
 public:
 	explicit QDataSourceWidget(QWidget *parent = 0);
 	~QDataSourceWidget();
+
+private:
+	QList<IDataSourcePtr> _rootDataSource;
 
 signals:
 	void LayerAdded(IMapPtr, ILayerPtr, ILayerProviderPtr);

@@ -17,7 +17,6 @@ DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
 	{
 		_instance = new DataSourceProviderRepository();
 		_instance->AddDataSourceProvider(&FileSystemDataSourceProvider::INSTANCE());
-		_instance->AddDataSourceProvider(&ObjectSampleDataSourceProvider::INSTANCE());
 		_instance->AddDataSourceProvider(&MemoryDataSourceProvider::INSTANCE());
 	}
 
@@ -40,7 +39,9 @@ DataSourceProviderRepository::~DataSourceProviderRepository()
 		//调用已经析构的对象的成员方法是不对的
 		//
 		//哈哈！但是这个条件判定会导致FileSystemDataSourceProvider一定在DataSourceProviderRepository后析构
-		if (dsp != &FileSystemDataSourceProvider::INSTANCE())
+		if (dsp != &FileSystemDataSourceProvider::INSTANCE()
+			&& dsp != &ObjectSampleDataSourceProvider::INSTANCE()
+			&& dsp != &MemoryDataSourceProvider::INSTANCE())
 			dsp->Release();
 	}
 }
