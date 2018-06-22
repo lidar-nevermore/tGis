@@ -17,7 +17,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 const char* const FileSystemDataSource::_type = "9357FB74-8ED4-4666-9D91-8B322208D60A";
 
 FileSystemDataSource::FileSystemDataSource(const char* path)
-	:DataSource(&FileSystemDataSourceProvider::INSTANCE())
+	:FileSystemDataSource(path,&FileSystemDataSourceProvider::INSTANCE())
+{
+
+}
+
+FileSystemDataSource::FileSystemDataSource(const char * path, IDataSourceProvider * provider)
+	:DataSource(provider)
 {
 	_path = path;
 	string sepstr(TGIS_PATH_SEPARATOR_STR);

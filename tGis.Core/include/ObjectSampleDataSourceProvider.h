@@ -22,10 +22,6 @@ protected:
 	ObjectSampleDataSourceProvider(const ObjectSampleDataSourceProvider &) = delete;
 	ObjectSampleDataSourceProvider &operator=(const ObjectSampleDataSourceProvider &) = delete;
 
-protected:
-	virtual void AddOpenedDataset(IDataset*);
-	virtual void RemoveOpenedDataset(IDataset*);
-
 public:
 	~ObjectSampleDataSourceProvider();
 

@@ -20,6 +20,7 @@ class TGIS_API FileSystemDataSource : public DataSource
 	friend class FileSystemDataSourceProvider;
 protected:
 	FileSystemDataSource(const char* path);
+	FileSystemDataSource(const char* path, IDataSourceProvider* provider);
 
 public:
 	~FileSystemDataSource();

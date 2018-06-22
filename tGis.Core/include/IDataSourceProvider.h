@@ -9,10 +9,13 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+struct IDataSourceProvider;
 struct IDataSource;
 struct IDataset;
 
-typedef void(*DatasetEventHandler)(IDataset*);
+typedef IEventHandler<IDataset*> DatasetEventHandler;
+
+template class TGIS_API IEventHandler<IDataset*>;
 template class TGIS_API Event<DatasetEventHandler, IDataset*>;
 
 struct TGIS_API IDataSourceProvider : public ITGisObject
@@ -20,6 +23,8 @@ struct TGIS_API IDataSourceProvider : public ITGisObject
 	virtual const char* GetName() = 0;
 
 	virtual const char* GetSupportedDataSourceType() = 0;
+
+	virtual void AddSubProvider(IDataSourceProvider*) = 0;
 
 	virtual IDataSource* UI_CreateDataSource() = 0;
 	virtual void UI_DataSourceProperty(IDataSource*,IDataset*) = 0;
@@ -29,7 +34,9 @@ struct TGIS_API IDataSourceProvider : public ITGisObject
 	virtual int GetOpenedDatasetCount() = 0;
 	virtual IDataset* GetOpenedDataset(int) = 0;
 
-	Event<DatasetEventHandler, IDataset*> BeforeDatasetOpen;
+	Event<IDataset*> AfterDatasetOpenEvent;
+
+	Event<IDataset*> BeforeDatasetCloseEvent;
 
 	virtual void Release() = 0;
 

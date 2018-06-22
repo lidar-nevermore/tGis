@@ -33,6 +33,12 @@ private:
 	//直接子类DataSourceProvider的实例集合
 	vector<IDataSourceProvider*> _vecSubProvider;
 
+	void AfterDatasetOpen(IDataset*);
+	void BeforeDatasetClose(IDataset*);
+
+	EventHandler<DataSourceProvider, IDataset*> _AfterDatasetOpenHandler;
+	EventHandler<DataSourceProvider, IDataset*> _BeforeDatasetCloseHandler;
+
 public:
 	virtual ~DataSourceProvider();
 
@@ -47,7 +53,7 @@ protected:
 	virtual void RemoveOpenedDataset(IDataset*);
 
 public:
-	void AddSubProvider(IDataSourceProvider*);
+	virtual void AddSubProvider(IDataSourceProvider*);
 	void SetCreationUI(const CreationUI ui);
 	virtual IDataSource* UI_CreateDataSource();
 	void SetPropertyUI(const PropertyUI ui);

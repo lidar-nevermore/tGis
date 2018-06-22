@@ -1,4 +1,5 @@
 #include "ObjectSampleDataSource.h"
+#include "ObjectSampleDataSourceProvider.h"
 #include "MyGDALRasterDataset.h"
 #include <io.h>
 #include <stdio.h>
@@ -9,7 +10,7 @@ const char* const ObjectSampleDataSource::_type = "B97F1F35-B223-48EB-8AAA-4BF7D
 
 
 ObjectSampleDataSource::ObjectSampleDataSource(const char* path_)
-	:FileSystemDataSource(path_)
+	:FileSystemDataSource(path_, &ObjectSampleDataSourceProvider::INSTANCE())
 {
 }
 
