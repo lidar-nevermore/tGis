@@ -12,10 +12,11 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-
+//按块读取像素，一般用来做卷积计算用
 class TGIS_API RasterBandSeqBlockReader
 {
 public:
+	// x,y为读取像素块左上角的像素坐标
 	typedef void(*FOREACHBLOCK_FUNC)(void* user, GDALRasterBand* band, void* block, int x, int y);
 
 public:

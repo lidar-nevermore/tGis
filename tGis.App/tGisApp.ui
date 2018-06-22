@@ -67,6 +67,8 @@
    <addaction name="layerAttributeAction"/>
    <addaction name="removeLayerAction"/>
    <addaction name="removeAllLayersAction"/>
+   <addaction name="separator"/>
+   <addaction name="takeObjectSampleAction"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -172,7 +174,29 @@
           <number>0</number>
          </property>
          <item>
-          <widget class="QListWidget" name="listWidget"/>
+          <widget class="QOpenedDatasetWidget" name="openedDatasetWidget">
+           <property name="horizontalScrollBarPolicy">
+            <enum>Qt::ScrollBarAsNeeded</enum>
+           </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+           </property>
+           <property name="textElideMode">
+            <enum>Qt::ElideNone</enum>
+           </property>
+           <property name="horizontalScrollMode">
+            <enum>QAbstractItemView::ScrollPerPixel</enum>
+           </property>
+           <property name="headerHidden">
+            <bool>true</bool>
+           </property>
+           <property name="expandsOnDoubleClick">
+            <bool>false</bool>
+           </property>
+           <attribute name="headerStretchLastSection">
+            <bool>true</bool>
+           </attribute>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -494,6 +518,21 @@
     <string>移动到底</string>
    </property>
   </action>
+  <action name="takeObjectSampleAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/TakeObjectSample.png</normaloff>:/tGisApp/Resources/TakeObjectSample.png</iconset>
+   </property>
+   <property name="text">
+    <string>扣取目标样本</string>
+   </property>
+   <property name="toolTip">
+    <string>扣取目标样本</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
@@ -512,6 +551,11 @@
    <class>QLayerWidget</class>
    <extends>QListView</extends>
    <header>qlayerwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QOpenedDatasetWidget</class>
+   <extends>QTreeView</extends>
+   <header>qopeneddatasetwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

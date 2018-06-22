@@ -6,17 +6,17 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 DataSourceProvider::DataSourceProvider()
-	:_AfterDatasetOpenHandler(this,&DataSourceProvider::AfterDatasetOpen),
-	_BeforeDatasetCloseHandler(this,&DataSourceProvider::BeforeDatasetClose)
+	:_AfterDatasetOpenHandler(this,&DataSourceProvider::AfterDatasetOpen)
+	,_BeforeDatasetCloseHandler(this,&DataSourceProvider::BeforeDatasetClose)
 {
 }
 
-void DataSourceProvider::AfterDatasetOpen(IDataset * dt)
+void DataSourceProvider::AfterDatasetOpen(IDataSourceProvider* dsp, IDataset * dt)
 {
 	this->AddOpenedDataset(dt);
 }
 
-void DataSourceProvider::BeforeDatasetClose(IDataset * dt)
+void DataSourceProvider::BeforeDatasetClose(IDataSourceProvider* dsp, IDataset * dt)
 {
 	this->RemoveOpenedDataset(dt);
 }
@@ -28,12 +28,14 @@ DataSourceProvider::~DataSourceProvider()
 void DataSourceProvider::AddOpenedDataset(IDataset * dt)
 {	
 	_vecOpenedDataset.push_back(dt);
-	AfterDatasetOpenEvent(dt);
+	IDataSourceProvider* dsp = this;
+	AfterDatasetOpenEvent(dsp, dt);
 }
 
 void DataSourceProvider::RemoveOpenedDataset(IDataset * dt)
 {
-	BeforeDatasetCloseEvent(dt);
+	IDataSourceProvider* dsp = this;
+	BeforeDatasetCloseEvent(dsp, dt);
 	for (vector<IDataset*>::iterator it = _vecOpenedDataset.begin(); it != _vecOpenedDataset.end(); it++)
 	{
 		if (dt == *it)

@@ -29,6 +29,9 @@
     <ClCompile Include="RasterBinaryGrayScaleLayerPropertyDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QOpenedDatasetWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -63,6 +66,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ListChoiseDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="QOpenedDatasetWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

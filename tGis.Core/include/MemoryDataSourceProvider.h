@@ -7,9 +7,12 @@
 
 #include "Helper.h"
 #include "DataSourceProvider.h"
+#include "MyGDALMemRasterDataset.h"
 #include <vector>
 #include <map>
 #include <string>
+
+#include "Event.h"
 
 using namespace std;
 
@@ -43,7 +46,10 @@ public:
 	virtual bool IsTypeOf(const char* type);
 	virtual bool IsTypeOf(ITGisObject* object);
 
-	virtual IDataSource* CreateDataSource(const char* creationString);
+public:
+	MyGDALMemRasterDataset* CreateMemRasterDataset(MyGDALRasterDataset* dataset, int left, int top, int width, int height, int b = -1, int * bands = nullptr, bool addToOpened = false, ProgressEvent* progressEvent = nullptr);
+	void ReleaseMemRasterDataset(IDataset* dataset, bool removeFromOpened = false);
+
 };
 
 END_NAME_SPACE(tGis, Core)

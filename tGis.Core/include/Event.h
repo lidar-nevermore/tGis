@@ -6,7 +6,6 @@
 #include "Helper.h"
 #include "ITGisObject.h"
 
-using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -34,6 +33,8 @@ public:
 		_handler = handler;
 	}
 
+	virtual ~EventHandler() {};
+
 public:
 	void operator()(Args&... args)
 	{
@@ -53,6 +54,8 @@ public:
 	{
 		_handler = handler;
 	}
+
+	virtual ~CallableEventHandler() {};
 
 public:
 	void operator()(Args&... args)

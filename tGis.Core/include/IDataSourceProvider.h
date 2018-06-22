@@ -13,10 +13,10 @@ struct IDataSourceProvider;
 struct IDataSource;
 struct IDataset;
 
-typedef IEventHandler<IDataset*> DatasetEventHandler;
+typedef IEventHandler<IDataSourceProvider*, IDataset*> DatasetEventHandler;
 
-template class TGIS_API IEventHandler<IDataset*>;
-template class TGIS_API Event<DatasetEventHandler, IDataset*>;
+template class TGIS_API IEventHandler<IDataSourceProvider*, IDataset*>;
+template class TGIS_API Event<IDataSourceProvider*, IDataset*>;
 
 struct TGIS_API IDataSourceProvider : public ITGisObject
 {
@@ -34,9 +34,9 @@ struct TGIS_API IDataSourceProvider : public ITGisObject
 	virtual int GetOpenedDatasetCount() = 0;
 	virtual IDataset* GetOpenedDataset(int) = 0;
 
-	Event<IDataset*> AfterDatasetOpenEvent;
+	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
 
-	Event<IDataset*> BeforeDatasetCloseEvent;
+	Event<IDataSourceProvider*, IDataset*> BeforeDatasetCloseEvent;
 
 	virtual void Release() = 0;
 

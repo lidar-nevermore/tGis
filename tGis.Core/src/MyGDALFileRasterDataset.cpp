@@ -9,7 +9,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const MyGDALFileRasterDataset::_type = "AB56EFC6-4940-4CF8-AC48-01F830DA8C0D";
+const char* const MyGDALFileRasterDataset::_type = "CCD78B6B-39DC-42A1-824E-F3C1E14AAC36";
 
 
 const char * MyGDALFileRasterDataset::GetType()

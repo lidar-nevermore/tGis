@@ -10,6 +10,7 @@
 #include "MyMap.h"
 #include "DrawRectTool.h"
 #include "RectZoomTool.h"
+#include "TakeObjectSampleTool.h"
 
 using namespace tGis::Core;
 using namespace tGis::Utility;
@@ -26,6 +27,7 @@ private:
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;
 	RectZoomTool _rectZoomTool;
+	TakeObjectSampleTool _takeObjectSampleTool;
 
 private slots:
 	void on_zoomInAction_triggered(bool checked);
@@ -45,6 +47,7 @@ private slots:
 	void on_layerTopAction_triggered(bool checked);
 	void on_layerDownAction_triggered(bool checked);
 	void on_layerBottomAction_triggered(bool checked);
+	void on_takeObjectSampleAction_toggled(bool checked);
 
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 	void on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);

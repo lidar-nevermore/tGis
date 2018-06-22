@@ -1,5 +1,6 @@
 #include "tGisApp.h"
 #include "QDataSourceWidget.h"
+#include "QOpenedDatasetWidget.h"
 #include <QDesktopWidget>
 #include <QApplication>
 #include "QLayerWidget.h"
@@ -19,11 +20,15 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.mapWidget->AddMapTool(&_rectZoomTool);
 	_rectZoomTool.SetEnabled(false);
 
+	_takeObjectSampleTool.SetEnabled(false);
+	ui.mapWidget->AddMapTool(&_takeObjectSampleTool);
+
 	QDesktopWidget * desktop = QApplication::desktop();
 	int curMonitor = desktop->screenNumber(this);
 	QRect rect = desktop->screenGeometry(curMonitor);
 	SetMaxSurfaceSize(rect.width(), rect.height());
 
+	connect(ui.openedDatasetWidget, &QOpenedDatasetWidget::LayerAdded, ui.layerWidget, &QLayerWidget::LayerAdded);
 	connect(ui.dataSourceWidget, &QDataSourceWidget::LayerAdded, ui.layerWidget,&QLayerWidget::LayerAdded);
 	connect(ui.layerWidget, &QLayerWidget::LayerSelectionChanged, this, &tGisApp::on_layerWidget_LayerSelectionChanged);
 
@@ -34,6 +39,7 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.removeLayerAction->setEnabled(false);
 	ui.layerVisibleAction->setEnabled(false);
 	ui.layerAttributeAction->setEnabled(false);
+	ui.takeObjectSampleAction->setEnabled(false);
 }
 
 void tGisApp::on_zoomInAction_triggered(bool checked)
@@ -76,13 +82,21 @@ void tGisApp::on_zoomFreeAction_toggled(bool checked)
 void tGisApp::on_zoomRectAction_toggled(bool checked)
 {
 	_rectZoomTool.SetEnabled(checked);
-	ui.panAction->setChecked(!checked);
+	if (checked)
+	{
+		ui.panAction->setChecked(false);
+		ui.takeObjectSampleAction->setChecked(false);
+	}
 }
 
 void tGisApp::on_panAction_toggled(bool checked)
 {
 	_mapPanTool.SetEnabled(checked);
-	ui.zoomRectAction->setChecked(!checked);
+	if (checked)
+	{
+		ui.zoomRectAction->setChecked(false);
+		ui.takeObjectSampleAction->setChecked(false);
+	}
 }
 
 void tGisApp::on_zoomLayerAction_triggered(bool checked)
@@ -102,7 +116,7 @@ void tGisApp::on_zoomOriginalAction_triggered(bool checked)
 	if (layer != nullptr)
 	{
 		IDataset* dataset = layer->GetDataset();
-		if (strcmp(MyGDALRasterDataset::S_GetType(), dataset->GetType()) == 0)
+		if (dataset->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 		{
 			MyGDALRasterDataset* gdalDataset = (MyGDALRasterDataset*)dataset;
 			double res = gdalDataset->GetGeoTransform()[1];
@@ -160,6 +174,16 @@ void tGisApp::on_layerBottomAction_triggered(bool checked)
 	ui.mapWidget->RepaintMap();
 }
 
+void tGisApp::on_takeObjectSampleAction_toggled(bool checked)
+{
+	_takeObjectSampleTool.SetEnabled(checked);
+	if (checked)
+	{
+		ui.panAction->setChecked(false);
+		ui.zoomRectAction->setChecked(false);
+	}
+}
+
 void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
 {
 	ui.zoomLayerAction->setEnabled(layer != nullptr);
@@ -174,9 +198,11 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 		ui.layerBottomAction->setEnabled(ui.layerWidget->CanMoveSelectedLayerDown());
 		ui.layerVisibleAction->setChecked(layer->GetVisible());
 		IDataset* dataset = layer->GetDataset();
-		if (strcmp(MyGDALRasterDataset::S_GetType(), dataset->GetType()) == 0)
+		if (dataset->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 		{
+			_takeObjectSampleTool.SetRasterDataset((MyGDALRasterDataset*)dataset);
 			ui.zoomOriginalAction->setEnabled(true);
+			ui.takeObjectSampleAction->setEnabled(true);
 		}
 	}
 	else
@@ -186,6 +212,7 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 		ui.layerTopAction->setEnabled(false);
 		ui.layerDownAction->setEnabled(false);
 		ui.layerBottomAction->setEnabled(false);
+		ui.takeObjectSampleAction->setEnabled(false);
 	}
 }
 

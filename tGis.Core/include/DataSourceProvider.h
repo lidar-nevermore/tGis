@@ -33,11 +33,21 @@ private:
 	//直接子类DataSourceProvider的实例集合
 	vector<IDataSourceProvider*> _vecSubProvider;
 
-	void AfterDatasetOpen(IDataset*);
-	void BeforeDatasetClose(IDataset*);
+	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
+	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
 
-	EventHandler<DataSourceProvider, IDataset*> _AfterDatasetOpenHandler;
-	EventHandler<DataSourceProvider, IDataset*> _BeforeDatasetCloseHandler;
+	//class DS_DatasetEventHandler : public EventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*>
+	//{
+	//public:
+	//	DS_DatasetEventHandler(DataSourceProvider* receiver, EventHandler::Handler handler,)
+	//		:EventHandler(receiver,handler)
+	//	{
+
+	//	}
+	//};
+
+	EventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _AfterDatasetOpenHandler;
+	EventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseHandler;
 
 public:
 	virtual ~DataSourceProvider();

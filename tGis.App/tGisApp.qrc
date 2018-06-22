@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="tGisApp">
+    <file>Resources/TakeObjectSample.png</file>
     <file>Resources/LayerBottom.png</file>
     <file>Resources/LayerDown.png</file>
     <file>Resources/LayerTop.png</file>

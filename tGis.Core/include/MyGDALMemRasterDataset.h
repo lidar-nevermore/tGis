@@ -19,11 +19,29 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API MyGDALMemRasterDataset
+class TGIS_API MyGDALMemRasterDataset : public MyGDALRasterDataset
 {
 public:
-	MyGDALMemRasterDataset();
+	const char* GetType();
+	static const char* S_GetType();
+	virtual void Open();
+
+private:
+	static const char* const _type;
+
+public:
+	MyGDALMemRasterDataset(IDataSource* ds = nullptr, const char* name = nullptr);
 	~MyGDALMemRasterDataset();
+
+public:
+	using MyGDALRasterDataset::GetGDALDataset;
+	using MyGDALRasterDataset::Detach;
+	using MyGDALRasterDataset::SetAutoClose;
+	using MyGDALRasterDataset::GetAutoClose;
+	using MyGDALRasterDataset::Attach;
+
+private:
+	CPL_DISALLOW_COPY_ASSIGN(MyGDALMemRasterDataset)
 };
 
 

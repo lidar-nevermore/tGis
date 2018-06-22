@@ -38,8 +38,26 @@
             }
         },
         {
-            "Type":"AB56EFC6-4940-4CF8-AC48-01F830DA8C0D",
-            "Name":"MyGDALRasterDataset",
+            "Type":"EED1ACE6-EF20-45E2-857F-F21E3C3C1A42",
+            "Name":"MemoryDataSource",
+            "Icon":
+            {
+                "Default":"{StartupDir}/Images/DataSourceProvider/folder.png",
+                "Connected":"{StartupDir}/Images/DataSourceProvider/folder_open.png"
+            }
+        },
+        {
+            "Type":"CCD78B6B-39DC-42A1-824E-F3C1E14AAC36",
+            "Name":"MyGDALFileRasterDataset",
+            "Icon":
+            {
+                "Default":"{StartupDir}/Images/DataSourceProvider/raster.png",
+                "Opened":"{StartupDir}/Images/DataSourceProvider/raster_open.png"
+            }
+        },
+        {
+            "Type":"A251D25A-292C-4B7C-A5F1-616A585A5C13",
+            "Name":"MyGDALMemRasterDataset",
             "Icon":
             {
                 "Default":"{StartupDir}/Images/DataSourceProvider/raster.png",
