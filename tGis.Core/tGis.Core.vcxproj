@@ -23,6 +23,7 @@
     <ClInclude Include="include\DataSource.h" />
     <ClInclude Include="include\DataSourceProvider.h" />
     <ClInclude Include="include\DataSourceProviderRepository.h" />
+    <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\FileSystemDataSource.h" />
     <ClInclude Include="include\FileSystemDataSourceProvider.h" />
     <ClInclude Include="include\GeoSurface.h" />

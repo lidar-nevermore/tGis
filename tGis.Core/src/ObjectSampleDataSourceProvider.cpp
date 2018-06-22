@@ -30,6 +30,16 @@ ObjectSampleDataSourceProvider::ObjectSampleDataSourceProvider()
 }
 
 
+void ObjectSampleDataSourceProvider::AddOpenedDataset(IDataset * dt)
+{
+	FileSystemDataSourceProvider::AddOpenedDataset(dt);
+}
+
+void ObjectSampleDataSourceProvider::RemoveOpenedDataset(IDataset * dt)
+{
+	FileSystemDataSourceProvider::RemoveOpenedDataset(dt);
+}
+
 ObjectSampleDataSourceProvider::~ObjectSampleDataSourceProvider()
 {
 }

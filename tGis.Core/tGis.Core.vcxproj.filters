@@ -242,6 +242,9 @@
     <ClInclude Include="include\Dataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="include\Event.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">

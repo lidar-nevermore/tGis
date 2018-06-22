@@ -1,4 +1,5 @@
 #include "DataSource.h"
+#include "DataSourceProvider.h"
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -17,6 +18,7 @@ DataSource::~DataSource()
 void DataSource::AddOpenedDataset(IDataset * dt)
 {
 	_vecOpenedDataset.push_back(dt);
+	((DataSourceProvider*)_provider)->AddOpenedDataset(dt);
 }
 
 void DataSource::RemoveOpenedDataset(IDataset * dt)
@@ -29,6 +31,7 @@ void DataSource::RemoveOpenedDataset(IDataset * dt)
 			break;
 		}
 	}
+	((DataSourceProvider*)_provider)->RemoveOpenedDataset(dt);
 }
 
 const char * DataSource::GetName()

@@ -43,8 +43,8 @@ protected:
 	//该集合中存放所有打开的数据集
 	vector<IDataset*> _vecOpenedDataset;
 
-	void AddOpenedDataset(IDataset*);
-	void RemoveOpenedDataset(IDataset*);
+	virtual void AddOpenedDataset(IDataset*);
+	virtual void RemoveOpenedDataset(IDataset*);
 
 public:
 	void AddSubProvider(IDataSourceProvider*);

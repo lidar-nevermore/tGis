@@ -37,6 +37,10 @@ void MyGDALVectorDataset::Open()
 	{
 		Attach(_path.c_str(), _eAccess);
 	}
+	if (_dataset != nullptr)
+	{
+		MyGDALDataset::Open();
+	}
 }
 
 const char * MyGDALVectorDataset::S_GetType()
