@@ -17,9 +17,12 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_API RasterBinaryGrayScaleLayer : public RasterLayer
 {
+	friend class RasterBinaryGrayScaleLayerProvider;
+protected:
+	RasterBinaryGrayScaleLayer(ILayerProvider* provider);
+	RasterBinaryGrayScaleLayer(ILayerProvider* provider, MyGDALRasterDataset* dataset, int band);
+	
 public:
-	RasterBinaryGrayScaleLayer();
-	RasterBinaryGrayScaleLayer(MyGDALRasterDataset* dataset, int band);
 	~RasterBinaryGrayScaleLayer();
 
 private:
@@ -33,6 +36,7 @@ public:
 	virtual const char* GetType();
 	static const char* S_GetType();
 	virtual const char* GetCreationString();
+	virtual ILayer* Clone(IDataset*);
 
 public:
 	inline void SetDataset(MyGDALRasterDataset* dataset, int band);

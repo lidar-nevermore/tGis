@@ -18,11 +18,12 @@ public:
 	~TakeObjectSampleTool();
 
 private:
+	RasterLayer* _layer;
 	MyGDALRasterDataset* _dataset;
 	ObjectSampleDataSource* _samples;
 
 public:
-	void SetRasterDataset(MyGDALRasterDataset* dataset);
+	void SetRasterLayer(RasterLayer* layer);
 	void SetObjectSampleDataSource(ObjectSampleDataSource* samples);
 
 public:

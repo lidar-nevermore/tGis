@@ -3,15 +3,26 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-Layer::Layer()
+Layer::Layer(ILayerProvider* provider)
 {
 	_visible = true;
 	_opacity = 1.0;
 	_alpha = 255;
+	_provider = provider;
 }
 
 Layer::~Layer()
 {
+}
+
+ILayerProvider * Layer::GetProvider()
+{
+	return _provider;
+}
+
+ILayer * Layer::Clone(IDataset *)
+{
+	return nullptr;
 }
 
 const char * Layer::GetName()

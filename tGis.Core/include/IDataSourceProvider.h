@@ -15,7 +15,7 @@ struct IDataset;
 
 typedef IEventHandler<IDataSourceProvider*, IDataset*> DatasetEventHandler;
 
-template class TGIS_API IEventHandler<IDataSourceProvider*, IDataset*>;
+template struct TGIS_API IEventHandler<IDataSourceProvider*, IDataset*>;
 template class TGIS_API Event<IDataSourceProvider*, IDataset*>;
 
 struct TGIS_API IDataSourceProvider : public ITGisObject

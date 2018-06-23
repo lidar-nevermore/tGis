@@ -17,6 +17,20 @@ const char * MyGDALMemRasterDataset::S_GetType()
 	return _type;
 }
 
+bool MyGDALMemRasterDataset::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return MyGDALRasterDataset::IsTypeOf(type);
+}
+
+bool MyGDALMemRasterDataset::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return MyGDALRasterDataset::IsTypeOf(object);
+}
+
 void MyGDALMemRasterDataset::Open()
 {
 }

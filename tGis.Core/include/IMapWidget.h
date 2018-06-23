@@ -13,6 +13,10 @@ struct IMap;
 struct IGeoSurface;
 struct IMapTool;
 struct IOverlayLayer;
+struct IMapWidget;
+
+template struct TGIS_API IEventHandler<IMapWidget*, int, int>;
+template class TGIS_API Event<IMapWidget*, int, int>;
 
 struct TGIS_API IMapWidget
 {
@@ -38,6 +42,9 @@ struct TGIS_API IMapWidget
 	virtual void KeyDown(void*) = 0;
 	virtual void KeyUp(void*) = 0;
 	virtual void KeyPress(void*) = 0;
+
+	Event<IMapWidget*, int, int> LoadedEvent;
+	Event<IMapWidget*, int, int> SizeChangedEvent;
 
 	IMapWidget() {};
 	virtual ~IMapWidget() {};

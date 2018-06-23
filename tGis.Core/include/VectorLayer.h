@@ -22,9 +22,11 @@ class MyGDALVectorDataset;
 
 class TGIS_API VectorLayer : public Layer
 {
+protected:
+	VectorLayer(ILayerProvider* provider);
+	VectorLayer(ILayerProvider* provider, MyGDALVectorDataset* vector, OGRLayer* layer);
+
 public:
-	VectorLayer();
-	VectorLayer(MyGDALVectorDataset* vector, OGRLayer* layer);
 	~VectorLayer();
 
 protected:

@@ -200,7 +200,7 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 		IDataset* dataset = layer->GetDataset();
 		if (dataset->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 		{
-			_takeObjectSampleTool.SetRasterDataset((MyGDALRasterDataset*)dataset);
+			_takeObjectSampleTool.SetRasterLayer((RasterLayer*)layer);
 			ui.zoomOriginalAction->setEnabled(true);
 			ui.takeObjectSampleAction->setEnabled(true);
 		}

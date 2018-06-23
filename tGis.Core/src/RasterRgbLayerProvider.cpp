@@ -43,7 +43,7 @@ bool RasterRgbLayerProvider::IsSupportDataset(IDataset * dataset)
 
 ILayer * RasterRgbLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int r, int g, int b)
 {
-	return new RasterRgbLayer(dataset,r,g,b);
+	return new RasterRgbLayer(this,dataset,r,g,b);
 }
 
 

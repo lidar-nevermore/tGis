@@ -22,6 +22,12 @@
     <ClCompile Include="src\TakeObjectSampleTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="internal\ObjectSampleDialog.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\ObjectSampleLabelDialog.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h">
@@ -41,6 +47,12 @@
     </ClInclude>
     <ClInclude Include="include\TakeObjectSampleTool.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ObjectSampleDialog.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ObjectSampleLabelDialog.h">
+      <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +76,9 @@
       <Extensions>ui</Extensions>
       <ParseFiles>true</ParseFiles>
     </Filter>
+    <Filter Include="internal">
+      <UniqueIdentifier>{26b854c7-ddef-4193-90d0-e092ab53fd8d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\QMapWidget.h">
@@ -72,6 +87,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="form\ObjectSampleDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="form\ObjectSampleLabelDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

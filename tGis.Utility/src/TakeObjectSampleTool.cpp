@@ -1,4 +1,6 @@
 #include "TakeObjectSampleTool.h"
+#include "ObjectSampleDialog.h"
+
 #include "tOrganizer.h"
 
 #include <QMessageBox>
@@ -16,9 +18,10 @@ TakeObjectSampleTool::~TakeObjectSampleTool()
 {
 }
 
-void TakeObjectSampleTool::SetRasterDataset(MyGDALRasterDataset * dataset)
+void TakeObjectSampleTool::SetRasterLayer(RasterLayer * layer)
 {
-	_dataset = dataset;
+	_layer = layer;
+	_dataset = (MyGDALRasterDataset*)layer->GetDataset();
 }
 
 void TakeObjectSampleTool::SetObjectSampleDataSource(ObjectSampleDataSource * samples)
@@ -70,6 +73,19 @@ void TakeObjectSampleTool::MouseUp(void *ev)
 
 	//TODO: 创建一个内存数据集，然后显示到加标签的对话框
 	MyGDALMemRasterDataset* memDataset = MemoryDataSourceProvider::INSTANCE().CreateMemRasterDataset(_dataset, pixLeft, pixTop, sampleSize, sampleSize, -1, nullptr, true);
+
+	ObjectSampleDialog dlg;
+	ILayer* layer = _layer->Clone(memDataset);
+	dlg.SetLayer(layer);
+	double sampleLeft;
+	double sampleTop;
+	double sampleRight;
+	double sampleBottom;
+	memDataset->Pixel2Spatial((sampleSize - sampleSizeX) / 2, (sampleSize - sampleSizeY) / 2, &sampleLeft, &sampleTop);
+	memDataset->Pixel2Spatial((sampleSize + sampleSizeX) / 2, (sampleSize + sampleSizeY) / 2, &sampleRight, &sampleBottom);
+	dlg.SetSampleArea(sampleLeft, sampleTop, sampleRight, sampleBottom);
+
+	dlg.exec();
 }
 
 

@@ -15,6 +15,7 @@ OverlayRect::OverlayRect()
 	_bottom = 0;
 	_lineSymbol = &g_LineSymbol;
 	_fillSymbol = nullptr;
+	_visible = true;
 }
 
 OverlayRect::OverlayRect(int left, int top, int right, int bottom)
@@ -25,6 +26,7 @@ OverlayRect::OverlayRect(int left, int top, int right, int bottom)
 	_bottom = bottom;
 	_lineSymbol = &g_LineSymbol;
 	_fillSymbol = nullptr;
+	_visible = true;
 }
 
 OverlayRect::~OverlayRect()

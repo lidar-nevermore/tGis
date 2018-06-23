@@ -115,7 +115,7 @@ struct TGIS_API Progress
 typedef IEventHandler<Progress> ProgressEventHandler;
 typedef Event<Progress> ProgressEvent;
 
-template class TGIS_API IEventHandler<Progress>;
+template struct TGIS_API IEventHandler<Progress>;
 template class TGIS_API Event<Progress>;
 
 #define my_isinf(a)   ((_fpclass(a) == _FPCLASS_PINF) || (_fpclass(a) == _FPCLASS_NINF))

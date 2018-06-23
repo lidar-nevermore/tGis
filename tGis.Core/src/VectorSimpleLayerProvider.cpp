@@ -45,7 +45,7 @@ bool VectorSimpleLayerProvider::IsSupportDataset(IDataset * dataset)
 ILayer * VectorSimpleLayerProvider::UI_CreateLayer(IDataset * dataset)
 {
 	MyGDALVectorDataset* vector = (MyGDALVectorDataset*)dataset;
-	VectorSimpleLayer* layer = new VectorSimpleLayer(vector, vector->GetGDALDataset()->GetLayer(0));
+	VectorSimpleLayer* layer = new VectorSimpleLayer(this,vector, vector->GetGDALDataset()->GetLayer(0));
 	layer->SetName(vector->GetName());
 	return layer;
 }

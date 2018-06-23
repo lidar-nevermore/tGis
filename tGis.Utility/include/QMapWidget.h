@@ -33,20 +33,21 @@ public:
 private:
 	QtGeoSurface _geoSurface;
 	IMap* _map;
+	bool _firstResizing;
 
 	unsigned char _surfBackgroundR;
 	unsigned char _surfBackgroundG;
 	unsigned char _surfBackgroundB;
 
 protected:
-	void paintEvent(QPaintEvent *);
+	virtual void paintEvent(QPaintEvent *);
 
-	void resizeEvent(QResizeEvent *);
+	virtual void resizeEvent(QResizeEvent *);
 
-	void mousePressEvent(QMouseEvent *);
-	void mouseReleaseEvent(QMouseEvent *);
-	void mouseMoveEvent(QMouseEvent *);
-	void wheelEvent(QWheelEvent *);
+	virtual void mousePressEvent(QMouseEvent *);
+	virtual void mouseReleaseEvent(QMouseEvent *);
+	virtual void mouseMoveEvent(QMouseEvent *);
+	virtual void wheelEvent(QWheelEvent *);
 };
 
 

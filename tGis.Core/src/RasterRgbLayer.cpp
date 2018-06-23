@@ -14,13 +14,15 @@ BEGIN_NAME_SPACE(tGis, Core)
 const char* const RasterRgbLayer::_type = "EFEB6F2A-7DD0-401D-9762-55F3F3E095D1";
 
 
-RasterRgbLayer::RasterRgbLayer()
+RasterRgbLayer::RasterRgbLayer(ILayerProvider* provider)
+	:RasterLayer(provider)
 {
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterRgbLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterRgbLayer::IOResample;
 }
 
-RasterRgbLayer::RasterRgbLayer(MyGDALRasterDataset * dataset, int r, int g, int b)
+RasterRgbLayer::RasterRgbLayer(ILayerProvider* provider, MyGDALRasterDataset * dataset, int r, int g, int b)
+	:RasterLayer(provider)
 {
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterRgbLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterRgbLayer::IOResample;
@@ -45,6 +47,28 @@ const char * RasterRgbLayer::S_GetType()
 const char * RasterRgbLayer::GetCreationString()
 {
 	return nullptr;
+}
+
+ILayer * RasterRgbLayer::Clone(IDataset * dt)
+{
+	if (dt == nullptr)
+	{
+		RasterRgbLayer* layer = new RasterRgbLayer(_provider);
+		memcpy(layer, this, sizeof(RasterRgbLayer));
+		return layer;
+	}
+
+	if(!dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		return nullptr;
+
+	MyGDALRasterDataset* raster = (MyGDALRasterDataset*)dt;
+	int bandCount = raster->GetGDALDataset()->GetRasterCount();
+	if (_rBandIndex > bandCount || _gBandIndex > bandCount || _bBandIndex > bandCount)
+		return nullptr;
+
+	RasterRgbLayer* layer = new RasterRgbLayer(_provider, raster, _rBandIndex, _gBandIndex, _bBandIndex);
+
+	return layer;
 }
 
 

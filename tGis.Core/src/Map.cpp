@@ -1,5 +1,7 @@
 #include "Map.h"
 #include "ITGisObject.h"
+#include "ILayerProvider.h"
+
 #include "ogr_spatialref.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -12,6 +14,13 @@ Map::Map()
 
 Map::~Map()
 {
+	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
+	{
+		ILayer* layer = *it;
+		ILayerProvider* provider = layer->GetProvider();
+		provider->ReleaseLayer(layer);
+	}
+
 	if (_spatialRef != nullptr)
 	{
 		_spatialRef->Release();
@@ -176,8 +185,17 @@ void Map::ClearLayers(LayerFunc func)
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
 	{
 		ILayer* layer = *it;
-		layer->SetMap(nullptr);
-		func(layer);
+		
+		if (func == nullptr)
+		{
+			ILayerProvider* provider = layer->GetProvider();
+			provider->ReleaseLayer(layer);
+		}
+		else
+		{
+			layer->SetMap(nullptr);
+			func(layer);
+		}
 	}
 	_vecLayer.clear();
 }

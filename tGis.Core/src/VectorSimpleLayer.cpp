@@ -1,6 +1,7 @@
 #include "VectorSimpleLayer.h"
 #include "IGeoSurface.h"
 #include "VisualizeBufferManager.h"
+#include "MyGDALVectorDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -14,12 +15,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 const char* const VectorSimpleLayer::_type = "57D45D8B-E28E-4D5F-A588-1A55347A0C68";
 
 
-VectorSimpleLayer::VectorSimpleLayer()
+VectorSimpleLayer::VectorSimpleLayer(ILayerProvider* provider)
+	:VectorLayer(provider)
 {
 }
 
-VectorSimpleLayer::VectorSimpleLayer(MyGDALVectorDataset* vector, OGRLayer *layer, int geometryField, int labelField)
-	:VectorLayer(vector,layer)
+VectorSimpleLayer::VectorSimpleLayer(ILayerProvider* provider, MyGDALVectorDataset* vector, OGRLayer *layer, int geometryField, int labelField)
+	:VectorLayer(provider, vector,layer)
 {
 	_geometryField = geometryField;
 	_labelField = labelField;
@@ -52,6 +54,13 @@ const char * VectorSimpleLayer::S_GetType()
 const char * VectorSimpleLayer::GetCreationString()
 {
 	return nullptr;
+}
+
+ILayer * VectorSimpleLayer::Clone(IDataset *dt)
+{
+	VectorSimpleLayer* layer = new VectorSimpleLayer(_provider);
+	memcpy(layer, this, sizeof(VectorSimpleLayer));
+	return layer;
 }
 
 void VectorSimpleLayer::Paint(IGeoSurface * surf)

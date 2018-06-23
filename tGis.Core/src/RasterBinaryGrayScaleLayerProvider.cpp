@@ -44,7 +44,7 @@ bool RasterBinaryGrayScaleLayerProvider::IsSupportDataset(IDataset * dataset)
 
 ILayer * RasterBinaryGrayScaleLayerProvider::CreateLayer(MyGDALRasterDataset * dataset, int band)
 {
-	return new RasterBinaryGrayScaleLayer(dataset,band);
+	return new RasterBinaryGrayScaleLayer(this,dataset,band);
 }
 
 

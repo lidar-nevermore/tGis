@@ -32,9 +32,11 @@ class VectorSimpleLayerProvider;
 class TGIS_API VectorSimpleLayer : public VectorLayer
 {
 	friend class VectorSimpleLayerProvider;
+protected:
+	VectorSimpleLayer(ILayerProvider* provider);
+	VectorSimpleLayer(ILayerProvider* provider, MyGDALVectorDataset* vector, OGRLayer* layer,int geometryField = -1, int labelField = -1);
+	
 public:
-	VectorSimpleLayer();
-	VectorSimpleLayer(MyGDALVectorDataset* vector, OGRLayer* layer,int geometryField = -1, int labelField = -1);
 	~VectorSimpleLayer();
 
 private:
@@ -58,6 +60,8 @@ public:
 	virtual const char* GetType();
 	static const char* S_GetType();
 	virtual const char* GetCreationString();
+
+	virtual ILayer* Clone(IDataset*);
 
 	virtual void Paint(IGeoSurface*);
 

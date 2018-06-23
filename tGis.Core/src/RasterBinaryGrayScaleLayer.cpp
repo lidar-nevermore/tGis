@@ -14,7 +14,8 @@ BEGIN_NAME_SPACE(tGis, Core)
 const char* const RasterBinaryGrayScaleLayer::_type = "7EB66993-6103-4426-AE75-FA7BC52C402B";
 
 
-RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer()
+RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayerProvider* provider)
+	:RasterLayer(provider)
 {
 	leftRChannel = true;
 	leftGChannel = true;
@@ -26,7 +27,8 @@ RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer()
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterBinaryGrayScaleLayer::IOResample;
 }
 
-RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(MyGDALRasterDataset * dataset, int band)
+RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayerProvider* provider, MyGDALRasterDataset * dataset, int band)
+	:RasterLayer(provider)
 {
 	leftRChannel = true;
 	leftGChannel = true;
@@ -79,6 +81,30 @@ const char * RasterBinaryGrayScaleLayer::S_GetType()
 const char * RasterBinaryGrayScaleLayer::GetCreationString()
 {
 	return nullptr;
+}
+
+ILayer * RasterBinaryGrayScaleLayer::Clone(IDataset * dt)
+{
+	if (dt == nullptr)
+	{
+		RasterBinaryGrayScaleLayer* layer = new RasterBinaryGrayScaleLayer(_provider);
+		memcpy(layer, this, sizeof(RasterBinaryGrayScaleLayer));
+		return layer;
+	}
+
+	if (!dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		return nullptr;
+
+	MyGDALRasterDataset* raster = (MyGDALRasterDataset*)dt;
+	int bandCount = raster->GetGDALDataset()->GetRasterCount();
+	if (_bandIndex > bandCount)
+		return nullptr;
+
+	GDALRasterBand* band = raster->GetGDALDataset()->GetRasterBand(_bandIndex);
+
+	RasterBinaryGrayScaleLayer* layer = new RasterBinaryGrayScaleLayer(_provider, raster, _bandIndex);
+
+	return layer;
 }
 
 inline void RasterBinaryGrayScaleLayer::SetMinPivotMax(double min, double pivot, double max)

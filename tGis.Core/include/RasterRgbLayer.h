@@ -18,9 +18,12 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_API RasterRgbLayer : public RasterLayer
 {
+	friend class RasterRgbLayerProvider;
+protected:
+	RasterRgbLayer(ILayerProvider* provider);
+	RasterRgbLayer(ILayerProvider* provider, MyGDALRasterDataset* dataset, int r, int g, int b);
+	
 public:
-	RasterRgbLayer();
-	RasterRgbLayer(MyGDALRasterDataset* dataset, int r, int g, int b);
 	~RasterRgbLayer();
 
 private:
@@ -34,6 +37,7 @@ public:
 	virtual const char* GetType();
 	static const char* S_GetType();
 	virtual const char* GetCreationString();
+	virtual ILayer* Clone(IDataset*);
 
 public:
 	void SetDataset(MyGDALRasterDataset* dataset, int r, int g, int b);

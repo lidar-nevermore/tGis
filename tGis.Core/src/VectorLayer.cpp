@@ -8,7 +8,8 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-VectorLayer::VectorLayer()
+VectorLayer::VectorLayer(ILayerProvider* provider)
+	:Layer(provider)
 {
 	_vector = nullptr;
 	_layer = nullptr;
@@ -17,7 +18,8 @@ VectorLayer::VectorLayer()
 	_CT = nullptr;
 }
 
-VectorLayer::VectorLayer(MyGDALVectorDataset* vector, OGRLayer *layer)
+VectorLayer::VectorLayer(ILayerProvider* provider, MyGDALVectorDataset* vector, OGRLayer *layer)
+	:Layer(provider)
 {
 	_vector = vector;
 	_layer = layer;

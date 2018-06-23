@@ -22,10 +22,12 @@ class TGIS_API Layer : public ILayer
 {
 	friend class Map;
 public:
-	Layer();
+	Layer(ILayerProvider* provider);
 	virtual ~Layer();
 
 public:
+	virtual ILayerProvider* GetProvider();
+	virtual ILayer* Clone(IDataset*);
 	virtual const char* GetName();
 	virtual void SetName(const char* name);
 	virtual IMap* GetMap();
@@ -41,6 +43,7 @@ protected:
 	float _opacity;
 	unsigned char _alpha;
 	IMap* _map;
+	ILayerProvider* _provider;
 };
 
 END_NAME_SPACE(tGis, Core)

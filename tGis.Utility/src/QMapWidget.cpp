@@ -12,6 +12,7 @@ BEGIN_NAME_SPACE(tGis, Utility)
 QMapWidget::QMapWidget(QWidget *parent)
 	:QWidget(parent)
 {
+	_firstResizing = true;
 	_map = nullptr;
 	_surfBackgroundR = 255;
 	_surfBackgroundG = 255;
@@ -79,11 +80,21 @@ void QMapWidget::paintEvent(QPaintEvent *)
 void QMapWidget::resizeEvent(QResizeEvent * e)
 {
 	QSize sz = e->size();
-	_geoSurface.SetViewSize(sz.width(), sz.height());
+	int width = sz.width();
+	int height = sz.height();
+	IMapWidget* mapWidget = this;
+
+	_geoSurface.SetViewSize(width, height);
 	QDesktopWidget * desktop = QApplication::desktop();
 	int curMonitor = desktop->screenNumber(this);
 	QRect rect = desktop->screenGeometry(curMonitor);
 	SetMaxSurfaceSize(rect.width(), rect.height());
+	if (_firstResizing)
+	{
+		_firstResizing = false;
+		LoadedEvent(mapWidget, width, height);
+	}
+	SizeChangedEvent(mapWidget, width, height);
 	MapWidget::RepaintMap();
 }
 

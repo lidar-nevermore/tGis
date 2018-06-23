@@ -20,9 +20,11 @@ class MyGDALRasterDataset;
 
 class TGIS_API RasterLayer : public Layer
 {
+protected:
+	RasterLayer(ILayerProvider* provider);
+	RasterLayer(ILayerProvider* provider, MyGDALRasterDataset* raster);
+
 public:
-	RasterLayer();
-	RasterLayer(MyGDALRasterDataset* raster);
 	virtual ~RasterLayer();
 
 protected:

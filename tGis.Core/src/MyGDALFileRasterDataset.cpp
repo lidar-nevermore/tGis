@@ -22,6 +22,20 @@ const char * MyGDALFileRasterDataset::S_GetType()
 	return _type;
 }
 
+bool MyGDALFileRasterDataset::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return MyGDALRasterDataset::IsTypeOf(type);
+}
+
+bool MyGDALFileRasterDataset::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return MyGDALRasterDataset::IsTypeOf(object);
+}
+
 MyGDALFileRasterDataset::MyGDALFileRasterDataset()
 	:MyGDALRasterDataset(nullptr)
 {

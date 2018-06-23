@@ -18,8 +18,10 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_API DataSource : public IDataSource
 {
 	friend class Dataset;
-public:
+protected:
 	DataSource(IDataSourceProvider*);
+
+public:
 	virtual ~DataSource();
 
 protected:

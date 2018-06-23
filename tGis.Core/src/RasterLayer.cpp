@@ -14,14 +14,16 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-RasterLayer::RasterLayer()
+RasterLayer::RasterLayer(ILayerProvider* provider)
+	:Layer(provider)
 {
 	_visible = true;
 	_opacity = 1.0;
 	_alpha = 255;
 }
 
-RasterLayer::RasterLayer(MyGDALRasterDataset* raster)
+RasterLayer::RasterLayer(ILayerProvider* provider, MyGDALRasterDataset* raster)
+	:Layer(provider)
 {
 	_visible = true;
 	_opacity = 1.0;

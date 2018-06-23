@@ -14,9 +14,10 @@ MyMap::~MyMap()
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
 	{
 		ILayer* layer = *it;
-		ILayerProvider* provider = LayerProviderRepository::INSTANCE().GetLayerProvider(layer->GetType());
+		ILayerProvider* provider = layer->GetProvider();
 		provider->ReleaseLayer(layer);
 	}
+	_vecLayer.clear();
 }
 
 void MyMap::ClearLayers(LayerFunc func)
@@ -24,7 +25,7 @@ void MyMap::ClearLayers(LayerFunc func)
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
 	{
 		ILayer* layer = *it;
-		ILayerProvider* provider = LayerProviderRepository::INSTANCE().GetLayerProvider(layer->GetType());
+		ILayerProvider* provider = layer->GetProvider();
 		provider->ReleaseLayer(layer);
 	}
 	_vecLayer.clear();

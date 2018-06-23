@@ -14,13 +14,15 @@ BEGIN_NAME_SPACE(tGis, Core)
 const char* const RasterGrayScaleLayer::_type = "FCD79E3D-084F-4CB6-8D84-3DB1875075EB";
 
 
-RasterGrayScaleLayer::RasterGrayScaleLayer()
+RasterGrayScaleLayer::RasterGrayScaleLayer(ILayerProvider* provider)
+	:RasterLayer(provider)
 {
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterGrayScaleLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterGrayScaleLayer::IOResample;
 }
 
-RasterGrayScaleLayer::RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band)
+RasterGrayScaleLayer::RasterGrayScaleLayer(ILayerProvider* provider, MyGDALRasterDataset* dataset, int band)
+	:RasterLayer(provider)
 {
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterGrayScaleLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterGrayScaleLayer::IOResample;
@@ -87,6 +89,30 @@ const char * RasterGrayScaleLayer::S_GetType()
 const char * RasterGrayScaleLayer::GetCreationString()
 {
 	return nullptr;
+}
+
+ILayer * RasterGrayScaleLayer::Clone(IDataset * dt)
+{
+	if (dt == nullptr)
+	{
+		RasterGrayScaleLayer* layer = new RasterGrayScaleLayer(_provider);
+		memcpy(layer, this, sizeof(RasterGrayScaleLayer));
+		return layer;
+	}
+
+	if (!dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		return nullptr;
+
+	MyGDALRasterDataset* raster = (MyGDALRasterDataset*)dt;
+	int bandCount = raster->GetGDALDataset()->GetRasterCount();
+	if (_bandIndex > bandCount)
+		return nullptr;
+
+	GDALRasterBand* band = raster->GetGDALDataset()->GetRasterBand(_bandIndex);
+
+	RasterGrayScaleLayer* layer = new RasterGrayScaleLayer(_provider, raster, _bandIndex);
+
+	return layer;
 }
 
 void RasterGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)

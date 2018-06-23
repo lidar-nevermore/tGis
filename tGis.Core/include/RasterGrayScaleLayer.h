@@ -17,9 +17,11 @@ class RasterGrayScaleLayerProvider;
 class TGIS_API RasterGrayScaleLayer : public RasterLayer
 {
 	friend class RasterGrayScaleLayerProvider;
+protected:
+	RasterGrayScaleLayer(ILayerProvider* provider);
+	RasterGrayScaleLayer(ILayerProvider* provider, MyGDALRasterDataset* dataset, int band);
+	
 public:
-	RasterGrayScaleLayer();
-	RasterGrayScaleLayer(MyGDALRasterDataset* dataset, int band);
 	~RasterGrayScaleLayer();
 
 private:
@@ -33,6 +35,7 @@ public:
 	virtual const char* GetType();
 	static const char* S_GetType();
 	virtual const char* GetCreationString();
+	virtual ILayer* Clone(IDataset*);
 
 public:
 	inline void SetDataset(MyGDALRasterDataset* dataset, int band);

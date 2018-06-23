@@ -11,14 +11,6 @@ QMapWidget::QMapWidget(QWidget *parent)
 	_surfBackgroundG = 255;
 	_surfBackgroundB = 255;
 
-	_dataset.Attach("E:\\杂项\\9.jpg", GA_ReadOnly);
-	_layer.SetDataset(&_dataset, 1, 2, 3);
-	//_map.AddLayer(&_layer);
-
-	_vector.Attach("E:\\SpatialData\\全国重点水体\\RIVER_A1双线河、湖泊、水库.shp", GA_ReadOnly);
-	_vecLayer.SetOGRLayer(&_vector,_vector.GetGDALDataset()->GetLayer(0),-1);
-	_map.AddLayer(&_vecLayer);
-
 	_geoSurface.SetBackgroundColor(255, 255, 255);
 	
 
@@ -86,8 +78,8 @@ void QMapWidget::resizeEvent(QResizeEvent * e)
 	if (_firstTime)
 	{
 		_firstTime = false;
-		const OGREnvelope* envelope = _vecLayer.GetEnvelope();
-		_geoSurface.IncludeEnvelope(envelope);
+		//const OGREnvelope* envelope = _vecLayer.GetEnvelope();
+		//_geoSurface.IncludeEnvelope(envelope);
 	}
 	MapWidget::RepaintMap();
 }

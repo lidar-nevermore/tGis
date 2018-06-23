@@ -13,12 +13,15 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataset;
 struct IGeoSurface;
 struct IMap;
+struct ILayerProvider;
 
 struct TGIS_API ILayer
 {
 	virtual const char* GetType() = 0;
-	virtual const char* GetName() = 0;
+	virtual ILayerProvider* GetProvider() = 0;
+	virtual ILayer* Clone(IDataset*) = 0;
 	virtual const char* GetCreationString() = 0;
+	virtual const char* GetName() = 0;
 	virtual void SetName(const char*) = 0;
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
