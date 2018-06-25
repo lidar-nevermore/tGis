@@ -4,15 +4,24 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include "QLayerWidget.h"
+#include "Event.h"
+
+using namespace tGis::Core;
 
 tGisApp::tGisApp(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+	_LayerAddedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::AddLayer);
+	_LayerRemovedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::RemoveLayer);
+	_LayerClearedEventHandler = new EventHandler<QLayerWidget, IMap*>(ui.layerWidget, &QLayerWidget::ClearLayer);
+	_map.LayerAddedEvent += _LayerAddedEventHandler;
+	_map.LayerRemovedEvent += _LayerRemovedEventHandler;
+	_map.LayerClearedEvent += _LayerClearedEventHandler;
 
 	ui.mapWidget->SetMap(&_map);
 	ui.layerWidget->SetMap(&_map);
-	ui.layerWidget->SetMapWidget(ui.mapWidget);
+
 	SetCurrentMap(&_map);
 	SetCurrentMapWidget((IMapWidget*)ui.mapWidget);
 	ui.mapWidget->AddMapTool(&_mapPanTool);
@@ -28,8 +37,6 @@ tGisApp::tGisApp(QWidget *parent)
 	QRect rect = desktop->screenGeometry(curMonitor);
 	SetMaxSurfaceSize(rect.width(), rect.height());
 
-	connect(ui.openedDatasetWidget, &QOpenedDatasetWidget::LayerAdded, ui.layerWidget, &QLayerWidget::LayerAdded);
-	connect(ui.dataSourceWidget, &QDataSourceWidget::LayerAdded, ui.layerWidget,&QLayerWidget::LayerAdded);
 	connect(ui.layerWidget, &QLayerWidget::LayerSelectionChanged, this, &tGisApp::on_layerWidget_LayerSelectionChanged);
 
 	ui.zoomFreeAction->setChecked(true);
@@ -40,6 +47,17 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.layerVisibleAction->setEnabled(false);
 	ui.layerAttributeAction->setEnabled(false);
 	ui.takeObjectSampleAction->setEnabled(false);
+}
+
+tGisApp::~tGisApp()
+{
+	_map.LayerAddedEvent -= _LayerAddedEventHandler;
+	_map.LayerRemovedEvent -= _LayerRemovedEventHandler;
+	_map.LayerClearedEvent -= _LayerClearedEventHandler;
+
+	delete _LayerAddedEventHandler;
+	delete _LayerRemovedEventHandler;
+	delete _LayerClearedEventHandler;
 }
 
 void tGisApp::on_zoomInAction_triggered(bool checked)

@@ -23,9 +23,6 @@
     <ClCompile Include="RasterRgbLayerPropertyDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MyMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="RasterBinaryGrayScaleLayerPropertyDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,9 +99,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RasterRgbLayerPropertyDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MyMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h">

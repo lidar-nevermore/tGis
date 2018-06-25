@@ -31,7 +31,6 @@ private:
 private:
 	QStandardItemModel* _model;
 	IMapPtr _map;
-	IMapWidgetPtr _mapWidget;
 
 	ILayer* _selectedLayer;
 	ILayerProvider* _selectedLayerProvider;
@@ -46,8 +45,10 @@ public:
 	void SetMap(IMapPtr map);
 	IMapPtr GetMap();
 
-	void SetMapWidget(IMapWidgetPtr mapWidget);
-	IMapWidgetPtr GetMapWidget();
+
+	void AddLayer(IMapPtr, ILayerPtr);
+	void RemoveLayer(IMapPtr, ILayerPtr);
+	void ClearLayer(IMapPtr);
 
 	ILayerPtr GetSelectedLayer();
 
@@ -66,8 +67,7 @@ public:
 protected:
 	virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
-public slots:
-	void LayerAdded(IMapPtr, ILayerPtr, ILayerProviderPtr);
+private slots:
 	void LayerClicked(const QModelIndex &index);
 };
 

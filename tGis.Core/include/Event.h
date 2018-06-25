@@ -140,7 +140,24 @@ public:
 		}
 	}
 
+	void Raise(Args&&... args)
+	{
+		if (_valid)
+		{
+			(*_handler)(args...);
+		}
+		if (_event != nullptr)
+		{
+			_event->Raise(args...);
+		}
+	}
+
 	void operator()(Args&... args)
+	{
+		this->Raise(args...);
+	}
+
+	void operator()(Args&&... args)
 	{
 		this->Raise(args...);
 	}

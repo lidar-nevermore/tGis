@@ -60,14 +60,43 @@ IMapPtr QLayerWidget::GetMap()
 	return _map;
 }
 
-void QLayerWidget::SetMapWidget(IMapWidgetPtr mapWidget)
+void QLayerWidget::AddLayer(IMapPtr map, ILayerPtr layer)
 {
-	_mapWidget = mapWidget;
+	if (_map != map)
+		return;
+
+	QStandardItem* pItem = CreateLayerItem(layer, layer->GetProvider());
+	_model->insertRow(0, pItem);
 }
 
-IMapWidgetPtr QLayerWidget::GetMapWidget()
+void QLayerWidget::RemoveLayer(IMapPtr map, ILayerPtr layer)
 {
-	return _mapWidget;
+	if (_map != map)
+		return;
+
+	int rowCount = _model->rowCount();
+	QStandardItem * parent = _model->invisibleRootItem();
+	for (int i = 0; i < rowCount; i++)
+	{
+		QStandardItem * item = parent->child(i);
+		if (item != nullptr)
+		{
+			ILayerPtr itemLayer = item->data(LayerPtrRole).value<ILayerPtr>();
+			if (itemLayer == layer)
+			{
+				parent->removeRow(i);
+				break;
+			}
+		}
+	}
+}
+
+void QLayerWidget::ClearLayer(IMapPtr map)
+{
+	if (_map != map)
+		return;
+
+	_model->setRowCount(0);
 }
 
 ILayerPtr QLayerWidget::GetSelectedLayer()
@@ -85,20 +114,17 @@ void QLayerWidget::SelectedLayerPropertyUI()
 
 void QLayerWidget::RemoveSelectedLayer()
 {
-	
 	if (_selectedLayer != nullptr)
 	{
+		ILayer* layer = _selectedLayer;
 		_map->RemoveLayer(_selectedLayer);
-		_selectedLayerProvider->ReleaseLayer(_selectedLayer);
-
-		_model->removeRow(_selectedItem->row());
+		layer->GetProvider()->ReleaseLayer(layer);
 	}
 }
 
 void QLayerWidget::RemoveAllLayers()
 {
 	_map->ClearLayers();
-	_model->setRowCount(0);
 }
 
 void QLayerWidget::SetSelectedLayerVisible(bool visible)
@@ -250,13 +276,3 @@ void QLayerWidget::LayerClicked(const QModelIndex & index)
 		}
 	}
 }
-
-void QLayerWidget::LayerAdded(IMapPtr map, ILayerPtr layer, ILayerProviderPtr layerProvider)
-{
-	if (_map != map)
-		return;
-
-	QStandardItem* pItem = CreateLayerItem(layer, layerProvider);
-	_model->insertRow(0,pItem);
-}
-

@@ -143,7 +143,7 @@ public:
 		}
 		else
 		{
-			for (int i = 0; i< dy; i++)
+			for (int i = 0; i<= dy; i++)
 			{
 				wbh->_outBand->RasterIO(GF_Write, curXBlockLTC, curYBlockLTC, dx, 1, vb, dx, 1, wbh->_dataType, 0, 0);
 				curYBlockLTC++;

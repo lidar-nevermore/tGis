@@ -162,7 +162,6 @@ void QOpenedDatasetWidget::NodeDoubleClicked(const QModelIndex & index)
 				if (map->AddLayer(layer) > -1)
 				{
 					int layerCount = map->GetLayerCount();
-					emit LayerAdded(map, layer, provider);
 					if (layerCount == 0)
 					{
 						geoSurface->SetSpatialReference(layer->GetSpatialReference());

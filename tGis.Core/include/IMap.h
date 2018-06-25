@@ -11,6 +11,9 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataset;
 struct IGeoSurface;
 
+template struct TGIS_API IEventHandler<IMap*>;
+template struct TGIS_API IEventHandler<IMap*, ILayer*>;
+
 struct TGIS_API IMap
 {
 	typedef void(*LayerFunc)(ILayer*);
@@ -32,6 +35,10 @@ struct TGIS_API IMap
 	virtual void ClearLayers(LayerFunc func = nullptr) = 0;
 
 	virtual void Paint(IGeoSurface*) = 0;
+
+	Event<IMap*, ILayer*> LayerAddedEvent;
+	Event<IMap*, ILayer*> LayerRemovedEvent;
+	Event<IMap*> LayerClearedEvent;
 
 	IMap() {};
 	virtual ~IMap() {};

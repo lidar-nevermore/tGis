@@ -5,9 +5,10 @@
 
 #include "tVisualize.h"
 
+#include "Event.h"
+
 #include "MapPanTool.h"
 #include "MapZoomTool.h"
-#include "MyMap.h"
 #include "DrawRectTool.h"
 #include "RectZoomTool.h"
 #include "TakeObjectSampleTool.h"
@@ -15,19 +16,25 @@
 using namespace tGis::Core;
 using namespace tGis::Utility;
 
+class QLayerWidget;
+
 class tGisApp : public QMainWindow
 {
 	Q_OBJECT
 
 public:
 	tGisApp(QWidget *parent = Q_NULLPTR);
+	~tGisApp();
 
 private:
-	MyMap _map;
+	Map _map;
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;
 	RectZoomTool _rectZoomTool;
 	TakeObjectSampleTool _takeObjectSampleTool;
+	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerAddedEventHandler;
+	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerRemovedEventHandler;
+	EventHandler<QLayerWidget, IMap*>* _LayerClearedEventHandler;
 
 private slots:
 	void on_zoomInAction_triggered(bool checked);

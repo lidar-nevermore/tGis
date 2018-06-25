@@ -14,6 +14,7 @@ struct IGeoSurface;
 struct IMapTool;
 struct IOverlayLayer;
 struct IMapWidget;
+struct ILayerProvider;
 
 template struct TGIS_API IEventHandler<IMapWidget*, int, int>;
 template class TGIS_API Event<IMapWidget*, int, int>;

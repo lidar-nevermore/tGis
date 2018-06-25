@@ -17,9 +17,6 @@ public:
 	QOpenedDatasetWidget(QWidget *parent = 0);
 	~QOpenedDatasetWidget();
 
-signals:
-	void LayerAdded(IMapPtr, ILayerPtr, ILayerProviderPtr);
-
 private:
 	//数据类型的定义
 	static const int DataSourceProviderType = 1;

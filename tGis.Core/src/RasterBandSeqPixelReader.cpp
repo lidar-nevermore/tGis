@@ -268,9 +268,9 @@ void RasterBandSeqPixelReader::ForEachPixel(FOREACHPIXEL_FUNC proc, void* user)
 {
 	StorageBlockBuffer buffer;
 	buffer.Buffer = _blockBuffer;
-	for(int yb = _startYBlockOff; yb <= _endYBlockOff; yb++)	
+	for(int yb = _startYBlockOff; yb < _endYBlockOff; yb++)	
 	{
-		for(int xb = _startXBlockOff; xb <= _endXBlockOff; xb++)
+		for(int xb = _startXBlockOff; xb < _endXBlockOff; xb++)
 		{
 			buffer.xBlockOff = xb;
 			buffer.yBlockOff = yb;
@@ -335,9 +335,9 @@ void RasterBandSeqPixelReader::ForEachBlock(FOREACHBLOCK_FUNC proc, void* user)
 {
 	StorageBlockBuffer buffer;
 	buffer.Buffer = _blockBuffer;
-	for(int yb = _startYBlockOff; yb <= _endYBlockOff; yb++)	
+	for(int yb = _startYBlockOff; yb < _endYBlockOff; yb++)	
 	{
-		for(int xb = _startXBlockOff; xb <= _endXBlockOff; xb++)
+		for(int xb = _startXBlockOff; xb < _endXBlockOff; xb++)
 		{
 			buffer.xBlockOff = xb;
 			buffer.yBlockOff = yb;

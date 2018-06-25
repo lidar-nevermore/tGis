@@ -21,6 +21,8 @@ Map::~Map()
 		provider->ReleaseLayer(layer);
 	}
 
+	LayerClearedEvent(std::forward<IMapPtr>(this));
+
 	if (_spatialRef != nullptr)
 	{
 		_spatialRef->Release();
@@ -102,6 +104,7 @@ int Map::AddLayer(ILayer *layer)
 	{
 		_vecLayer.push_back(layer);
 		layer->SetMap(this);
+		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 	}
 
 	return canAdd ? _vecLayer.size() - 1 : -1;
@@ -114,6 +117,7 @@ ILayer* Map::RemoveLayer(int pos)
 	layer->SetMap(nullptr);
 	_vecLayer.erase(it);
 	MergeEnvelope();
+	LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 	return layer;
 }
 
@@ -126,6 +130,7 @@ void Map::RemoveLayer(ILayer * layer)
 			layer->SetMap(nullptr);
 			_vecLayer.erase(it);
 			MergeEnvelope();
+			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 			break;
 		}
 	}	
@@ -153,6 +158,7 @@ bool Map::InsertLayer(int pos, ILayer * layer)
 	{
 		_vecLayer.insert(_vecLayer.begin() + pos, layer);
 		layer->SetMap(this);
+		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 	}
 
 	return canAdd;
@@ -198,6 +204,7 @@ void Map::ClearLayers(LayerFunc func)
 		}
 	}
 	_vecLayer.clear();
+	LayerClearedEvent(std::forward<IMapPtr>(this));
 }
 
 void Map::Paint(IGeoSurface * surf)
