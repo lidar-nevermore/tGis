@@ -30,6 +30,21 @@ const char * ObjectSampleDataSource::S_GetType()
 	return _type;
 }
 
+
+bool ObjectSampleDataSource::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return FileSystemDataSource::IsTypeOf(type);
+}
+
+bool ObjectSampleDataSource::IsTypeOf(ITGisObject * object)
+{
+	if (strcmp(object->GetType(), _type) == 0)
+		return true;
+	return FileSystemDataSource::IsTypeOf(object);;
+}
+
 void ObjectSampleDataSource::Connect()
 {
 	const int len = 524288; // 512k

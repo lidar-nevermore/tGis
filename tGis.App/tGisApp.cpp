@@ -12,6 +12,10 @@ tGisApp::tGisApp(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+
+	_selectedObjectSampleDataSource = nullptr;
+	_selectedRasterLayer = nullptr;
+
 	_LayerAddedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::AddLayer);
 	_LayerRemovedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::RemoveLayer);
 	_LayerClearedEventHandler = new EventHandler<QLayerWidget, IMap*>(ui.layerWidget, &QLayerWidget::ClearLayer);
@@ -204,6 +208,7 @@ void tGisApp::on_takeObjectSampleAction_toggled(bool checked)
 
 void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
 {
+	_selectedRasterLayer = nullptr;
 	ui.zoomLayerAction->setEnabled(layer != nullptr);
 	ui.removeLayerAction->setEnabled(layer != nullptr);
 	ui.layerVisibleAction->setEnabled(layer != nullptr);
@@ -218,9 +223,10 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 		IDataset* dataset = layer->GetDataset();
 		if (dataset->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 		{
-			_takeObjectSampleTool.SetRasterLayer((RasterLayer*)layer);
+			_selectedRasterLayer = (RasterLayer*)layer;
+			_takeObjectSampleTool.SetRasterLayer(_selectedRasterLayer);
 			ui.zoomOriginalAction->setEnabled(true);
-			ui.takeObjectSampleAction->setEnabled(true);
+			ui.takeObjectSampleAction->setEnabled(_selectedObjectSampleDataSource != nullptr);
 		}
 	}
 	else
@@ -241,5 +247,20 @@ void tGisApp::on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, I
 	if (sellayer == layer)
 	{
 		ui.layerVisibleAction->setChecked(layer->GetVisible());
+	}
+}
+
+void tGisApp::on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr st, IDataSourceProviderPtr provider)
+{
+	_selectedObjectSampleDataSource = nullptr;
+	if (ds != nullptr && ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
+	{
+		_selectedObjectSampleDataSource = (ObjectSampleDataSource*)ds;
+		_takeObjectSampleTool.SetObjectSampleDataSource(_selectedObjectSampleDataSource);
+		ui.takeObjectSampleAction->setEnabled(_selectedRasterLayer != nullptr);
+	}
+	else
+	{
+		ui.takeObjectSampleAction->setEnabled(false);
 	}
 }

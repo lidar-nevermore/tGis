@@ -67,6 +67,7 @@ void QLayerWidget::AddLayer(IMapPtr map, ILayerPtr layer)
 
 	QStandardItem* pItem = CreateLayerItem(layer, layer->GetProvider());
 	_model->insertRow(0, pItem);
+	emit LayerSelectionChanged(_map, _selectedLayer, _selectedLayerProvider);
 }
 
 void QLayerWidget::RemoveLayer(IMapPtr map, ILayerPtr layer)

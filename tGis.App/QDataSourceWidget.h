@@ -3,6 +3,7 @@
 #include <QList>
 
 class QStandardItem;
+class QStandardItemModel;
 
 #include "tOrganizer.h"
 #include "tGisMetaType.h"
@@ -15,6 +16,9 @@ class QDataSourceWidget : public QTreeView
 public:
 	explicit QDataSourceWidget(QWidget *parent = 0);
 	~QDataSourceWidget();
+
+signals:
+	void SelectionChanged(IDataSourcePtr, IDatasetPtr, IDataSourceProviderPtr);
 
 private:
 	QList<IDataSourcePtr> _rootDataSource;
@@ -38,6 +42,16 @@ private:
 	bool AddDataSourceChildNode(QStandardItem* node, IDataSource* ds, IDataSourceProvider* dsp);
 	bool OpenDataset(QStandardItem* pItem, IDataset* dt);
 	bool ConnectDataSource(QStandardItem* pItem, IDataSource* ds, IDataSourceProvider* dsp);
+
+private:
+	QStandardItemModel* _model;
+	IDataSourcePtr _selectedDataSource;
+	IDatasetPtr _selectedDataset;
+	IDataSourceProviderPtr _selectedDataSourceProvider;
+
+	QStandardItem* _selectedItem;
+protected:
+	virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private slots:
 	void NodeDoubleClicked(const QModelIndex &index);

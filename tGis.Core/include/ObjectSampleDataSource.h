@@ -30,6 +30,8 @@ typedef struct _ObjectSampleMetadata
 	float MaxObjectHeight;
 }ObjectSampleMetadata;
 
+typedef ObjectSampleMetadata* ObjectSampleMetadataPtr;
+
 //目录下有文件tgis.sample，说明这个目录是目标识别样本库数据源
 //tgis.sample 是一个utf8无bom文本文件，一行一个类别，换行符是\n
 //一行用空格分隔多个字段 分别是 类别名 标签值 最小像元分辨率(米) 最大像元分辨率(米) 最小宽度(米) 最大宽度(米) 最小高度(米) 最大高度(米)
@@ -53,6 +55,8 @@ private:
 public:
 	virtual const char* GetType();
 	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
 
 	virtual void Connect();
 	virtual void Disconnect();

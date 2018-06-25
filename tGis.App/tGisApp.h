@@ -32,9 +32,15 @@ private:
 	MapZoomTool _mapZoomTool;
 	RectZoomTool _rectZoomTool;
 	TakeObjectSampleTool _takeObjectSampleTool;
+
+private:
 	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerAddedEventHandler;
 	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerRemovedEventHandler;
 	EventHandler<QLayerWidget, IMap*>* _LayerClearedEventHandler;
+
+private:
+	ObjectSampleDataSource* _selectedObjectSampleDataSource;
+	RasterLayer* _selectedRasterLayer;
 
 private slots:
 	void on_zoomInAction_triggered(bool checked);
@@ -58,6 +64,7 @@ private slots:
 
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 	void on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
+	void on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr st, IDataSourceProviderPtr provider);
 
 private:
 	Ui::tGisAppClass ui;

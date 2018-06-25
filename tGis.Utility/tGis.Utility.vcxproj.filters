@@ -28,6 +28,9 @@
     <ClCompile Include="internal\ObjectSampleLabelDialog.cpp">
       <Filter>internal</Filter>
     </ClCompile>
+    <ClCompile Include="internal\QtHelper.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h">
@@ -83,6 +86,9 @@
   <ItemGroup>
     <QtMoc Include="include\QMapWidget.h">
       <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="internal\QtHelper.h">
+      <Filter>internal</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

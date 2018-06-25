@@ -19,7 +19,7 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 {
 	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
 
-	QStandardItemModel* _model = new QStandardItemModel();
+	_model = new QStandardItemModel();
 	QStandardItem* rootNode = _model->invisibleRootItem();
 	for (int i = 0; i < providerCount; i++)
 	{
@@ -193,6 +193,43 @@ bool QDataSourceWidget::ConnectDataSource(QStandardItem* pItem, IDataSource* ds,
 		QMessageBox::Yes, QMessageBox::Yes);
 
 	return false;
+}
+
+void QDataSourceWidget::selectionChanged(const QItemSelection & sel, const QItemSelection & deselected)
+{
+	QModelIndexList selected = sel.indexes();
+	if (selected.size() > 0)
+	{
+		_selectedItem = _model->itemFromIndex(selected[0]);
+		int type = _selectedItem->data(DataTypeRole).toInt();
+		if (type = DataSourceType)
+		{
+			_selectedDataSource = _selectedItem->data(DataRole).value<IDataSourcePtr>();
+			_selectedDataset = nullptr;
+			_selectedDataSourceProvider = _selectedItem->data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
+		}
+		else if (type == DatasetType)
+		{
+			_selectedDataSource = nullptr;
+			_selectedDataset = _selectedItem->data(DataRole).value<IDatasetPtr>();
+			_selectedDataSourceProvider = _selectedItem->data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
+		}
+		else
+		{
+			_selectedDataSource = nullptr;
+			_selectedDataset = _selectedItem->data(DataRole).value<IDatasetPtr>();
+			_selectedDataSourceProvider = _selectedItem->data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
+		}
+	}
+	else
+	{
+		_selectedDataSource = nullptr;
+		_selectedDataset = nullptr;
+		_selectedDataSourceProvider = nullptr;
+		_selectedItem = nullptr;
+	}
+
+	emit SelectionChanged(_selectedDataSource, _selectedDataset, _selectedDataSourceProvider);
 }
 
 void QDataSourceWidget::ExpandedOrCollapsed(const QModelIndex & index)

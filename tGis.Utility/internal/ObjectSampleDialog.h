@@ -44,6 +44,9 @@ public:
 	void SetObjectSampleDataSource(ObjectSampleDataSource* samples);
 
 private:
+	//节点关联的数据
+	static const int DataRole = Qt::UserRole + 1;
+	QStandardItemModel* _model;
 	QStandardItem* CreateObjectSampleItem(ObjectSampleMetadata* osm);
 
 private:

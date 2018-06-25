@@ -109,6 +109,7 @@
   <ItemGroup>
     <ClCompile Include="internal\ObjectSampleDialog.cpp" />
     <ClCompile Include="internal\ObjectSampleLabelDialog.cpp" />
+    <ClCompile Include="internal\QtHelper.cpp" />
     <ClCompile Include="src\DrawRectTool.cpp" />
     <ClCompile Include="src\MapPanTool.cpp" />
     <ClCompile Include="src\MapZoomTool.cpp" />
@@ -124,6 +125,11 @@
     <ClInclude Include="include\TakeObjectSampleTool.h" />
     <ClInclude Include="internal\ObjectSampleDialog.h" />
     <ClInclude Include="internal\ObjectSampleLabelDialog.h" />
+    <QtMoc Include="internal\QtHelper.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(ProjectDir)\internal</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(ProjectDir)\internal</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;TGIS_EXPORTS;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;_WINDLL</Define>
+    </QtMoc>
     <QtMoc Include="include\QMapWidget.h" />
     <ClInclude Include="include\QtGeoSurface.h" />
     <ClInclude Include="include\RectZoomTool.h" />
