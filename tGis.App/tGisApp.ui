@@ -56,14 +56,15 @@
    <addaction name="panAction"/>
    <addaction name="entireMapAction"/>
    <addaction name="refreshMapAction"/>
+   <addaction name="showGridAction"/>
    <addaction name="separator"/>
    <addaction name="layerVisibleAction"/>
+   <addaction name="zoomLayerAction"/>
+   <addaction name="zoomOriginalAction"/>
    <addaction name="layerUpAction"/>
    <addaction name="layerDownAction"/>
    <addaction name="layerTopAction"/>
    <addaction name="layerBottomAction"/>
-   <addaction name="zoomLayerAction"/>
-   <addaction name="zoomOriginalAction"/>
    <addaction name="layerAttributeAction"/>
    <addaction name="removeLayerAction"/>
    <addaction name="removeAllLayersAction"/>
@@ -528,6 +529,21 @@
    </property>
    <property name="toolTip">
     <string>扣取目标样本</string>
+   </property>
+  </action>
+  <action name="showGridAction">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/Grid.png</normaloff>:/tGisApp/Resources/Grid.png</iconset>
+   </property>
+   <property name="text">
+    <string>显示格网</string>
+   </property>
+   <property name="toolTip">
+    <string>显示格网</string>
    </property>
   </action>
  </widget>

@@ -7,6 +7,10 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 MapWidget::MapWidget()
 {
+	_gridVisible = false;
+	_backgroundR = 255;
+	_backgroundG = 255;
+	_backgroundB = 255;
 }
 
 
@@ -51,6 +55,30 @@ void MapWidget::RemoveMapTool(IMapTool * tool)
 			break;
 		}
 	}
+}
+
+void MapWidget::SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B)
+{
+	_backgroundR = R;
+	_backgroundG = G;
+	_backgroundB = B;
+}
+
+void MapWidget::GetBackgroundColor(unsigned char * R, unsigned char * G, unsigned char * B)
+{
+	*R = _backgroundR;
+	*G = _backgroundG;
+	*B = _backgroundB;
+}
+
+void MapWidget::SetGridVisible(bool visible)
+{
+	_gridVisible = visible;
+}
+
+bool MapWidget::GetGridVisible()
+{
+	return _gridVisible;
 }
 
 void MapWidget::RepaintMap()

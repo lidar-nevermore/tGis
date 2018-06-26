@@ -33,6 +33,13 @@
 #define TGIS_API TGIS_SYMBOL_IMPORT
 #endif
 
+#ifdef TGIS_UTILITY_EXPORTS
+#define TGIS_UTILITY_API TGIS_SYMBOL_EXPORT
+#else
+#define TGIS_UTILITY_API TGIS_SYMBOL_IMPORT
+#endif
+
+
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
 
@@ -93,6 +100,7 @@
 #include <float.h>
 #include <string>
 #include <vector>
+#include <time.h>
 
 #include "Event.h"
 
@@ -172,7 +180,10 @@ inline void _tgis_str_split(char* str, const char *delim, std::vector<std::strin
 }
 
 
-
+inline void _tgis_localtime(struct tm * const tms,const time_t *tmt)
+{
+	localtime_s(tms, tmt);
+}
 
 
 

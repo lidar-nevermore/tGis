@@ -3,6 +3,7 @@
 #ifndef __QTGEOSURFACE_H__
 #define __QTGEOSURFACE_H__
 
+
 #include <QPainter>
 #include <QPixmap>
 #include "tEntity.h"
@@ -11,7 +12,7 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
-class TGIS_API QtGeoSurface : public GeoSurface
+class TGIS_UTILITY_API QtGeoSurface : public GeoSurface
 {
 public:
 	QtGeoSurface();

@@ -3,6 +3,8 @@
 #include "MyGDALRasterDataset.h"
 #include <io.h>
 #include <stdio.h>
+#include <iostream>
+#include <fstream>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -11,6 +13,8 @@ const char* const ObjectSampleDataSource::_type = "B97F1F35-B223-48EB-8AAA-4BF7D
 
 ObjectSampleDataSource::ObjectSampleDataSource(const char* path_)
 	:FileSystemDataSource(path_, &ObjectSampleDataSourceProvider::INSTANCE())
+	, _mapObjectSampleMetadata()
+	, _vecObjectSampleMetadata()
 {
 }
 
@@ -47,59 +51,70 @@ bool ObjectSampleDataSource::IsTypeOf(ITGisObject * object)
 
 void ObjectSampleDataSource::Connect()
 {
-	const int len = 524288; // 512k
-	char buffer[len];
+	if (_connected)
+		return;
+
+	const size_t len = 524288; // 512k
+	char buffer[len] = { 0 };
 	string path = _path;
 	path.append(TGIS_PATH_SEPARATOR_STR);
 	path.append("tgis.sample");
 
-	FILE *fp = fopen(path.c_str(), "rb");
-	if (fp == NULL)
+	std::ifstream file;
+	file.open(path.c_str(), ios::binary);
+
+	try
 	{
-		throw exception("样本库元数据文件打开失败！");
-	}
-	size_t readSize = 0;
-	size_t remainSize = 0;
-	while (readSize = fread(buffer + remainSize, len, 1, fp) > 0)
-	{
-		char* line = buffer;
-		size_t totalSize = readSize + remainSize;
-		remainSize = totalSize;
-		for (size_t i = 0; i < totalSize; i++)
+		size_t readSize = 0;
+		size_t remainSize = 0;
+		do
 		{
-			if (buffer[i] == '\n')
+			file.read(buffer + remainSize, len);
+			readSize = file.gcount();
+			char* line = buffer;
+			size_t totalSize = readSize + remainSize;
+			remainSize = totalSize;
+			for (size_t i = 0; i < totalSize; i++)
 			{
-				buffer[i] = '\0';
-				vector<string> fileds;
-				_tgis_str_split(line, " ", fileds);
-				if (fileds.size() > 7)
+				if (buffer[i] == '\n')
 				{
-					ObjectSampleMetadata meta;
-					memset(&meta, 0, sizeof(ObjectSampleMetadata));
-					int nameLen = fileds[0].length();
-					if (nameLen > ObjectSampleNameLength)
-						nameLen = ObjectSampleNameLength;
-					memcpy(meta.Name, fileds[0].data(), nameLen);
-					meta.Label = std::stoi(fileds[1]);
-					meta.MinPixelSize = std::stof(fileds[2]);
-					meta.MaxPixelSize = std::stof(fileds[3]);
-					meta.MinObjectWidth = std::stof(fileds[4]);
-					meta.MaxObjectWidth = std::stof(fileds[5]);
-					meta.MinObjectHeight = std::stof(fileds[6]);
-					meta.MaxObjectHeight = std::stof(fileds[7]);
+					buffer[i] = '\0';
+					vector<string> fileds;
+					_tgis_str_split(line, " ", fileds);
+					if (fileds.size() > 7)
+					{
+						ObjectSampleMetadata meta;
+						memset(&meta, 0, sizeof(ObjectSampleMetadata));
+						int nameLen = fileds[0].length();
+						if (nameLen > ObjectSampleNameLength)
+							nameLen = ObjectSampleNameLength;
+						memcpy(meta.Name, fileds[0].data(), nameLen);
+						meta.Label = std::stoi(fileds[1]);
+						meta.MinPixelSize = std::stof(fileds[2]);
+						meta.MaxPixelSize = std::stof(fileds[3]);
+						meta.MinObjectWidth = std::stof(fileds[4]);
+						meta.MaxObjectWidth = std::stof(fileds[5]);
+						meta.MinObjectHeight = std::stof(fileds[6]);
+						meta.MaxObjectHeight = std::stof(fileds[7]);
+						AddObjectSampleMetadata(&meta);
+					}
+
+					line = buffer + i + 1;
+					remainSize = totalSize - i - 1;
 				}
-
-				line = buffer + i + 1;
-				remainSize = totalSize - i - 1;
 			}
-		}
-		if (remainSize > 0 && remainSize < totalSize)
-		{
-			memcpy(buffer, buffer + (totalSize - remainSize), remainSize);
-		}
+			if (remainSize > 0 && remainSize < totalSize)
+			{
+				memcpy(buffer, buffer + (totalSize - remainSize), remainSize);
+			}
+		} while (readSize == len);
 	}
-
-	fclose(fp);
+	catch (exception &ex)
+	{
+		file.close();
+		throw ex;
+	}
+	file.close();
 
 	FileSystemDataSource::Connect();
 }
@@ -201,10 +216,10 @@ void ObjectSampleDataSource::SaveObjectSampleMetadata()
 		sprintf(buffer, "%.3f", meta->MaxObjectHeight);
 		len = strlen(buffer);
 		fwrite(buffer, len, 1, fp);
-		fwrite("   \n", 3, 1, fp);
+		fwrite("  \n", 3, 1, fp);
 	}
 
-	fclose(fp);
+	::fclose(fp);
 }
 
 END_NAME_SPACE(tGis, Core)

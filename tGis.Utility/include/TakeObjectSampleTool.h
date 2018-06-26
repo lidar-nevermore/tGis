@@ -3,6 +3,7 @@
 #ifndef __TAKEOBJECTSAMPLETOOL_H__
 #define __TAKEOBJECTSAMPLETOOL_H__
 
+
 #include "tVisualize.h"
 
 #include "DrawRectTool.h"
@@ -11,7 +12,7 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
-class TGIS_API TakeObjectSampleTool : public DrawRectTool
+class TGIS_UTILITY_API TakeObjectSampleTool : public DrawRectTool
 {
 public:
 	TakeObjectSampleTool();

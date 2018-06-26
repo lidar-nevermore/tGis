@@ -27,6 +27,10 @@ public:
 
 	virtual bool AddMapTool(IMapTool*);
 	virtual void RemoveMapTool(IMapTool*);
+	virtual void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
+	virtual void GetBackgroundColor(unsigned char* R, unsigned char* G, unsigned char* B);
+	virtual void SetGridVisible(bool);
+	virtual bool GetGridVisible();
 	virtual void RepaintMap();
 
 	virtual void MouseDown(void*);
@@ -43,6 +47,10 @@ public:
 protected:
 	OverlayLayer _overlayLayer;
 	vector<IMapTool*> _vecMapTool;
+	unsigned char _backgroundR;
+	unsigned char _backgroundG;
+	unsigned char _backgroundB;
+	bool _gridVisible;
 };
 
 

@@ -29,6 +29,9 @@ struct TGIS_API IMapWidget
 	virtual bool AddMapTool(IMapTool*) = 0;
 	virtual void RemoveMapTool(IMapTool*) = 0;
 	virtual void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B) = 0;
+	virtual void GetBackgroundColor(unsigned char* R, unsigned char* G, unsigned char* B) = 0;
+	virtual void SetGridVisible(bool) = 0;
+	virtual bool GetGridVisible() = 0;
 
 	virtual void RepaintMap() = 0;
 	virtual void PresentSurface() = 0;

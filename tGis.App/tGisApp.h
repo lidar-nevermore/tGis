@@ -39,7 +39,7 @@ private:
 	EventHandler<QLayerWidget, IMap*>* _LayerClearedEventHandler;
 
 private:
-	ObjectSampleDataSource* _selectedObjectSampleDataSource;
+	tGis::Core::ObjectSampleDataSource* _selectedObjectSampleDataSource;
 	RasterLayer* _selectedRasterLayer;
 
 private slots:
@@ -61,6 +61,7 @@ private slots:
 	void on_layerDownAction_triggered(bool checked);
 	void on_layerBottomAction_triggered(bool checked);
 	void on_takeObjectSampleAction_toggled(bool checked);
+	void on_showGridAction_toggled(bool checked);
 
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 	void on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);

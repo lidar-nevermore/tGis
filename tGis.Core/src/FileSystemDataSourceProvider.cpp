@@ -75,7 +75,7 @@ IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
 	if (pos != _mapDataSource.end())
 	{
 		ds = (*pos).second;
-		if (ds->IsTypeOf(FileSystemDataSource::S_GetType()))
+		if (!ds->IsTypeOf(FileSystemDataSource::S_GetType()))
 		{
 			throw exception("Already connected as DataSource of different Type!");
 		}

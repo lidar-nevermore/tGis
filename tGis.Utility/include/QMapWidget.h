@@ -3,6 +3,9 @@
 #ifndef __QMAPWIDGET_H__
 #define __QMAPWIDGET_H__
 
+#ifdef TGIS_UTILITY_EXPORTS
+#include "QtHelper.h"
+#endif
 
 #include <QWidget>
 #include <QPainter>
@@ -14,7 +17,7 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
-class TGIS_API QMapWidget : public QWidget,public MapWidget
+class TGIS_UTILITY_API QMapWidget : public QWidget,public MapWidget
 {
 	Q_OBJECT
 public:
@@ -34,10 +37,6 @@ private:
 	QtGeoSurface _geoSurface;
 	IMap* _map;
 	bool _firstResizing;
-
-	unsigned char _surfBackgroundR;
-	unsigned char _surfBackgroundG;
-	unsigned char _surfBackgroundB;
 
 protected:
 	virtual void paintEvent(QPaintEvent *);

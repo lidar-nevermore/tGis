@@ -3,14 +3,13 @@
 #ifndef __MAPZOOMTOOL_H__
 #define __MAPZOOMTOOL_H__
 
-
 #include "tVisualize.h"
 
 using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
-class TGIS_API MapZoomTool : public MapTool
+class TGIS_UTILITY_API MapZoomTool : public MapTool
 {
 public:
 	MapZoomTool();

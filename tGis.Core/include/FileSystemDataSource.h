@@ -23,7 +23,7 @@ protected:
 	FileSystemDataSource(const char* path, IDataSourceProvider* provider);
 
 public:
-	~FileSystemDataSource();
+	virtual ~FileSystemDataSource();
 
 private:
 	static const char* const _type;

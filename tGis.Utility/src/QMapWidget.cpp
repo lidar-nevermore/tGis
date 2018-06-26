@@ -14,10 +14,7 @@ QMapWidget::QMapWidget(QWidget *parent)
 {
 	_firstResizing = true;
 	_map = nullptr;
-	_surfBackgroundR = 255;
-	_surfBackgroundG = 255;
-	_surfBackgroundB = 255;
-	_geoSurface.SetBackgroundColor(_surfBackgroundR, _surfBackgroundG, _surfBackgroundB);
+	_geoSurface.SetBackgroundColor(_backgroundR, _backgroundG, _backgroundB);
 }
 
 
@@ -47,9 +44,9 @@ IOverlayLayer * QMapWidget::GetScreenLayer()
 
 void QMapWidget::SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B)
 {
-	_surfBackgroundR = R;
-	_surfBackgroundG = G;
-	_surfBackgroundB = B;
+	_backgroundR = R;
+	_backgroundG = G;
+	_backgroundB = B;
 	_geoSurface.SetBackgroundColor(R, G, B);
 }
 
@@ -68,13 +65,27 @@ void QMapWidget::paintEvent(QPaintEvent *)
 {
 	QSize sz = size();
 	QPainter painter(this);
-	painter.fillRect(0, 0, sz.width(), sz.height(), QColor(_surfBackgroundR, _surfBackgroundG, _surfBackgroundB));
+	painter.fillRect(0, 0, sz.width(), sz.height(), QColor(_backgroundR, _backgroundG, _backgroundB));
 	_geoSurface.AttachQPainter(&painter);
 	_geoSurface.PresentSurface();
 	_geoSurface.BeginPaintOnAttachedQPainter();
 	_overlayLayer.Paint((IGeoSurface*)&_geoSurface);
 	_geoSurface.EndPaintOnAttachedQPainter();
 	_geoSurface.DetachQPainter();
+	if (_gridVisible)
+	{
+		QPen pen(QColor(30, 30, 30, 255), 1, Qt::DashLine);
+		painter.setPen(pen);
+		painter.setBrush(Qt::NoBrush);
+		for (int x = 25; x < sz.width(); x += 25)
+		{
+			painter.drawLine(x, 0, x, sz.height());
+		}
+		for (int y = 25; y < sz.height(); y += 25)
+		{
+			painter.drawLine(0, y, sz.width(), y);
+		}
+	}
 }
 
 void QMapWidget::resizeEvent(QResizeEvent * e)

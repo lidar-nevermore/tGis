@@ -5,11 +5,12 @@
 
 #include "tVisualize.h"
 
+
 using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
-class TGIS_API MapPanTool : public MapTool
+class TGIS_UTILITY_API MapPanTool : public MapTool
 {
 public:
 	MapPanTool();

@@ -4,6 +4,7 @@
 #define __OBJECTSAMPLEDIALOG_H__
 
 #include <QDialog>
+#include <QListWidgetItem>
 
 #include "ui_ObjectSampleDialog.h"
 #include "QMapWidget.h"
@@ -43,14 +44,19 @@ public:
 
 	void SetObjectSampleDataSource(ObjectSampleDataSource* samples);
 
+	inline ObjectSampleMetadata* GetObjectSampleMetadata()
+	{
+		return _osm;
+	}
+
 private:
 	//节点关联的数据
 	static const int DataRole = Qt::UserRole + 1;
-	QStandardItemModel* _model;
-	QStandardItem* CreateObjectSampleItem(ObjectSampleMetadata* osm);
+	QListWidgetItem* CreateObjectSampleItem(ObjectSampleMetadata* osm);
 
 private:
 	ObjectSampleDataSource* _samples;
+	ObjectSampleMetadata* _osm;
 	Map _map;
 	ILayer* _layer;
 	double _sampleAreaLeft;
@@ -65,6 +71,7 @@ private:
 
 private slots:
     void on_btnNewClass_clicked(bool checked);
+	void on_lstClass_itemSelectionChanged();
 
 private:
 	Ui::ObjectSampleDialog ui;

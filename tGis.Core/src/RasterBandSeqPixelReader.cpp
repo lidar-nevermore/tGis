@@ -42,8 +42,8 @@ void RasterBandSeqPixelReader::Init(GDALDataset* raster,GDALRasterBand* band,int
 	
 	_startXBlockOff = xOffset/_xBlockSize;
 	_startYBlockOff = yOffset/_yBlockSize;
-	_endXBlockOff = (_xEnd+_xBlockSize-1)/_xBlockSize;
-	_endYBlockOff = (_yEnd+_yBlockSize-1)/_yBlockSize;
+	_endXBlockOff = (_xEnd+_xBlockSize)/_xBlockSize;
+	_endYBlockOff = (_yEnd+_yBlockSize)/_yBlockSize;
 	int xBlockSize, yBlockSize;
 	_band->GetActualBlockSize(_startXBlockOff, _startYBlockOff, &xBlockSize, &yBlockSize);
 	CalcPixelTraverseParam(_startXBlockOff,_startYBlockOff,xBlockSize,yBlockSize);
@@ -142,7 +142,7 @@ RasterBandSeqPixelReader::RasterBandSeqPixelReader(GDALDataset* raster,GDALRaste
 		double maxAoiPixX = 0;
 		double maxAoiPixY = 0;
 		int inAoiXSize = _aoiRaster->GetRasterXSize();
-		int inAOiYSize = _aoiRaster->GetRasterYSize();
+		int inAoiYSize = _aoiRaster->GetRasterYSize();
 
 		myAoiRaster.Spatial2Pixel(aoienvelope.MinX,aoienvelope.MinY,&minAoiPixX,&minAoiPixY);
 		myAoiRaster.Spatial2Pixel(aoienvelope.MaxX,aoienvelope.MaxY,&maxAoiPixX,&maxAoiPixY);
@@ -159,8 +159,8 @@ RasterBandSeqPixelReader::RasterBandSeqPixelReader(GDALDataset* raster,GDALRaste
 
 		if(_xAoiEnd >= inAoiXSize)
 			_xAoiEnd = inAoiXSize-1;
-		if(_yAoiEnd >= inAOiYSize)
-			_yAoiEnd = inAOiYSize-1;
+		if(_yAoiEnd >= inAoiYSize)
+			_yAoiEnd = inAoiYSize -1;
 
 		_xAoiSize = _xAoiEnd-_xAoiOffset+1;
 		_yAoiSize = _yAoiEnd-_yAoiOffset+1;

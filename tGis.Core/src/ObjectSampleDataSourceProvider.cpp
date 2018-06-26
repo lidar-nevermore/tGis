@@ -90,19 +90,18 @@ IDataSource * ObjectSampleDataSourceProvider::CreateDataSource(const char * path
 	if (pos != _mapDataSource.end())
 	{
 		ds = (*pos).second;
-		if (ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
+		if (!ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
 		{
 			throw exception("Already connected as DataSource of different Type!");
 		}
 		return ds;
 	}
 
-	ds = DataSourceProvider::CreateDataSource(path);
-	if (ds != nullptr)
-		return ds;
-
 	if (IsObjectSampleDataSource(path))
 	{
+		ds = DataSourceProvider::CreateDataSource(path);
+		if (ds != nullptr)
+			return ds;
 		ds = new ObjectSampleDataSource(path);
 		_mapDataSource.insert(map<string, IDataSource*>::value_type(strPath, ds));
 	}

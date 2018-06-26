@@ -1,7 +1,5 @@
 #include "ObjectSampleDialog.h"
 #include "ObjectSampleLabelDialog.h"
-#include <QStandardItemModel>
-#include <QStandardItem>
 #include <QVariant>
 #include "QMessageBox"
 #include "qevent.h"
@@ -15,14 +13,17 @@ ObjectSampleDialog::ObjectSampleDialog(QWidget *parent)
 	, _MapWidgetLoadedEventHandler(this,&ObjectSampleDialog::OnMapWidgetLoaded)
 {
 	ui.setupUi(this);
-	_model = new QStandardItemModel();
-	ui.lstClass->setModel(_model);
+
+	_osm = nullptr;
 	setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 	ui.mapWidget->SetMap(&_map);
 	ui.mapWidget->LoadedEvent += &_MapWidgetLoadedEventHandler;
+	QPushButton* button = ui.buttonBox->button(QDialogButtonBox::StandardButton::Ok);
+	button->setEnabled(false);
 	connect(ui.buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
 	connect(ui.buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
 	connect(ui.btnNewClass, &QPushButton::clicked, this, &ObjectSampleDialog::on_btnNewClass_clicked);
+	connect(ui.lstClass, &QListWidget::itemSelectionChanged, this, &ObjectSampleDialog::on_lstClass_itemSelectionChanged);
 }
 
 
@@ -32,26 +33,25 @@ ObjectSampleDialog::~ObjectSampleDialog()
 
 void ObjectSampleDialog::SetObjectSampleDataSource(ObjectSampleDataSource * samples)
 {
+	_samples = samples;
 	int osmCount = samples->GetObjectSampleMetadataCount();
 	for (int i = 0; i < osmCount; i++)
 	{
 		ObjectSampleMetadata * osm = samples->GetObjectSampleMetadata(i);
-		QStandardItem* pItem = CreateObjectSampleItem(osm);
-		_model->appendRow(pItem);
+		QListWidgetItem* pItem = CreateObjectSampleItem(osm);
+		ui.lstClass->addItem(pItem);
 	}
 }
 
-QStandardItem * ObjectSampleDialog::CreateObjectSampleItem(ObjectSampleMetadata * osm)
+QListWidgetItem * ObjectSampleDialog::CreateObjectSampleItem(ObjectSampleMetadata * osm)
 {
-	QStandardItem* pItem = new QStandardItem();
+	QListWidgetItem* pItem = new QListWidgetItem();
 	QString osmName = QString::fromUtf8(osm->Name);
 	pItem->setText(osmName);
-	pItem->setEditable(false);
-	pItem->setCheckable(false);
 
 	QVariant udOsm;
 	udOsm.setValue<>(osm);
-	pItem->setData(udOsm, DataRole);
+	pItem->setData(DataRole,udOsm);
 
 	return pItem;
 }
@@ -65,6 +65,26 @@ void ObjectSampleDialog::OnMapWidgetLoaded(IMapWidget * mapWidget, int width, in
 	surf->Spatial2Surface(_sampleAreaLeft, _sampleAreaTop, &_sampleRect._left, &_sampleRect._top);
 	surf->Spatial2Surface(_sampleAreaRight, _sampleAreaBottom, &_sampleRect._right, &_sampleRect._bottom);
 	ui.mapWidget->GetOverlayLayer()->AddOverlayObject(&_sampleRect);
+}
+
+void ObjectSampleDialog::on_lstClass_itemSelectionChanged()
+{
+	_osm = nullptr;
+	QList<QListWidgetItem*> items = ui.lstClass->selectedItems();
+	QPushButton* button = ui.buttonBox->button(QDialogButtonBox::StandardButton::Ok);
+	button->setEnabled(items.size() > 0);
+	if (items.size() == 0)
+		return;
+	QListWidgetItem* item = items[0];
+	_osm = item->data(DataRole).value<ObjectSampleMetadataPtr>();
+	ui.leName->setText(item->text());
+	ui.leLabel->setText(QString::number(_osm->Label));
+	ui.leMinObjectWidth->setText(QString::number(_osm->MinObjectWidth));
+	ui.leMaxObjectWidth->setText(QString::number(_osm->MaxObjectWidth));
+	ui.leMinObjectHeight->setText(QString::number(_osm->MinObjectHeight));
+	ui.leMaxObjectHeight->setText(QString::number(_osm->MaxObjectHeight));
+	ui.leMinPixelSize->setText(QString::number(_osm->MinPixelSize));
+	ui.leMaxPixelSize->setText(QString::number(_osm->MaxPixelSize));
 }
 
 void ObjectSampleDialog::on_btnNewClass_clicked(bool checked)
@@ -105,8 +125,9 @@ void ObjectSampleDialog::on_btnNewClass_clicked(bool checked)
 		}
 
 		osm = _samples->AddObjectSampleMetadata(&osmn);
-		QStandardItem* pItem = CreateObjectSampleItem(osm);
-		_model->appendRow(pItem);
+		QListWidgetItem* pItem = CreateObjectSampleItem(osm);
+		ui.lstClass->addItem(pItem);
+		_samples->SaveObjectSampleMetadata();
 	}
 }
 

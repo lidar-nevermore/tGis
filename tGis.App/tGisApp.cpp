@@ -51,6 +51,7 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.layerVisibleAction->setEnabled(false);
 	ui.layerAttributeAction->setEnabled(false);
 	ui.takeObjectSampleAction->setEnabled(false);
+	ui.showGridAction->setChecked(ui.mapWidget->GetGridVisible());
 }
 
 tGisApp::~tGisApp()
@@ -206,6 +207,12 @@ void tGisApp::on_takeObjectSampleAction_toggled(bool checked)
 	}
 }
 
+void tGisApp::on_showGridAction_toggled(bool checked)
+{
+	ui.mapWidget->SetGridVisible(checked);
+	ui.mapWidget->PresentSurface();
+}
+
 void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
 {
 	_selectedRasterLayer = nullptr;
@@ -226,7 +233,7 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 			_selectedRasterLayer = (RasterLayer*)layer;
 			_takeObjectSampleTool.SetRasterLayer(_selectedRasterLayer);
 			ui.zoomOriginalAction->setEnabled(true);
-			ui.takeObjectSampleAction->setEnabled(_selectedObjectSampleDataSource != nullptr);
+			ui.takeObjectSampleAction->setEnabled(_selectedObjectSampleDataSource != nullptr&&_selectedObjectSampleDataSource->IsConnected());
 		}
 	}
 	else
@@ -255,9 +262,9 @@ void tGisApp::on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPt
 	_selectedObjectSampleDataSource = nullptr;
 	if (ds != nullptr && ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
 	{
-		_selectedObjectSampleDataSource = (ObjectSampleDataSource*)ds;
+		_selectedObjectSampleDataSource = reinterpret_cast<tGis::Core::ObjectSampleDataSource*>(ds);
 		_takeObjectSampleTool.SetObjectSampleDataSource(_selectedObjectSampleDataSource);
-		ui.takeObjectSampleAction->setEnabled(_selectedRasterLayer != nullptr);
+		ui.takeObjectSampleAction->setEnabled(_selectedRasterLayer != nullptr&&_selectedObjectSampleDataSource->IsConnected());
 	}
 	else
 	{
