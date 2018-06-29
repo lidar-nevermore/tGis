@@ -235,6 +235,10 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 			ui.zoomOriginalAction->setEnabled(true);
 			ui.takeObjectSampleAction->setEnabled(_selectedObjectSampleDataSource != nullptr&&_selectedObjectSampleDataSource->IsConnected());
 		}
+		else
+		{
+			ui.takeObjectSampleAction->setEnabled(false);
+		}
 	}
 	else
 	{
