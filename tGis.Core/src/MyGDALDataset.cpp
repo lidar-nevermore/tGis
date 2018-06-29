@@ -265,6 +265,7 @@ bool MyGDALDataset::IsOpened()
 
 void MyGDALDataset::Close()
 {
+	Dataset::Close();
 	Detach();
 }
 

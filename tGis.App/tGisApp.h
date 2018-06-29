@@ -37,10 +37,16 @@ private:
 	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerAddedEventHandler;
 	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerRemovedEventHandler;
 	EventHandler<QLayerWidget, IMap*>* _LayerClearedEventHandler;
+	EventHandler<tGisApp, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
+	EventHandler<tGisApp, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;
+	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
+	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
 
 private:
 	tGis::Core::ObjectSampleDataSource* _selectedObjectSampleDataSource;
 	RasterLayer* _selectedRasterLayer;
+	IDataSource* _selectedDataSource;
+	IDataset* _selectedDataset;
 
 private slots:
 	void on_zoomInAction_triggered(bool checked);
@@ -62,10 +68,12 @@ private slots:
 	void on_layerBottomAction_triggered(bool checked);
 	void on_takeObjectSampleAction_toggled(bool checked);
 	void on_showGridAction_toggled(bool checked);
+	void on_closeDatasetAction_triggered(bool checked);
 
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 	void on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
-	void on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr st, IDataSourceProviderPtr provider);
+	void on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr dt, IDataSourceProviderPtr provider);
+	void on_openedDatasetWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr dt, IDataSourceProviderPtr provider);
 
 private:
 	Ui::tGisAppClass ui;

@@ -78,7 +78,7 @@ void MyGDALFileRasterDataset::Open()
 	}
 	if (_dataset != nullptr)
 	{
-		MyGDALDataset::Open();
+		MyGDALRasterDataset::Open();
 	}
 }
 

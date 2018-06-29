@@ -57,6 +57,12 @@
    <addaction name="entireMapAction"/>
    <addaction name="refreshMapAction"/>
    <addaction name="showGridAction"/>
+   <addaction name="mapSpatialRefAction"/>
+   <addaction name="separator"/>
+   <addaction name="refreshDataSourceAction"/>
+   <addaction name="datasetInfoAction"/>
+   <addaction name="closeDatasetAction"/>
+   <addaction name="takeObjectSampleAction"/>
    <addaction name="separator"/>
    <addaction name="layerVisibleAction"/>
    <addaction name="zoomLayerAction"/>
@@ -68,8 +74,6 @@
    <addaction name="layerAttributeAction"/>
    <addaction name="removeLayerAction"/>
    <addaction name="removeAllLayersAction"/>
-   <addaction name="separator"/>
-   <addaction name="takeObjectSampleAction"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QDockWidget" name="dockWidget">
@@ -544,6 +548,87 @@
    </property>
    <property name="toolTip">
     <string>显示格网</string>
+   </property>
+  </action>
+  <action name="mapSpatialRefAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/MapSpatialRef.png</normaloff>:/tGisApp/Resources/MapSpatialRef.png</iconset>
+   </property>
+   <property name="text">
+    <string>地图空间参考</string>
+   </property>
+   <property name="toolTip">
+    <string>地图空间参考</string>
+   </property>
+  </action>
+  <action name="openFileDataSourceAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/OpenFileDataSource.png</normaloff>:/tGisApp/Resources/OpenFileDataSource.png</iconset>
+   </property>
+   <property name="text">
+    <string>打开文件数据源</string>
+   </property>
+   <property name="toolTip">
+    <string>打开文件数据源</string>
+   </property>
+  </action>
+  <action name="closeFileDataSourceAction">
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/CloseFileDataSource.png</normaloff>:/tGisApp/Resources/CloseFileDataSource.png</iconset>
+   </property>
+   <property name="text">
+    <string>关闭文件数据源</string>
+   </property>
+   <property name="toolTip">
+    <string>关闭文件数据源</string>
+   </property>
+  </action>
+  <action name="refreshDataSourceAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/RefreshDataSource.png</normaloff>:/tGisApp/Resources/RefreshDataSource.png</iconset>
+   </property>
+   <property name="text">
+    <string>刷新数据源</string>
+   </property>
+   <property name="toolTip">
+    <string>刷新数据源</string>
+   </property>
+  </action>
+  <action name="datasetInfoAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/DatasetInfo.png</normaloff>:/tGisApp/Resources/DatasetInfo.png</iconset>
+   </property>
+   <property name="text">
+    <string>数据集信息</string>
+   </property>
+   <property name="toolTip">
+    <string>数据集信息</string>
+   </property>
+  </action>
+  <action name="closeDatasetAction">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="tGisApp.qrc">
+     <normaloff>:/tGisApp/Resources/CloseDataset.png</normaloff>:/tGisApp/Resources/CloseDataset.png</iconset>
+   </property>
+   <property name="text">
+    <string>关闭数据集</string>
+   </property>
+   <property name="toolTip">
+    <string>关闭数据集</string>
    </property>
   </action>
  </widget>

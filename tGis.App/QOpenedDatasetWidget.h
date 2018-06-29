@@ -3,6 +3,7 @@
 #include <QList>
 
 class QStandardItem;
+class QStandardItemModel;
 
 #include "tOrganizer.h"
 #include "Event.h"
@@ -14,8 +15,22 @@ class QOpenedDatasetWidget : public QTreeView
 {
 	Q_OBJECT
 public:
-	QOpenedDatasetWidget(QWidget *parent = 0);
+	explicit QOpenedDatasetWidget(QWidget *parent = 0);
 	~QOpenedDatasetWidget();
+
+signals:
+	void SelectionChanged(IDataSourcePtr, IDatasetPtr, IDataSourceProviderPtr);
+
+private:
+	QStandardItemModel* _model;
+	IDataSourcePtr _selectedDataSource;
+	IDatasetPtr _selectedDataset;
+	IDataSourceProviderPtr _selectedDataSourceProvider;
+
+	QStandardItem* _selectedItem;
+
+protected:
+	virtual void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 
 private:
 	//数据类型的定义

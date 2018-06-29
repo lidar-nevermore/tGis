@@ -136,6 +136,26 @@ void Map::RemoveLayer(ILayer * layer)
 	}	
 }
 
+void Map::RemoveLayer(IDataset * dt)
+{
+	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); )
+	{
+		ILayer* layer = *it;
+
+		if (layer->GetDataset() == dt)
+		{
+			layer->SetMap(nullptr);
+			it = _vecLayer.erase(it);
+			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
+		}
+		else
+		{
+			it++;
+		}
+	}
+	MergeEnvelope();
+}
+
 bool Map::InsertLayer(int pos, ILayer * layer)
 {
 	bool canAdd = false;

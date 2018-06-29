@@ -5,7 +5,9 @@
 class QStandardItem;
 class QStandardItemModel;
 
+
 #include "tOrganizer.h"
+#include "Event.h"
 #include "tGisMetaType.h"
 
 using namespace tGis::Core;
@@ -16,6 +18,17 @@ class QDataSourceWidget : public QTreeView
 public:
 	explicit QDataSourceWidget(QWidget *parent = 0);
 	~QDataSourceWidget();
+
+private:
+	EventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
+	EventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;
+	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
+	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
+
+public:
+	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
+
+	Event<IDataSourceProvider*, IDataset*> BeforeDatasetCloseEvent;
 
 signals:
 	void SelectionChanged(IDataSourcePtr, IDatasetPtr, IDataSourceProviderPtr);

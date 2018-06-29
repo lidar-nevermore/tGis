@@ -10,11 +10,15 @@ using namespace tGis::Core;
 
 tGisApp::tGisApp(QWidget *parent)
 	: QMainWindow(parent)
+	, _AfterDatasetOpenEventHandler(this, &tGisApp::AfterDatasetOpen)
+	, _BeforeDatasetCloseEventHandler(this, &tGisApp::BeforeDatasetClose)
 {
 	ui.setupUi(this);
 
 	_selectedObjectSampleDataSource = nullptr;
 	_selectedRasterLayer = nullptr;
+	_selectedDataset = nullptr;
+	_selectedDataSource = nullptr;
 
 	_LayerAddedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::AddLayer);
 	_LayerRemovedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::RemoveLayer);
@@ -22,6 +26,8 @@ tGisApp::tGisApp(QWidget *parent)
 	_map.LayerAddedEvent += _LayerAddedEventHandler;
 	_map.LayerRemovedEvent += _LayerRemovedEventHandler;
 	_map.LayerClearedEvent += _LayerClearedEventHandler;
+	ui.dataSourceWidget->AfterDatasetOpenEvent += &_AfterDatasetOpenEventHandler;
+	ui.dataSourceWidget->BeforeDatasetCloseEvent += &_BeforeDatasetCloseEventHandler;
 
 	ui.mapWidget->SetMap(&_map);
 	ui.layerWidget->SetMap(&_map);
@@ -73,6 +79,24 @@ void tGisApp::on_zoomInAction_triggered(bool checked)
 	resolution *= 0.96;
 	surface->SetViewResolution(resolution);
 	ui.mapWidget->PresentSurface();
+}
+
+void tGisApp::AfterDatasetOpen(IDataSourceProvider * provider, IDataset * dt)
+{
+	if (_selectedDataset == dt)
+	{
+		ui.closeDatasetAction->setEnabled(true);
+		ui.datasetInfoAction->setEnabled(true);
+	}
+}
+
+void tGisApp::BeforeDatasetClose(IDataSourceProvider * provider, IDataset * dt)
+{
+	if (_selectedDataset == dt)
+	{
+		ui.closeDatasetAction->setEnabled(false);
+		ui.datasetInfoAction->setEnabled(false);
+	}
 }
 
 void tGisApp::on_zoomOutAction_triggered(bool checked)
@@ -213,6 +237,16 @@ void tGisApp::on_showGridAction_toggled(bool checked)
 	ui.mapWidget->PresentSurface();
 }
 
+void tGisApp::on_closeDatasetAction_triggered(bool checked)
+{
+	if (_selectedDataset != nullptr)
+	{
+		_map.RemoveLayer(_selectedDataset);
+		_selectedDataset->Close();
+		ui.mapWidget->RepaintMap();
+	}
+}
+
 void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
 {
 	_selectedRasterLayer = nullptr;
@@ -261,9 +295,24 @@ void tGisApp::on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, I
 	}
 }
 
-void tGisApp::on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr st, IDataSourceProviderPtr provider)
+void tGisApp::on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr dt, IDataSourceProviderPtr provider)
 {
 	_selectedObjectSampleDataSource = nullptr;
+	_selectedDataSource = ds;
+	_selectedDataset = dt;
+	if (dt != nullptr && dt->IsOpened())
+	{
+		ui.closeDatasetAction->setEnabled(true);
+		ui.datasetInfoAction->setEnabled(true);
+	}
+	else
+	{
+		ui.closeDatasetAction->setEnabled(false);
+		ui.datasetInfoAction->setEnabled(false);
+	}
+	
+	ui.refreshDataSourceAction->setEnabled(ds != nullptr && ds->IsConnected());
+	
 	if (ds != nullptr && ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
 	{
 		_selectedObjectSampleDataSource = reinterpret_cast<tGis::Core::ObjectSampleDataSource*>(ds);
@@ -274,4 +323,11 @@ void tGisApp::on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPt
 	{
 		ui.takeObjectSampleAction->setEnabled(false);
 	}
+}
+
+void tGisApp::on_openedDatasetWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr dt, IDataSourceProviderPtr provider)
+{
+	IDataSourcePtr ds_ = _selectedDataSource;
+	on_dataSourceWidget_SelectionChanged(ds, dt, provider);
+	_selectedDataSource = ds_;
 }

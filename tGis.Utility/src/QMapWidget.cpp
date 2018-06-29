@@ -74,7 +74,7 @@ void QMapWidget::paintEvent(QPaintEvent *)
 	_geoSurface.DetachQPainter();
 	if (_gridVisible)
 	{
-		QPen pen(QColor(30, 30, 30, 255), 1, Qt::DashLine);
+		QPen pen(QColor(225, 35, 225, 255), 1, Qt::DashLine);
 		painter.setPen(pen);
 		painter.setBrush(Qt::NoBrush);
 		for (int x = 25; x < sz.width(); x += 25)

@@ -16,6 +16,8 @@ using namespace tGis::Core;
 
 QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 	:QTreeView(parent)
+	, _AfterDatasetOpenEventHandler(this, &QDataSourceWidget::AfterDatasetOpen)
+	, _BeforeDatasetCloseEventHandler(this, &QDataSourceWidget::BeforeDatasetClose)
 {
 	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
 
@@ -40,6 +42,9 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 		userDataType.setValue<int>(DataSourceProviderType);
 		pItem->setData(userDataType, DataTypeRole);
 		rootNode->appendRow(pItem);
+
+		provider->AfterDatasetOpenEvent += &_AfterDatasetOpenEventHandler;
+		provider->BeforeDatasetCloseEvent += &_BeforeDatasetCloseEventHandler;
 
 		if (provider->IsTypeOf(&FileSystemDataSourceProvider::INSTANCE()))
 		{
@@ -70,6 +75,17 @@ QDataSourceWidget::~QDataSourceWidget()
 		IDataSourceProviderPtr dsp = ds->GetProvider();
 		dsp->ReleaseDataSource(ds);
 	}
+}
+
+void QDataSourceWidget::AfterDatasetOpen(IDataSourceProvider * provider, IDataset * dt)
+{
+	AfterDatasetOpenEvent(provider, dt);
+}
+
+void QDataSourceWidget::BeforeDatasetClose(IDataSourceProvider * provider, IDataset * dt)
+{
+	//TODO 遍历树节点设置图标
+	BeforeDatasetCloseEvent(provider, dt);
 }
 
 void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * ds,IDataSourceProvider* dsp)
@@ -202,7 +218,7 @@ void QDataSourceWidget::selectionChanged(const QItemSelection & sel, const QItem
 	{
 		_selectedItem = _model->itemFromIndex(selected[0]);
 		int type = _selectedItem->data(DataTypeRole).toInt();
-		if (type = DataSourceType)
+		if (type == DataSourceType)
 		{
 			_selectedDataSource = _selectedItem->data(DataRole).value<IDataSourcePtr>();
 			_selectedDataset = nullptr;

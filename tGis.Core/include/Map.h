@@ -35,6 +35,7 @@ public:
 	virtual int AddLayer(ILayer*);
 	virtual ILayer* RemoveLayer(int);
 	virtual void RemoveLayer(ILayer*);
+	virtual void RemoveLayer(IDataset*);
 	virtual bool InsertLayer(int, ILayer*);
 	virtual void MoveLayer(int from, int to);
 	virtual void ClearLayers(LayerFunc func = nullptr);

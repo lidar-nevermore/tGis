@@ -1,5 +1,11 @@
 <RCC>
   <qresource prefix="tGisApp">
+    <file>Resources/OpenFileDataSource.png</file>
+    <file>Resources/CloseDataset.png</file>
+    <file>Resources/RefreshDataSource.png</file>
+    <file>Resources/MapSpatialRef.png</file>
+    <file>Resources/CloseFileDataSource.png</file>
+    <file>Resources/DatasetInfo.png</file>
     <file>Resources/Grid.png</file>
     <file>Resources/TakeObjectSample.png</file>
     <file>Resources/LayerBottom.png</file>
