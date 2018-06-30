@@ -34,9 +34,6 @@ private:
 	TakeObjectSampleTool _takeObjectSampleTool;
 
 private:
-	MemberEventHandler<QLayerWidget, IMap*, ILayer*>* _LayerAddedEventHandler;
-	MemberEventHandler<QLayerWidget, IMap*, ILayer*>* _LayerRemovedEventHandler;
-	MemberEventHandler<QLayerWidget, IMap*>* _LayerClearedEventHandler;
 	MemberEventHandler<tGisApp, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
 	MemberEventHandler<tGisApp, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;
 	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
@@ -44,6 +41,10 @@ private:
 
 	void AfterDataSourceConnect(IDataSourceProvider*, IDataSource*);
 	void BeforeDataSourceDisconnect(IDataSourceProvider*, IDataSource*);
+
+	void LayerAdded(IMapPtr, ILayerPtr);
+	void LayerRemoved(IMapPtr, ILayerPtr);
+	void LayerCleared(IMapPtr);
 
 private:
 	tGis::Core::ObjectSampleDataSource* _selectedObjectSampleDataSource;
@@ -72,6 +73,7 @@ private slots:
 	void on_takeObjectSampleAction_toggled(bool checked);
 	void on_showGridAction_toggled(bool checked);
 	void on_closeDatasetAction_triggered(bool checked);
+	void on_refreshDataSourceAction_triggered(bool checked);
 
 	void on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);
 	void on_layerWidget_LayerVisibleChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider);

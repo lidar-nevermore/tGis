@@ -78,12 +78,29 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 
 QDataSourceWidget::~QDataSourceWidget()
 {
+	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
+	for (int i = 0; i < providerCount; i++)
+	{
+		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
+		provider->AfterDatasetOpenEvent -= &_AfterDatasetOpenEventHandler;
+		provider->BeforeDatasetCloseEvent -= &_BeforeDatasetCloseEventHandler;
+		provider->AfterDataSourceConnectEvent -= &_AfterDataSourceConnectEventHandler;
+		provider->BeforeDataSourceDisconnectEvent -= &_BeforeDataSourceDisconnectEventHandler;
+	}
 	for (QList<IDataSourcePtr>::iterator it = _rootDataSource.begin(); it != _rootDataSource.end(); it++)
 	{
 		IDataSourcePtr ds = *it;
 		IDataSourceProviderPtr dsp = ds->GetProvider();
 		dsp->ReleaseDataSource(ds);
 	}
+}
+
+void QDataSourceWidget::RefreshSelectedDataSource()
+{
+	_selectedItem->setRowCount(0);
+	_selectedDataSource->Disconnect();	
+	_selectedDataSource->Connect();
+	AddDataSourceChildNode(_selectedItem, _selectedDataSource, _selectedDataSourceProvider);
 }
 
 void QDataSourceWidget::AfterDatasetOpen(IDataSourceProvider * provider, IDataset * dt)
@@ -123,12 +140,13 @@ void QDataSourceWidget::FindNode(QStandardItem* parent, IDataSourceProvider * pr
 			}
 			if (provider->IsTypeOf(prd))
 			{
+				FileSystemDataSource* dso = dynamic_cast<FileSystemDataSource*>(object);
 				if (provider->IsTypeOf(FileSystemDataSourceProvider::S_GetType()) 
 					&& go->IsTypeOf(FileSystemDataSource::S_GetType())
-					&& object->IsTypeOf(FileSystemDataSource::S_GetType()))
+					&& dso != nullptr)
 				{
 					FileSystemDataSource* ds = (FileSystemDataSource*)go;
-					FileSystemDataSource* dso = (FileSystemDataSource*)object;
+					
 					QString dsPath = QString::fromLocal8Bit(ds->GetCreationString());
 					QString dsoPath = QString::fromLocal8Bit(dso->GetCreationString());
 					if (dsoPath.contains(dsPath))
@@ -152,6 +170,17 @@ void QDataSourceWidget::AfterDataSourceConnect(IDataSourceProvider * provider, I
 
 void QDataSourceWidget::BeforeDataSourceDisconnect(IDataSourceProvider * provider, IDataSource * ds)
 {
+	//FindNode(_model->invisibleRootItem(), provider, ds, 
+	//	[](QStandardItem* item)->void
+	//    {
+	//	    IDataSource * dso = (IDataSourcePtr)item->data(DataRole).value<ITGisObjectPtr>();
+	//    	const QIcon* icon = IconRes::INSTANCE.GetIcon(dso->GetType(), "Default");
+	//    	if (icon != nullptr)
+	//    	{
+	//    		item->setIcon(*icon);
+	//    	}
+	//    }
+	//	);
 	BeforeDataSourceDisconnectEvent(provider, ds);
 }
 

@@ -10,6 +10,7 @@ OverlayLayer::OverlayLayer()
 
 OverlayLayer::~OverlayLayer()
 {
+	_vecOverlayObject.clear();
 }
 
 bool OverlayLayer::GetVisible()

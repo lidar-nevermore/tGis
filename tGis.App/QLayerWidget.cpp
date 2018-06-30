@@ -13,7 +13,14 @@ using namespace tGis::Core;
 
 QLayerWidget::QLayerWidget(QWidget *parent)
 	:QListView(parent)
+	, _LayerAddedEventHandler(this, &QLayerWidget::AddLayer)
+	, _LayerRemovedEventHandler(this, &QLayerWidget::RemoveLayer)
+	, _LayerClearedEventHandler(this, &QLayerWidget::ClearLayer)
 {
+	_map = nullptr;
+	_selectedLayer = nullptr;
+	_selectedLayerProvider = nullptr;
+	_selectedItem = nullptr;
 	_model = new QStandardItemModel();
 	setModel(_model);
 	connect(this, &QListView::clicked, this, &QLayerWidget::LayerClicked);
@@ -52,7 +59,17 @@ QStandardItem * QLayerWidget::CreateLayerItem(ILayer * layer, ILayerProvider * p
 
 void QLayerWidget::SetMap(IMapPtr map)
 {
+	if (_map != nullptr)
+	{
+		_map->LayerAddedEvent -= &_LayerAddedEventHandler;
+		_map->LayerRemovedEvent -= &_LayerRemovedEventHandler;
+		_map->LayerClearedEvent -= &_LayerClearedEventHandler;
+	}
+
 	_map = map;
+	_map->LayerAddedEvent += &_LayerAddedEventHandler;
+	_map->LayerRemovedEvent += &_LayerRemovedEventHandler;
+	_map->LayerClearedEvent += &_LayerClearedEventHandler;
 }
 
 IMapPtr QLayerWidget::GetMap()

@@ -20,7 +20,7 @@ Map::~Map()
 		ILayerProvider* provider = layer->GetProvider();
 		provider->ReleaseLayer(layer);
 	}
-
+	_vecLayer.clear();
 	LayerClearedEvent(std::forward<IMapPtr>(this));
 
 	if (_spatialRef != nullptr)

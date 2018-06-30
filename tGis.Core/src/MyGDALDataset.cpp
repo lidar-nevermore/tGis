@@ -265,7 +265,6 @@ bool MyGDALDataset::IsOpened()
 
 void MyGDALDataset::Close()
 {
-	Dataset::Close();
 	Detach();
 }
 
@@ -288,6 +287,7 @@ void MyGDALDataset::Detach()
 {
 	if (_autoClose && _dataset != nullptr)
 	{
+		Dataset::Close();
 		GDALClose(_dataset);
 	}
 	_dataset = nullptr;

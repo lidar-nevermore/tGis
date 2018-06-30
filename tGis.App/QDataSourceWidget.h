@@ -19,6 +19,9 @@ public:
 	explicit QDataSourceWidget(QWidget *parent = 0);
 	~QDataSourceWidget();
 
+public:
+	void RefreshSelectedDataSource();
+
 private:
 	MemberEventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
 	MemberEventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;

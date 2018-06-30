@@ -7,6 +7,7 @@ class QStandardItemModel;
 
 #include "tOrganizer.h"
 #include "tGisMetaType.h"
+#include "Event.h"
 
 
 using namespace tGis::Core;
@@ -18,6 +19,15 @@ class QLayerWidget : public QListView
 public:
 	explicit QLayerWidget(QWidget *parent = 0);
 	~QLayerWidget();
+
+private:
+	MemberEventHandler<QLayerWidget, IMap*, ILayer*> _LayerAddedEventHandler;
+	MemberEventHandler<QLayerWidget, IMap*, ILayer*> _LayerRemovedEventHandler;
+	MemberEventHandler<QLayerWidget, IMap*> _LayerClearedEventHandler;
+
+	void AddLayer(IMapPtr, ILayerPtr);
+	void RemoveLayer(IMapPtr, ILayerPtr);
+	void ClearLayer(IMapPtr);
 
 signals:
 	void LayerSelectionChanged(IMapPtr, ILayerPtr, ILayerProviderPtr);
@@ -44,11 +54,6 @@ private:
 public:
 	void SetMap(IMapPtr map);
 	IMapPtr GetMap();
-
-
-	void AddLayer(IMapPtr, ILayerPtr);
-	void RemoveLayer(IMapPtr, ILayerPtr);
-	void ClearLayer(IMapPtr);
 
 	ILayerPtr GetSelectedLayer();
 

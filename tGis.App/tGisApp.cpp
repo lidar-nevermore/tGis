@@ -20,17 +20,14 @@ tGisApp::tGisApp(QWidget *parent)
 	_selectedDataset = nullptr;
 	_selectedDataSource = nullptr;
 
-	_LayerAddedEventHandler = new MemberEventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::AddLayer);
-	_LayerRemovedEventHandler = new MemberEventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::RemoveLayer);
-	_LayerClearedEventHandler = new MemberEventHandler<QLayerWidget, IMap*>(ui.layerWidget, &QLayerWidget::ClearLayer);
-	_map.LayerAddedEvent += _LayerAddedEventHandler;
-	_map.LayerRemovedEvent += _LayerRemovedEventHandler;
-	_map.LayerClearedEvent += _LayerClearedEventHandler;
 	ui.dataSourceWidget->AfterDatasetOpenEvent += &_AfterDatasetOpenEventHandler;
 	ui.dataSourceWidget->BeforeDatasetCloseEvent += &_BeforeDatasetCloseEventHandler;
-
 	ui.dataSourceWidget->AfterDataSourceConnectEvent.Add(this,&tGisApp::AfterDataSourceConnect);
 	ui.dataSourceWidget->BeforeDataSourceDisconnectEvent.Add(this,&tGisApp::BeforeDataSourceDisconnect);
+
+	_map.LayerAddedEvent.Add(this, &tGisApp::LayerAdded);
+	_map.LayerClearedEvent.Add(this, &tGisApp::LayerCleared);
+	_map.LayerRemovedEvent.Add(this, &tGisApp::LayerRemoved);
 
 	ui.mapWidget->SetMap(&_map);
 	ui.layerWidget->SetMap(&_map);
@@ -65,23 +62,7 @@ tGisApp::tGisApp(QWidget *parent)
 
 tGisApp::~tGisApp()
 {
-	_map.LayerAddedEvent -= _LayerAddedEventHandler;
-	_map.LayerRemovedEvent -= _LayerRemovedEventHandler;
-	_map.LayerClearedEvent -= _LayerClearedEventHandler;
-
-	delete _LayerAddedEventHandler;
-	delete _LayerRemovedEventHandler;
-	delete _LayerClearedEventHandler;
-}
-
-void tGisApp::on_zoomInAction_triggered(bool checked)
-{
-    IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
-	double resolution;
-	surface->GetViewPort(nullptr, nullptr, nullptr, nullptr, &resolution);
-	resolution *= 0.96;
-	surface->SetViewResolution(resolution);
-	ui.mapWidget->PresentSurface();
+	ui.mapWidget->SetMap(nullptr);
 }
 
 void tGisApp::AfterDatasetOpen(IDataSourceProvider * provider, IDataset * dt)
@@ -95,6 +76,7 @@ void tGisApp::AfterDatasetOpen(IDataSourceProvider * provider, IDataset * dt)
 
 void tGisApp::BeforeDatasetClose(IDataSourceProvider * provider, IDataset * dt)
 {
+	_map.RemoveLayer(dt);
 	if (_selectedDataset == dt)
 	{
 		ui.closeDatasetAction->setEnabled(false);
@@ -112,6 +94,31 @@ void tGisApp::AfterDataSourceConnect(IDataSourceProvider * provider, IDataSource
 
 void tGisApp::BeforeDataSourceDisconnect(IDataSourceProvider * provider, IDataSource * ds)
 {
+}
+
+void tGisApp::LayerAdded(IMapPtr, ILayerPtr)
+{
+	ui.mapWidget->RepaintMap();
+}
+
+void tGisApp::LayerRemoved(IMapPtr, ILayerPtr)
+{
+	ui.mapWidget->RepaintMap();
+}
+
+void tGisApp::LayerCleared(IMapPtr)
+{
+	ui.mapWidget->RepaintMap();
+}
+
+void tGisApp::on_zoomInAction_triggered(bool checked)
+{
+	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
+	double resolution;
+	surface->GetViewPort(nullptr, nullptr, nullptr, nullptr, &resolution);
+	resolution *= 0.96;
+	surface->SetViewResolution(resolution);
+	ui.mapWidget->PresentSurface();
 }
 
 void tGisApp::on_zoomOutAction_triggered(bool checked)
@@ -192,7 +199,6 @@ void tGisApp::on_zoomOriginalAction_triggered(bool checked)
 void tGisApp::on_removeLayerAction_triggered(bool checked)
 {
 	ui.layerWidget->RemoveSelectedLayer();
-	ui.mapWidget->RepaintMap();
 }
 
 void tGisApp::on_layerVisibleAction_toggled(bool checked)
@@ -209,7 +215,6 @@ void tGisApp::on_layerAttributeAction_triggered(bool checked)
 void tGisApp::on_removeAllLayersAction_triggered(bool checked)
 {
 	ui.layerWidget->RemoveAllLayers();
-	ui.mapWidget->RepaintMap();
 }
 
 void tGisApp::on_layerUpAction_triggered(bool checked)
@@ -256,10 +261,13 @@ void tGisApp::on_closeDatasetAction_triggered(bool checked)
 {
 	if (_selectedDataset != nullptr)
 	{
-		_map.RemoveLayer(_selectedDataset);
 		_selectedDataset->Close();
-		ui.mapWidget->RepaintMap();
 	}
+}
+
+void tGisApp::on_refreshDataSourceAction_triggered(bool checked)
+{
+	ui.dataSourceWidget->RefreshSelectedDataSource();
 }
 
 void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer, ILayerProviderPtr provider)
