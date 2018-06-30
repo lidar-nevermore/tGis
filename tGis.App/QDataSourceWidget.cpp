@@ -252,7 +252,6 @@ bool QDataSourceWidget::ConnectDataSource(QStandardItem* pItem, IDataSource* ds,
 		{
 			pItem->setIcon(*icon);
 		}
-		setExpanded(pItem->index(), true);
 		return true;
 	}
 
@@ -316,8 +315,16 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 	{
 		IDataSourceProvider* dsp = index.data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
 		IDataSource* ds = (IDataSourcePtr)index.data(DataRole).value<ITGisObjectPtr>();
+		bool connected = ds->IsConnected();
 		ConnectDataSource(pItem, ds, dsp);
-		expand(index);
+		if (connected && isExpanded(index))
+		{
+			collapse(index);
+		}
+		else
+		{
+			expand(index);
+		}
 	}
 	else if (type == DatasetType)
 	{

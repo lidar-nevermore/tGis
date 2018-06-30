@@ -158,6 +158,18 @@ void QOpenedDatasetWidget::NodeDoubleClicked(const QModelIndex & index)
 	QStandardItem* pItem = model->itemFromIndex(index);
 	int type = index.data(DataTypeRole).toInt();
 
+	if (type == DataSourceProviderType)
+	{
+		if (isExpanded(index))
+		{
+			collapse(index);
+		}
+		else
+		{
+			expand(index);
+		}
+	}
+
 	if (type == DatasetType)
 	{
 		IDataset* dt = index.data(DataRole).value<IDatasetPtr>();
