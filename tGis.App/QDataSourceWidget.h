@@ -20,17 +20,26 @@ public:
 	~QDataSourceWidget();
 
 private:
-	EventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
-	EventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;
+	MemberEventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
+	MemberEventHandler<QDataSourceWidget, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;
 	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
 	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
 
 	void FindNode(QStandardItem* parent, IDataSourceProvider*, ITGisObject*,const std::function<void(QStandardItem*)>&);
 
+	MemberEventHandler<QDataSourceWidget, IDataSourceProvider*, IDataSource*> _AfterDataSourceConnectEventHandler;
+	MemberEventHandler<QDataSourceWidget, IDataSourceProvider*, IDataSource*> _BeforeDataSourceDisconnectEventHandler;
+	void AfterDataSourceConnect(IDataSourceProvider*, IDataSource*);
+	void BeforeDataSourceDisconnect(IDataSourceProvider*, IDataSource*);
+
 public:
 	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
 
 	Event<IDataSourceProvider*, IDataset*> BeforeDatasetCloseEvent;
+
+	Event<IDataSourceProvider*, IDataSource*> AfterDataSourceConnectEvent;
+
+	Event<IDataSourceProvider*, IDataSource*> BeforeDataSourceDisconnectEvent;
 
 signals:
 	void SelectionChanged(IDataSourcePtr, IDatasetPtr, IDataSourceProviderPtr);

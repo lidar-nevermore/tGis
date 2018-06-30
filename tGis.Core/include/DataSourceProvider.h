@@ -36,18 +36,18 @@ private:
 	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
 	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
 
-	//class DS_DatasetEventHandler : public EventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*>
+	//class DS_DatasetEventHandler : public MemberEventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*>
 	//{
 	//public:
-	//	DS_DatasetEventHandler(DataSourceProvider* receiver, EventHandler::Handler handler,)
-	//		:EventHandler(receiver,handler)
+	//	DS_DatasetEventHandler(DataSourceProvider* receiver, MemberEventHandler::Handler handler,)
+	//		:MemberEventHandler(receiver,handler)
 	//	{
 
 	//	}
 	//};
 
-	EventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _AfterDatasetOpenHandler;
-	EventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseHandler;
+	MemberEventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _AfterDatasetOpenHandler;
+	MemberEventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseHandler;
 
 public:
 	virtual ~DataSourceProvider();

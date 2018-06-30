@@ -18,6 +18,9 @@ typedef IEventHandler<IDataSourceProvider*, IDataset*> DatasetEventHandler;
 template struct TGIS_API IEventHandler<IDataSourceProvider*, IDataset*>;
 template class TGIS_API Event<IDataSourceProvider*, IDataset*>;
 
+template struct TGIS_API IEventHandler<IDataSourceProvider*, IDataSource*>;
+template class TGIS_API Event<IDataSourceProvider*, IDataSource*>;
+
 struct TGIS_API IDataSourceProvider : public ITGisObject
 {
 	virtual const char* GetName() = 0;
@@ -37,6 +40,10 @@ struct TGIS_API IDataSourceProvider : public ITGisObject
 	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
 
 	Event<IDataSourceProvider*, IDataset*> BeforeDatasetCloseEvent;
+
+	Event<IDataSourceProvider*, IDataSource*> AfterDataSourceConnectEvent;
+
+	Event<IDataSourceProvider*, IDataSource*> BeforeDataSourceDisconnectEvent;
 
 	virtual void Release() = 0;
 

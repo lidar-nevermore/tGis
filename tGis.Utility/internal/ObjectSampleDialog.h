@@ -64,7 +64,7 @@ private:
 	double _sampleAreaRight;
 	double _sampleAreaBottom;
 	OverlayRect _sampleRect;
-	EventHandler<ObjectSampleDialog, IMapWidget*, int, int> _MapWidgetLoadedEventHandler;
+	MemberEventHandler<ObjectSampleDialog, IMapWidget*, int, int> _MapWidgetLoadedEventHandler;
 
 private:
 	void OnMapWidgetLoaded(IMapWidget*, int, int);

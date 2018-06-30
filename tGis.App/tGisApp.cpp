@@ -20,9 +20,9 @@ tGisApp::tGisApp(QWidget *parent)
 	_selectedDataset = nullptr;
 	_selectedDataSource = nullptr;
 
-	_LayerAddedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::AddLayer);
-	_LayerRemovedEventHandler = new EventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::RemoveLayer);
-	_LayerClearedEventHandler = new EventHandler<QLayerWidget, IMap*>(ui.layerWidget, &QLayerWidget::ClearLayer);
+	_LayerAddedEventHandler = new MemberEventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::AddLayer);
+	_LayerRemovedEventHandler = new MemberEventHandler<QLayerWidget, IMap*, ILayer*>(ui.layerWidget, &QLayerWidget::RemoveLayer);
+	_LayerClearedEventHandler = new MemberEventHandler<QLayerWidget, IMap*>(ui.layerWidget, &QLayerWidget::ClearLayer);
 	_map.LayerAddedEvent += _LayerAddedEventHandler;
 	_map.LayerRemovedEvent += _LayerRemovedEventHandler;
 	_map.LayerClearedEvent += _LayerClearedEventHandler;

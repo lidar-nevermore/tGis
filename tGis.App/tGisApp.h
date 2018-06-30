@@ -34,11 +34,11 @@ private:
 	TakeObjectSampleTool _takeObjectSampleTool;
 
 private:
-	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerAddedEventHandler;
-	EventHandler<QLayerWidget, IMap*, ILayer*>* _LayerRemovedEventHandler;
-	EventHandler<QLayerWidget, IMap*>* _LayerClearedEventHandler;
-	EventHandler<tGisApp, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
-	EventHandler<tGisApp, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;
+	MemberEventHandler<QLayerWidget, IMap*, ILayer*>* _LayerAddedEventHandler;
+	MemberEventHandler<QLayerWidget, IMap*, ILayer*>* _LayerRemovedEventHandler;
+	MemberEventHandler<QLayerWidget, IMap*>* _LayerClearedEventHandler;
+	MemberEventHandler<tGisApp, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
+	MemberEventHandler<tGisApp, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseEventHandler;
 	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
 	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
 

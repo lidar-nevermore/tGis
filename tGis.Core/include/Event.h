@@ -17,23 +17,44 @@ struct IEventHandler
 	IEventHandler() {};
 	virtual ~IEventHandler() {};
 
+	virtual bool IsEqual(IEventHandler<Args...>* handler)
+	{
+		return this == handler;
+	}
+
 private:
 	IEventHandler(const IEventHandler &) = delete;
 	IEventHandler &operator=(const IEventHandler &) = delete;
 };
 
 template<typename T, typename ...Args>
-class EventHandler : public IEventHandler<Args...>
+class MemberEventHandler : public IEventHandler<Args...>
 {
 public:
 	typedef void(T::*Handler)(Args...);
-	EventHandler(T* receiver, Handler handler)
+	MemberEventHandler(T* receiver, Handler handler)
 	{
 		_receiver = receiver;
 		_handler = handler;
 	}
 
-	virtual ~EventHandler() {};
+	virtual ~MemberEventHandler() {};
+
+	virtual bool IsEqual(const IEventHandler<Args...>* handler)
+	{
+		if (this == handler)
+			return true;
+
+		MemberEventHandler<T, Args...>* h = dynamic_cast<MemberEventHandler<T, Args...>*>(const_cast<IEventHandler<Args...>*>(handler));
+
+		if (h == nullptr)
+			return false;
+
+		if (h->_receiver == _receiver && h->_handler == _handler)
+			return true;
+
+		return false;
+	}
 
 public:
 	void operator()(Args&... args)
@@ -50,12 +71,28 @@ template<typename Callable, typename ...Args>
 class CallableEventHandler : public IEventHandler<Args...>
 {
 public:
-	CallableEventHandler(Callable& handler)
+	CallableEventHandler(const Callable& handler)
 	{
 		_handler = handler;
 	}
 
 	virtual ~CallableEventHandler() {};
+
+	virtual bool IsEqual(const IEventHandler<Args...>* handler)
+	{
+		if (this == handler)
+			return true;
+
+		CallableEventHandler<Callable, Args...>* h = dynamic_cast<CallableEventHandler<Callable, Args...>*>(const_cast<IEventHandler<Args...>*>(handler));
+
+		if (h == nullptr)
+			return false;
+
+		if (h->_handler == _handler)
+			return true;
+
+		return false;
+	}
 
 public:
 	void operator()(Args&... args)
@@ -64,38 +101,46 @@ public:
 	}
 
 private:
-	Callable _handler;
+	const Callable _handler;
 };
 
 template<typename ...Args>
 class Event
 {
 public:
-	typedef IEventHandler<Args...>* Callable;
+	typedef IEventHandler<Args...>* EventHandler;
 
 public:
 	Event() 
 	{
 		_valid = false;
 		_event = nullptr;
+		_handler = nullptr;
+		_isInternalHandler = false;
 	};
 
-	Event(const Callable& h)
+	Event(const EventHandler& h)
 	{
 		_handler = h;
 		_valid = true;
 		_event = nullptr;
+		_isInternalHandler = false;
 	}
 
 	~Event() 
 	{
+		if (_valid && _isInternalHandler)
+		{
+			delete _handler;
+		}
+
 		if (_event != nullptr) 
 		{
 			delete _event;
 		}
 	};
 
-	const Event<Args...>& operator = (const Callable& h)
+	const Event<Args...>& operator = (const EventHandler& h)
 	{
 		_handler = h;
 		_valid = true;
@@ -162,31 +207,42 @@ public:
 		this->Raise(args...);
 	}
 
-public:
-	void Add(const Callable& h)
+private:
+	void Add(const EventHandler& h, bool isInternalHandler)
 	{
 		if (_valid)
 		{
 			if (_event != nullptr)
 			{
-				_event->Add(h);
+				_event->Add(h, isInternalHandler);
 			}
 			else
 			{
 				_event = new Event<Args...>(h);
+				_event->_isInternalHandler = isInternalHandler;
 			}
 		}
 		else
 		{
 			_handler = h;
 			_valid = true;
+			_isInternalHandler = isInternalHandler;
 		}
 	}
 
-	void Remove(const Callable& h)
+public:
+	void Add(const EventHandler& h)
 	{
-		if (_valid && _handler == h)
+		this->Add(h, false);
+	}
+
+	void Remove(const EventHandler& h)
+	{
+		if (_valid && _handler->IsEqual(h))
 		{
+			if (_isInternalHandler)
+				delete _handler;
+
 			if (_event == nullptr)
 			{
 				_valid = false;
@@ -199,6 +255,7 @@ public:
 				_event = _event->_event;
 
 				event_->_event = nullptr;
+				event_->_valid = false;
 				delete event_;				
 			}
 		}
@@ -206,6 +263,34 @@ public:
 		{
 			_event->Remove(h);
 		}
+	}
+
+	template<typename T>
+	void Add(T* receiver, void(T::*h)(Args...))
+	{
+		MemberEventHandler<T, Args...>* handler = new MemberEventHandler<T, Args...>(receiver, h);
+		this->Add(handler, true);
+	}
+
+	template<typename T>
+	void Remove(T* receiver, void(T::*h)(Args...))
+	{
+		MemberEventHandler<T, Args...> handler(receiver, h);
+		this->Remove(&handler);
+	}
+
+	template<typename Callable>
+	void Add(const Callable& h)
+	{
+		CallableEventHandler<Callable, Args...>* handler = new CallableEventHandler<Callable, Args...>(h);
+		this->Add(handler, true);
+	}
+
+	template<typename Callable>
+	void Remove(const Callable& h)
+	{
+		CallableEventHandler<Callable, Args...> handler(h);
+		this->Remove(&handler);
 	}
 
 	void Add(const Event<Args...>& e)
@@ -236,14 +321,14 @@ public:
 
 public:
 
-	const Event<Args...>& operator += (const Callable& h)
+	const Event<Args...>& operator += (const EventHandler& h)
 	{
 		this->Add(h);
 
 		return *this;
 	}
 
-	const Event<Args...>& operator -= (const Callable& h)
+	const Event<Args...>& operator -= (const EventHandler& h)
 	{
 		this->Remove(h);
 
@@ -266,7 +351,8 @@ public:
 
 private:
 	bool _valid;
-	Callable _handler;
+	EventHandler _handler;
+	bool _isInternalHandler;
 	Event<Args...>* _event;
 };
 

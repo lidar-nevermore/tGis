@@ -133,22 +133,29 @@ void FileSystemDataSource::Connect()
 		flag = _tgis_findnext(handle, &file);
 	};
 	_tgis_findclose(handle);
+
+	DataSource::Connect();
 }
 
 void FileSystemDataSource::Disconnect()
 {
-	_connected = false;
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
+	if (_connected)
 	{
-		IDataSourceProvider* provider = (*it)->GetProvider();
-		provider->ReleaseDataSource(*it);
+		DataSource::Disconnect();
+
+		_connected = false;
+		for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
+		{
+			IDataSourceProvider* provider = (*it)->GetProvider();
+			provider->ReleaseDataSource(*it);
+		}
+		_vecDataSource.clear();
+		for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
+		{
+			delete (*it);
+		}
+		_vecDataset.clear();
 	}
-	_vecDataSource.clear();
-	for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
-	{
-		delete (*it);
-	}
-	_vecDataset.clear();
 }
 
 

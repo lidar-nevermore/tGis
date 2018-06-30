@@ -18,6 +18,8 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 	:QTreeView(parent)
 	, _AfterDatasetOpenEventHandler(this, &QDataSourceWidget::AfterDatasetOpen)
 	, _BeforeDatasetCloseEventHandler(this, &QDataSourceWidget::BeforeDatasetClose)
+	, _AfterDataSourceConnectEventHandler(this, &QDataSourceWidget::AfterDataSourceConnect)
+	, _BeforeDataSourceDisconnectEventHandler(this, &QDataSourceWidget::BeforeDataSourceDisconnect)
 {
 	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
 
@@ -50,6 +52,8 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 
 		provider->AfterDatasetOpenEvent += &_AfterDatasetOpenEventHandler;
 		provider->BeforeDatasetCloseEvent += &_BeforeDatasetCloseEventHandler;
+		provider->AfterDataSourceConnectEvent += &_AfterDataSourceConnectEventHandler;
+		provider->BeforeDataSourceDisconnectEvent += &_BeforeDataSourceDisconnectEventHandler;
 
 		if (provider->IsTypeOf(&FileSystemDataSourceProvider::INSTANCE()))
 		{
@@ -139,6 +143,16 @@ void QDataSourceWidget::FindNode(QStandardItem* parent, IDataSourceProvider * pr
 			}
 		}
 	}
+}
+
+void QDataSourceWidget::AfterDataSourceConnect(IDataSourceProvider * provider, IDataSource * ds)
+{
+	AfterDataSourceConnectEvent(provider, ds);
+}
+
+void QDataSourceWidget::BeforeDataSourceDisconnect(IDataSourceProvider * provider, IDataSource * ds)
+{
+	BeforeDataSourceDisconnectEvent(provider, ds);
 }
 
 void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * ds,IDataSourceProvider* dsp)

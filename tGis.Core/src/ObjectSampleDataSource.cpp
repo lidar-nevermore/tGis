@@ -121,13 +121,16 @@ void ObjectSampleDataSource::Connect()
 
 void ObjectSampleDataSource::Disconnect()
 {
-	for (vector<ObjectSampleMetadata*>::iterator it = _vecObjectSampleMetadata.begin(); it != _vecObjectSampleMetadata.end(); it++)
+	if (_connected)
 	{
-		delete (*it);
+		for (vector<ObjectSampleMetadata*>::iterator it = _vecObjectSampleMetadata.begin(); it != _vecObjectSampleMetadata.end(); it++)
+		{
+			delete (*it);
+		}
+		_vecObjectSampleMetadata.clear();
+		_mapObjectSampleMetadata.clear();
+		FileSystemDataSource::Disconnect();
 	}
-	_vecObjectSampleMetadata.clear();
-	_mapObjectSampleMetadata.clear();
-	FileSystemDataSource::Disconnect();
 }
 
 int ObjectSampleDataSource::GetObjectSampleMetadataCount()
