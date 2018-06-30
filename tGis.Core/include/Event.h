@@ -5,6 +5,7 @@
 
 #include "Helper.h"
 #include "ITGisObject.h"
+#include "elr_mpl.h"
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -56,6 +57,22 @@ public:
 		return false;
 	}
 
+	static void* operator new(size_t size)
+	{
+		void* p = elr_mpl_alloc_multi(NULL, size);
+		if (p == NULL)
+		{
+			throw std::bad_alloc();
+		}
+
+		return p;
+	}
+
+	static void operator delete(void *p)
+	{
+		elr_mpl_free(p);
+	}
+
 public:
 	void operator()(Args&... args)
 	{
@@ -92,6 +109,23 @@ public:
 			return true;
 
 		return false;
+	}
+
+
+	static void* operator new(size_t size)
+	{
+		void* p = elr_mpl_alloc_multi(NULL, size);
+		if (p == NULL)
+		{
+			throw std::bad_alloc();
+		}
+
+		return p;
+	}
+
+	static void operator delete(void *p)
+	{
+		elr_mpl_free(p);
 	}
 
 public:

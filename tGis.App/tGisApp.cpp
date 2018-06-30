@@ -29,6 +29,9 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.dataSourceWidget->AfterDatasetOpenEvent += &_AfterDatasetOpenEventHandler;
 	ui.dataSourceWidget->BeforeDatasetCloseEvent += &_BeforeDatasetCloseEventHandler;
 
+	ui.dataSourceWidget->AfterDataSourceConnectEvent.Add(this,&tGisApp::AfterDataSourceConnect);
+	ui.dataSourceWidget->BeforeDataSourceDisconnectEvent.Add(this,&tGisApp::BeforeDataSourceDisconnect);
+
 	ui.mapWidget->SetMap(&_map);
 	ui.layerWidget->SetMap(&_map);
 
@@ -97,6 +100,18 @@ void tGisApp::BeforeDatasetClose(IDataSourceProvider * provider, IDataset * dt)
 		ui.closeDatasetAction->setEnabled(false);
 		ui.datasetInfoAction->setEnabled(false);
 	}
+}
+
+void tGisApp::AfterDataSourceConnect(IDataSourceProvider * provider, IDataSource * ds)
+{
+	if (_selectedDataSource == ds)
+	{
+		ui.refreshDataSourceAction->setEnabled(true);
+	}
+}
+
+void tGisApp::BeforeDataSourceDisconnect(IDataSourceProvider * provider, IDataSource * ds)
+{
 }
 
 void tGisApp::on_zoomOutAction_triggered(bool checked)
@@ -327,7 +342,5 @@ void tGisApp::on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPt
 
 void tGisApp::on_openedDatasetWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr dt, IDataSourceProviderPtr provider)
 {
-	IDataSourcePtr ds_ = _selectedDataSource;
-	on_dataSourceWidget_SelectionChanged(ds, dt, provider);
-	_selectedDataSource = ds_;
+	on_dataSourceWidget_SelectionChanged(_selectedDataSource, dt, provider);
 }

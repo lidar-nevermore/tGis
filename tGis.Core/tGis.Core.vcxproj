@@ -96,6 +96,7 @@
     <ClCompile Include="src\DataSourceProvider.cpp" />
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />
     <ClCompile Include="src\dllmain.cpp" />
+    <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
     <ClCompile Include="src\GeoSurface.cpp" />

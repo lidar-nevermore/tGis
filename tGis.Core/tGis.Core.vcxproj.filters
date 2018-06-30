@@ -394,5 +394,8 @@
     <ClCompile Include="src\Dataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
+    <ClCompile Include="src\Event.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

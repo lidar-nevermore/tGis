@@ -66,3 +66,5 @@ void MapTool::KeyPress(void *)
 }
 
 END_NAME_SPACE(tGis, Core)
+
+

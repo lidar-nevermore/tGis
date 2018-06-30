@@ -42,6 +42,9 @@ private:
 	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
 	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
 
+	void AfterDataSourceConnect(IDataSourceProvider*, IDataSource*);
+	void BeforeDataSourceDisconnect(IDataSourceProvider*, IDataSource*);
+
 private:
 	tGis::Core::ObjectSampleDataSource* _selectedObjectSampleDataSource;
 	RasterLayer* _selectedRasterLayer;
