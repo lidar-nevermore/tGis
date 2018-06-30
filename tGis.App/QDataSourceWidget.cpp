@@ -36,12 +36,17 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 			pItem->setIcon(*icon);
 		}
 		QVariant userData;
-		userData.setValue<void*>((void*)provider);
+		userData.setValue<ITGisObjectPtr>(provider);
 		pItem->setData(userData, DataRole);
+
 		QVariant userDataType;
 		userDataType.setValue<int>(DataSourceProviderType);
 		pItem->setData(userDataType, DataTypeRole);
 		rootNode->appendRow(pItem);
+
+		QVariant udDataSourceProvider;
+		udDataSourceProvider.setValue<IDataSourceProviderPtr>(provider);
+		pItem->setData(udDataSourceProvider, DataSourceProviderRole);
 
 		provider->AfterDatasetOpenEvent += &_AfterDatasetOpenEventHandler;
 		provider->BeforeDatasetCloseEvent += &_BeforeDatasetCloseEventHandler;
@@ -84,8 +89,56 @@ void QDataSourceWidget::AfterDatasetOpen(IDataSourceProvider * provider, IDatase
 
 void QDataSourceWidget::BeforeDatasetClose(IDataSourceProvider * provider, IDataset * dt)
 {
-	//TODO 遍历树节点设置图标
+	FindNode(_model->invisibleRootItem(), provider, dt, 
+		[](QStandardItem* item)->void
+	    {
+	    	IDataset * dto = (IDatasetPtr)item->data(DataRole).value<ITGisObjectPtr>();
+	    	const QIcon* icon = IconRes::INSTANCE.GetIcon(dto->GetType(), "Default");
+	    	if (icon != nullptr)
+	    	{
+	    		item->setIcon(*icon);
+	    	}
+	    }
+		);
 	BeforeDatasetCloseEvent(provider, dt);
+}
+
+void QDataSourceWidget::FindNode(QStandardItem* parent, IDataSourceProvider * provider, ITGisObject * object,const std::function<void(QStandardItem*)>& nodeFoundEvent)
+{
+	int rowCount = parent->rowCount();
+	for (int i = 0; i < rowCount; i++)
+	{
+		QStandardItem * item = parent->child(i);
+		if (item != nullptr)
+		{
+			ITGisObject* go = item->data(DataRole).value<ITGisObjectPtr>();
+			IDataSourceProvider* prd = item->data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
+			if (go == object)
+			{
+				nodeFoundEvent(item);
+			}
+			if (provider->IsTypeOf(prd))
+			{
+				if (provider->IsTypeOf(FileSystemDataSourceProvider::S_GetType()) 
+					&& go->IsTypeOf(FileSystemDataSource::S_GetType())
+					&& object->IsTypeOf(FileSystemDataSource::S_GetType()))
+				{
+					FileSystemDataSource* ds = (FileSystemDataSource*)go;
+					FileSystemDataSource* dso = (FileSystemDataSource*)object;
+					QString dsPath = QString::fromLocal8Bit(ds->GetCreationString());
+					QString dsoPath = QString::fromLocal8Bit(dso->GetCreationString());
+					if (dsoPath.contains(dsPath))
+					{
+						FindNode(item, provider, object, nodeFoundEvent);
+					}
+				}
+				else
+				{
+					FindNode(item, provider, object, nodeFoundEvent);
+				}
+			}
+		}
+	}
 }
 
 void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * ds,IDataSourceProvider* dsp)
@@ -100,7 +153,7 @@ void QDataSourceWidget::AddDataSourceNode(QStandardItem * parent, IDataSource * 
 		pItem->setIcon(*icon);
 	}
 	QVariant udData;
-	udData.setValue<IDataSourcePtr>(ds);
+	udData.setValue<ITGisObjectPtr>(ds);
 	pItem->setData(udData, DataRole);
 
 	QVariant udDataType;
@@ -140,7 +193,7 @@ bool QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, IDataSource
 				pDatasetItem->setIcon(*icon);
 			}
 			QVariant udData;
-			udData.setValue<IDatasetPtr>(dt);
+			udData.setValue<ITGisObjectPtr>(dt);
 			pDatasetItem->setData(udData, DataRole);
 
 			QVariant udDataType;
@@ -220,20 +273,20 @@ void QDataSourceWidget::selectionChanged(const QItemSelection & sel, const QItem
 		int type = _selectedItem->data(DataTypeRole).toInt();
 		if (type == DataSourceType)
 		{
-			_selectedDataSource = _selectedItem->data(DataRole).value<IDataSourcePtr>();
+			_selectedDataSource = (IDataSourcePtr)_selectedItem->data(DataRole).value<ITGisObjectPtr>();
 			_selectedDataset = nullptr;
 			_selectedDataSourceProvider = _selectedItem->data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
 		}
 		else if (type == DatasetType)
 		{
 			_selectedDataSource = nullptr;
-			_selectedDataset = _selectedItem->data(DataRole).value<IDatasetPtr>();
+			_selectedDataset = (IDatasetPtr)_selectedItem->data(DataRole).value<ITGisObjectPtr>();
 			_selectedDataSourceProvider = _selectedItem->data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
 		}
 		else
 		{
 			_selectedDataSource = nullptr;
-			_selectedDataset = _selectedItem->data(DataRole).value<IDatasetPtr>();
+			_selectedDataset = nullptr;
 			_selectedDataSourceProvider = _selectedItem->data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
 		}
 	}
@@ -262,12 +315,13 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 	if (type == DataSourceType)
 	{
 		IDataSourceProvider* dsp = index.data(DataSourceProviderRole).value<IDataSourceProviderPtr>();
-		IDataSource* ds = index.data(DataRole).value<IDataSourcePtr>();
+		IDataSource* ds = (IDataSourcePtr)index.data(DataRole).value<ITGisObjectPtr>();
 		ConnectDataSource(pItem, ds, dsp);
+		expand(index);
 	}
 	else if (type == DatasetType)
 	{
-		IDataset* dt = index.data(DataRole).value<IDatasetPtr>();
+		IDataset* dt = (IDatasetPtr)index.data(DataRole).value<ITGisObjectPtr>();
 
 		if (!OpenDataset(pItem, dt))
 			return;

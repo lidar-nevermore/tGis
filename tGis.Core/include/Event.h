@@ -50,7 +50,7 @@ template<typename Callable, typename ...Args>
 class CallableEventHandler : public IEventHandler<Args...>
 {
 public:
-	CallableEventHandler(Callable handler)
+	CallableEventHandler(Callable& handler)
 	{
 		_handler = handler;
 	}

@@ -25,6 +25,8 @@ private:
 	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
 	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
 
+	void FindNode(QStandardItem* parent, IDataSourceProvider*, ITGisObject*,const std::function<void(QStandardItem*)>&);
+
 public:
 	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
 

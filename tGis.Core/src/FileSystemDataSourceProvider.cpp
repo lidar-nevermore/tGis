@@ -51,6 +51,11 @@ const char * FileSystemDataSourceProvider::GetType()
 	return _type;
 }
 
+const char * FileSystemDataSourceProvider::S_GetType()
+{
+	return _type;
+}
+
 
 bool FileSystemDataSourceProvider::IsTypeOf(const char * type)
 {

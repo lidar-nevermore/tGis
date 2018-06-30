@@ -12,6 +12,7 @@ Q_DECLARE_METATYPE(ILayerProviderPtr)
 Q_DECLARE_METATYPE(IDataSourceProviderPtr)
 Q_DECLARE_METATYPE(IDataSourcePtr)
 Q_DECLARE_METATYPE(IDatasetPtr)
+Q_DECLARE_METATYPE(ITGisObjectPtr)
 
 class QMainWindow;
 QMainWindow* GetMainWindow();

@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<IDataSourcePtr>("IDataSourcePtr");
 	qRegisterMetaType<IDataSourceProviderPtr>("IDataSourceProviderPtr");
 	qRegisterMetaType<IDatasetPtr>("IDatasetPtr");
+	qRegisterMetaType<ITGisObjectPtr>("ITGisObjectPtr");
 
 	QApplication a(argc, argv);
 	tGisApp w;
