@@ -12,7 +12,7 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
-class TGIS_UTILITY_API TakeObjectSampleTool : public DrawRectTool
+class TakeObjectSampleTool : public DrawRectTool
 {
 public:
 	TakeObjectSampleTool();

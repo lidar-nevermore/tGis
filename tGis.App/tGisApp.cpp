@@ -39,9 +39,6 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.mapWidget->AddMapTool(&_rectZoomTool);
 	_rectZoomTool.SetEnabled(false);
 
-	_takeObjectSampleTool.SetEnabled(false);
-	ui.mapWidget->AddMapTool(&_takeObjectSampleTool);
-
 	QDesktopWidget * desktop = QApplication::desktop();
 	int curMonitor = desktop->screenNumber(this);
 	QRect rect = desktop->screenGeometry(curMonitor);
@@ -56,7 +53,7 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.removeLayerAction->setEnabled(false);
 	ui.layerVisibleAction->setEnabled(false);
 	ui.layerAttributeAction->setEnabled(false);
-	ui.takeObjectSampleAction->setEnabled(false);
+	ui.rasterSubAreaAction->setEnabled(false);
 	ui.showGridAction->setChecked(ui.mapWidget->GetGridVisible());
 }
 
@@ -154,7 +151,7 @@ void tGisApp::on_zoomRectAction_toggled(bool checked)
 	if (checked)
 	{
 		ui.panAction->setChecked(false);
-		ui.takeObjectSampleAction->setChecked(false);
+		ui.rasterSubAreaAction->setChecked(false);
 	}
 }
 
@@ -164,7 +161,7 @@ void tGisApp::on_panAction_toggled(bool checked)
 	if (checked)
 	{
 		ui.zoomRectAction->setChecked(false);
-		ui.takeObjectSampleAction->setChecked(false);
+		ui.rasterSubAreaAction->setChecked(false);
 	}
 }
 
@@ -241,9 +238,8 @@ void tGisApp::on_layerBottomAction_triggered(bool checked)
 	ui.mapWidget->RepaintMap();
 }
 
-void tGisApp::on_takeObjectSampleAction_toggled(bool checked)
+void tGisApp::on_rasterSubAreaAction_toggled(bool checked)
 {
-	_takeObjectSampleTool.SetEnabled(checked);
 	if (checked)
 	{
 		ui.panAction->setChecked(false);
@@ -287,14 +283,12 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 		IDataset* dataset = layer->GetDataset();
 		if (dataset->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 		{
-			_selectedRasterLayer = (RasterLayer*)layer;
-			_takeObjectSampleTool.SetRasterLayer(_selectedRasterLayer);
 			ui.zoomOriginalAction->setEnabled(true);
-			ui.takeObjectSampleAction->setEnabled(_selectedObjectSampleDataSource != nullptr&&_selectedObjectSampleDataSource->IsConnected());
+			ui.rasterSubAreaAction->setEnabled(true);
 		}
 		else
 		{
-			ui.takeObjectSampleAction->setEnabled(false);
+			ui.rasterSubAreaAction->setEnabled(false);
 		}
 	}
 	else
@@ -304,7 +298,7 @@ void tGisApp::on_layerWidget_LayerSelectionChanged(IMapPtr map, ILayerPtr layer,
 		ui.layerTopAction->setEnabled(false);
 		ui.layerDownAction->setEnabled(false);
 		ui.layerBottomAction->setEnabled(false);
-		ui.takeObjectSampleAction->setEnabled(false);
+		ui.rasterSubAreaAction->setEnabled(false);
 	}
 }
 
@@ -335,17 +329,6 @@ void tGisApp::on_dataSourceWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPt
 	}
 	
 	ui.refreshDataSourceAction->setEnabled(ds != nullptr && ds->IsConnected());
-	
-	if (ds != nullptr && ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
-	{
-		_selectedObjectSampleDataSource = reinterpret_cast<tGis::Core::ObjectSampleDataSource*>(ds);
-		_takeObjectSampleTool.SetObjectSampleDataSource(_selectedObjectSampleDataSource);
-		ui.takeObjectSampleAction->setEnabled(_selectedRasterLayer != nullptr&&_selectedObjectSampleDataSource->IsConnected());
-	}
-	else
-	{
-		ui.takeObjectSampleAction->setEnabled(false);
-	}
 }
 
 void tGisApp::on_openedDatasetWidget_SelectionChanged(IDataSourcePtr ds, IDatasetPtr dt, IDataSourceProviderPtr provider)

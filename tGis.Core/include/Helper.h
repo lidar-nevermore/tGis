@@ -33,12 +33,16 @@
 #define TGIS_API TGIS_SYMBOL_IMPORT
 #endif
 
+
+#pragma region tGis.Utility
+
 #ifdef TGIS_UTILITY_EXPORTS
 #define TGIS_UTILITY_API TGIS_SYMBOL_EXPORT
 #else
 #define TGIS_UTILITY_API TGIS_SYMBOL_IMPORT
 #endif
 
+#pragma endregion
 
 
 #if defined(_MSC_VER) || defined(__MINGW32__)

@@ -11,7 +11,6 @@
 #include "MapZoomTool.h"
 #include "DrawRectTool.h"
 #include "RectZoomTool.h"
-#include "TakeObjectSampleTool.h"
 
 using namespace tGis::Core;
 using namespace tGis::Utility;
@@ -31,7 +30,6 @@ private:
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;
 	RectZoomTool _rectZoomTool;
-	TakeObjectSampleTool _takeObjectSampleTool;
 
 private:
 	MemberEventHandler<tGisApp, IDataSourceProvider*, IDataset*> _AfterDatasetOpenEventHandler;
@@ -70,7 +68,7 @@ private slots:
 	void on_layerTopAction_triggered(bool checked);
 	void on_layerDownAction_triggered(bool checked);
 	void on_layerBottomAction_triggered(bool checked);
-	void on_takeObjectSampleAction_toggled(bool checked);
+	void on_rasterSubAreaAction_toggled(bool checked);
 	void on_showGridAction_toggled(bool checked);
 	void on_closeDatasetAction_triggered(bool checked);
 	void on_refreshDataSourceAction_triggered(bool checked);

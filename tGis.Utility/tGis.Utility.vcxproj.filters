@@ -2,60 +2,72 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\DrawRectTool.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\Map</Filter>
     </ClCompile>
     <ClCompile Include="src\MapPanTool.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\Map</Filter>
     </ClCompile>
     <ClCompile Include="src\MapZoomTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\QtGeoSurface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RectZoomTool.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\Map</Filter>
     </ClCompile>
     <ClCompile Include="src\QMapWidget.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>src\Map</Filter>
     </ClCompile>
-    <ClCompile Include="src\TakeObjectSampleTool.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\QtGeoSurface.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RectZoomTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\TakeObjectSampleTool.cpp">
+      <Filter>internal\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\ObjectSampleTool.cpp">
+      <Filter>internal\ml</Filter>
     </ClCompile>
     <ClCompile Include="internal\ObjectSampleDialog.cpp">
-      <Filter>internal</Filter>
+      <Filter>internal\ml</Filter>
     </ClCompile>
     <ClCompile Include="internal\ObjectSampleLabelDialog.cpp">
-      <Filter>internal</Filter>
+      <Filter>internal\ml</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\ObjectSampleWidget.cpp">
+      <Filter>internal\ml</Filter>
     </ClCompile>
     <ClCompile Include="internal\QtHelper.cpp">
-      <Filter>internal</Filter>
+      <Filter>internal\ml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h">
-      <Filter>Header Files</Filter>
+      <Filter>include\Map</Filter>
     </ClInclude>
     <ClInclude Include="include\MapPanTool.h">
-      <Filter>Header Files</Filter>
+      <Filter>include\Map</Filter>
     </ClInclude>
     <ClInclude Include="include\MapZoomTool.h">
-      <Filter>Header Files</Filter>
+      <Filter>include\Map</Filter>
     </ClInclude>
     <ClInclude Include="include\QtGeoSurface.h">
-      <Filter>Header Files</Filter>
+      <Filter>include\Map</Filter>
     </ClInclude>
     <ClInclude Include="include\RectZoomTool.h">
-      <Filter>Header Files</Filter>
+      <Filter>include\Map</Filter>
     </ClInclude>
-    <ClInclude Include="include\TakeObjectSampleTool.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="internal\ObjectSampleTool.h">
+      <Filter>internal\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\TakeObjectSampleTool.h">
+      <Filter>internal\ml</Filter>
     </ClInclude>
     <ClInclude Include="internal\ObjectSampleDialog.h">
-      <Filter>internal</Filter>
+      <Filter>internal\ml</Filter>
     </ClInclude>
     <ClInclude Include="internal\ObjectSampleLabelDialog.h">
-      <Filter>internal</Filter>
+      <Filter>internal\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ObjectSampleWidget.h">
+      <Filter>internal\ml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -63,16 +75,6 @@
       <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
       <Extensions>qrc;*</Extensions>
       <ParseFiles>false</ParseFiles>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-      <ParseFiles>true</ParseFiles>
-    </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-      <ParseFiles>true</ParseFiles>
     </Filter>
     <Filter Include="Form Files">
       <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
@@ -82,13 +84,32 @@
     <Filter Include="internal">
       <UniqueIdentifier>{26b854c7-ddef-4193-90d0-e092ab53fd8d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="include\Map">
+      <UniqueIdentifier>{ca1266c5-f2b9-4dff-a0f6-2961e4c10cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Map">
+      <UniqueIdentifier>{d5f4cd35-9ac5-4be7-9a1a-bfd1adb075e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal\ml">
+      <UniqueIdentifier>{b5fc1e87-be28-455e-bf39-6ef8f1dff543}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="include\QMapWidget.h">
-      <Filter>Header Files</Filter>
+      <Filter>include\Map</Filter>
     </QtMoc>
     <QtMoc Include="internal\QtHelper.h">
-      <Filter>internal</Filter>
+      <Filter>internal\ml</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +120,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="form\RasterSubArea.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="form\ObjectSampleWidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

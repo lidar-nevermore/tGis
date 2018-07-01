@@ -109,22 +109,26 @@
   <ItemGroup>
     <ClCompile Include="internal\ObjectSampleDialog.cpp" />
     <ClCompile Include="internal\ObjectSampleLabelDialog.cpp" />
+    <ClCompile Include="internal\ObjectSampleTool.cpp" />
+    <ClCompile Include="internal\ObjectSampleWidget.cpp" />
     <ClCompile Include="internal\QtHelper.cpp" />
+    <ClCompile Include="internal\TakeObjectSampleTool.cpp" />
     <ClCompile Include="src\DrawRectTool.cpp" />
     <ClCompile Include="src\MapPanTool.cpp" />
     <ClCompile Include="src\MapZoomTool.cpp" />
     <ClCompile Include="src\QMapWidget.cpp" />
     <ClCompile Include="src\QtGeoSurface.cpp" />
     <ClCompile Include="src\RectZoomTool.cpp" />
-    <ClCompile Include="src\TakeObjectSampleTool.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h" />
     <ClInclude Include="include\MapPanTool.h" />
     <ClInclude Include="include\MapZoomTool.h" />
-    <ClInclude Include="include\TakeObjectSampleTool.h" />
     <ClInclude Include="internal\ObjectSampleDialog.h" />
     <ClInclude Include="internal\ObjectSampleLabelDialog.h" />
+    <ClInclude Include="internal\ObjectSampleTool.h" />
+    <ClInclude Include="internal\ObjectSampleWidget.h" />
+    <ClInclude Include="internal\TakeObjectSampleTool.h" />
     <QtMoc Include="internal\QtHelper.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(ProjectDir)\internal</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;.\include;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(ProjectDir)\internal</IncludePath>
@@ -139,6 +143,7 @@
       <FileType>Document</FileType>
     </QtUic>
     <QtUic Include="form\ObjectSampleLabelDialog.ui" />
+    <QtUic Include="form\ObjectSampleWidget.ui" />
     <QtUic Include="form\RasterSubArea.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

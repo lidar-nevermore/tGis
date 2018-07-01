@@ -254,11 +254,11 @@
     <ClInclude Include="include\ToolKitRepository.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
+    <ClInclude Include="include\Tool.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\dllmain.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
@@ -410,6 +410,9 @@
       <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\ToolKit.cpp">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tool.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>

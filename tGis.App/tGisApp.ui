@@ -62,7 +62,7 @@
    <addaction name="refreshDataSourceAction"/>
    <addaction name="datasetInfoAction"/>
    <addaction name="closeDatasetAction"/>
-   <addaction name="takeObjectSampleAction"/>
+   <addaction name="rasterSubAreaAction"/>
    <addaction name="separator"/>
    <addaction name="layerVisibleAction"/>
    <addaction name="zoomLayerAction"/>
@@ -527,7 +527,7 @@
     <string>移动到底</string>
    </property>
   </action>
-  <action name="takeObjectSampleAction">
+  <action name="rasterSubAreaAction">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -536,10 +536,10 @@
      <normaloff>:/tGisApp/Resources/TakeObjectSample.png</normaloff>:/tGisApp/Resources/TakeObjectSample.png</iconset>
    </property>
    <property name="text">
-    <string>扣取目标样本</string>
+    <string>扣取栅格子区域</string>
    </property>
    <property name="toolTip">
-    <string>扣取目标样本</string>
+    <string>扣取栅格子区域</string>
    </property>
   </action>
   <action name="showGridAction">

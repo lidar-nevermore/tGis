@@ -72,6 +72,7 @@
     <ClInclude Include="include\SimpleSymbolLibrary.h" />
     <ClInclude Include="include\Statistics.h" />
     <ClInclude Include="include\SymbolLibraryRepository.h" />
+    <ClInclude Include="include\Tool.h" />
     <ClInclude Include="include\ToolKit.h" />
     <ClInclude Include="include\ToolKitRepository.h" />
     <ClInclude Include="include\tUtility.h" />
@@ -98,7 +99,6 @@
     <ClCompile Include="src\DataSource.cpp" />
     <ClCompile Include="src\DataSourceProvider.cpp" />
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />
-    <ClCompile Include="src\dllmain.cpp" />
     <ClCompile Include="src\Event.cpp" />
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
@@ -137,6 +137,7 @@
     <ClCompile Include="src\SimpleSymbolLibrary.cpp" />
     <ClCompile Include="src\Statistics.cpp" />
     <ClCompile Include="src\SymbolLibraryRepository.cpp" />
+    <ClCompile Include="src\Tool.cpp" />
     <ClCompile Include="src\ToolKit.cpp" />
     <ClCompile Include="src\ToolKitRepository.cpp" />
     <ClCompile Include="src\tOrganizer.cpp" />

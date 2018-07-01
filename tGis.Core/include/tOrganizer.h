@@ -17,6 +17,8 @@
 #include "RasterRgbLayerProvider.h"
 #include "VectorSimpleLayerProvider.h"
 
+#include "ToolKitRepository.h"
+
 
 
 BEGIN_NAME_SPACE(tGis, Core)
