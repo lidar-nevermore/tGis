@@ -1,5 +1,7 @@
 <RCC>
   <qresource prefix="tGisApp">
+    <file>Images/ToolKit/tool.png</file>
+    <file>Images/ToolKit/toolkit.png</file>
     <file>Resources/OpenFileDataSource.png</file>
     <file>Resources/CloseDataset.png</file>
     <file>Resources/RefreshDataSource.png</file>

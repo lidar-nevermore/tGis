@@ -235,7 +235,7 @@
       <number>1</number>
      </property>
      <item>
-      <widget class="QTreeView" name="treeView">
+      <widget class="QToolKitWidget" name="treeView">
        <property name="headerHidden">
         <bool>true</bool>
        </property>
@@ -661,6 +661,11 @@
    <class>QOpenedDatasetWidget</class>
    <extends>QTreeView</extends>
    <header>qopeneddatasetwidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QToolKitWidget</class>
+   <extends>QTreeView</extends>
+   <header>qtoolkitwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

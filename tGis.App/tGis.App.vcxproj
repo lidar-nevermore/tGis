@@ -121,6 +121,7 @@
     <ClCompile Include="QDataSourceWidget.cpp" />
     <ClCompile Include="QLayerWidget.cpp" />
     <ClCompile Include="QOpenedDatasetWidget.cpp" />
+    <ClCompile Include="QToolKitWidget.cpp" />
     <ClCompile Include="RasterBinaryGrayScaleLayerPropertyDialog.cpp" />
     <ClCompile Include="RasterGrayScaleLayerPropertyDialog.cpp" />
     <ClCompile Include="RasterRgbLayerPropertyDialog.cpp" />
@@ -147,6 +148,12 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Utility\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(GDALDIR)\include;$(SolutionDir)\tGis.Utility\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+    </QtMoc>
+    <QtMoc Include="QToolKitWidget.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ELRMPL)\.;$(GDALDIR)\include;$(SolutionDir)\tGis.Utility\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ELRMPL)\.;$(GDALDIR)\include;$(SolutionDir)\tGis.Utility\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
     </QtMoc>
     <ClInclude Include="RasterBinaryGrayScaleLayerPropertyDialog.h" />

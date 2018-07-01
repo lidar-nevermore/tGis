@@ -7,6 +7,7 @@
 #include "RasterBinaryGrayScaleLayerPropertyDialog.h"
 
 #include "tOrganizer.h"
+#include "tUtility.h"
 #include "tGis.Utility.h"
 
 using namespace tGis::Core;
@@ -42,6 +43,8 @@ int main(int argc, char *argv[])
 	qRegisterMetaType<IDataSourceProviderPtr>("IDataSourceProviderPtr");
 	qRegisterMetaType<IDatasetPtr>("IDatasetPtr");
 	qRegisterMetaType<ITGisObjectPtr>("ITGisObjectPtr");
+	qRegisterMetaType<IToolPtr>("IToolPtr");
+	qRegisterMetaType<ToolKitPtr>("ToolKitPtr");
 
 	QApplication a(argc, argv);
 	tGisApp w;

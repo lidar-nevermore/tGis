@@ -42,6 +42,8 @@ private:
 	vector<ITool*> _vecTool;
 };
 
+typedef ToolKit* ToolKitPtr;
+
 END_NAME_SPACE(tGis, Core)
 
 

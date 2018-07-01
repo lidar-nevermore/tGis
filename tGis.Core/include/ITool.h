@@ -20,6 +20,8 @@ private:
 	ITool &operator=(const ITool &) = delete;
 };
 
+typedef ITool* IToolPtr;
+
 END_NAME_SPACE(tGis, Core)
 
 
