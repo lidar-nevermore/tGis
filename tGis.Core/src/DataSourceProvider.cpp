@@ -6,19 +6,29 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 DataSourceProvider::DataSourceProvider()
-	:_AfterDatasetOpenHandler(this,&DataSourceProvider::AfterDatasetOpen)
-	,_BeforeDatasetCloseHandler(this,&DataSourceProvider::BeforeDatasetClose)
+	:_AfterDatasetOpenHandler(this,&DataSourceProvider::AfterDatasetOpenSubProvider)
+	,_BeforeDatasetCloseHandler(this,&DataSourceProvider::BeforeDatasetCloseSubProvider)
 {
 }
 
-void DataSourceProvider::AfterDatasetOpen(IDataSourceProvider* dsp, IDataset * dt)
+void DataSourceProvider::AfterDatasetOpenSubProvider(IDataSourceProvider* dsp, IDataset * dt)
 {
 	this->AddOpenedDataset(dt);
 }
 
-void DataSourceProvider::BeforeDatasetClose(IDataSourceProvider* dsp, IDataset * dt)
+void DataSourceProvider::BeforeDatasetCloseSubProvider(IDataSourceProvider* dsp, IDataset * dt)
 {
 	this->RemoveOpenedDataset(dt);
+}
+
+void DataSourceProvider::AfterDataSourceConnectSubProvider(IDataSourceProvider * dsp, IDataSource * ds)
+{
+	this->AddConnectedDataSource(ds);
+}
+
+void DataSourceProvider::BeforeDataSourceDisconnectSubProvider(IDataSourceProvider * dsp, IDataSource * ds)
+{
+	this->RemoveConnectedDataSource(ds);
 }
 
 DataSourceProvider::~DataSourceProvider()
@@ -46,10 +56,33 @@ void DataSourceProvider::RemoveOpenedDataset(IDataset * dt)
 	}
 }
 
+void DataSourceProvider::AddConnectedDataSource(IDataSource * ds)
+{
+	_vecConnectedDataSource.push_back(ds);
+	IDataSourceProvider* dsp = this;
+	AfterDataSourceConnectEvent(dsp, ds);
+}
+
+void DataSourceProvider::RemoveConnectedDataSource(IDataSource * ds)
+{
+	IDataSourceProvider* dsp = this;
+	BeforeDataSourceDisconnectEvent(dsp, ds);
+	for (vector<IDataSource*>::iterator it = _vecConnectedDataSource.begin(); it != _vecConnectedDataSource.end(); it++)
+	{
+		if (ds == *it)
+		{
+			_vecConnectedDataSource.erase(it);
+			break;
+		}
+	}
+}
+
 void DataSourceProvider::AddSubProvider(IDataSourceProvider * provider)
 {
 	provider->AfterDatasetOpenEvent += &_AfterDatasetOpenHandler;
 	provider->BeforeDatasetCloseEvent += &_BeforeDatasetCloseHandler;
+	provider->AfterDataSourceConnectEvent.Add(this, &DataSourceProvider::AfterDataSourceConnectSubProvider);
+	provider->BeforeDataSourceDisconnectEvent.Add(this, &DataSourceProvider::BeforeDataSourceDisconnectSubProvider);
 
 	_vecSubProvider.push_back(provider);
 }
@@ -104,6 +137,16 @@ int DataSourceProvider::GetOpenedDatasetCount()
 IDataset * DataSourceProvider::GetOpenedDataset(int pos)
 {
 	return _vecOpenedDataset.at(pos);
+}
+
+int DataSourceProvider::GetConnectedDataSourceCount()
+{
+	return _vecConnectedDataSource.size();
+}
+
+IDataSource * DataSourceProvider::GetConnectedDataSource(int pos)
+{
+	return _vecConnectedDataSource.at(pos);
 }
 
 void DataSourceProvider::Release()

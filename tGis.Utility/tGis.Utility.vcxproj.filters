@@ -98,5 +98,8 @@
     <QtUic Include="form\ObjectSampleLabelDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="form\RasterSubArea.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

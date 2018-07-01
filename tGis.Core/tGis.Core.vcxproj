@@ -43,6 +43,7 @@
     <ClInclude Include="include\ISymbol.h" />
     <ClInclude Include="include\ISymbolLibrary.h" />
     <ClInclude Include="include\ITGisObject.h" />
+    <ClInclude Include="include\ITool.h" />
     <ClInclude Include="include\Layer.h" />
     <ClInclude Include="include\LayerProvider.h" />
     <ClInclude Include="include\LayerProviderRepository.h" />
@@ -71,6 +72,8 @@
     <ClInclude Include="include\SimpleSymbolLibrary.h" />
     <ClInclude Include="include\Statistics.h" />
     <ClInclude Include="include\SymbolLibraryRepository.h" />
+    <ClInclude Include="include\ToolKit.h" />
+    <ClInclude Include="include\ToolKitRepository.h" />
     <ClInclude Include="include\tUtility.h" />
     <ClInclude Include="include\tEntity.h" />
     <ClInclude Include="include\tOrganizer.h" />
@@ -134,6 +137,8 @@
     <ClCompile Include="src\SimpleSymbolLibrary.cpp" />
     <ClCompile Include="src\Statistics.cpp" />
     <ClCompile Include="src\SymbolLibraryRepository.cpp" />
+    <ClCompile Include="src\ToolKit.cpp" />
+    <ClCompile Include="src\ToolKitRepository.cpp" />
     <ClCompile Include="src\tOrganizer.cpp" />
     <ClCompile Include="src\VectorLayer.cpp" />
     <ClCompile Include="src\VectorSimpleLayer.cpp" />

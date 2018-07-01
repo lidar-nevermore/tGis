@@ -140,6 +140,7 @@ void QDataSourceWidget::FindNode(QStandardItem* parent, IDataSourceProvider * pr
 			}
 			if (provider->IsTypeOf(prd))
 			{
+				//可能因析构导致的数据集关闭事件，此时object已部分析构，不可以调用其成员方法判断类型
 				FileSystemDataSource* dso = dynamic_cast<FileSystemDataSource*>(object);
 				if (provider->IsTypeOf(FileSystemDataSourceProvider::S_GetType()) 
 					&& go->IsTypeOf(FileSystemDataSource::S_GetType())

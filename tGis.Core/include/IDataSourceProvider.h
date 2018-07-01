@@ -37,6 +37,9 @@ struct TGIS_API IDataSourceProvider : public ITGisObject
 	virtual int GetOpenedDatasetCount() = 0;
 	virtual IDataset* GetOpenedDataset(int) = 0;
 
+	virtual int GetConnectedDataSourceCount() = 0;
+	virtual IDataSource* GetConnectedDataSource(int) = 0;
+
 	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
 
 	Event<IDataSourceProvider*, IDataset*> BeforeDatasetCloseEvent;

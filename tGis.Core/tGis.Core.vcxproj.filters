@@ -245,6 +245,15 @@
     <ClInclude Include="include\Event.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\ITool.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ToolKit.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ToolKitRepository.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -396,6 +405,12 @@
     </ClCompile>
     <ClCompile Include="src\Event.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolKitRepository.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolKit.cpp">
+      <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -56,12 +56,14 @@ bool DataSource::IsConnected()
 
 void DataSource::Connect()
 {
-	_provider->AfterDataSourceConnectEvent(std::forward<IDataSourceProvider*>((IDataSourceProvider*)_provider), std::forward<IDataSource*>(this));
+	DataSourceProvider* prd = (DataSourceProvider*)_provider;
+	prd->AddConnectedDataSource(this);
 }
 
 void DataSource::Disconnect()
 {
-	_provider->BeforeDataSourceDisconnectEvent(std::forward<IDataSourceProvider*>((IDataSourceProvider*)_provider), std::forward<IDataSource*>(this));
+	DataSourceProvider* prd = (DataSourceProvider*)_provider;
+	prd->RemoveConnectedDataSource(this);
 }
 
 int DataSource::GetDatasetCount()

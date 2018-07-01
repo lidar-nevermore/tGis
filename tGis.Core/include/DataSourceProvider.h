@@ -33,21 +33,14 @@ private:
 	//直接子类DataSourceProvider的实例集合
 	vector<IDataSourceProvider*> _vecSubProvider;
 
-	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
-	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
-
-	//class DS_DatasetEventHandler : public MemberEventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*>
-	//{
-	//public:
-	//	DS_DatasetEventHandler(DataSourceProvider* receiver, MemberEventHandler::Handler handler,)
-	//		:MemberEventHandler(receiver,handler)
-	//	{
-
-	//	}
-	//};
+	void AfterDatasetOpenSubProvider(IDataSourceProvider*, IDataset*);
+	void BeforeDatasetCloseSubProvider(IDataSourceProvider*, IDataset*);
 
 	MemberEventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _AfterDatasetOpenHandler;
 	MemberEventHandler<DataSourceProvider, IDataSourceProvider*, IDataset*> _BeforeDatasetCloseHandler;
+
+	void AfterDataSourceConnectSubProvider(IDataSourceProvider*, IDataSource*);
+	void BeforeDataSourceDisconnectSubProvider(IDataSourceProvider*, IDataSource*);
 
 public:
 	virtual ~DataSourceProvider();
@@ -56,11 +49,16 @@ protected:
 	CreationUI _uiCreation;
 	PropertyUI _uiProperty;
 
-	//该集合中存放所有打开的数据集
+	//该集合中存放所有打开的数据集，包括子Provider打开的数据集
 	vector<IDataset*> _vecOpenedDataset;
 
 	virtual void AddOpenedDataset(IDataset*);
 	virtual void RemoveOpenedDataset(IDataset*);
+
+	vector<IDataSource*> _vecConnectedDataSource;
+
+	virtual void AddConnectedDataSource(IDataSource*);
+	virtual void RemoveConnectedDataSource(IDataSource*);
 
 public:
 	virtual void AddSubProvider(IDataSourceProvider*);
@@ -74,6 +72,9 @@ public:
 
 	virtual int GetOpenedDatasetCount();
 	virtual IDataset* GetOpenedDataset(int);
+
+	virtual int GetConnectedDataSourceCount();
+	virtual IDataSource* GetConnectedDataSource(int);
 
 	virtual void Release();
 };

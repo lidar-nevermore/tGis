@@ -139,6 +139,7 @@
       <FileType>Document</FileType>
     </QtUic>
     <QtUic Include="form\ObjectSampleLabelDialog.ui" />
+    <QtUic Include="form\RasterSubArea.ui" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
