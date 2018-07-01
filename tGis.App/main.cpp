@@ -7,6 +7,7 @@
 #include "RasterBinaryGrayScaleLayerPropertyDialog.h"
 
 #include "tOrganizer.h"
+#include "tGis.Utility.h"
 
 using namespace tGis::Core;
 
@@ -26,6 +27,8 @@ QMainWindow* GetMainWindow()
 
 int main(int argc, char *argv[])
 {
+	tGis::Utility::InitializeModule();
+
 	RasterGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer);
 	RasterGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty);
 	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLayer);

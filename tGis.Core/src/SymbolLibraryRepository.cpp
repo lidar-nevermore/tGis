@@ -5,13 +5,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 SymbolLibraryRepository* SymbolLibraryRepository::_instance = nullptr;
 
-static PtrDestructor<SymbolLibraryRepository> shit(SymbolLibraryRepository::_instance);
 
 SymbolLibraryRepository & SymbolLibraryRepository::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
 		_instance = new SymbolLibraryRepository();
+		static PtrDestructor<SymbolLibraryRepository> shit(_instance);
 	}
 
 	return *_instance;

@@ -5,6 +5,7 @@
 
 #include "Helper.h"
 #include "ILayer.h"
+#include "Event.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 

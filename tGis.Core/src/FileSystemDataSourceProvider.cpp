@@ -14,14 +14,13 @@ const char* const FileSystemDataSourceProvider::_type = "13D0E005-C5CD-4210-A5D3
 
 FileSystemDataSourceProvider* FileSystemDataSourceProvider::_instance = nullptr;
 
-static PtrDestructor<FileSystemDataSourceProvider> shit(FileSystemDataSourceProvider::_instance);
-
 
 FileSystemDataSourceProvider & FileSystemDataSourceProvider::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
 		_instance = new FileSystemDataSourceProvider();
+		static PtrDestructor<FileSystemDataSourceProvider> shit(_instance);
 		_instance->AddSubProvider(&ObjectSampleDataSourceProvider::INSTANCE());
 	}
 

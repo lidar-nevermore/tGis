@@ -119,11 +119,13 @@
     <ClCompile Include="src\QMapWidget.cpp" />
     <ClCompile Include="src\QtGeoSurface.cpp" />
     <ClCompile Include="src\RectZoomTool.cpp" />
+    <ClCompile Include="src\tGis.Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h" />
     <ClInclude Include="include\MapPanTool.h" />
     <ClInclude Include="include\MapZoomTool.h" />
+    <ClInclude Include="include\tGis.Utility.h" />
     <ClInclude Include="internal\ObjectSampleDialog.h" />
     <ClInclude Include="internal\ObjectSampleLabelDialog.h" />
     <ClInclude Include="internal\ObjectSampleTool.h" />

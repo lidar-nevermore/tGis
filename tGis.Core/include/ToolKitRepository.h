@@ -17,8 +17,9 @@ class ToolKit;
 
 class TGIS_API ToolKitRepository
 {
-public:
+private:
 	static ToolKitRepository* _instance;
+public:
 	static ToolKitRepository& INSTANCE();
 
 private:
@@ -31,9 +32,11 @@ public:
 
 public:
 	void AddToolKit(ToolKit* kit);
+	void AddToolKit(int count, ...);
 	int GetToolKitCount();
 	ToolKit* GetToolKit(int);
 	ToolKit* GetToolKit(const char* name);
+	
 
 private:
 	vector<ToolKit*> _vecToolKit;

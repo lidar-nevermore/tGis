@@ -257,6 +257,9 @@
     <ClInclude Include="include\Tool.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="include\EventBase.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
@@ -403,9 +406,6 @@
     <ClCompile Include="src\Dataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\Event.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="src\ToolKitRepository.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
@@ -414,6 +414,9 @@
     </ClCompile>
     <ClCompile Include="src\Tool.cpp">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EventBase.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

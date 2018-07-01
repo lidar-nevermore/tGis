@@ -5,4 +5,5 @@
 #include "Statistics.h"
 
 #include "ITool.h"
+#include "Tool.h"
 #include "ToolKit.h"

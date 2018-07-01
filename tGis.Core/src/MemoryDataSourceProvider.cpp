@@ -18,14 +18,13 @@ const char* const MemoryDataSourceProvider::_type = "5EE4C82D-7773-4BA9-BF97-D5D
 
 MemoryDataSourceProvider* MemoryDataSourceProvider::_instance = nullptr;
 
-static PtrDestructor<MemoryDataSourceProvider> shit(MemoryDataSourceProvider::_instance);
-
 
 MemoryDataSourceProvider & MemoryDataSourceProvider::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
 		_instance = new MemoryDataSourceProvider();
+		static PtrDestructor<MemoryDataSourceProvider> shit(_instance);
 	}
 
 	return *_instance;

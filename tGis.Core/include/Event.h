@@ -4,7 +4,7 @@
 #define __EVENT_H__
 
 #include "Helper.h"
-#include "ITGisObject.h"
+#include "EventBase.h"
 #include "elr_mpl.h"
 
 
@@ -139,7 +139,7 @@ private:
 };
 
 template<typename ...Args>
-class Event
+class Event : public EventBase
 {
 public:
 	typedef IEventHandler<Args...>* EventHandler;
@@ -389,6 +389,27 @@ private:
 	bool _isInternalHandler;
 	Event<Args...>* _event;
 };
+
+struct TGIS_API Progress
+{
+	Progress(int value, int max = 100, const char* msg = nullptr)
+		:Value(value)
+		, Max(max)
+		, Message(msg)
+	{
+	}
+
+	const int Value;
+	const int Max;
+	const char* const Message;
+};
+
+typedef IEventHandler<Progress> ProgressEventHandler;
+typedef Event<Progress> ProgressEvent;
+
+template struct TGIS_API IEventHandler<Progress>;
+template class TGIS_API Event<Progress>;
+
 
 END_NAME_SPACE(tGis, Core)
 

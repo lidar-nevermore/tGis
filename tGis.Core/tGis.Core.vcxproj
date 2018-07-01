@@ -24,6 +24,7 @@
     <ClInclude Include="include\DataSourceProvider.h" />
     <ClInclude Include="include\DataSourceProviderRepository.h" />
     <ClInclude Include="include\Event.h" />
+    <ClInclude Include="include\EventBase.h" />
     <ClInclude Include="include\FileSystemDataSource.h" />
     <ClInclude Include="include\FileSystemDataSourceProvider.h" />
     <ClInclude Include="include\GeoSurface.h" />
@@ -99,7 +100,7 @@
     <ClCompile Include="src\DataSource.cpp" />
     <ClCompile Include="src\DataSourceProvider.cpp" />
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />
-    <ClCompile Include="src\Event.cpp" />
+    <ClCompile Include="src\EventBase.cpp" />
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
     <ClCompile Include="src\GeoSurface.cpp" />

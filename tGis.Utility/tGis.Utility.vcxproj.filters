@@ -37,6 +37,9 @@
     <ClCompile Include="internal\QtHelper.cpp">
       <Filter>internal\ml</Filter>
     </ClCompile>
+    <ClCompile Include="src\tGis.Utility.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h">
@@ -68,6 +71,9 @@
     </ClInclude>
     <ClInclude Include="internal\ObjectSampleWidget.h">
       <Filter>internal\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis.Utility.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

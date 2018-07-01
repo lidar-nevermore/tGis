@@ -3,6 +3,8 @@
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
+ObjectSampleTool ObjectSampleTool::INSTANCE;
+
 ObjectSampleTool::ObjectSampleTool()
 {
 }

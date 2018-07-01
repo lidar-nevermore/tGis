@@ -1,11 +1,10 @@
 #include "ToolKitRepository.h"
 #include "ToolKit.h"
+#include <stdarg.h>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 ToolKitRepository* ToolKitRepository::_instance = nullptr;
-
-static PtrDestructor<ToolKitRepository> shit(ToolKitRepository::_instance);
 
 
 ToolKitRepository & ToolKitRepository::INSTANCE()
@@ -13,6 +12,7 @@ ToolKitRepository & ToolKitRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new ToolKitRepository();
+		static PtrDestructor<ToolKitRepository> shit(_instance);
 	}
 
 	return *_instance;
@@ -32,6 +32,43 @@ void ToolKitRepository::AddToolKit(ToolKit * kit)
 	_vecToolKit.push_back(kit);
 	_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
 }
+
+
+void ToolKitRepository::AddToolKit(int count, ...)
+{
+	ToolKit* toFillKit = nullptr;
+	va_list toAddKits;
+	va_start(toAddKits, count);
+	for (int i = 0; i < count; i++)
+	{
+		ToolKit* preToFillKit = toFillKit;
+		ToolKit* kit = va_arg(toAddKits, ToolKit*);
+		if (i == 0)
+			toFillKit = GetToolKit(kit->GetName());
+		else
+			toFillKit = toFillKit->GetToolKit(kit->GetName());
+
+		if (toFillKit == nullptr)
+		{
+			if (i == 0)
+				AddToolKit(kit);
+			else
+				preToFillKit->AddToolKit(kit);
+
+			toFillKit = kit;
+		}
+		else
+		{
+			int toolCount = kit->GetToolCount();
+			for (int j = 0; j < toolCount; j++)
+			{
+				toFillKit->AddTool(kit->GetTool(j));
+			}
+		}
+	}
+	va_end(toAddKits);
+}
+
 
 int ToolKitRepository::GetToolKitCount()
 {

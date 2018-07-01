@@ -1,4 +1,5 @@
 #include "LayerProvider.h"
+#include "ILayer.h"
 
 #include <cassert>
 

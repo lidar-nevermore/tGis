@@ -18,8 +18,9 @@ struct IDataset;
 
 class TGIS_API LayerProviderRepository
 {
-public:
+private:
 	static LayerProviderRepository* _instance;
+public:
 	static LayerProviderRepository& INSTANCE();
 
 private:

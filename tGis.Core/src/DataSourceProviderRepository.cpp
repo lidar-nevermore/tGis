@@ -8,14 +8,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 DataSourceProviderRepository* DataSourceProviderRepository::_instance = nullptr;
 
-static PtrDestructor<DataSourceProviderRepository> shit(DataSourceProviderRepository::_instance);
-
 
 DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
 		_instance = new DataSourceProviderRepository();
+		static PtrDestructor<DataSourceProviderRepository> shit(_instance);
 		_instance->AddDataSourceProvider(&FileSystemDataSourceProvider::INSTANCE());
 		_instance->AddDataSourceProvider(&MemoryDataSourceProvider::INSTANCE());
 	}

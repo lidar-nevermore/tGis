@@ -13,13 +13,12 @@ const char* const ObjectSampleDataSourceProvider::_type = "230160E1-A1D5-4D41-B3
 
 ObjectSampleDataSourceProvider* ObjectSampleDataSourceProvider::_instance = nullptr;
 
-static PtrDestructor<ObjectSampleDataSourceProvider> shit(ObjectSampleDataSourceProvider::_instance);
-
 ObjectSampleDataSourceProvider & ObjectSampleDataSourceProvider::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
 		_instance = new ObjectSampleDataSourceProvider();
+		static PtrDestructor<ObjectSampleDataSourceProvider> shit(_instance);
 	}
 
 	return *_instance;

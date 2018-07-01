@@ -3,12 +3,11 @@
 #include "RasterGrayScaleLayerProvider.h"
 #include "RasterBinaryGrayScaleLayerProvider.h"
 #include "VectorSimpleLayerProvider.h"
+#include "RasterRgbLayerProvider.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 LayerProviderRepository* LayerProviderRepository::_instance = nullptr;
-
-static PtrDestructor<LayerProviderRepository> shit(LayerProviderRepository::_instance);
 
 
 LayerProviderRepository & LayerProviderRepository::INSTANCE()
@@ -16,6 +15,7 @@ LayerProviderRepository & LayerProviderRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new LayerProviderRepository();
+		static PtrDestructor<LayerProviderRepository> shit(_instance);
 	}
 
 	return *_instance;
@@ -34,7 +34,8 @@ LayerProviderRepository::~LayerProviderRepository()
 
 		if (lp != &RasterGrayScaleLayerProvider::INSTANCE 
 			&& lp != &VectorSimpleLayerProvider::INSTANCE
-			&& lp != &RasterBinaryGrayScaleLayerProvider::INSTANCE)
+			&& lp != &RasterBinaryGrayScaleLayerProvider::INSTANCE
+			&& lp != &RasterRgbLayerProvider::INSTANCE)
 			lp->Release();
 	}
 }

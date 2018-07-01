@@ -6,13 +6,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 VisualizeBufferManager* VisualizeBufferManager::_instance = nullptr;
 
-static PtrDestructor<VisualizeBufferManager> shit(VisualizeBufferManager::_instance);
 
 VisualizeBufferManager & VisualizeBufferManager::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
 		_instance = new VisualizeBufferManager();
+		static PtrDestructor<VisualizeBufferManager> shit(_instance);
 	}
 
 	return *_instance;

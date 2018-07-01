@@ -17,8 +17,9 @@ struct IDataSourceProvider;
 
 class TGIS_API DataSourceProviderRepository
 {
-public:
+private:
 	static DataSourceProviderRepository* _instance;
+public:
 	static DataSourceProviderRepository& INSTANCE();
 
 private:

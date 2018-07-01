@@ -11,7 +11,11 @@ BEGIN_NAME_SPACE(tGis, Utility)
 
 class TGIS_UTILITY_API ObjectSampleTool : public ITool
 {
+
 public:
+	static ObjectSampleTool INSTANCE;
+
+private:
 	ObjectSampleTool();
 	~ObjectSampleTool();
 
