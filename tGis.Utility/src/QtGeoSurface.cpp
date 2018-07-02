@@ -1,12 +1,14 @@
 #include "QtGeoSurface.h"
 #include "SimpleLineSymbol.h"
 #include "SimpleFillSymbol.h"
+#include "QMapWidget.h"
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
 
-QtGeoSurface::QtGeoSurface()
+QtGeoSurface::QtGeoSurface(QMapWidget* mapWidget)
 {
+	_mapWidget = mapWidget;
 	_paintOnAttachedQPainter = false;
 	_painter = nullptr;
 	_osSurf4Paint = nullptr;
@@ -16,13 +18,6 @@ QtGeoSurface::QtGeoSurface()
 
 QtGeoSurface::~QtGeoSurface()
 {
-}
-
-void QtGeoSurface::SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B)
-{
-	_surfBackgroundR = R;
-	_surfBackgroundG = G;
-	_surfBackgroundB = B;
 }
 
 inline void QtGeoSurface::EnsurePaintSurfaceValid()
@@ -119,6 +114,23 @@ inline void QtGeoSurface::DeleteQPoints(QPoint * pts)
 	delete[] pts;
 }
 
+void QtGeoSurface::GetViewPos(int * x, int * y)
+{
+	QPoint pt = _mapWidget->pos();
+	QPoint gpt = _mapWidget->mapToGlobal(pt);
+	if (x != nullptr)
+		*x = gpt.x();
+	if (y != nullptr)
+		*y = gpt.y();
+}
+
+void QtGeoSurface::SetViewSize(int surfW, int surfH)
+{
+	_surfWidth = surfW;
+	_surfHeight = surfH;
+	UpdateViewPort();
+}
+
 void QtGeoSurface::AttachQPainter(QPainter * painter)
 {
 	_painter = painter;
@@ -129,7 +141,7 @@ void QtGeoSurface::DetachQPainter()
 	_painter = nullptr;
 }
 
-void QtGeoSurface::PresentSurface()
+void QtGeoSurface::PresentMap()
 {
 	if(_osSurf4Present != nullptr)
 		_painter->drawPixmap(_osSurfPresentPosX, _osSurfPresentPosY, _osSurfPresentWidth, _osSurfPresentHeight, *_osSurf4Present, 0, 0, _osSurf4PresentWidth, _osSurf4PresentHeight);
@@ -156,7 +168,7 @@ void QtGeoSurface::EndPaintOnAttachedQPainter()
 	_paintOnAttachedQPainter = false;
 }
 
-static class QPainterPtrFreeHelper
+class QPainterPtrFreeHelper
 {
 public:
 	QPainterPtrFreeHelper()

@@ -14,17 +14,16 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_API GeoSurface : IGeoSurface
 {
-public:
+protected:
 	GeoSurface();
 	virtual ~GeoSurface();
 
 public:
 	virtual void SetViewResolution(double resolution);
 	virtual void SetViewCenter(double spatialCenterX, double spatialCenterY);
-	virtual void SetViewSize(int surfW, int surfH);
 	virtual void GetViewSize(int* surfW, int* surfH);
-	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, int surfW, int surfH, double resolution);
-	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, int *surfW, int *surfH, double *resolution);
+	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, double resolution);
+	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, double *resolution);
 	virtual void IncludeEnvelope(const OGREnvelope*);
 	virtual void IncludeEnvelope(double spatialLeft, double spatialTop, double spatialRight, double spatialBottom);
 	virtual void Surface2Spatial(int surfX, int surfY, double *spatialX, double *spatialY);
@@ -34,8 +33,8 @@ public:
 	virtual const OGRSpatialReference* GetSpatialReference();
 	virtual void SetSpatialReference(const OGRSpatialReference*);
 
-	virtual void SwithSurface();
-private:
+protected:
+	void SwithSurface();
 	void UpdateViewPort();
 
 protected:

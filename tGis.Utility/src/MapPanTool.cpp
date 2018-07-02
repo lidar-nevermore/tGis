@@ -46,9 +46,9 @@ void MapPanTool::MouseMove(void *ev)
 
 			double spatialCenterX;
 			double spatialCenterY;
-			surface->GetViewPort(&spatialCenterX, &spatialCenterY, nullptr, nullptr, nullptr);
+			surface->GetViewPort(&spatialCenterX, &spatialCenterY, nullptr);
 			surface->SetViewCenter(spatialCenterX + _mouseDownSpatialX - mouseX, spatialCenterY + _mouseDownSpatialY - mouseY);
-			_mapWidget->PresentSurface();
+			_mapWidget->PresentMap();
 		}
 	}
 }

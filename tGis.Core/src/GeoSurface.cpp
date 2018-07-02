@@ -34,42 +34,27 @@ void GeoSurface::SetViewCenter(double spatialCenterX, double spatialCenterY)
 	UpdateViewPort();
 }
 
-void GeoSurface::SetViewSize(int surfW, int surfH)
-{
-	_surfWidth = surfW;
-	_surfHeight = surfH;
-	UpdateViewPort();
-}
-
 void GeoSurface::GetViewSize(int * surfW, int * surfH)
 {
 	*surfW = _surfWidth;
 	*surfH = _surfHeight;
 }
 
-void GeoSurface::SetViewPort(double spatialCenterX, double spatialCenterY, int surfW, int surfH, double resolution)
+void GeoSurface::SetViewPort(double spatialCenterX, double spatialCenterY, double resolution)
 {
 	_spatialCenterX = spatialCenterX;
 	_spatialCenterY = spatialCenterY;
-	_surfWidth = surfW;
-	_surfHeight = surfH;
 	_resolution = resolution;
 	UpdateViewPort();
 }
 
-void GeoSurface::GetViewPort(double *spatialCenterX, double *spatialCenterY, int *surfW, int *surfH, double *resolution)
+void GeoSurface::GetViewPort(double *spatialCenterX, double *spatialCenterY, double *resolution)
 {
 	if (spatialCenterX != nullptr)
 		*spatialCenterX = _spatialCenterX;
 
 	if (spatialCenterY != nullptr)
 		*spatialCenterY = _spatialCenterY;
-
-	if (surfW != nullptr)
-		*surfW = _surfWidth;
-
-	if (surfH != nullptr)
-		*surfH = _surfHeight;
 
 	if (resolution != nullptr)
 		*resolution = _resolution;

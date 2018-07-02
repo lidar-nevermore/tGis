@@ -1,6 +1,6 @@
 #include "RasterRgbLayerPropertyDialog.h"
 #include <QPushButton>
-#include "tGisMetaType.h"
+#include "QtHelper.h"
 
 
 RasterRgbLayerPropertyDialog::RasterRgbLayerPropertyDialog(QWidget *parent)
@@ -31,7 +31,7 @@ ILayer * RasterRgbLayerPropertyDialog::CreateRasterRgbLayer(ILayerProvider * pro
 	RasterRgbLayerProvider * provider = (RasterRgbLayerProvider*)provider_;
 	MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dataset_;
 
-	RasterRgbLayerPropertyDialog dlg((QWidget*)GetMainWindow());	
+	RasterRgbLayerPropertyDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	GDALDataset* gdt = dataset->GetGDALDataset();
 	if (gdt == nullptr)
 		return nullptr;
@@ -91,7 +91,7 @@ void RasterRgbLayerPropertyDialog::RasterRgbLayerProperty(ILayerProvider *provid
 {
 	RasterRgbLayerProvider* provider = (RasterRgbLayerProvider*)provider_;
 	RasterRgbLayer* layer = (RasterRgbLayer*)layer_;
-	RasterRgbLayerPropertyDialog dlg((QWidget*)GetMainWindow());
+	RasterRgbLayerPropertyDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBandR(), layer->GetBandG(), layer->GetBandB());
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));
 	dlg.ui.sdOpacity->setValue((int)(layer->GetOpacity() * 255));

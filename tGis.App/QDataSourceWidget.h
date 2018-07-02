@@ -8,7 +8,7 @@ class QStandardItemModel;
 
 #include "tOrganizer.h"
 #include "Event.h"
-#include "tGisMetaType.h"
+#include "QtHelper.h"
 
 using namespace tGis::Core;
 

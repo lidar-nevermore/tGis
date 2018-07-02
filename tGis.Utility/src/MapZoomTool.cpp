@@ -21,7 +21,7 @@ void MapZoomTool::MouseWheel(void *ev)
 	QWheelEvent* e = (QWheelEvent*)ev;
 	IGeoSurface* surface = _mapWidget->GetGeoSurface();
 	double resolution;
-	surface->GetViewPort(nullptr, nullptr, nullptr, nullptr, &resolution);
+	surface->GetViewPort(nullptr, nullptr, &resolution);
 
 	int mx = e->x();
 	int my = e->y();
@@ -56,7 +56,7 @@ void MapZoomTool::MouseWheel(void *ev)
 	surface->Surface2Spatial(mx, my, &mouseX2, &mouseY2);
 	double spatialCenterX;
 	double spatialCenterY;
-	surface->GetViewPort(&spatialCenterX, &spatialCenterY, nullptr, nullptr, nullptr);
+	surface->GetViewPort(&spatialCenterX, &spatialCenterY, nullptr);
 	surface->SetViewCenter(spatialCenterX + mouseX1 - mouseX2, spatialCenterY + mouseY1 - mouseY2);
 	if (newresolution > resolution)
 	{
@@ -64,7 +64,7 @@ void MapZoomTool::MouseWheel(void *ev)
 	}
 	else
 	{
-		_mapWidget->PresentSurface();
+		_mapWidget->PresentMap();
 	}
 }
 

@@ -13,9 +13,9 @@ ObjectSampleDialog::ObjectSampleDialog(QWidget *parent)
 	, _MapWidgetLoadedEventHandler(this,&ObjectSampleDialog::OnMapWidgetLoaded)
 {
 	ui.setupUi(this);
+	setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 
 	_osm = nullptr;
-	setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 	ui.mapWidget->SetMap(&_map);
 	ui.mapWidget->LoadedEvent += &_MapWidgetLoadedEventHandler;
 	QPushButton* button = ui.buttonBox->button(QDialogButtonBox::StandardButton::Ok);

@@ -274,7 +274,7 @@ bool QDataSourceWidget::OpenDataset(QStandardItem* pItem, IDataset* dt)
 		return true;
 	}
 
-	QMessageBox::information((QWidget*)GetMainWindow(),
+	QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
 		QStringLiteral("Warning"),
 		QStringLiteral("数据集打开失败！"),
 		QMessageBox::Yes, QMessageBox::Yes);
@@ -299,7 +299,7 @@ bool QDataSourceWidget::ConnectDataSource(QStandardItem* pItem, IDataSource* ds,
 		return true;
 	}
 
-	QMessageBox::information((QWidget*)GetMainWindow(),
+	QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
 		QStringLiteral("Warning"),
 		QStringLiteral("数据源连接失败！"),
 		QMessageBox::Yes, QMessageBox::Yes);
@@ -381,7 +381,7 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 		ILayerProviderPtr* providers = new ILayerProviderPtr[layerProviderCount];
 		LayerProviderRepository::INSTANCE().GetLayerProviderSupportDataset(dt, layerProviderCount, providers);
 
-		ListChoiseDialog choise((QWidget*)GetMainWindow());
+		ListChoiseDialog choise((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 		QListWidget* list = choise.GetQListWidget();
 
 		for (int i = 0; i < layerProviderCount; i++)
@@ -421,7 +421,7 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 				}
 				else
 				{
-					QMessageBox::information((QWidget*)GetMainWindow(),
+					QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
 						QStringLiteral("Warning"),
 						QStringLiteral("投影不一致，其无法转换。图层添加失败！"),
 						QMessageBox::Yes, QMessageBox::Yes);

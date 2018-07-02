@@ -5,9 +5,12 @@
 
 #include "tUtility.h"
 
+
 using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
+
+class ObjectSampleToolDialog;
 
 class TGIS_UTILITY_API ObjectSampleTool : public ITool
 {
@@ -20,7 +23,7 @@ private:
 	~ObjectSampleTool();
 
 private:
-
+	ObjectSampleToolDialog* _widget;
 
 public:
 	const char* GetName();

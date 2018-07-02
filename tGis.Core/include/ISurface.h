@@ -9,7 +9,8 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct TGIS_API ISurface
 {
-	virtual void SetViewSize(int surfW, int surfH) = 0;
+	//获取表面左上角相对于桌面的坐标
+	virtual void GetViewPos(int* x, int* y) = 0;
 	virtual void GetViewSize(int* surfW, int* surfH) = 0;
 
 	virtual void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;
@@ -22,6 +23,7 @@ struct TGIS_API ISurface
 	
 	virtual void DrawImage(const unsigned char* buf, int surfX, int surfY, int width, int height) = 0;
 
+protected:
 	ISurface() {};
 	virtual ~ISurface() {};
 private:

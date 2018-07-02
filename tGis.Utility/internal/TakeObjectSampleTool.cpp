@@ -67,7 +67,7 @@ void TakeObjectSampleTool::MouseUp(void *ev)
 
 	if (pixLeft < 0 || pixRight >= rasterXSize || pixTop < 0 || pixBottom >= rasterYSize)
 	{
-		QMessageBox::information((QWidget*)GetMainWindow(),
+		QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
 			QStringLiteral("Warning"),
 			QStringLiteral("即将扣取的样本范围超过文件范围！"),
 			QMessageBox::Yes, QMessageBox::Yes);
@@ -77,7 +77,7 @@ void TakeObjectSampleTool::MouseUp(void *ev)
 	//TODO: 创建一个内存数据集，然后显示到加标签的对话框
 	MyGDALMemRasterDataset* memDataset = MemoryDataSourceProvider::INSTANCE().CreateMemRasterDataset(_dataset, pixLeft, pixTop, sampleSize, sampleSize, -1);
 
-	ObjectSampleDialog dlg((QWidget*)GetMainWindow());
+	ObjectSampleDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	dlg.SetObjectSampleDataSource(_samples);
 	dlg.SetLayer(_layer);
 	ILayer* layer = _layer->Clone(memDataset);

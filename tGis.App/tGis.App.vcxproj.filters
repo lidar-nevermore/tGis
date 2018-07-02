@@ -32,6 +32,9 @@
     <ClCompile Include="QToolKitWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="QtHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -74,6 +77,9 @@
     <QtMoc Include="QToolKitWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="QtHelper.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="tGisApp.ui">
@@ -99,9 +105,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IconRes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tGisMetaType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RasterRgbLayerPropertyDialog.h">

@@ -1,7 +1,7 @@
 #include "RasterGrayScaleLayerPropertyDialog.h"
 #include <QPushButton>
 #include <QLineEdit>
-#include "tGisMetaType.h"
+#include "QtHelper.h"
 
 
 RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerPropertyDialog(QWidget *parent)
@@ -46,7 +46,7 @@ ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(ILayerPr
 {
 	RasterGrayScaleLayerProvider* provider = (RasterGrayScaleLayerProvider*)provider_;
 	MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dataset_;
-	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
+	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	dlg.SetDataset(dataset, 1);
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(dataset->GetCreationString()));
 	if (QDialog::Accepted == dlg.exec())
@@ -74,7 +74,7 @@ void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(ILayerProv
 {
 	RasterGrayScaleLayerProvider* provider = (RasterGrayScaleLayerProvider*)provider_;
 	RasterGrayScaleLayer * layer = (RasterGrayScaleLayer*)layer_;
-	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
+	RasterGrayScaleLayerPropertyDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBand());
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));
 	double min;

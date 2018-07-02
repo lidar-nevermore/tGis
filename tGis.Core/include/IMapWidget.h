@@ -35,7 +35,7 @@ struct TGIS_API IMapWidget
 	virtual bool GetGridVisible() = 0;
 
 	virtual void RepaintMap() = 0;
-	virtual void PresentSurface() = 0;
+	virtual void PresentMap() = 0;
 
 	virtual void MouseDown(void*) = 0;
 	virtual void MouseMove(void*) = 0;

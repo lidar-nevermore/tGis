@@ -16,8 +16,8 @@ struct TGIS_API IGeoSurface : public ISurface
 {
 	virtual void SetViewResolution(double resolution) = 0;
 	virtual void SetViewCenter(double spatialCenterX, double spatialCenterY) = 0;
-	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, int surfW, int surfH, double resolution) = 0;
-	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, int *surfW, int *surfH, double *resolution) = 0;
+	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, double resolution) = 0;
+	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, double *resolution) = 0;
 	virtual void IncludeEnvelope(const OGREnvelope*) = 0;
 	virtual void IncludeEnvelope(double spatialLeft, double spatialTop, double spatialRight, double spatialBottom) = 0;
 
@@ -28,9 +28,7 @@ struct TGIS_API IGeoSurface : public ISurface
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 	virtual void SetSpatialReference(const OGRSpatialReference*) = 0;
 
-	virtual void PresentSurface() = 0;
-	virtual void SwithSurface() = 0;
-
+protected:
 	IGeoSurface() {};
 	virtual ~IGeoSurface() {};
 private:

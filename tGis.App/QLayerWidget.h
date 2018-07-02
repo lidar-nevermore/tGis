@@ -6,7 +6,7 @@ class QStandardItem;
 class QStandardItemModel;
 
 #include "tOrganizer.h"
-#include "tGisMetaType.h"
+#include "QtHelper.h"
 #include "Event.h"
 
 

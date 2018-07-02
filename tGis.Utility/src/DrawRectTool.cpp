@@ -52,14 +52,14 @@ void DrawRectTool::MouseMove(void * ev)
 	{
 		_rect._right = e->x();
 		_rect._bottom = e->y();
-		_mapWidget->PresentSurface();
+		_mapWidget->PresentMap();
 	}
 }
 
 void DrawRectTool::MouseUp(void *)
 {
 	_rect.SetVisible(false);
-	_mapWidget->PresentSurface();
+	_mapWidget->PresentMap();
 }
 
 END_NAME_SPACE(tGis, Utility)

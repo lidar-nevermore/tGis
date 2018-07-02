@@ -31,7 +31,7 @@ public:
 	IOverlayLayer* GetScreenLayer();
 	void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
 	void RepaintMap();
-	void PresentSurface();
+	void PresentMap();
 
 private:
 	QtGeoSurface _geoSurface;

@@ -12,16 +12,15 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Utility)
 
-class TGIS_UTILITY_API QtGeoSurface : public GeoSurface
+class QtGeoSurface : public GeoSurface
 {
-public:
-	QtGeoSurface();
+	friend class QMapWidget;
+private:
+	QtGeoSurface(QMapWidget* mapWidget);
 	~QtGeoSurface();
 
-public:
-	void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
-
 private:
+	QMapWidget* _mapWidget;
 	bool _paintOnAttachedQPainter;
 	QPainter* _painter;
 	QPixmap* _osSurf4Paint;
@@ -38,15 +37,16 @@ private:
 	inline QPoint* CreateQPoints(int count, int* surfX, int* surfY);
 	inline void DeleteQPoints(QPoint* pts);
 
-public:
+	void SetViewSize(int surfW, int surfH);
 	void AttachQPainter(QPainter* painter);
 	void DetachQPainter();
-	void PresentSurface();
+	void PresentMap();
 	void SwithSurface();
 	void BeginPaintOnAttachedQPainter();
 	void EndPaintOnAttachedQPainter();
 
-
+public:
+	void GetViewPos(int* x, int* y);
 	void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
 	void DrawPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
 	void FillPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft);

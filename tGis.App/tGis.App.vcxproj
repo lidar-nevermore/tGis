@@ -121,6 +121,7 @@
     <ClCompile Include="QDataSourceWidget.cpp" />
     <ClCompile Include="QLayerWidget.cpp" />
     <ClCompile Include="QOpenedDatasetWidget.cpp" />
+    <ClCompile Include="QtHelper.cpp" />
     <ClCompile Include="QToolKitWidget.cpp" />
     <ClCompile Include="RasterBinaryGrayScaleLayerPropertyDialog.cpp" />
     <ClCompile Include="RasterGrayScaleLayerPropertyDialog.cpp" />
@@ -156,10 +157,15 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ELRMPL)\.;$(GDALDIR)\include;$(SolutionDir)\tGis.Utility\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
     </QtMoc>
+    <QtMoc Include="QtHelper.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ELRMPL)\.;$(GDALDIR)\include;$(SolutionDir)\tGis.Utility\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ELRMPL)\.;$(GDALDIR)\include;$(SolutionDir)\tGis.Utility\include;$(SolutionDir)\tGis.Core\include;.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets</IncludePath>
+      <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB</Define>
+    </QtMoc>
     <ClInclude Include="RasterBinaryGrayScaleLayerPropertyDialog.h" />
     <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h" />
     <ClInclude Include="RasterRgbLayerPropertyDialog.h" />
-    <ClInclude Include="tGisMetaType.h" />
     <QtMoc Include="QDataSourceWidget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

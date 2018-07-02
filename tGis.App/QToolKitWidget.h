@@ -3,7 +3,7 @@
 
 #include "tOrganizer.h"
 #include "tUtility.h"
-#include "tGisMetaType.h"
+#include "QtHelper.h"
 
 using namespace tGis::Core;
 

@@ -2,7 +2,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 #include <QCheckBox>
-#include "tGisMetaType.h"
+#include "QtHelper.h"
 
 
 RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerPropertyDialog(QWidget * parent)
@@ -45,7 +45,7 @@ ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLa
 {
 	RasterBinaryGrayScaleLayerProvider * provider = (RasterBinaryGrayScaleLayerProvider*)provider_;
 	MyGDALRasterDataset * dataset = (MyGDALRasterDataset*)dataset_;
-	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
+	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	dlg.SetDataset(dataset, 1);
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(dataset->GetCreationString()));
 	if (QDialog::Accepted == dlg.exec())
@@ -83,7 +83,7 @@ void RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerPropert
 {
 	RasterBinaryGrayScaleLayerProvider *provider = (RasterBinaryGrayScaleLayerProvider*)provider_;
 	RasterBinaryGrayScaleLayer *layer = (RasterBinaryGrayScaleLayer*)layer_;
-	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)GetMainWindow());
+	RasterBinaryGrayScaleLayerPropertyDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	dlg.SetDataset((MyGDALRasterDataset*)layer->GetDataset(), layer->GetBand());
 	dlg.ui.pteData->setPlainText(QString::fromLocal8Bit(layer->GetDataset()->GetCreationString()));
 	double min;

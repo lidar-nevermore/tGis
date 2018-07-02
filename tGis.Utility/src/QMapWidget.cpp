@@ -11,10 +11,16 @@ BEGIN_NAME_SPACE(tGis, Utility)
 
 QMapWidget::QMapWidget(QWidget *parent)
 	:QWidget(parent)
+	, _geoSurface(this)
 {
 	_firstResizing = true;
 	_map = nullptr;
-	_geoSurface.SetBackgroundColor(_backgroundR, _backgroundG, _backgroundB);
+	_backgroundR = 255;
+	_backgroundG = 255;
+	_backgroundB = 255;
+	_geoSurface._surfBackgroundR = _backgroundR;
+	_geoSurface._surfBackgroundG = _backgroundG;
+	_geoSurface._surfBackgroundB = _backgroundB;
 }
 
 
@@ -47,16 +53,19 @@ void QMapWidget::SetBackgroundColor(unsigned char R, unsigned char G, unsigned c
 	_backgroundR = R;
 	_backgroundG = G;
 	_backgroundB = B;
-	_geoSurface.SetBackgroundColor(R, G, B);
+	_geoSurface._surfBackgroundR = _backgroundR;
+	_geoSurface._surfBackgroundG = _backgroundG;
+	_geoSurface._surfBackgroundB = _backgroundB;
 }
 
 void QMapWidget::RepaintMap()
 {
 	MapWidget::RepaintMap();
+	_geoSurface.SwithSurface();
 	update();
 }
 
-void QMapWidget::PresentSurface()
+void QMapWidget::PresentMap()
 {
 	update();
 }
@@ -67,7 +76,7 @@ void QMapWidget::paintEvent(QPaintEvent *)
 	QPainter painter(this);
 	painter.fillRect(0, 0, sz.width(), sz.height(), QColor(_backgroundR, _backgroundG, _backgroundB));
 	_geoSurface.AttachQPainter(&painter);
-	_geoSurface.PresentSurface();
+	_geoSurface.PresentMap();
 	_geoSurface.BeginPaintOnAttachedQPainter();
 	_overlayLayer.Paint((IGeoSurface*)&_geoSurface);
 	_geoSurface.EndPaintOnAttachedQPainter();

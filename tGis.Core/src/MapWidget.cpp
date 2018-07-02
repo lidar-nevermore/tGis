@@ -91,7 +91,6 @@ void MapWidget::RepaintMap()
 	IGeoSurface* surface = this->GetGeoSurface();
 	map->Paint(surface);
 	_overlayLayer.Paint(surface);
-	surface->SwithSurface();
 }
 
 void MapWidget::MouseDown(void * e)

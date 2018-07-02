@@ -112,17 +112,17 @@ void tGisApp::on_zoomInAction_triggered(bool checked)
 {
 	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
 	double resolution;
-	surface->GetViewPort(nullptr, nullptr, nullptr, nullptr, &resolution);
+	surface->GetViewPort(nullptr, nullptr, &resolution);
 	resolution *= 0.96;
 	surface->SetViewResolution(resolution);
-	ui.mapWidget->PresentSurface();
+	ui.mapWidget->PresentMap();
 }
 
 void tGisApp::on_zoomOutAction_triggered(bool checked)
 {
 	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
 	double resolution;
-	surface->GetViewPort(nullptr, nullptr, nullptr, nullptr, &resolution);
+	surface->GetViewPort(nullptr, nullptr, &resolution);
 	resolution *= 1.042;
 	surface->SetViewResolution(resolution);
 	ui.mapWidget->RepaintMap();
@@ -250,7 +250,7 @@ void tGisApp::on_rasterSubAreaAction_toggled(bool checked)
 void tGisApp::on_showGridAction_toggled(bool checked)
 {
 	ui.mapWidget->SetGridVisible(checked);
-	ui.mapWidget->PresentSurface();
+	ui.mapWidget->PresentMap();
 }
 
 void tGisApp::on_closeDatasetAction_triggered(bool checked)

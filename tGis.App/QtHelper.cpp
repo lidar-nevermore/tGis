@@ -2,18 +2,22 @@
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QApplication>
 
-BEGIN_NAME_SPACE(tGis, Utility)
 
 QtHelper QtHelper::INSTANCE;
 
 QtHelper::QtHelper(QObject *parent)
 {
 	_mainWindow = nullptr;
-	qRegisterMetaType<ObjectSampleMetadataPtr>("ObjectSampleMetadataPtr");
-	qRegisterMetaType<IDataSourcePtr>("IDataSourcePtr");
+	qRegisterMetaType<IMapPtr>("IMapPtr");
 	qRegisterMetaType<ILayerPtr>("ILayerPtr");
+	qRegisterMetaType<ILayerProviderPtr>("ILayerProviderPtr");
+	qRegisterMetaType<IDataSourcePtr>("IDataSourcePtr");
+	qRegisterMetaType<IDataSourceProviderPtr>("IDataSourceProviderPtr");
+	qRegisterMetaType<IDatasetPtr>("IDatasetPtr");
+	qRegisterMetaType<ITGisObjectPtr>("ITGisObjectPtr");
+	qRegisterMetaType<IToolPtr>("IToolPtr");
+	qRegisterMetaType<ToolKitPtr>("ToolKitPtr");
 }
-
 
 QtHelper::~QtHelper()
 {
@@ -29,6 +33,4 @@ QMainWindow * QtHelper::GetMainWindow()
 	}
 	return _mainWindow;
 }
-
-END_NAME_SPACE(tGis, Utility)
 

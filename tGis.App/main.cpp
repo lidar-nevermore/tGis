@@ -1,7 +1,6 @@
 #include "tGisApp.h"
 #include <QtWidgets/QApplication>
 
-#include "tGisMetaType.h"
 #include "RasterGrayScaleLayerPropertyDialog.h"
 #include "RasterRgbLayerPropertyDialog.h"
 #include "RasterBinaryGrayScaleLayerPropertyDialog.h"
@@ -10,21 +9,9 @@
 #include "tUtility.h"
 #include "tGis.Utility.h"
 
+#include "QtHelper.h"
+
 using namespace tGis::Core;
-
-static QMainWindow* g_MainWindow = nullptr;
-
-QMainWindow* GetMainWindow()
-{
-	if (g_MainWindow == nullptr)
-	{
-		foreach(QWidget *w, qApp->topLevelWidgets())
-			if (QMainWindow* mainWin = qobject_cast<QMainWindow*>(w))
-				g_MainWindow = mainWin;
-	}
-	return g_MainWindow;
-}
-
 
 int main(int argc, char *argv[])
 {
@@ -36,18 +23,10 @@ int main(int argc, char *argv[])
 	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerProperty);
 	RasterRgbLayerProvider::INSTANCE.SetCreationUI(&RasterRgbLayerPropertyDialog::CreateRasterRgbLayer);
 	RasterRgbLayerProvider::INSTANCE.SetPropertyUI(&RasterRgbLayerPropertyDialog::RasterRgbLayerProperty);
-	qRegisterMetaType<IMapPtr>("IMapPtr");
-	qRegisterMetaType<ILayerPtr>("ILayerPtr");
-	qRegisterMetaType<ILayerProviderPtr>("ILayerProviderPtr");
-	qRegisterMetaType<IDataSourcePtr>("IDataSourcePtr");
-	qRegisterMetaType<IDataSourceProviderPtr>("IDataSourceProviderPtr");
-	qRegisterMetaType<IDatasetPtr>("IDatasetPtr");
-	qRegisterMetaType<ITGisObjectPtr>("ITGisObjectPtr");
-	qRegisterMetaType<IToolPtr>("IToolPtr");
-	qRegisterMetaType<ToolKitPtr>("ToolKitPtr");
 
 	QApplication a(argc, argv);
 	tGisApp w;
+	QtHelper::INSTANCE.setObjectName(QStringLiteral("QtHelper"));
 	w.show();
 	return a.exec();
 }

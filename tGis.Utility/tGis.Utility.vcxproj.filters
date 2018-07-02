@@ -31,14 +31,14 @@
     <ClCompile Include="internal\ObjectSampleLabelDialog.cpp">
       <Filter>internal\ml</Filter>
     </ClCompile>
-    <ClCompile Include="internal\ObjectSampleWidget.cpp">
-      <Filter>internal\ml</Filter>
-    </ClCompile>
     <ClCompile Include="internal\QtHelper.cpp">
       <Filter>internal\ml</Filter>
     </ClCompile>
     <ClCompile Include="src\tGis.Utility.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\ObjectSampleToolDialog.cpp">
+      <Filter>internal\ml</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -69,11 +69,11 @@
     <ClInclude Include="internal\ObjectSampleLabelDialog.h">
       <Filter>internal\ml</Filter>
     </ClInclude>
-    <ClInclude Include="internal\ObjectSampleWidget.h">
-      <Filter>internal\ml</Filter>
-    </ClInclude>
     <ClInclude Include="include\tGis.Utility.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\ObjectSampleToolDialog.h">
+      <Filter>internal\ml</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +128,7 @@
     <QtUic Include="form\RasterSubArea.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtUic Include="form\ObjectSampleWidget.ui">
+    <QtUic Include="form\ObjectSampleToolDialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
