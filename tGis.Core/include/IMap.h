@@ -13,7 +13,10 @@ struct IDataset;
 struct IGeoSurface;
 
 template struct TGIS_API IEventHandler<IMap*>;
+template class TGIS_API Event<IMap*>;
+
 template struct TGIS_API IEventHandler<IMap*, ILayer*>;
+template class TGIS_API Event<IMap*, ILayer*>;
 
 struct TGIS_API IMap
 {

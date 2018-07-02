@@ -115,7 +115,7 @@ void QMapWidget::resizeEvent(QResizeEvent * e)
 		LoadedEvent(mapWidget, width, height);
 	}
 	SizeChangedEvent(mapWidget, width, height);
-	MapWidget::RepaintMap();
+	RepaintMap();
 }
 
 void QMapWidget::mousePressEvent(QMouseEvent *e)

@@ -38,6 +38,8 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.mapWidget->AddMapTool(&_mapZoomTool);
 	ui.mapWidget->AddMapTool(&_rectZoomTool);
 	_rectZoomTool.SetEnabled(false);
+	ui.mapWidget->MapToolAddedEvent.Add(this, &tGisApp::MapToolAddedOrChanged);
+	ui.mapWidget->MapToolChangedEvent.Add(this, &tGisApp::MapToolAddedOrChanged);
 
 	QDesktopWidget * desktop = QApplication::desktop();
 	int curMonitor = desktop->screenNumber(this);
@@ -108,6 +110,45 @@ void tGisApp::LayerCleared(IMapPtr)
 	ui.mapWidget->RepaintMap();
 }
 
+void tGisApp::MapToolAddedOrChanged(IMapWidget * mapWidget, IMapTool * mapTool)
+{
+	DrawRectTool* drtool = dynamic_cast<DrawRectTool* >(mapTool);
+	MapPanTool* ptool = dynamic_cast<MapPanTool* >(mapTool);
+	if ((drtool!= nullptr || ptool != nullptr)&& mapTool->GetEnabled())
+	{
+		if (mapTool == &_mapPanTool)
+		{
+			_rectZoomTool.SetEnabled(false);
+			_rasterSubsetTool.SetEnabled(false);
+			ui.zoomRectAction->setChecked(false);
+			ui.rasterSubAreaAction->setChecked(false);
+		}
+		else if (mapTool == &_rectZoomTool)
+		{
+			_mapPanTool.SetEnabled(false);
+			_rasterSubsetTool.SetEnabled(false);
+			ui.panAction->setChecked(false);
+			ui.rasterSubAreaAction->setChecked(false);
+		}
+		else if (mapTool == &_rasterSubsetTool)
+		{
+			_mapPanTool.SetEnabled(false);
+			_rectZoomTool.SetEnabled(false);
+			ui.panAction->setChecked(false);
+			ui.zoomRectAction->setChecked(false);
+		}
+		else
+		{
+			_mapPanTool.SetEnabled(false);
+			_rectZoomTool.SetEnabled(false);
+			_rasterSubsetTool.SetEnabled(false);
+			ui.panAction->setChecked(false);
+			ui.zoomRectAction->setChecked(false);
+			ui.rasterSubAreaAction->setChecked(false);
+		}
+	}
+}
+
 void tGisApp::on_zoomInAction_triggered(bool checked)
 {
 	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
@@ -148,21 +189,16 @@ void tGisApp::on_zoomFreeAction_toggled(bool checked)
 void tGisApp::on_zoomRectAction_toggled(bool checked)
 {
 	_rectZoomTool.SetEnabled(checked);
-	if (checked)
-	{
-		ui.panAction->setChecked(false);
-		ui.rasterSubAreaAction->setChecked(false);
-	}
 }
 
 void tGisApp::on_panAction_toggled(bool checked)
 {
 	_mapPanTool.SetEnabled(checked);
-	if (checked)
-	{
-		ui.zoomRectAction->setChecked(false);
-		ui.rasterSubAreaAction->setChecked(false);
-	}
+}
+
+void tGisApp::on_rasterSubAreaAction_toggled(bool checked)
+{
+	_rasterSubsetTool.SetEnabled(checked);
 }
 
 void tGisApp::on_zoomLayerAction_triggered(bool checked)
@@ -236,15 +272,6 @@ void tGisApp::on_layerBottomAction_triggered(bool checked)
 {
 	ui.layerWidget->MoveSelectedLayerBottom();
 	ui.mapWidget->RepaintMap();
-}
-
-void tGisApp::on_rasterSubAreaAction_toggled(bool checked)
-{
-	if (checked)
-	{
-		ui.panAction->setChecked(false);
-		ui.zoomRectAction->setChecked(false);
-	}
 }
 
 void tGisApp::on_showGridAction_toggled(bool checked)

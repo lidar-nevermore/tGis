@@ -12,11 +12,12 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_API MapTool : public IMapTool
 {
+	friend class MapWidget;
 public:
 	MapTool();
 	virtual ~MapTool();
 
-	virtual void SetMapWidget(IMapWidget* mapWidget);
+	virtual IMapWidget* GetMapWidget();
 
 	virtual void SetEnabled(bool enabled);
 	virtual bool GetEnabled();
@@ -34,6 +35,7 @@ public:
 
 protected:
 	IMapWidget* _mapWidget;
+	virtual void SetMapWidget(IMapWidget* mapWidget);
 
 private:
 	bool _enabled;

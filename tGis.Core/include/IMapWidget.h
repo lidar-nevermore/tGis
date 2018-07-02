@@ -20,6 +20,9 @@ struct ILayerProvider;
 template struct TGIS_API IEventHandler<IMapWidget*, int, int>;
 template class TGIS_API Event<IMapWidget*, int, int>;
 
+template struct TGIS_API IEventHandler<IMapWidget*, IMapTool*>;
+template class TGIS_API Event<IMapWidget*, IMapTool*>;
+
 struct TGIS_API IMapWidget
 {
 	virtual void SetMap(IMap*) = 0;
@@ -28,7 +31,7 @@ struct TGIS_API IMapWidget
 	virtual IOverlayLayer* GetOverlayLayer() = 0;
 
 	virtual bool AddMapTool(IMapTool*) = 0;
-	virtual void RemoveMapTool(IMapTool*) = 0;
+	virtual bool RemoveMapTool(IMapTool*) = 0;
 	virtual void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B) = 0;
 	virtual void GetBackgroundColor(unsigned char* R, unsigned char* G, unsigned char* B) = 0;
 	virtual void SetGridVisible(bool) = 0;
@@ -50,6 +53,9 @@ struct TGIS_API IMapWidget
 
 	Event<IMapWidget*, int, int> LoadedEvent;
 	Event<IMapWidget*, int, int> SizeChangedEvent;
+	Event<IMapWidget*, IMapTool*> MapToolChangedEvent;
+	Event<IMapWidget*, IMapTool*> MapToolAddedEvent;
+	Event<IMapWidget*, IMapTool*> MapToolRemovedEvent;
 
 	IMapWidget() {};
 	virtual ~IMapWidget() {};

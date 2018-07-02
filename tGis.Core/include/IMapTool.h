@@ -12,7 +12,9 @@ struct IMapWidget;
 
 struct TGIS_API IMapTool
 {
-	virtual void SetMapWidget(IMapWidget* mapWidget) = 0;
+	friend class MapWidget;
+
+	virtual IMapWidget* GetMapWidget() = 0;
 
 	virtual void SetEnabled(bool enabled) = 0;
 	virtual bool GetEnabled() = 0;
@@ -30,6 +32,10 @@ struct TGIS_API IMapTool
 
 	IMapTool() {};
 	virtual ~IMapTool() {};
+
+protected:
+	virtual void SetMapWidget(IMapWidget* mapWidget) = 0;
+
 private:
 	IMapTool(const IMapTool &) = delete;
 	IMapTool &operator=(const IMapTool &) = delete;

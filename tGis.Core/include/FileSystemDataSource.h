@@ -26,10 +26,16 @@ public:
 	virtual ~FileSystemDataSource();
 
 private:
+	int _refCount;
+
+private:
 	static const char* const _type;
 
 protected:
 	string _path;
+
+private:
+	void Disconnect(bool raiseEvent);
 
 public:
 	virtual const char* GetType();

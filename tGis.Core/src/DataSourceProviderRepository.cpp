@@ -45,6 +45,26 @@ DataSourceProviderRepository::~DataSourceProviderRepository()
 	}
 }
 
+void DataSourceProviderRepository::AfterDatasetOpen(IDataSourceProvider * provider, IDataset * dt)
+{
+	AfterDatasetOpenEvent(provider, dt);
+}
+
+void DataSourceProviderRepository::BeforeDatasetClose(IDataSourceProvider * provider, IDataset * dt)
+{
+	BeforeDatasetCloseEvent(provider, dt);
+}
+
+void DataSourceProviderRepository::AfterDataSourceConnect(IDataSourceProvider * provider, IDataSource * ds)
+{
+	AfterDataSourceConnectEvent(provider, ds);
+}
+
+void DataSourceProviderRepository::BeforeDataSourceDisconnect(IDataSourceProvider *provider, IDataSource * ds)
+{
+	BeforeDataSourceDisconnectEvent(provider, ds);
+}
+
 int DataSourceProviderRepository::GetDataSourceProviderCount()
 {
 	return _vecDataSourceProvider.size();
@@ -58,7 +78,11 @@ IDataSourceProvider * DataSourceProviderRepository::GetDataSourceProvider(int po
 void DataSourceProviderRepository::AddDataSourceProvider(IDataSourceProvider* dsp)
 {
 	string dataSourceType = dsp->GetSupportedDataSourceType();
-	_vecDataSourceProvider.insert(_vecDataSourceProvider.begin(), dsp);
+	dsp->AfterDatasetOpenEvent.Add(this, &DataSourceProviderRepository::AfterDatasetOpen);
+	dsp->BeforeDatasetCloseEvent.Add(this, &DataSourceProviderRepository::BeforeDatasetClose);
+	dsp->AfterDataSourceConnectEvent.Add(this, &DataSourceProviderRepository::AfterDataSourceConnect);
+	dsp->BeforeDataSourceDisconnectEvent.Add(this, &DataSourceProviderRepository::BeforeDataSourceDisconnect);
+	_vecDataSourceProvider.push_back(dsp);
 	_mapDataSourceProvider.insert(map<string, IDataSourceProvider*>::value_type(dataSourceType, dsp));
 }
 

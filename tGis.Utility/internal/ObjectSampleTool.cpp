@@ -24,13 +24,14 @@ const char * ObjectSampleTool::GetName()
 
 void ObjectSampleTool::Execute()
 {
+	IMapWidget* mapWidget = GetCurrentMapWidget();
 	if (_widget == nullptr)
 	{
-		_widget = new ObjectSampleToolDialog((QWidget*)QtHelper::INSTANCE.GetMainWindow());
+		_widget = new ObjectSampleToolDialog(mapWidget,(QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	}
 	int x;
 	int y;
-	IMapWidget* mapWidget = GetCurrentMapWidget();
+	
 	mapWidget->GetGeoSurface()->GetViewPos(&x, &y);
 	_widget->move(x,y);
 	_widget->UpdateChoise();

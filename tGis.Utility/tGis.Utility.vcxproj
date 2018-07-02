@@ -118,6 +118,7 @@
     <ClCompile Include="src\MapZoomTool.cpp" />
     <ClCompile Include="src\QMapWidget.cpp" />
     <ClCompile Include="src\QtGeoSurface.cpp" />
+    <ClCompile Include="src\RasterSubsetTool.cpp" />
     <ClCompile Include="src\RectZoomTool.cpp" />
     <ClCompile Include="src\tGis.Utility.cpp" />
   </ItemGroup>
@@ -125,6 +126,7 @@
     <ClInclude Include="include\DrawRectTool.h" />
     <ClInclude Include="include\MapPanTool.h" />
     <ClInclude Include="include\MapZoomTool.h" />
+    <ClInclude Include="include\RasterSubsetTool.h" />
     <ClInclude Include="include\tGis.Utility.h" />
     <ClInclude Include="internal\ObjectSampleDialog.h" />
     <ClInclude Include="internal\ObjectSampleLabelDialog.h" />

@@ -1,4 +1,5 @@
 #include "MapTool.h"
+#include "IMapWidget.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -14,6 +15,11 @@ MapTool::~MapTool()
 {
 }
 
+IMapWidget * MapTool::GetMapWidget()
+{
+	return _mapWidget;
+}
+
 void MapTool::SetMapWidget(IMapWidget * mapWidget)
 {
 	_mapWidget = mapWidget;
@@ -21,7 +27,13 @@ void MapTool::SetMapWidget(IMapWidget * mapWidget)
 
 void MapTool::SetEnabled(bool enabled)
 {
+	bool raise = _enabled != enabled;
 	_enabled = enabled;
+	if (raise && _mapWidget != nullptr)
+	{
+		IMapTool* mt = this;
+		_mapWidget->MapToolChangedEvent(_mapWidget, mt);
+	}
 }
 
 bool MapTool::GetEnabled()

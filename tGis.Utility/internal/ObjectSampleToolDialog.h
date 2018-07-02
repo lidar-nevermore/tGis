@@ -10,6 +10,8 @@
 #include "tEntity.h"
 #include "tOrganizer.h"
 #include "tUtility.h"
+#include "tVisualize.h"
+#include "TakeObjectSampleTool.h"
 
 using namespace tGis::Core;
 
@@ -19,11 +21,32 @@ BEGIN_NAME_SPACE(tGis, Utility)
 class ObjectSampleToolDialog : public QDialog
 {
 public:
-	ObjectSampleToolDialog(QWidget *parent = 0);
+	ObjectSampleToolDialog(IMapWidget* mapWidget, QWidget *parent = 0);
 	~ObjectSampleToolDialog();
+
+private:
+	IMapWidget* _mapWidget;
+	ObjectSampleDataSource* _selectedSamples;
+	ILayer* _selectedLayer;
+	TakeObjectSampleTool _takeObjectSampleTool;
+
+private:
+	void MapToolAddedOrChanged(IMapWidget*, IMapTool*);
+	void LayerAdded(IMapPtr, ILayerPtr);
+	void LayerRemoved(IMapPtr, ILayerPtr);
+	void LayerCleared(IMapPtr);
+
+	void AfterDataSourceConnect(IDataSourceProvider*, IDataSource*);
+	void BeforeDataSourceDisconnect(IDataSourceProvider*, IDataSource*);
 
 public:
 	void UpdateChoise();
+
+private:
+	void closeEvent(QCloseEvent *event);
+
+private slots :
+	void on_chkRect_toggled(bool checked);
 
 private:
 	Ui::ObjectSampleToolDialog ui;

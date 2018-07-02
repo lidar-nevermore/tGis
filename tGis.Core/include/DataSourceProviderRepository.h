@@ -5,6 +5,8 @@
 
 #include "Helper.h"
 
+#include "IDataSourceProvider.h"
+
 #include <vector>
 #include <map>
 #include <string>
@@ -13,7 +15,6 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct IDataSourceProvider;
 
 class TGIS_API DataSourceProviderRepository
 {
@@ -29,6 +30,18 @@ private:
 
 public:
 	~DataSourceProviderRepository();
+
+private:
+	void AfterDatasetOpen(IDataSourceProvider*, IDataset*);
+	void BeforeDatasetClose(IDataSourceProvider*, IDataset*);
+	void AfterDataSourceConnect(IDataSourceProvider*, IDataSource*);
+	void BeforeDataSourceDisconnect(IDataSourceProvider*, IDataSource*);
+
+public:
+	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
+	Event<IDataSourceProvider*, IDataset*> BeforeDatasetCloseEvent;
+	Event<IDataSourceProvider*, IDataSource*> AfterDataSourceConnectEvent;
+	Event<IDataSourceProvider*, IDataSource*> BeforeDataSourceDisconnectEvent;
 
 public:
 	int GetDataSourceProviderCount();

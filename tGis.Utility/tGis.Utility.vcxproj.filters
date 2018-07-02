@@ -40,6 +40,9 @@
     <ClCompile Include="internal\ObjectSampleToolDialog.cpp">
       <Filter>internal\ml</Filter>
     </ClCompile>
+    <ClCompile Include="src\RasterSubsetTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\DrawRectTool.h">
@@ -74,6 +77,9 @@
     </ClInclude>
     <ClInclude Include="internal\ObjectSampleToolDialog.h">
       <Filter>internal\ml</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterSubsetTool.h">
+      <Filter>include\Map</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

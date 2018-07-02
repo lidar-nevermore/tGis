@@ -2,6 +2,7 @@
 #include "IMap.h"
 #include "IGeoSurface.h"
 #include "IMapTool.h"
+#include "MapTool.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -39,22 +40,26 @@ bool MapWidget::AddMapTool(IMapTool * tool)
 	{
 		tool->SetMapWidget(this);
 		_vecMapTool.push_back(tool);
+		MapToolAddedEvent(this, std::forward<IMapTool*>(tool));
 	}
 
 	return canAdd;
 }
 
-void MapWidget::RemoveMapTool(IMapTool * tool)
+bool MapWidget::RemoveMapTool(IMapTool * tool)
 {
 	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
 	{
 		if (*it == tool)
 		{
-			(*it)->SetMapWidget(nullptr);
+			tool->SetMapWidget(nullptr);
 			_vecMapTool.erase(it);
-			break;
+			MapToolRemovedEvent(this, std::forward<IMapTool*>(tool));
+			return true;
 		}
 	}
+
+	return false;
 }
 
 void MapWidget::SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B)
@@ -90,7 +95,6 @@ void MapWidget::RepaintMap()
 
 	IGeoSurface* surface = this->GetGeoSurface();
 	map->Paint(surface);
-	_overlayLayer.Paint(surface);
 }
 
 void MapWidget::MouseDown(void * e)

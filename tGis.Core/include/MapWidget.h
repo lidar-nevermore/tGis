@@ -14,7 +14,6 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-
 class TGIS_API MapWidget : public IMapWidget
 {
 public:
@@ -26,7 +25,7 @@ public:
 	virtual IOverlayLayer* GetOverlayLayer();
 
 	virtual bool AddMapTool(IMapTool*);
-	virtual void RemoveMapTool(IMapTool*);
+	virtual bool RemoveMapTool(IMapTool*);
 	virtual void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
 	virtual void GetBackgroundColor(unsigned char* R, unsigned char* G, unsigned char* B);
 	virtual void SetGridVisible(bool);

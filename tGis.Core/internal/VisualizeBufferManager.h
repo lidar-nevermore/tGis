@@ -25,14 +25,6 @@ public:
 	~VisualizeBufferManager();
 
 public:
-	//inline void SetMaxSurfaceSize(int width, int height);
-	//inline unsigned char* AllocSurfaceBuffer();
-	//inline size_t SurfaceBufferSize();
-	//inline void FreeSurfaceBuffer(void* buf);
-	//inline unsigned char* AllocDatasetBuffer(int pixBytes);
-	//inline size_t DatasetBufferSize();
-	//inline void FreeDatasetBuffer(void* buf);
-
 	inline void SetMaxSurfaceSize(int width, int height)
 	{
 		size_t surfaceBufferSize = width*height * 4;

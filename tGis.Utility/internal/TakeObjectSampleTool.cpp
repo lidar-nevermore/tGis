@@ -21,7 +21,7 @@ TakeObjectSampleTool::~TakeObjectSampleTool()
 {
 }
 
-void TakeObjectSampleTool::SetRasterLayer(RasterLayer * layer)
+void TakeObjectSampleTool::SetRasterLayer(ILayer * layer)
 {
 	_layer = layer;
 	_dataset = (MyGDALRasterDataset*)layer->GetDataset();
@@ -79,7 +79,6 @@ void TakeObjectSampleTool::MouseUp(void *ev)
 
 	ObjectSampleDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	dlg.SetObjectSampleDataSource(_samples);
-	dlg.SetLayer(_layer);
 	ILayer* layer = _layer->Clone(memDataset);
 	dlg.SetLayer(layer);
 	double sampleLeft;

@@ -83,6 +83,8 @@ IDataSource * FileSystemDataSourceProvider::CreateDataSource(const char * path)
 		{
 			throw exception("Already connected as DataSource of different Type!");
 		}
+		FileSystemDataSource* fds = (FileSystemDataSource*)ds;
+		fds->_refCount++;
 		return ds;
 	}
 
@@ -103,7 +105,14 @@ void FileSystemDataSourceProvider::ReleaseDataSource(IDataSource * ds)
 
 	if (pos != _mapDataSource.end())
 	{
-		delete (*pos).second;
+		ds->Disconnect();
+		FileSystemDataSource* fds = (FileSystemDataSource*)ds;
+		fds->_refCount--;
+		if (fds->_refCount == 0)
+		{
+			delete ds;
+		}
+	
 		_mapDataSource.erase(pos);
 	}
 }

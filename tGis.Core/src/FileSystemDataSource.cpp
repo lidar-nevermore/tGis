@@ -19,7 +19,7 @@ const char* const FileSystemDataSource::_type = "9357FB74-8ED4-4666-9D91-8B32220
 FileSystemDataSource::FileSystemDataSource(const char* path)
 	:FileSystemDataSource(path,&FileSystemDataSourceProvider::INSTANCE())
 {
-
+	_refCount = 1;
 }
 
 FileSystemDataSource::FileSystemDataSource(const char * path, IDataSourceProvider * provider)
@@ -50,7 +50,7 @@ FileSystemDataSource::FileSystemDataSource(const char * path, IDataSourceProvide
 
 FileSystemDataSource::~FileSystemDataSource()
 {
-	Disconnect();
+	Disconnect(false);
 }
 
 const char * FileSystemDataSource::GetType()
@@ -137,11 +137,14 @@ void FileSystemDataSource::Connect()
 	DataSource::Connect();
 }
 
-void FileSystemDataSource::Disconnect()
+void FileSystemDataSource::Disconnect(bool raiseEvent)
 {
 	if (_connected)
 	{
-		DataSource::Disconnect();
+		if (raiseEvent)
+		{
+			DataSource::Disconnect();
+		}
 
 		_connected = false;
 		for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
@@ -152,10 +155,18 @@ void FileSystemDataSource::Disconnect()
 		_vecDataSource.clear();
 		for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
 		{
-			delete (*it);
+			IDataset* dt = *it;
+			dt->Close();
+			delete dt;
 		}
 		_vecDataset.clear();
 	}
+}
+
+
+void FileSystemDataSource::Disconnect()
+{
+	Disconnect(true);
 }
 
 

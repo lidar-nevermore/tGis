@@ -41,6 +41,8 @@ void DrawRectTool::MouseDown(void * ev)
 		_rect.SetVisible(true);
 		_rect._left = e->x();
 		_rect._top = e->y();
+		_rect._right = e->x();
+		_rect._bottom = e->y();
 	}
 }
 
