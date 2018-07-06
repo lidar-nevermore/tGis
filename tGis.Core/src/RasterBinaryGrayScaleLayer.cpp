@@ -209,11 +209,11 @@ void RasterBinaryGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int re
 			if (pixValue > _pivot)
 			{
 				onLeft = false;
-				lutPos = (int)(256 * (pixValue - _pivot) / _rightRange);
+				lutPos = _rightRange == 0 ? 255 : (int)(256 * (pixValue - _pivot) / _rightRange);
 			}
 			else
 			{
-				lutPos = (int)(256 * (_pivot - pixValue) / _leftRange);
+				lutPos = _leftRange == 0 ? 255 : (int)(256 * (_pivot - pixValue) / _leftRange);
 			}
 
 			if (lutPos < 0) lutPos = 0;
@@ -261,11 +261,11 @@ void RasterBinaryGrayScaleLayer::IOResample(unsigned char * pixBuffer, int readi
 			if (pixValue > _pivot)
 			{
 				onLeft = false;
-				lutPos = (int)(256 * (pixValue - _pivot) / _rightRange);
+				lutPos = _rightRange == 0 ? 255 : (int)(256 * (pixValue - _pivot) / _rightRange);
 			}
 			else
 			{
-				lutPos = (int)(256 * (_pivot - pixValue) / _leftRange);
+				lutPos = _leftRange == 0 ? 255 : (int)(256 * (_pivot - pixValue) / _leftRange);
 			}
 
 			if (lutPos < 0) lutPos = 0;

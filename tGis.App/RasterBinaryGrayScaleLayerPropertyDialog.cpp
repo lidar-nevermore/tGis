@@ -59,7 +59,7 @@ ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLa
 		double min = minStr.toDouble();
 		double max = maxStr.toDouble();
 		double pivot = pivotStr.toDouble();
-		if (min < pivot && pivot < max)
+		if (min <= pivot && pivot <= max)
 		{
 			layer->SetMinPivotMax(min, pivot, max);
 		}
@@ -71,7 +71,7 @@ ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLa
 		bool rightGChannel = dlg.ui.chkRightG->isChecked();
 		bool rightBChannel = dlg.ui.chkRightB->isChecked();
 		layer->SetLeftChannel(leftRChannel, leftGChannel, leftBChannel);
-		layer->SetRightChannel(rightRChannel, rightBChannel, rightBChannel);
+		layer->SetRightChannel(rightRChannel, rightGChannel, rightBChannel);
 
 		int noDataLogic = 0;
 		if (dlg.ui.chkEqual->isChecked())
@@ -158,7 +158,7 @@ void RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerPropert
 		min = minStr.toDouble();
 		max = maxStr.toDouble();
 		pivot = pivotStr.toDouble();
-		if (min < pivot && pivot < max)
+		if (min <= pivot && pivot <= max)
 		{
 			layer->SetMinPivotMax(min, pivot, max);
 		}
