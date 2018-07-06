@@ -47,6 +47,8 @@ private:
 
 private slots :
 	void on_chkRect_toggled(bool checked);
+	void on_cboSamples_currentIndexChanged(int index);
+	void on_cboLayer_currentIndexChanged(int index);
 
 private:
 	Ui::ObjectSampleToolDialog ui;

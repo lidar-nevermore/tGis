@@ -75,7 +75,7 @@ void SimpleMarkerSymbol::Paint(ISurface * surf, int count, int * x, int * y, int
 	}
 }
 
-inline void SimpleMarkerSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
+void SimpleMarkerSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
 {
 	*r = _r;
 	*g = _g;
@@ -83,7 +83,7 @@ inline void SimpleMarkerSymbol::GetColor(unsigned char * r, unsigned char * g, u
 	*a = _a;
 }
 
-inline void SimpleMarkerSymbol::SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void SimpleMarkerSymbol::SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	_r = r;
 	_g = g;
@@ -91,42 +91,42 @@ inline void SimpleMarkerSymbol::SetColor(unsigned char r, unsigned char g, unsig
 	_a = a;
 }
 
-inline int SimpleMarkerSymbol::GetWidth()
+int SimpleMarkerSymbol::GetWidth()
 {
 	return _width;
 }
 
-inline void SimpleMarkerSymbol::SetWidth(int w)
+void SimpleMarkerSymbol::SetWidth(int w)
 {
 	_width = w;
 }
 
-inline int SimpleMarkerSymbol::GetHeight()
+int SimpleMarkerSymbol::GetHeight()
 {
 	return _height;
 }
 
-inline void SimpleMarkerSymbol::SetHeight(int h)
+void SimpleMarkerSymbol::SetHeight(int h)
 {
 	_height = h;
 }
 
-inline int SimpleMarkerSymbol::GetXOffset()
+int SimpleMarkerSymbol::GetXOffset()
 {
 	return _xOffset;
 }
 
-inline void SimpleMarkerSymbol::SetXOffset(int xOff)
+void SimpleMarkerSymbol::SetXOffset(int xOff)
 {
 	_xOffset = xOff;
 }
 
-inline int SimpleMarkerSymbol::GetYOffset()
+int SimpleMarkerSymbol::GetYOffset()
 {
 	return _yOffset;
 }
 
-inline void SimpleMarkerSymbol::SetYOffset(int yOff)
+void SimpleMarkerSymbol::SetYOffset(int yOff)
 {
 	_yOffset = yOff;
 }

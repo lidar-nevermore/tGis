@@ -29,6 +29,8 @@ ObjectSampleToolDialog::ObjectSampleToolDialog(IMapWidget* mapWidget, QWidget *p
 	mapWidget->MapToolChangedEvent.Add(this, &ObjectSampleToolDialog::MapToolAddedOrChanged);
 
 	connect(ui.chkRect, &QCheckBox::toggled, this, &ObjectSampleToolDialog::on_chkRect_toggled);
+	connect(ui.cboLayer, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ObjectSampleToolDialog::on_cboLayer_currentIndexChanged);
+	connect(ui.cboSamples, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ObjectSampleToolDialog::on_cboSamples_currentIndexChanged);
 }
 
 ObjectSampleToolDialog::~ObjectSampleToolDialog()
@@ -182,7 +184,22 @@ void ObjectSampleToolDialog::UpdateChoise()
 
 void ObjectSampleToolDialog::closeEvent(QCloseEvent * event)
 {
+	ui.chkRect->setChecked(false);
 	_takeObjectSampleTool.SetEnabled(false);
+}
+
+void ObjectSampleToolDialog::on_cboSamples_currentIndexChanged(int index)
+{
+	_selectedSamples = (ObjectSampleDataSource*)ui.cboSamples->currentData().value<IDataSourcePtr>();
+	if (_selectedSamples != nullptr)
+		_takeObjectSampleTool.SetObjectSampleDataSource(_selectedSamples);
+}
+
+void ObjectSampleToolDialog::on_cboLayer_currentIndexChanged(int index)
+{
+	_selectedLayer = ui.cboLayer->currentData().value<ILayerPtr>();
+	if(_selectedLayer != nullptr)
+		_takeObjectSampleTool.SetRasterLayer(_selectedLayer);
 }
 
 void ObjectSampleToolDialog::on_chkRect_toggled(bool checked)

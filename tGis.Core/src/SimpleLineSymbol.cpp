@@ -40,7 +40,7 @@ void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y, int *
 	surf->DrawPolyline(count, x, y, _r, _g, _b, _a, _width, _type);
 }
 
-inline void SimpleLineSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
+void SimpleLineSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
 {
 	*r = _r;
 	*g = _g;
@@ -48,7 +48,7 @@ inline void SimpleLineSymbol::GetColor(unsigned char * r, unsigned char * g, uns
 	*a = _a;
 }
 
-inline void SimpleLineSymbol::SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void SimpleLineSymbol::SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	_r = r;
 	_g = g;
@@ -56,12 +56,12 @@ inline void SimpleLineSymbol::SetColor(unsigned char r, unsigned char g, unsigne
 	_a = a;
 }
 
-inline int SimpleLineSymbol::GetWidth()
+int SimpleLineSymbol::GetWidth()
 {
 	return _width;
 }
 
-inline void SimpleLineSymbol::SetWidth(int w)
+void SimpleLineSymbol::SetWidth(int w)
 {
 	_width = w;
 }

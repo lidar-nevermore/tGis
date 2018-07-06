@@ -27,10 +27,16 @@ protected:
 public:
 	virtual ~RasterLayer();
 
+public:
+	static const int EQUAL = 1;
+	static const int LT = 2;
+	static const int GT = 4;
+
 protected:
-	inline void SetDataset(MyGDALRasterDataset* raster);
-	inline void InitialMinMax(GDALRasterBand* band, int dataType, double *min, double *max, double* range);
-	inline void RestLutToLinear(unsigned char lut[256]);
+	void SetDataset(MyGDALRasterDataset* raster);
+	void InitialMinMax(GDALRasterBand* band, int dataType, double *min, double *max, double* range);
+	void RestLutToLinear(unsigned char lut[256]);
+	inline bool IsNoDataValue(int noDataLogic, double noDataValue, double value);
 
 public:
 	virtual const OGREnvelope* GetEnvelope();
@@ -41,12 +47,12 @@ public:
 	virtual void Paint(IGeoSurface*);
 
 private:
-	inline bool PreparePaint(IGeoSurface*);
+    bool PreparePaint(IGeoSurface*);
 	void PaintByOuterResample(IGeoSurface*);
 	void PaintByIOResample(IGeoSurface*);
+	void SetBufferAlpha(unsigned char* buf, int width, int height);
 
 protected:
-	inline void SetBufferAlpha(unsigned char* buf, int width, int height);
 
 	typedef void(RasterLayer::*OuterResampleFunc)(unsigned char* pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight,
 		unsigned char* surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight);

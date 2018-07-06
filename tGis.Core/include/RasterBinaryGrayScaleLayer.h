@@ -39,16 +39,19 @@ public:
 	virtual ILayer* Clone(IDataset*);
 
 public:
-	inline void SetDataset(MyGDALRasterDataset* dataset, int band);
-	inline void SetMinPivotMax(double min, double pivot, double max);
-	inline void GetMinPivotMax(double* min, double* pivot, double* max);
-	inline unsigned char* GetLut();
-	inline int GetBand();
+	void SetDataset(MyGDALRasterDataset* dataset, int band);
+	void SetMinPivotMax(double min, double pivot, double max);
+	void GetMinPivotMax(double* min, double* pivot, double* max);
+	unsigned char* GetLut();
+	int GetBand();
 
-	inline void SetLeftChannel(bool r, bool g, bool b);
-	inline void GetLeftChannel(bool* r, bool* g, bool* b);
-	inline void SetRightChannel(bool r, bool g, bool b);
-	inline void GetRightChannel(bool* r, bool* g, bool* b);
+	void SetLeftChannel(bool r, bool g, bool b);
+	void GetLeftChannel(bool* r, bool* g, bool* b);
+	void SetRightChannel(bool r, bool g, bool b);
+	void GetRightChannel(bool* r, bool* g, bool* b);
+
+	void SetNoDataValue(int noDataLogic, double noDataValue);
+	void GetNoDataValue(int* noDataLogic, double* noDataValue);
 
 protected:
 	void OuterResample(unsigned char* pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight,
@@ -70,12 +73,16 @@ private:
 	double _range;
 	double _leftRange;
 	double _rightRange;
-	bool leftRChannel;
-	bool leftGChannel;
-	bool leftBChannel;
-	bool rightRChannel;
-	bool rightGChannel;
-	bool rightBChannel;
+	bool _leftRChannel;
+	bool _leftGChannel;
+	bool _leftBChannel;
+	bool _rightRChannel;
+	bool _rightGChannel;
+	bool _rightBChannel;
+
+	int _noDataLogic;
+	//ÎÞÐ§Öµ
+	double _noDataValue;
 };
 
 

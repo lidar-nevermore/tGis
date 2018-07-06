@@ -33,10 +33,10 @@ public:
 	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
 public:
-	inline void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);
-	inline void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
-	inline int GetWidth();
-	inline void SetWidth(int w);
+	void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);
+	void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+	int GetWidth();
+	void SetWidth(int w);
 
 protected:
 	unsigned char _r;

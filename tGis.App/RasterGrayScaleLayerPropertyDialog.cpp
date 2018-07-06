@@ -62,7 +62,24 @@ ILayer * RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer(ILayerPr
 		if (min < max)
 		{
 			layer->SetMinMax(min, max);
-		}		
+		}
+
+		int noDataLogic = 0;
+		if (dlg.ui.chkEqual->isChecked())
+		{
+			noDataLogic |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGt->isChecked())
+		{
+			noDataLogic |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLt->isChecked())
+		{
+			noDataLogic |= RasterLayer::LT;
+		}
+		QString noDataStr = dlg.ui.leNoDataValue->text();
+		double noData = noDataStr.toDouble();
+		layer->SetNoDataValue(noDataLogic, noData);
 
 		return layer;
 	}
@@ -83,6 +100,25 @@ void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(ILayerProv
 	dlg.ui.leMin->setText(QString::number(min));
 	dlg.ui.leMax->setText(QString::number(max));
 	dlg.ui.sdOpacity->setValue((int)(layer->GetOpacity() * 255));
+	int noDataLogic;
+	double noData;
+	layer->GetNoDataValue(&noDataLogic, &noData);
+	dlg.ui.leNoDataValue->setText(QString::number(noData));
+	dlg.ui.chkEqual->setChecked(false);
+	dlg.ui.chkGt->setChecked(false);
+	dlg.ui.chkLt->setChecked(false);
+	if ((noDataLogic& RasterLayer::EQUAL) != 0)
+	{
+		dlg.ui.chkEqual->setChecked(true);
+	}
+	if ((noDataLogic & RasterLayer::GT) != 0)
+	{
+		dlg.ui.chkGt->setChecked(true);
+	}
+	if ((noDataLogic & RasterLayer::LT) != 0)
+	{
+		dlg.ui.chkLt->setChecked(true);
+	}
 	if (QDialog::Accepted == dlg.exec())
 	{
 		int band = dlg.ui.cboBand->currentIndex() + 1;
@@ -99,7 +135,23 @@ void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(ILayerProv
 		if (min < max)
 		{
 			layer->SetMinMax(min, max);
-		}		
+		}
+		noDataLogic = 0;
+		if (dlg.ui.chkEqual->isChecked())
+		{
+			noDataLogic |= 0x01;
+		}
+		if (dlg.ui.chkGt->isChecked())
+		{
+			noDataLogic |= 0x02;
+		}
+		if (dlg.ui.chkLt->isChecked())
+		{
+			noDataLogic |= 0x04;
+		}
+		QString noDataStr = dlg.ui.leNoDataValue->text();
+		noData = noDataStr.toDouble();
+		layer->SetNoDataValue(noDataLogic, noData);
 	}
 }
 

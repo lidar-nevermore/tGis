@@ -17,12 +17,14 @@ const char* const RasterBinaryGrayScaleLayer::_type = "7EB66993-6103-4426-AE75-F
 RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayerProvider* provider)
 	:RasterLayer(provider)
 {
-	leftRChannel = true;
-	leftGChannel = true;
-	leftBChannel = true;
-	rightRChannel = true;
-	rightGChannel = true;
-	rightBChannel = true;
+	_leftRChannel = true;
+	_leftGChannel = true;
+	_leftBChannel = true;
+	_rightRChannel = true;
+	_rightGChannel = true;
+	_rightBChannel = true;
+	_noDataLogic = 0;
+	_noDataValue = 0.0;
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterBinaryGrayScaleLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterBinaryGrayScaleLayer::IOResample;
 }
@@ -30,12 +32,14 @@ RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayerProvider* provider)
 RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayerProvider* provider, MyGDALRasterDataset * dataset, int band)
 	:RasterLayer(provider)
 {
-	leftRChannel = true;
-	leftGChannel = true;
-	leftBChannel = true;
-	rightRChannel = true;
-	rightGChannel = true;
-	rightBChannel = true;
+	_leftRChannel = true;
+	_leftGChannel = true;
+	_leftBChannel = true;
+	_rightRChannel = true;
+	_rightGChannel = true;
+	_rightBChannel = true;
+	_noDataLogic = 0;
+	_noDataValue = 0.0;
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterBinaryGrayScaleLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterBinaryGrayScaleLayer::IOResample;
 	SetDataset(dataset, band);
@@ -46,7 +50,7 @@ RasterBinaryGrayScaleLayer::~RasterBinaryGrayScaleLayer()
 {
 }
 
-inline void RasterBinaryGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandIndex)
+void RasterBinaryGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandIndex)
 {
 	GDALRasterBand* band = dataset->GetGDALDataset()->GetRasterBand(bandIndex);
 	GDALDataType dataType = band->GetRasterDataType();
@@ -107,7 +111,7 @@ ILayer * RasterBinaryGrayScaleLayer::Clone(IDataset * dt)
 	return layer;
 }
 
-inline void RasterBinaryGrayScaleLayer::SetMinPivotMax(double min, double pivot, double max)
+void RasterBinaryGrayScaleLayer::SetMinPivotMax(double min, double pivot, double max)
 {
 	_min = min;
 	_max = max;
@@ -116,49 +120,61 @@ inline void RasterBinaryGrayScaleLayer::SetMinPivotMax(double min, double pivot,
 	_rightRange = _max - _pivot;
 }
 
-inline void RasterBinaryGrayScaleLayer::GetMinPivotMax(double * min, double * pivot, double * max)
+void RasterBinaryGrayScaleLayer::GetMinPivotMax(double * min, double * pivot, double * max)
 {
 	*min = _min;
 	*max = _max;
 	*pivot = _pivot;
 }
 
-inline unsigned char * RasterBinaryGrayScaleLayer::GetLut()
+unsigned char * RasterBinaryGrayScaleLayer::GetLut()
 {
 	return _lut;
 }
 
-inline int RasterBinaryGrayScaleLayer::GetBand()
+int RasterBinaryGrayScaleLayer::GetBand()
 {
 	return _bandIndex;
 }
 
-inline void RasterBinaryGrayScaleLayer::SetLeftChannel(bool r, bool g, bool b)
+void RasterBinaryGrayScaleLayer::SetLeftChannel(bool r, bool g, bool b)
 {
-	leftRChannel = r;
-	leftGChannel = g;
-	leftBChannel = b;
+	_leftRChannel = r;
+	_leftGChannel = g;
+	_leftBChannel = b;
 }
 
-inline void RasterBinaryGrayScaleLayer::GetLeftChannel(bool * r, bool * g, bool * b)
+void RasterBinaryGrayScaleLayer::GetLeftChannel(bool * r, bool * g, bool * b)
 {
-	*r = leftRChannel;
-	*g = leftGChannel;
-	*b = leftBChannel;
+	*r = _leftRChannel;
+	*g = _leftGChannel;
+	*b = _leftBChannel;
 }
 
-inline void RasterBinaryGrayScaleLayer::SetRightChannel(bool r, bool g, bool b)
+void RasterBinaryGrayScaleLayer::SetRightChannel(bool r, bool g, bool b)
 {
-	rightRChannel = r;
-	rightGChannel = g;
-	rightBChannel = b;
+	_rightRChannel = r;
+	_rightGChannel = g;
+	_rightBChannel = b;
 }
 
-inline void RasterBinaryGrayScaleLayer::GetRightChannel(bool * r, bool * g, bool * b)
+void RasterBinaryGrayScaleLayer::GetRightChannel(bool * r, bool * g, bool * b)
 {
-	*r = rightRChannel;
-	*g = rightGChannel;
-	*b = rightBChannel;
+	*r = _rightRChannel;
+	*g = _rightGChannel;
+	*b = _rightBChannel;
+}
+
+void RasterBinaryGrayScaleLayer::SetNoDataValue(int noDataLogic, double noDataValue)
+{
+	_noDataLogic = noDataLogic;
+	_noDataValue = noDataValue;
+}
+
+void RasterBinaryGrayScaleLayer::GetNoDataValue(int * noDataLogic, double * noDataValue)
+{
+	*noDataLogic = _noDataLogic;
+	*noDataValue = _noDataValue;
 }
 
 void RasterBinaryGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
@@ -205,17 +221,20 @@ void RasterBinaryGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int re
 
 			if (onLeft)
 			{
-				itSurfBuf[0] = leftBChannel ? _lut[lutPos] : 0;
-				itSurfBuf[1] = leftGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = leftRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _leftBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[1] = _leftGChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _leftRChannel ? _lut[lutPos] : 0;
 			}
 			else
 			{
-				itSurfBuf[0] = rightBChannel ? _lut[lutPos] : 0;
-				itSurfBuf[1] = rightGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = rightRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _rightBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[1] = _rightGChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _rightRChannel ? _lut[lutPos] : 0;
 			}
 
+			itSurfBuf[3] = _alpha;
+			if (RasterLayer::IsNoDataValue(_noDataLogic, _noDataValue, pixValue))
+				itSurfBuf[3] = 0;
 
 			itSurfBuf += 4;
 		}
@@ -254,16 +273,20 @@ void RasterBinaryGrayScaleLayer::IOResample(unsigned char * pixBuffer, int readi
 
 			if (onLeft)
 			{
-				itSurfBuf[0] = leftBChannel ? _lut[lutPos] : 0;
-				itSurfBuf[1] = leftGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = leftRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _leftBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[1] = _leftGChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _leftRChannel ? _lut[lutPos] : 0;
 			}
 			else
 			{
-				itSurfBuf[0] = rightBChannel ? _lut[lutPos] : 0;
-				itSurfBuf[1] = rightGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = rightRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _rightBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[1] = _rightGChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _rightRChannel ? _lut[lutPos] : 0;
 			}
+
+			itSurfBuf[3] = _alpha;
+			if (RasterLayer::IsNoDataValue(_noDataLogic, _noDataValue, pixValue))
+				itSurfBuf[3] = 0;
 
 			itPixBuf += _dataBytes;
 			itSurfBuf += 4;

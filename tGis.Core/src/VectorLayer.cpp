@@ -38,7 +38,7 @@ VectorLayer::~VectorLayer()
 	}
 }
 
-inline void VectorLayer::SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer * layer)
+void VectorLayer::SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer * layer)
 {
 	_vector = vector;
 	_layer = layer;

@@ -434,7 +434,7 @@ void QtGeoSurface::DrawImage(const unsigned char * buf, int surfX, int surfY, in
 
 	QPainter& painter = painter_ptr;
 	QImage img(buf, width, height, QImage::Format_ARGB32);
-	painter.drawImage(QRect(surfX, surfY, width, height), img, QRect(0, 0, width, height));
+	painter.drawImage(QRect(surfX, surfY, width, height), img, QRect(0, 0, width, height), Qt::ColorOnly|Qt::NoOpaqueDetection|Qt::AvoidDither);
 }
 
 

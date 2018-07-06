@@ -69,7 +69,7 @@ IDataset * RasterLayer::GetDataset()
 	return _raster;
 }
 
-inline void RasterLayer::SetDataset(MyGDALRasterDataset * raster)
+void RasterLayer::SetDataset(MyGDALRasterDataset * raster)
 {
 	if (!raster->IsNorthUp())
 	{
@@ -79,7 +79,7 @@ inline void RasterLayer::SetDataset(MyGDALRasterDataset * raster)
 	_name = raster->GetName();
 }
 
-inline void RasterLayer::InitialMinMax(GDALRasterBand * band, int dataType, double * min, double * max, double * range)
+void RasterLayer::InitialMinMax(GDALRasterBand * band, int dataType, double * min, double * max, double * range)
 {
 	if ((GDALDataType)dataType == GDT_Byte)
 	{
@@ -111,12 +111,27 @@ inline void RasterLayer::InitialMinMax(GDALRasterBand * band, int dataType, doub
 	}
 }
 
-inline void RasterLayer::RestLutToLinear(unsigned char lut[256])
+void RasterLayer::RestLutToLinear(unsigned char lut[256])
 {
 	for (int i = 0; i < 256; i++)
 	{
 		lut[i] = i;
 	}
+}
+
+inline bool RasterLayer::IsNoDataValue(int noDataLogic, double noDataValue, double value)
+{
+	bool isNoData = false;
+	if ((noDataLogic & EQUAL) != 0)
+		isNoData = value > (noDataValue-DBL_EPSILON) && value < (noDataValue + DBL_EPSILON);
+	if (isNoData == false)
+	{
+		if ((noDataLogic & LT) != 0)
+			isNoData = value < noDataValue;
+		else if ((noDataLogic & GT) != 0)
+			isNoData = value > noDataValue;
+	}
+	return isNoData;
 }
 
 void RasterLayer::Paint(IGeoSurface * surf)
@@ -135,7 +150,7 @@ void RasterLayer::Paint(IGeoSurface * surf)
 }
 
 
-inline bool RasterLayer::PreparePaint(IGeoSurface* surf)
+bool RasterLayer::PreparePaint(IGeoSurface* surf)
 {
 	if (_visible == false)
 		return false;
@@ -421,7 +436,7 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 	unsigned char* surfBuffer = VisualizeBufferManager::INSTANCE().AllocSurfaceBuffer();
 	unsigned char* pixBuffer = VisualizeBufferManager::INSTANCE().AllocDatasetBuffer(_maxPixDataBytes);
 
-	RasterLayer::SetBufferAlpha(surfBuffer, paintingWidth, paintingHeight);
+	//RasterLayer::SetBufferAlpha(surfBuffer, paintingWidth, paintingHeight);
 
 	(this->*IOResample)(pixBuffer, readingLeft, readingTop, readingRight, readingBottom,
 		surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
@@ -433,7 +448,7 @@ void RasterLayer::PaintByIOResample(IGeoSurface * surf)
 }
 
 
-inline void RasterLayer::SetBufferAlpha(unsigned char * buf, int width, int height)
+void RasterLayer::SetBufferAlpha(unsigned char * buf, int width, int height)
 {
 	unsigned char* surfBuf = buf +3;
 

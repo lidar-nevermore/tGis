@@ -17,6 +17,12 @@ const char* const RasterRgbLayer::_type = "EFEB6F2A-7DD0-401D-9762-55F3F3E095D1"
 RasterRgbLayer::RasterRgbLayer(ILayerProvider* provider)
 	:RasterLayer(provider)
 {
+	_rNoDataLogic = 0;
+	_rNoDataValue = 0;
+	_gNoDataLogic = 0;
+	_gNoDataValue = 0;
+	_bNoDataLogic = 0;
+	_bNoDataValue = 0;
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterRgbLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterRgbLayer::IOResample;
 }
@@ -24,6 +30,12 @@ RasterRgbLayer::RasterRgbLayer(ILayerProvider* provider)
 RasterRgbLayer::RasterRgbLayer(ILayerProvider* provider, MyGDALRasterDataset * dataset, int r, int g, int b)
 	:RasterLayer(provider)
 {
+	_rNoDataLogic = 0;
+	_rNoDataValue = 0;
+	_gNoDataLogic = 0;
+	_gNoDataValue = 0;
+	_bNoDataLogic = 0;
+	_bNoDataValue = 0;
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterRgbLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterRgbLayer::IOResample;
 	SetDataset(dataset, r, g, b);
@@ -122,46 +134,46 @@ void RasterRgbLayer::SetDataset(MyGDALRasterDataset * dataset, int r, int g, int
 	RasterLayer::InitialMinMax(_bBand, _bDataType, &_bMin, &_bMax, &_bRange);
 }
 
-inline void RasterRgbLayer::SetMinMaxR(double min, double max)
+void RasterRgbLayer::SetMinMaxR(double min, double max)
 {
 	_rMin = min;
 	_rMax = max;
 	_rRange = max - min;
 }
 
-inline void RasterRgbLayer::SetMinMaxG(double min, double max)
+void RasterRgbLayer::SetMinMaxG(double min, double max)
 {
 	_gMin = min;
 	_gMax = max;
 	_gRange = max - min;
 }
 
-inline void RasterRgbLayer::SetMinMaxB(double min, double max)
+void RasterRgbLayer::SetMinMaxB(double min, double max)
 {
 	_bMin = min;
 	_bMax = max;
 	_bRange = max - min;
 }
 
-inline void RasterRgbLayer::GetMinMaxR(double * min, double * max)
+void RasterRgbLayer::GetMinMaxR(double * min, double * max)
 {
 	*min = _rMin;
 	*max = _rMax;
 }
 
-inline void RasterRgbLayer::GetMinMaxG(double * min, double * max)
+void RasterRgbLayer::GetMinMaxG(double * min, double * max)
 {
 	*min = _gMin;
 	*max = _gMax;
 }
 
-inline void RasterRgbLayer::GetMinMaxB(double * min, double * max)
+void RasterRgbLayer::GetMinMaxB(double * min, double * max)
 {
 	*min = _bMin;
 	*max = _bMax;
 }
 
-inline unsigned char * RasterRgbLayer::GetLutR()
+unsigned char * RasterRgbLayer::GetLutR()
 {
 	return _rLut;
 }
@@ -171,24 +183,61 @@ inline unsigned char * RasterRgbLayer::GetLutG()
 	return _gLut;
 }
 
-inline unsigned char * RasterRgbLayer::GetLutB()
+unsigned char * RasterRgbLayer::GetLutB()
 {
 	return _bLut;
 }
 
-inline int RasterRgbLayer::GetBandR()
+int RasterRgbLayer::GetBandR()
 {
 	return _rBandIndex;
 }
 
-inline int RasterRgbLayer::GetBandG()
+int RasterRgbLayer::GetBandG()
 {
 	return _gBandIndex;
 }
 
-inline int RasterRgbLayer::GetBandB()
+int RasterRgbLayer::GetBandB()
 {
 	return _bBandIndex;
+}
+
+
+void RasterRgbLayer::SetNoDataValueR(int noDataLogic, double noDataValue)
+{
+	_rNoDataLogic = noDataLogic;
+	_rNoDataValue = noDataValue;
+}
+
+void RasterRgbLayer::GetNoDataValueR(int * noDataLogic, double * noDataValue)
+{
+	*noDataLogic = _rNoDataLogic;
+	*noDataValue = _rNoDataValue;
+}
+
+void RasterRgbLayer::SetNoDataValueG(int noDataLogic, double noDataValue)
+{
+	_gNoDataLogic = noDataLogic;
+	_gNoDataValue = noDataValue;
+}
+
+void RasterRgbLayer::GetNoDataValueG(int * noDataLogic, double * noDataValue)
+{
+	*noDataLogic = _gNoDataLogic;
+	*noDataValue = _gNoDataValue;
+}
+
+void RasterRgbLayer::SetNoDataValueB(int noDataLogic, double noDataValue)
+{
+	_bNoDataLogic = noDataLogic;
+	_bNoDataValue = noDataValue;
+}
+
+void RasterRgbLayer::GetNoDataValueB(int * noDataLogic, double * noDataValue)
+{
+	*noDataLogic = _bNoDataLogic;
+	*noDataValue = _bNoDataValue;
 }
 
 void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
@@ -222,10 +271,14 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, d
 			else if (lutPos > 255) lutPos = 255;
 
 			itSurfBuf[2] = _rLut[lutPos];
-			if (_gBandIndex == _gBandIndex)
+			if (_gBandIndex == _rBandIndex)
 				itSurfBuf[1] = itSurfBuf[2];
 			if (_bBandIndex == _rBandIndex)
 				itSurfBuf[0] = itSurfBuf[2];
+			itSurfBuf[3] = _alpha;
+
+			if (RasterLayer::IsNoDataValue(_rNoDataLogic, _rNoDataValue, pixValue))
+				itSurfBuf[3] = 0;
 
 			itSurfBuf += 4;
 		}
@@ -259,8 +312,11 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, d
 				else if (lutPos > 255) lutPos = 255;
 
 				itSurfBuf[1] = _gLut[lutPos];
-				if (_bBandIndex == _rBandIndex)
+				if (_bBandIndex == _gBandIndex)
 					itSurfBuf[0] = itSurfBuf[1];
+
+				if (RasterLayer::IsNoDataValue(_gNoDataLogic, _gNoDataValue, pixValue))
+					itSurfBuf[3] = 0;
 
 				itSurfBuf += 4;
 			}
@@ -296,6 +352,9 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, d
 
 				itSurfBuf[0] = _bLut[lutPos];
 
+				if (RasterLayer::IsNoDataValue(_bNoDataLogic, _bNoDataValue, pixValue))
+					itSurfBuf[3] = 0;
+
 				itSurfBuf += 4;
 			}
 		}
@@ -322,10 +381,14 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 			else if (lutPos > 255) lutPos = 255;
 
 			itSurfBuf[2] = _rLut[lutPos];
-			if (_gBandIndex == _gBandIndex)
+			if (_gBandIndex == _rBandIndex)
 				itSurfBuf[1] = itSurfBuf[2];
 			if (_bBandIndex == _rBandIndex)
 				itSurfBuf[0] = itSurfBuf[2];
+			itSurfBuf[3] = _alpha;
+
+			if (RasterLayer::IsNoDataValue(_rNoDataLogic, _rNoDataValue, pixValue))
+				itSurfBuf[3] = 0;
 
 			itPixBuf += _rDataBytes;
 			itSurfBuf += 4;
@@ -349,8 +412,13 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 				else if (lutPos > 255) lutPos = 255;
 
 				itSurfBuf[1] = _gLut[lutPos];
-				if (_bBandIndex == _rBandIndex)
+				if (_bBandIndex == _gBandIndex)
 					itSurfBuf[0] = itSurfBuf[1];
+
+				if (itSurfBuf[3] == 0 && RasterLayer::IsNoDataValue(_gNoDataLogic, _gNoDataValue, pixValue))
+					itSurfBuf[3] = 0;
+				else
+					itSurfBuf[3] = _alpha;
 
 				itPixBuf += _gDataBytes;
 				itSurfBuf += 4;
@@ -375,6 +443,11 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 				else if (lutPos > 255) lutPos = 255;
 
 				itSurfBuf[0] = _bLut[lutPos];
+
+				if (itSurfBuf[3] == 0 && RasterLayer::IsNoDataValue(_bNoDataLogic, _bNoDataValue, pixValue))
+					itSurfBuf[3] = 0;
+				else
+					itSurfBuf[3] = _alpha;
 
 				itPixBuf += _bDataBytes;
 				itSurfBuf += 4;

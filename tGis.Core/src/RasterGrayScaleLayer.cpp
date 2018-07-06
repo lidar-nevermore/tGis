@@ -19,6 +19,8 @@ RasterGrayScaleLayer::RasterGrayScaleLayer(ILayerProvider* provider)
 {
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterGrayScaleLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterGrayScaleLayer::IOResample;
+	_noDataLogic = 0;
+	_noDataValue = 0.0;
 }
 
 RasterGrayScaleLayer::RasterGrayScaleLayer(ILayerProvider* provider, MyGDALRasterDataset* dataset, int band)
@@ -27,6 +29,8 @@ RasterGrayScaleLayer::RasterGrayScaleLayer(ILayerProvider* provider, MyGDALRaste
 	RasterLayer::OuterResample = (RasterLayer::OuterResampleFunc)&RasterGrayScaleLayer::OuterResample;
 	RasterLayer::IOResample = (RasterLayer::IOResampleFunc)&RasterGrayScaleLayer::IOResample;
 	SetDataset(dataset, band);
+	_noDataLogic = 0;
+	_noDataValue = 0.0;
 }
 
 
@@ -34,7 +38,7 @@ RasterGrayScaleLayer::~RasterGrayScaleLayer()
 {
 }
 
-inline void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandIndex)
+void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int bandIndex)
 {
 	GDALRasterBand* band = dataset->GetGDALDataset()->GetRasterBand(bandIndex);
 	GDALDataType dataType = band->GetRasterDataType();
@@ -53,27 +57,50 @@ inline void RasterGrayScaleLayer::SetDataset(MyGDALRasterDataset * dataset, int 
 	RasterLayer::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
 }
 
-inline void RasterGrayScaleLayer::SetMinMax(double min, double max)
+void RasterGrayScaleLayer::SetMinMax(double min, double max)
 {
 	_min = min;
 	_max = max;
 	_range = _max - _min;
 }
 
-inline void RasterGrayScaleLayer::GetMinMax(double* min, double* max)
+void RasterGrayScaleLayer::GetMinMax(double* min, double* max)
 {
 	*min = _min;
 	*max = _max;
 }
 
-inline unsigned char * RasterGrayScaleLayer::GetLut()
+unsigned char * RasterGrayScaleLayer::GetLut()
 {
 	return _lut;
 }
 
-inline int RasterGrayScaleLayer::GetBand()
+int RasterGrayScaleLayer::GetBand()
 {
 	return _bandIndex;
+}
+
+//inline bool RasterGrayScaleLayer::IsNoDataValue(double value)
+//{
+//	if (_noDataLogic & 0x01 != 0)
+//		return abs(value - _noDataValue) < DBL_EPSILON;
+//	else if (_noDataLogic & 0x02 != 0)
+//		return value < _noDataValue;
+//	else if (_noDataLogic & 0x04 != 0)
+//		return value > _noDataValue;
+//	return false;
+//}
+
+void RasterGrayScaleLayer::SetNoDataValue(int noDataLogic, double noDataValue)
+{
+	_noDataLogic = noDataLogic;
+	_noDataValue = noDataValue;
+}
+
+void RasterGrayScaleLayer::GetNoDataValue(int * noDataLogic, double * noDataValue)
+{
+	*noDataLogic = _noDataLogic;
+	*noDataValue = _noDataValue;
 }
 
 const char * RasterGrayScaleLayer::GetType()
@@ -148,6 +175,9 @@ void RasterGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int readingL
 			itSurfBuf[0] = _lut[lutPos];
 			itSurfBuf[1] = itSurfBuf[0];
 			itSurfBuf[2] = itSurfBuf[0];
+			itSurfBuf[3] = _alpha;
+			if (RasterLayer::IsNoDataValue(_noDataLogic, _noDataValue, pixValue))
+				itSurfBuf[3] = unsigned char(0);
 
 			itSurfBuf += 4;
 		}
@@ -176,6 +206,9 @@ void RasterGrayScaleLayer::IOResample(unsigned char * pixBuffer, int readingLeft
 			itSurfBuf[0] = _lut[lutPos];
 			itSurfBuf[1] = itSurfBuf[0];
 			itSurfBuf[2] = itSurfBuf[0];
+			itSurfBuf[3] = _alpha;
+			if (RasterLayer::IsNoDataValue(_noDataLogic, _noDataValue, pixValue))
+				itSurfBuf[3] = unsigned char(0);
 
 			itPixBuf += _dataBytes;
 			itSurfBuf += 4;

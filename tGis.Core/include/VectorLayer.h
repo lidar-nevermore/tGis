@@ -30,7 +30,7 @@ public:
 	~VectorLayer();
 
 protected:
-	inline void SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer* layer);
+	void SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer* layer);
 
 public:
 	virtual const OGREnvelope* GetEnvelope();

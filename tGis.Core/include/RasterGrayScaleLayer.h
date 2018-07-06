@@ -38,11 +38,13 @@ public:
 	virtual ILayer* Clone(IDataset*);
 
 public:
-	inline void SetDataset(MyGDALRasterDataset* dataset, int band);
-	inline void SetMinMax(double min, double max);
-	inline void GetMinMax(double* min, double* max);
-	inline unsigned char* GetLut();
-	inline int GetBand();
+	void SetDataset(MyGDALRasterDataset* dataset, int band);
+	void SetMinMax(double min, double max);
+	void GetMinMax(double* min, double* max);
+	unsigned char* GetLut();
+	int GetBand();
+	void SetNoDataValue(int noDataLogic, double noDataValue);
+	void GetNoDataValue(int* noDataLogic, double* noDataValue);
 
 protected:
 	void OuterResample(unsigned char* pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight,
@@ -61,6 +63,10 @@ private:
 	double _min;
 	double _max;
 	double _range;
+
+	int _noDataLogic;
+	//ÎÞÐ§Öµ
+	double _noDataValue;
 };
 
 END_NAME_SPACE(tGis, Core)

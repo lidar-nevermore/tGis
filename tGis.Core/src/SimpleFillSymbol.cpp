@@ -42,7 +42,7 @@ void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y, int *
 	surf->FillPolygon(count, x, y, _r, _g, _b, _a, _type);
 }
 
-inline void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
+void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
 {
 	*r = _r;
 	*g = _g;
@@ -50,7 +50,7 @@ inline void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, uns
 	*a = _a;
 }
 
-inline void SimpleFillSymbol::SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+void SimpleFillSymbol::SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
 	_r = r;
 	_g = g;

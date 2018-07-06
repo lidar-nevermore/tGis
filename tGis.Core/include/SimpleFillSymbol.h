@@ -43,8 +43,8 @@ public:
 	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 
 public:
-	inline void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);
-	inline void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
+	void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);
+	void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
 protected:
 	unsigned char _r;
