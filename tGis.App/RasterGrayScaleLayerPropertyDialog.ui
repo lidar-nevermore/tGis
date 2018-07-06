@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>403</width>
-    <height>226</height>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -122,6 +122,9 @@
        <widget class="QCheckBox" name="chkEqual">
         <property name="text">
          <string notr="true">Equal</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

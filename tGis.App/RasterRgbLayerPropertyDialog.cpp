@@ -81,6 +81,57 @@ ILayer * RasterRgbLayerPropertyDialog::CreateRasterRgbLayer(ILayerProvider * pro
 			layer->SetMinMaxG(minB, maxB);
 		}
 
+		int noDataLogicR = 0;
+		if (dlg.ui.chkEqualR->isChecked())
+		{
+			noDataLogicR |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGtR->isChecked())
+		{
+			noDataLogicR |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLtR->isChecked())
+		{
+			noDataLogicR |= RasterLayer::LT;
+		}
+		QString noDataStrR = dlg.ui.leNoDataValueR->text();
+		double noDataR = noDataStrR.toDouble();
+		layer->SetNoDataValueR(noDataLogicR, noDataR);
+
+		int noDataLogicG = 0;
+		if (dlg.ui.chkEqualG->isChecked())
+		{
+			noDataLogicG |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGtG->isChecked())
+		{
+			noDataLogicG |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLtG->isChecked())
+		{
+			noDataLogicG |= RasterLayer::LT;
+		}
+		QString noDataStrG = dlg.ui.leNoDataValueG->text();
+		double noDataG = noDataStrG.toDouble();
+		layer->SetNoDataValueG(noDataLogicG, noDataG);
+
+		int noDataLogicB = 0;
+		if (dlg.ui.chkEqualB->isChecked())
+		{
+			noDataLogicB |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGtB->isChecked())
+		{
+			noDataLogicB |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLtB->isChecked())
+		{
+			noDataLogicB |= RasterLayer::LT;
+		}
+		QString noDataStrB = dlg.ui.leNoDataValueB->text();
+		double noDataB = noDataStrB.toDouble();
+		layer->SetNoDataValueB(noDataLogicB, noDataB);
+
 		return layer;
 	}
 
@@ -113,6 +164,66 @@ void RasterRgbLayerPropertyDialog::RasterRgbLayerProperty(ILayerProvider *provid
 	layer->GetMinMaxB(&minB, &maxB);
 	dlg.ui.leMinB->setText(QString::number(minB));
 	dlg.ui.leMaxB->setText(QString::number(maxB));
+
+	int noDataLogicR;
+	double noDataR;
+	layer->GetNoDataValueR(&noDataLogicR, &noDataR);
+	dlg.ui.leNoDataValueR->setText(QString::number(noDataR));
+	dlg.ui.chkEqualR->setChecked(false);
+	dlg.ui.chkGtR->setChecked(false);
+	dlg.ui.chkLtR->setChecked(false);
+	if ((noDataLogicR& RasterLayer::EQUAL) != 0)
+	{
+		dlg.ui.chkEqualR->setChecked(true);
+	}
+	if ((noDataLogicR & RasterLayer::GT) != 0)
+	{
+		dlg.ui.chkGtR->setChecked(true);
+	}
+	if ((noDataLogicR & RasterLayer::LT) != 0)
+	{
+		dlg.ui.chkLtR->setChecked(true);
+	}
+
+	int noDataLogicG;
+	double noDataG;
+	layer->GetNoDataValueG(&noDataLogicG, &noDataG);
+	dlg.ui.leNoDataValueG->setText(QString::number(noDataG));
+	dlg.ui.chkEqualG->setChecked(false);
+	dlg.ui.chkGtG->setChecked(false);
+	dlg.ui.chkLtG->setChecked(false);
+	if ((noDataLogicG& RasterLayer::EQUAL) != 0)
+	{
+		dlg.ui.chkEqualG->setChecked(true);
+	}
+	if ((noDataLogicG & RasterLayer::GT) != 0)
+	{
+		dlg.ui.chkGtG->setChecked(true);
+	}
+	if ((noDataLogicG & RasterLayer::LT) != 0)
+	{
+		dlg.ui.chkLtG->setChecked(true);
+	}
+
+	int noDataLogicB;
+	double noDataB;
+	layer->GetNoDataValueB(&noDataLogicB, &noDataB);
+	dlg.ui.leNoDataValueB->setText(QString::number(noDataB));
+	dlg.ui.chkEqualB->setChecked(false);
+	dlg.ui.chkGtB->setChecked(false);
+	dlg.ui.chkLtB->setChecked(false);
+	if ((noDataLogicB& RasterLayer::EQUAL) != 0)
+	{
+		dlg.ui.chkEqualB->setChecked(true);
+	}
+	if ((noDataLogicB & RasterLayer::GT) != 0)
+	{
+		dlg.ui.chkGtB->setChecked(true);
+	}
+	if ((noDataLogicB & RasterLayer::LT) != 0)
+	{
+		dlg.ui.chkLtB->setChecked(true);
+	}
 
 	if (QDialog::Accepted == dlg.exec())
 	{
@@ -151,6 +262,57 @@ void RasterRgbLayerPropertyDialog::RasterRgbLayerProperty(ILayerProvider *provid
 		{
 			layer->SetMinMaxG(minB, maxB);
 		}
+
+		int noDataLogicR = 0;
+		if (dlg.ui.chkEqualR->isChecked())
+		{
+			noDataLogicR |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGtR->isChecked())
+		{
+			noDataLogicR |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLtR->isChecked())
+		{
+			noDataLogicR |= RasterLayer::LT;
+		}
+		QString noDataStrR = dlg.ui.leNoDataValueR->text();
+		double noDataR = noDataStrR.toDouble();
+		layer->SetNoDataValueR(noDataLogicR, noDataR);
+
+		int noDataLogicG = 0;
+		if (dlg.ui.chkEqualG->isChecked())
+		{
+			noDataLogicG |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGtG->isChecked())
+		{
+			noDataLogicG |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLtG->isChecked())
+		{
+			noDataLogicG |= RasterLayer::LT;
+		}
+		QString noDataStrG = dlg.ui.leNoDataValueG->text();
+		double noDataG = noDataStrG.toDouble();
+		layer->SetNoDataValueG(noDataLogicG, noDataG);
+
+		int noDataLogicB = 0;
+		if (dlg.ui.chkEqualB->isChecked())
+		{
+			noDataLogicB |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGtB->isChecked())
+		{
+			noDataLogicB |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLtB->isChecked())
+		{
+			noDataLogicB |= RasterLayer::LT;
+		}
+		QString noDataStrB = dlg.ui.leNoDataValueB->text();
+		double noDataB = noDataStrB.toDouble();
+		layer->SetNoDataValueB(noDataLogicB, noDataB);
 	}
 }
 

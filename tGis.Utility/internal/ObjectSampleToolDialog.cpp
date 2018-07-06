@@ -47,7 +47,6 @@ void ObjectSampleToolDialog::MapToolAddedOrChanged(IMapWidget *mapWidget, IMapTo
 		{
 			_takeObjectSampleTool.SetEnabled(false);
 			ui.chkRect->setChecked(false);
-			ui.chkRect->setEnabled(false);
 		}
 	}
 }

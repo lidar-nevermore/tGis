@@ -139,15 +139,15 @@ void RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty(ILayerProv
 		noDataLogic = 0;
 		if (dlg.ui.chkEqual->isChecked())
 		{
-			noDataLogic |= 0x01;
+			noDataLogic |= RasterLayer::EQUAL;
 		}
 		if (dlg.ui.chkGt->isChecked())
 		{
-			noDataLogic |= 0x02;
+			noDataLogic |= RasterLayer::GT;
 		}
 		if (dlg.ui.chkLt->isChecked())
 		{
-			noDataLogic |= 0x04;
+			noDataLogic |= RasterLayer::LT;
 		}
 		QString noDataStr = dlg.ui.leNoDataValue->text();
 		noData = noDataStr.toDouble();

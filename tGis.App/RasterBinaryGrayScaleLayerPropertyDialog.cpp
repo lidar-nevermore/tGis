@@ -73,6 +73,23 @@ ILayer * RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLa
 		layer->SetLeftChannel(leftRChannel, leftGChannel, leftBChannel);
 		layer->SetRightChannel(rightRChannel, rightBChannel, rightBChannel);
 
+		int noDataLogic = 0;
+		if (dlg.ui.chkEqual->isChecked())
+		{
+			noDataLogic |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGt->isChecked())
+		{
+			noDataLogic |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLt->isChecked())
+		{
+			noDataLogic |= RasterLayer::LT;
+		}
+		QString noDataStr = dlg.ui.leNoDataValue->text();
+		double noData = noDataStr.toDouble();
+		layer->SetNoDataValue(noDataLogic, noData);
+
 		return layer;
 	}
 
@@ -109,6 +126,26 @@ void RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerPropert
 	dlg.ui.chkRightG->setChecked(rightGChannel);
 	dlg.ui.chkRightB->setChecked(rightBChannel);
 
+	int noDataLogic;
+	double noData;
+	layer->GetNoDataValue(&noDataLogic, &noData);
+	dlg.ui.leNoDataValue->setText(QString::number(noData));
+	dlg.ui.chkEqual->setChecked(false);
+	dlg.ui.chkGt->setChecked(false);
+	dlg.ui.chkLt->setChecked(false);
+	if ((noDataLogic& RasterLayer::EQUAL) != 0)
+	{
+		dlg.ui.chkEqual->setChecked(true);
+	}
+	if ((noDataLogic & RasterLayer::GT) != 0)
+	{
+		dlg.ui.chkGt->setChecked(true);
+	}
+	if ((noDataLogic & RasterLayer::LT) != 0)
+	{
+		dlg.ui.chkLt->setChecked(true);
+	}
+
 	if (QDialog::Accepted == dlg.exec())
 	{
 		int band = dlg.ui.cboBand->currentIndex() + 1;
@@ -134,5 +171,21 @@ void RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerPropert
 		rightBChannel = dlg.ui.chkRightB->isChecked();
 		layer->SetLeftChannel(leftRChannel, leftGChannel, leftBChannel);
 		layer->SetRightChannel(rightRChannel, rightGChannel, rightBChannel);
+		noDataLogic = 0;
+		if (dlg.ui.chkEqual->isChecked())
+		{
+			noDataLogic |= RasterLayer::EQUAL;
+		}
+		if (dlg.ui.chkGt->isChecked())
+		{
+			noDataLogic |= RasterLayer::GT;
+		}
+		if (dlg.ui.chkLt->isChecked())
+		{
+			noDataLogic |= RasterLayer::LT;
+		}
+		QString noDataStr = dlg.ui.leNoDataValue->text();
+		noData = noDataStr.toDouble();
+		layer->SetNoDataValue(noDataLogic, noData);
 	}
 }

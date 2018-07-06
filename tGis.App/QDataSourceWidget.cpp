@@ -25,9 +25,9 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 
 	_model = new QStandardItemModel();
 	QStandardItem* rootNode = _model->invisibleRootItem();
-	for (int i = 0; i < providerCount; i++)
+	for (int i = providerCount; i > 0; i--)
 	{
-		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
+		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i-1);
 
 		QStandardItem* pItem = new QStandardItem();
 		pItem->setText(QString::fromLocal8Bit(provider->GetName()));
