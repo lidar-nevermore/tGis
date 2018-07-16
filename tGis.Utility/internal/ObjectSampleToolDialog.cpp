@@ -60,7 +60,7 @@ void ObjectSampleToolDialog::LayerAdded(IMapPtr map, ILayerPtr layer)
 		userData.setValue<ILayerPtr>(layer);
 		ui.cboLayer->addItem(layer->GetName(), userData);
 	}
-	if (ui.cboLayer->count() > 0)
+	if (ui.cboLayer->count() > 0 && ui.cboSamples->count() > 0)
 	{
 		ui.chkRect->setEnabled(true);
 	}
@@ -90,8 +90,8 @@ void ObjectSampleToolDialog::LayerRemoved(IMapPtr map, ILayerPtr layer)
 	
 	if (ui.cboLayer->count() == 0)
 	{
-		ui.chkRect->setChecked(false);
 		ui.chkRect->setEnabled(false);
+		ui.chkRect->setChecked(false);
 	}
 }
 
@@ -111,7 +111,7 @@ void ObjectSampleToolDialog::AfterDataSourceConnect(IDataSourceProvider * provid
 		userData.setValue<IDataSourcePtr>(ds);
 		ui.cboSamples->addItem(ds->GetName(), userData);
 	}
-	if (ui.cboSamples->count() > 0)
+	if (ui.cboLayer->count() > 0 && ui.cboSamples->count() > 0)
 	{
 		ui.chkRect->setEnabled(true);
 	}
