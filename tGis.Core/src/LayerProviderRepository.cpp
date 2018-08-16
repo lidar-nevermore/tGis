@@ -40,12 +40,12 @@ LayerProviderRepository::~LayerProviderRepository()
 	}
 }
 
-int LayerProviderRepository::GetLayerProviderCount()
+size_t LayerProviderRepository::GetLayerProviderCount()
 {
 	return _vecLayerProvider.size();
 }
 
-ILayerProvider * LayerProviderRepository::GetLayerProvider(int pos)
+ILayerProvider * LayerProviderRepository::GetLayerProvider(size_t pos)
 {
 	return _vecLayerProvider.at(pos);
 }

@@ -35,12 +35,12 @@ SymbolLibraryRepository::~SymbolLibraryRepository()
 	}
 }
 
-int SymbolLibraryRepository::GetSymbolLibraryCount()
+size_t SymbolLibraryRepository::GetSymbolLibraryCount()
 {
 	return _vecSymbolLibrary.size();
 }
 
-ISymbolLibrary * SymbolLibraryRepository::GetSymbolLibrary(int pos)
+ISymbolLibrary * SymbolLibraryRepository::GetSymbolLibrary(size_t pos)
 {
 	return _vecSymbolLibrary.at(pos);
 }

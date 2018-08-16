@@ -19,18 +19,4 @@
 
 #include "ToolKitRepository.h"
 
-
-
-BEGIN_NAME_SPACE(tGis, Core)
-
-struct IMapWidget;
-
-TGIS_API void SetCurrentMap(IMap*);
-
-TGIS_API IMap*  GetCurrentMap();
-
-TGIS_API void SetCurrentMapWidget(IMapWidget*);
-
-TGIS_API IMapWidget*  GetCurrentMapWidget();
-
-END_NAME_SPACE(tGis, Core)
+#include "TGisApplication.h"

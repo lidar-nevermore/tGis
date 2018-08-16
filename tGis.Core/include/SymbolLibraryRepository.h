@@ -30,8 +30,8 @@ private:
 	SymbolLibraryRepository &operator=(const SymbolLibraryRepository &) = delete;
 
 public:
-	int GetSymbolLibraryCount();
-	ISymbolLibrary* GetSymbolLibrary(int);
+	size_t GetSymbolLibraryCount();
+	ISymbolLibrary* GetSymbolLibrary(size_t);
 	void AddSymbolLibrary(ISymbolLibrary*);
 	ISymbolLibrary* GetSymbolLibrary(const char* symbolLibraryType);
 

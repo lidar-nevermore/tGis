@@ -59,8 +59,8 @@ void ToolKitRepository::AddToolKit(int count, ...)
 		}
 		else
 		{
-			int toolCount = kit->GetToolCount();
-			for (int j = 0; j < toolCount; j++)
+			size_t toolCount = kit->GetToolCount();
+			for (size_t j = 0; j < toolCount; j++)
 			{
 				toFillKit->AddTool(kit->GetTool(j));
 			}
@@ -70,12 +70,12 @@ void ToolKitRepository::AddToolKit(int count, ...)
 }
 
 
-int ToolKitRepository::GetToolKitCount()
+size_t ToolKitRepository::GetToolKitCount()
 {
 	return _vecToolKit.size();
 }
 
-ToolKit * ToolKitRepository::GetToolKit(int pos)
+ToolKit * ToolKitRepository::GetToolKit(size_t pos)
 {
 	return _vecToolKit.at(pos);
 }

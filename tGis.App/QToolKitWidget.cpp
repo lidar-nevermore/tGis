@@ -9,10 +9,10 @@
 QToolKitWidget::QToolKitWidget(QWidget *parent)
 	:QTreeView(parent)
 {
-	int kitCount = ToolKitRepository::INSTANCE().GetToolKitCount();
+	size_t kitCount = ToolKitRepository::INSTANCE().GetToolKitCount();
 	QStandardItemModel* model = new QStandardItemModel();
 	QStandardItem* rootNode = model->invisibleRootItem();
-	for (int i = 0; i < kitCount; i++)
+	for (size_t i = 0; i < kitCount; i++)
 	{
 		ToolKit* kit = ToolKitRepository::INSTANCE().GetToolKit(i);
 		QStandardItem* pItem = new QStandardItem();
@@ -44,8 +44,8 @@ QToolKitWidget::~QToolKitWidget()
 
 void QToolKitWidget::AddToolKitNode(QStandardItem * parent, ToolKit * kit)
 {
-	int kitCount = kit->GetToolKitCount();
-	for (int i = 0; i < kitCount; i++)
+	size_t kitCount = kit->GetToolKitCount();
+	for (size_t i = 0; i < kitCount; i++)
 	{
 		ToolKit* subKit = kit->GetToolKit(i);
 		QStandardItem* pItem = new QStandardItem();

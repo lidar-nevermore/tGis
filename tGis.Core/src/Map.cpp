@@ -54,19 +54,19 @@ bool Map::CanTransformFrom(const OGRSpatialReference *spatialRef)
 	return ITGisObject::CanTransform(spatialRef, _spatialRef);
 }
 
-int Map::GetLayerCount()
+size_t Map::GetLayerCount()
 {
 	return _vecLayer.size();
 }
 
-ILayer * Map::GetLayer(int pos)
+ILayer * Map::GetLayer(size_t pos)
 {
 	return _vecLayer.at(pos);
 }
 
-int Map::GetLayerIndex(ILayer * layer)
+size_t Map::GetLayerIndex(ILayer * layer)
 {
-	int i = 0;
+	size_t i = 0;
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
 	{
 		if (*it == layer)
@@ -79,7 +79,7 @@ int Map::GetLayerIndex(ILayer * layer)
 	return i;
 }
 
-int Map::AddLayer(ILayer *layer)
+size_t Map::AddLayer(ILayer *layer, bool* added)
 {
 	bool canAdd = false;
 	const OGRSpatialReference* clayerSpatialRef = layer->GetSpatialReference();
@@ -105,12 +105,14 @@ int Map::AddLayer(ILayer *layer)
 		_vecLayer.push_back(layer);
 		layer->SetMap(this);
 		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
+		if (added != nullptr)
+			*added = true;
 	}
 
-	return canAdd ? _vecLayer.size() - 1 : -1;
+	return canAdd ? _vecLayer.size() - 1 : _vecLayer.size();
 }
 
-ILayer* Map::RemoveLayer(int pos)
+ILayer* Map::RemoveLayer(size_t pos)
 {
 	vector<ILayer*>::iterator it = _vecLayer.begin() + pos;
 	ILayer* layer = *it;
@@ -156,7 +158,7 @@ void Map::RemoveLayer(IDataset * dt)
 	MergeEnvelope();
 }
 
-bool Map::InsertLayer(int pos, ILayer * layer)
+bool Map::InsertLayer(size_t pos, ILayer * layer)
 {
 	bool canAdd = false;
 	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetSpatialReference());
@@ -184,11 +186,11 @@ bool Map::InsertLayer(int pos, ILayer * layer)
 	return canAdd;
 }
 
-void Map::MoveLayer(int from, int to)
+void Map::MoveLayer(size_t from, size_t to)
 {
 	if (from < to)
 	{
-		for (int i = from; i < to; i++)
+		for (size_t i = from; i < to; i++)
 		{
 			ILayer* temp = _vecLayer[i];
 			_vecLayer[i] = _vecLayer[i + 1];
@@ -197,7 +199,7 @@ void Map::MoveLayer(int from, int to)
 	}
 	else
 	{
-		for (int i = from; i > to; i--)
+		for (size_t i = from; i > to; i--)
 		{
 			ILayer* temp = _vecLayer[i];
 			_vecLayer[i] = _vecLayer[i - 1];

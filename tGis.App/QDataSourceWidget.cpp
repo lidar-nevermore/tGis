@@ -21,11 +21,11 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 	, _AfterDataSourceConnectEventHandler(this, &QDataSourceWidget::AfterDataSourceConnect)
 	, _BeforeDataSourceDisconnectEventHandler(this, &QDataSourceWidget::BeforeDataSourceDisconnect)
 {
-	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
+	size_t providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
 
 	_model = new QStandardItemModel();
 	QStandardItem* rootNode = _model->invisibleRootItem();
-	for (int i = providerCount; i > 0; i--)
+	for (size_t i = providerCount; i > 0; i--)
 	{
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i-1);
 
@@ -78,8 +78,8 @@ QDataSourceWidget::QDataSourceWidget(QWidget *parent)
 
 QDataSourceWidget::~QDataSourceWidget()
 {
-	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
-	for (int i = 0; i < providerCount; i++)
+	size_t providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
+	for (size_t i = 0; i < providerCount; i++)
 	{
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
 		provider->AfterDatasetOpenEvent -= &_AfterDatasetOpenEventHandler;
@@ -218,14 +218,14 @@ bool QDataSourceWidget::AddDataSourceChildNode(QStandardItem * node, IDataSource
 	node->setRowCount(0);
 	if (ds->IsConnected())
 	{
-		int subDataSourceCount = ds->GetDataSourceCount();
-		for (int i = 0; i < subDataSourceCount; i++)
+		size_t subDataSourceCount = ds->GetDataSourceCount();
+		for (size_t i = 0; i < subDataSourceCount; i++)
 		{
 			AddDataSourceNode(node, ds->GetDataSource(i), dsp);
 		}
 
-		int datasetCount = ds->GetDatasetCount();
-		for (int i = 0; i < datasetCount; i++)
+		size_t datasetCount = ds->GetDatasetCount();
+		for (size_t i = 0; i < datasetCount; i++)
 		{
 			IDataset* dt = ds->GetDataset(i);
 			QStandardItem* pDatasetItem = new QStandardItem();
@@ -401,14 +401,13 @@ void QDataSourceWidget::NodeDoubleClicked(const QModelIndex & index)
 
 			if (layer != nullptr) 
 			{
-				IMap* map = GetCurrentMap();
-				IMapWidget* mapWidget = GetCurrentMapWidget();
+				IMap* map = TGisApplication::INSTANCE().GetCurrentMap();
+				IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
 				IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
-				
-				if (map->AddLayer(layer) > -1)
+				size_t layerCount = map->GetLayerCount();
+				size_t layerPos = map->AddLayer(layer);
+				if (layerPos == layerCount)
 				{
-					int layerCount = map->GetLayerCount();
-
 					if (layerCount == 0)
 					{
 						geoSurface->SetSpatialReference(layer->GetSpatialReference());

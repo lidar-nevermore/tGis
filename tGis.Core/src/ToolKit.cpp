@@ -24,12 +24,12 @@ void ToolKit::AddTool(ITool * tool)
 	_vecTool.push_back(tool);
 }
 
-int ToolKit::GetToolCount()
+size_t ToolKit::GetToolCount()
 {
 	return _vecTool.size();
 }
 
-ITool * ToolKit::GetTool(int pos)
+ITool * ToolKit::GetTool(size_t pos)
 {
 	return _vecTool.at(pos);
 }
@@ -40,12 +40,12 @@ void ToolKit::AddToolKit(ToolKit * kit)
 	_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
 }
 
-int ToolKit::GetToolKitCount()
+size_t ToolKit::GetToolKitCount()
 {
 	return _vecToolKit.size();
 }
 
-ToolKit * ToolKit::GetToolKit(int pos)
+ToolKit * ToolKit::GetToolKit(size_t pos)
 {
 	return _vecToolKit.at(pos);
 }

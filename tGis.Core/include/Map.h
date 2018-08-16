@@ -29,15 +29,15 @@ public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
 	virtual bool CanTransformFrom(const OGRSpatialReference*);
-	virtual int GetLayerCount();
-	virtual ILayer* GetLayer(int);
-	virtual int GetLayerIndex(ILayer*);
-	virtual int AddLayer(ILayer*);
-	virtual ILayer* RemoveLayer(int);
+	virtual size_t GetLayerCount();
+	virtual ILayer* GetLayer(size_t);
+	virtual size_t GetLayerIndex(ILayer*);
+	virtual size_t AddLayer(ILayer*, bool* added = nullptr);
+	virtual ILayer* RemoveLayer(size_t);
 	virtual void RemoveLayer(ILayer*);
 	virtual void RemoveLayer(IDataset*);
-	virtual bool InsertLayer(int, ILayer*);
-	virtual void MoveLayer(int from, int to);
+	virtual bool InsertLayer(size_t, ILayer*);
+	virtual void MoveLayer(size_t from, size_t to);
 	virtual void ClearLayers(LayerFunc func = nullptr);
 	virtual void Paint(IGeoSurface*);
 

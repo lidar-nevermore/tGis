@@ -41,11 +41,11 @@ void MapZoomTool::MouseWheel(void *ev)
 	{
 		if (degree > 0)
 		{
-			newresolution *= 1.042; //375/360
+			newresolution *= 0.96; //360/375
 		}
 		else
 		{
-			newresolution *= 0.96; //360/375
+			newresolution *= 1.042; //375/360
 		}
 	}
 

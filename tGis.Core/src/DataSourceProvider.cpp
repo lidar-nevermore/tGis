@@ -129,22 +129,22 @@ void DataSourceProvider::ReleaseDataSource(IDataSource *ds)
 	delete ds;
 }
 
-int DataSourceProvider::GetOpenedDatasetCount()
+size_t DataSourceProvider::GetOpenedDatasetCount()
 {
 	return _vecOpenedDataset.size();
 }
 
-IDataset * DataSourceProvider::GetOpenedDataset(int pos)
+IDataset * DataSourceProvider::GetOpenedDataset(size_t pos)
 {
 	return _vecOpenedDataset.at(pos);
 }
 
-int DataSourceProvider::GetConnectedDataSourceCount()
+size_t DataSourceProvider::GetConnectedDataSourceCount()
 {
 	return _vecConnectedDataSource.size();
 }
 
-IDataSource * DataSourceProvider::GetConnectedDataSource(int pos)
+IDataSource * DataSourceProvider::GetConnectedDataSource(size_t pos)
 {
 	return _vecConnectedDataSource.at(pos);
 }

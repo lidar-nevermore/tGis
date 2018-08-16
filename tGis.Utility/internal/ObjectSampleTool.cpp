@@ -24,7 +24,7 @@ const char * ObjectSampleTool::GetName()
 
 void ObjectSampleTool::Execute()
 {
-	IMapWidget* mapWidget = GetCurrentMapWidget();
+	IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
 	if (_widget == nullptr)
 	{
 		_widget = new ObjectSampleToolDialog(mapWidget,(QWidget*)QtHelper::INSTANCE.GetMainWindow());

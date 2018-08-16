@@ -3,6 +3,7 @@
 #ifndef __HELPER_H__
 #define __HELPER_H__
 
+#pragma warning( disable: 4251 )
 
 //namespace helper
 
@@ -42,9 +43,12 @@
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
 
+#include <Windows.h>
 #include <direct.h>
 #include <stdlib.h>
 #include <io.h>
+
+#define _tgis_max max
 
 #define TGIS_MAX_PATH _MAX_PATH 
 

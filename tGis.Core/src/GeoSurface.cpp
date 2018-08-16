@@ -64,7 +64,7 @@ void GeoSurface::IncludeEnvelope(const OGREnvelope * envelope)
 {
 	double height = envelope->MaxY - envelope->MinY;
 	double width = envelope->MaxX - envelope->MinX;
-	double resolution = std::max(abs(height / _surfHeight), abs(width / _surfWidth));
+	double resolution = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
 
 	_resolution = resolution;
 	SetViewCenter((envelope->MaxX + envelope->MinX) / 2.0, (envelope->MaxY + envelope->MinY) / 2.0);
@@ -74,7 +74,7 @@ void GeoSurface::IncludeEnvelope(double spatialLeft, double spatialTop, double s
 {
 	double height = spatialRight - spatialLeft;
 	double width = spatialBottom - spatialTop;
-	double resolution = std::max(abs(height / _surfHeight), abs(width / _surfWidth));
+	double resolution = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
 
 	_resolution = resolution;
 	SetViewCenter((spatialRight + spatialLeft) / 2.0, (spatialBottom + spatialTop) / 2.0);

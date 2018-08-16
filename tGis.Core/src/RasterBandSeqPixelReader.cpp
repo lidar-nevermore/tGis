@@ -119,10 +119,10 @@ RasterBandSeqPixelReader::RasterBandSeqPixelReader(GDALDataset* raster,GDALRaste
 		myInRaster.Spatial2Pixel(aoienvelope.MinX,aoienvelope.MinY,&minInPixX,&minInPixY);
 		myInRaster.Spatial2Pixel(aoienvelope.MaxX,aoienvelope.MaxY,&maxInPixX,&maxInPixY);
 
-		xOffset = _tgis_round(min(minInPixX,maxInPixX), 0);
-		yOffset = _tgis_round(min(minInPixY,maxInPixY), 0);
-		xEnd = _tgis_round(max(minInPixX,maxInPixX), 0);
-		yEnd = _tgis_round(max(minInPixY,maxInPixY), 0);
+		xOffset = (int)_tgis_round(min(minInPixX,maxInPixX), 0);
+		yOffset = (int)_tgis_round(min(minInPixY,maxInPixY), 0);
+		xEnd = (int)_tgis_round(max(minInPixX,maxInPixX), 0);
+		yEnd = (int)_tgis_round(max(minInPixY,maxInPixY), 0);
 
 		if(xOffset < 0)
 			xOffset = 0;
@@ -147,10 +147,10 @@ RasterBandSeqPixelReader::RasterBandSeqPixelReader(GDALDataset* raster,GDALRaste
 		myAoiRaster.Spatial2Pixel(aoienvelope.MinX,aoienvelope.MinY,&minAoiPixX,&minAoiPixY);
 		myAoiRaster.Spatial2Pixel(aoienvelope.MaxX,aoienvelope.MaxY,&maxAoiPixX,&maxAoiPixY);
 
-		_xAoiOffset = _tgis_round(min(minAoiPixX,maxAoiPixX), 0);
-		_yAoiOffset = _tgis_round(min(minAoiPixY,maxAoiPixY), 0);
-		_xAoiEnd = _tgis_round(max(minAoiPixX,maxAoiPixX), 0);
-		_yAoiEnd = _tgis_round(max(minAoiPixY,maxAoiPixY), 0);
+		_xAoiOffset = (int)_tgis_round(min(minAoiPixX,maxAoiPixX), 0);
+		_yAoiOffset = (int)_tgis_round(min(minAoiPixY,maxAoiPixY), 0);
+		_xAoiEnd = (int)_tgis_round(max(minAoiPixX,maxAoiPixX), 0);
+		_yAoiEnd = (int)_tgis_round(max(minAoiPixY,maxAoiPixY), 0);
 
 		if(_xAoiOffset < 0)
 			_xAoiOffset = 0;
@@ -295,10 +295,10 @@ void RasterBandSeqPixelReader::ForEachPixel(FOREACHPIXEL_FUNC proc, void* user)
 			{
 				int curBlockStartX = _curBlockX+_curStartXPosIB;
 				int curBlockStartY = _curBlockY+_curStartYPosIB;
-				int curAoiBlockStartX = _xAoiOffset + _tgis_round((curBlockStartX-_xOffset)*_xAoiPixScale,0);
-				int curAoiBlockStartY = _yAoiOffset + _tgis_round((curBlockStartY-_yOffset)*_yAoiPixScale,0);
-				int curAoiBlockXSize = _tgis_round(buffer.xValidBlockSize*_xAoiPixScale,0);
-				int curAoiBlockYSize = _tgis_round(buffer.yValidBlockSize*_yAoiPixScale,0);
+				int curAoiBlockStartX = _xAoiOffset + (int)_tgis_round((curBlockStartX-_xOffset)*_xAoiPixScale,0);
+				int curAoiBlockStartY = _yAoiOffset + (int)_tgis_round((curBlockStartY-_yOffset)*_yAoiPixScale,0);
+				int curAoiBlockXSize = (int)_tgis_round(buffer.xValidBlockSize*_xAoiPixScale,0);
+				int curAoiBlockYSize = (int)_tgis_round(buffer.yValidBlockSize*_yAoiPixScale,0);
 				GDALRasterIOExtraArg arg;
 				INIT_RASTERIO_EXTRA_ARG(arg);
 				arg.eResampleAlg = GRIORA_NearestNeighbour;

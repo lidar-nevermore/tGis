@@ -15,11 +15,11 @@
 QOpenedDatasetWidget::QOpenedDatasetWidget(QWidget *parent)
 	:QTreeView(parent)
 {
-	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
+	size_t providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
 
 	_model = new QStandardItemModel();
 	QStandardItem* rootNode = _model->invisibleRootItem();
-	for (int i = 0; i < providerCount; i++)
+	for (size_t i = 0; i < providerCount; i++)
 	{
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
 
@@ -198,13 +198,13 @@ void QOpenedDatasetWidget::NodeDoubleClicked(const QModelIndex & index)
 
 			if (layer != nullptr)
 			{
-				IMap* map = GetCurrentMap();
-				IMapWidget* mapWidget = GetCurrentMapWidget();
+				IMap* map = TGisApplication::INSTANCE().GetCurrentMap();
+				IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
 				IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
-
-				if (map->AddLayer(layer) > -1)
+				size_t layerCount = map->GetLayerCount();
+				size_t layerPos = map->AddLayer(layer);
+				if (layerPos == layerCount)
 				{
-					int layerCount = map->GetLayerCount();
 					if (layerCount == 0)
 					{
 						geoSurface->SetSpatialReference(layer->GetSpatialReference());

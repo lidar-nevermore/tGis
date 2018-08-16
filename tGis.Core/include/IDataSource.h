@@ -22,14 +22,14 @@ struct TGIS_API IDataSource : public ITGisObject
 	virtual void Connect() = 0;
 	virtual void Disconnect() = 0;
 
-	virtual int GetDatasetCount() = 0;
-	virtual IDataset* GetDataset(int) = 0;
+	virtual size_t GetDatasetCount() = 0;
+	virtual IDataset* GetDataset(size_t) = 0;
 
-	virtual int GetOpenedDatasetCount() = 0;
-	virtual IDataset* GetOpenedDataset(int) = 0;
+	virtual size_t GetOpenedDatasetCount() = 0;
+	virtual IDataset* GetOpenedDataset(size_t) = 0;
 
-	virtual int GetDataSourceCount() = 0;
-	virtual IDataSource* GetDataSource(int) = 0;
+	virtual size_t GetDataSourceCount() = 0;
+	virtual IDataSource* GetDataSource(size_t) = 0;
 
 	IDataSource() {};
 	virtual ~IDataSource() {};

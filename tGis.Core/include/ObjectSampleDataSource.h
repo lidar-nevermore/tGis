@@ -61,8 +61,8 @@ public:
 	virtual void Connect();
 	virtual void Disconnect();
 
-	int GetObjectSampleMetadataCount();
-	ObjectSampleMetadata* GetObjectSampleMetadata(int pos);
+	size_t GetObjectSampleMetadataCount();
+	ObjectSampleMetadata* GetObjectSampleMetadata(size_t pos);
 	ObjectSampleMetadata* GetObjectSampleMetadataByLabel(int label);
 	ObjectSampleMetadata* AddObjectSampleMetadata(ObjectSampleMetadata* meta);
 	void SaveObjectSampleMetadata();

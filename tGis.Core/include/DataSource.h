@@ -48,14 +48,14 @@ public:
 	virtual void Connect();
 	virtual void Disconnect();
 
-	virtual int GetDatasetCount();
-	virtual IDataset* GetDataset(int);
+	virtual size_t GetDatasetCount();
+	virtual IDataset* GetDataset(size_t);
 
-	virtual int GetDataSourceCount();
-	virtual IDataSource* GetDataSource(int);
+	virtual size_t GetDataSourceCount();
+	virtual IDataSource* GetDataSource(size_t);
 
-	virtual int GetOpenedDatasetCount();
-	virtual IDataset* GetOpenedDataset(int);
+	virtual size_t GetOpenedDatasetCount();
+	virtual IDataset* GetOpenedDataset(size_t);
 };
 
 

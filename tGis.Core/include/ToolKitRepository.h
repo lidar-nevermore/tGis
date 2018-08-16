@@ -33,8 +33,8 @@ public:
 public:
 	void AddToolKit(ToolKit* kit);
 	void AddToolKit(int count, ...);
-	int GetToolKitCount();
-	ToolKit* GetToolKit(int);
+	size_t GetToolKitCount();
+	ToolKit* GetToolKit(size_t);
 	ToolKit* GetToolKit(const char* name);
 	
 

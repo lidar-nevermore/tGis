@@ -44,8 +44,8 @@ public:
 	Event<IDataSourceProvider*, IDataSource*> BeforeDataSourceDisconnectEvent;
 
 public:
-	int GetDataSourceProviderCount();
-	IDataSourceProvider* GetDataSourceProvider(int);
+	size_t GetDataSourceProviderCount();
+	IDataSourceProvider* GetDataSourceProvider(size_t);
 	void AddDataSourceProvider(IDataSourceProvider*);
 	IDataSourceProvider* GetDataSourceProvider(const char* dataSourceType);
 

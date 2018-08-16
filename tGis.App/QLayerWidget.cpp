@@ -162,8 +162,12 @@ void QLayerWidget::SetSelectedLayerVisible(bool visible)
 
 bool QLayerWidget::CanMoveSelectedLayerUp()
 {
-	return _selectedLayerIndex > -1 
-		   && _selectedLayerIndex < _map->GetLayerCount()-1;
+	if (_selectedLayerIndex == -1)
+		return false;
+	size_t layerCount = _map->GetLayerCount();
+	if (layerCount == 0)
+		return false;
+	return  _selectedLayerIndex < layerCount - 1;
 }
 
 bool QLayerWidget::CanMoveSelectedLayerDown()

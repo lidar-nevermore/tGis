@@ -65,12 +65,12 @@ void DataSourceProviderRepository::BeforeDataSourceDisconnect(IDataSourceProvide
 	BeforeDataSourceDisconnectEvent(provider, ds);
 }
 
-int DataSourceProviderRepository::GetDataSourceProviderCount()
+size_t DataSourceProviderRepository::GetDataSourceProviderCount()
 {
 	return _vecDataSourceProvider.size();
 }
 
-IDataSourceProvider * DataSourceProviderRepository::GetDataSourceProvider(int pos)
+IDataSourceProvider * DataSourceProviderRepository::GetDataSourceProvider(size_t pos)
 {
 	return _vecDataSourceProvider.at(pos);
 }

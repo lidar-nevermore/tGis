@@ -45,16 +45,16 @@ private:
 	static GDALInit* _GDALInit;
 
 public:
-	static int GetSupportedRasterFormatCount();
-	static const vector<string>& GetSupportedRasterFormatExt(int);
-	static const char* GetSupportedRasterFormatName(int);
-	static bool GetSupportedRasterFormatCreatable(int);
+	static size_t GetSupportedRasterFormatCount();
+	static const vector<string>& GetSupportedRasterFormatExt(size_t);
+	static const char* GetSupportedRasterFormatName(size_t);
+	static bool GetSupportedRasterFormatCreatable(size_t);
 	static bool IsSupportedRasterFormatExt(const char*);
 
-	static int GetSupportedVectorFormatCount();
-	static const vector<string>& GetSupportedVectorFormatExt(int);
-	static const char* GetSupportedVectorFormatName(int);
-	static bool GetSupportedVectorFormatCreatable(int);
+	static size_t GetSupportedVectorFormatCount();
+	static const vector<string>& GetSupportedVectorFormatExt(size_t);
+	static const char* GetSupportedVectorFormatName(size_t);
+	static bool GetSupportedVectorFormatCreatable(size_t);
 	static bool IsSupportedVectorFormatExt(const char*);
 
 protected:

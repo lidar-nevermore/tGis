@@ -85,7 +85,7 @@ void ObjectSampleDataSource::Connect()
 					{
 						ObjectSampleMetadata meta;
 						memset(&meta, 0, sizeof(ObjectSampleMetadata));
-						int nameLen = fileds[0].length();
+						size_t nameLen = fileds[0].length();
 						if (nameLen > ObjectSampleNameLength)
 							nameLen = ObjectSampleNameLength;
 						memcpy(meta.Name, fileds[0].data(), nameLen);
@@ -133,12 +133,12 @@ void ObjectSampleDataSource::Disconnect()
 	}
 }
 
-int ObjectSampleDataSource::GetObjectSampleMetadataCount()
+size_t ObjectSampleDataSource::GetObjectSampleMetadataCount()
 {
 	return _vecObjectSampleMetadata.size();
 }
 
-ObjectSampleMetadata * ObjectSampleDataSource::GetObjectSampleMetadata(int pos)
+ObjectSampleMetadata * ObjectSampleDataSource::GetObjectSampleMetadata(size_t pos)
 {
 	return _vecObjectSampleMetadata.at(pos);
 }
@@ -182,7 +182,7 @@ void ObjectSampleDataSource::SaveObjectSampleMetadata()
 	for (vector<ObjectSampleMetadata*>::iterator it = _vecObjectSampleMetadata.begin(); it != _vecObjectSampleMetadata.end(); it++)
 	{
 		ObjectSampleMetadata* meta = *it;
-		int len = strlen(meta->Name);
+		size_t len = strlen(meta->Name);
 		fwrite(meta->Name, len, 1, fp);
 		fwrite("   ", 3, 1, fp);
 
@@ -191,12 +191,12 @@ void ObjectSampleDataSource::SaveObjectSampleMetadata()
 		fwrite(buffer, len, 1, fp);
 		fwrite("   ", 3, 1, fp);
 
-		sprintf(buffer, "%d", meta->MinPixelSize);
+		sprintf(buffer, "%.3f", meta->MinPixelSize);
 		len = strlen(buffer);
 		fwrite(buffer, len, 1, fp);
 		fwrite("   ", 3, 1, fp);
 
-		sprintf(buffer, "%d", meta->MaxPixelSize);
+		sprintf(buffer, "%.3f", meta->MaxPixelSize);
 		len = strlen(buffer);
 		fwrite(buffer, len, 1, fp);
 		fwrite("   ", 3, 1, fp);

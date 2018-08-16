@@ -34,8 +34,8 @@ ObjectSampleDialog::~ObjectSampleDialog()
 void ObjectSampleDialog::SetObjectSampleDataSource(ObjectSampleDataSource * samples)
 {
 	_samples = samples;
-	int osmCount = samples->GetObjectSampleMetadataCount();
-	for (int i = 0; i < osmCount; i++)
+	size_t osmCount = samples->GetObjectSampleMetadataCount();
+	for (size_t i = 0; i < osmCount; i++)
 	{
 		ObjectSampleMetadata * osm = samples->GetObjectSampleMetadata(i);
 		QListWidgetItem* pItem = CreateObjectSampleItem(osm);

@@ -66,32 +66,32 @@ void DataSource::Disconnect()
 	prd->RemoveConnectedDataSource(this);
 }
 
-int DataSource::GetDatasetCount()
+size_t DataSource::GetDatasetCount()
 {
 	return _vecDataset.size();
 }
 
-IDataset * DataSource::GetDataset(int pos)
+IDataset * DataSource::GetDataset(size_t pos)
 {
 	return _vecDataset.at(pos);
 }
 
-int DataSource::GetDataSourceCount()
+size_t DataSource::GetDataSourceCount()
 {
 	return _vecDataSource.size();
 }
 
-IDataSource * DataSource::GetDataSource(int pos)
+IDataSource * DataSource::GetDataSource(size_t pos)
 {
 	return _vecDataSource.at(pos);
 }
 
-int DataSource::GetOpenedDatasetCount()
+size_t DataSource::GetOpenedDatasetCount()
 {
 	return _vecOpenedDataset.size();
 }
 
-IDataset * DataSource::GetOpenedDataset(int pos)
+IDataset * DataSource::GetOpenedDataset(size_t pos)
 {
 	return _vecOpenedDataset.at(pos);
 }

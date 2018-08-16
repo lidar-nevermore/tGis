@@ -70,11 +70,11 @@ public:
 	virtual IDataSource* CreateDataSource(const char * creationString);
 	virtual void ReleaseDataSource(IDataSource*);
 
-	virtual int GetOpenedDatasetCount();
-	virtual IDataset* GetOpenedDataset(int);
+	virtual size_t GetOpenedDatasetCount();
+	virtual IDataset* GetOpenedDataset(size_t);
 
-	virtual int GetConnectedDataSourceCount();
-	virtual IDataSource* GetConnectedDataSource(int);
+	virtual size_t GetConnectedDataSourceCount();
+	virtual IDataSource* GetConnectedDataSource(size_t);
 
 	virtual void Release();
 };

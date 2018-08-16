@@ -122,22 +122,22 @@ GDALInit* MyGDALDataset::_GDALInit = new GDALInit();
 
 
 
-int MyGDALDataset::GetSupportedRasterFormatCount()
+size_t MyGDALDataset::GetSupportedRasterFormatCount()
 {
 	return _GDALInit->_SupportedRasterFormatExt.size();
 }
 
-const vector<string>& MyGDALDataset::GetSupportedRasterFormatExt(int pos)
+const vector<string>& MyGDALDataset::GetSupportedRasterFormatExt(size_t pos)
 {
 	return _GDALInit->_SupportedRasterFormatExt.at(pos);
 }
 
-const char * MyGDALDataset::GetSupportedRasterFormatName(int pos)
+const char * MyGDALDataset::GetSupportedRasterFormatName(size_t pos)
 {
 	return _GDALInit->_SupportedRasterFormatName.at(pos).c_str();
 }
 
-bool MyGDALDataset::GetSupportedRasterFormatCreatable(int pos)
+bool MyGDALDataset::GetSupportedRasterFormatCreatable(size_t pos)
 {
 	return _GDALInit->_SupportedRasterFormatCreatable.at(pos) == 1;
 }
@@ -160,22 +160,22 @@ bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
 	return false;
 }
 
-int MyGDALDataset::GetSupportedVectorFormatCount()
+size_t MyGDALDataset::GetSupportedVectorFormatCount()
 {
 	return _GDALInit->_SupportedVectorFormatExt.size();
 }
 
-const vector<string>& MyGDALDataset::GetSupportedVectorFormatExt(int pos)
+const vector<string>& MyGDALDataset::GetSupportedVectorFormatExt(size_t pos)
 {
 	return _GDALInit->_SupportedVectorFormatExt.at(pos);
 }
 
-const char * MyGDALDataset::GetSupportedVectorFormatName(int pos)
+const char * MyGDALDataset::GetSupportedVectorFormatName(size_t pos)
 {
 	return _GDALInit->_SupportedVectorFormatName.at(pos).c_str();
 }
 
-bool MyGDALDataset::GetSupportedVectorFormatCreatable(int pos)
+bool MyGDALDataset::GetSupportedVectorFormatCreatable(size_t pos)
 {
 	return _GDALInit->_SupportedVectorFormatCreatable.at(pos)==1;
 }

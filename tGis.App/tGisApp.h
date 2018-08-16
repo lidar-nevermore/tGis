@@ -2,6 +2,7 @@
 
 #include <QtWidgets/QMainWindow>
 #include "ui_tGisApp.h"
+#include "TGisQtApplication.h"
 
 #include "tVisualize.h"
 
@@ -27,6 +28,7 @@ public:
 	~tGisApp();
 
 private:
+	TGisQtApplication _application;
 	Map _map;
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;

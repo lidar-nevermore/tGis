@@ -32,8 +32,8 @@ tGisApp::tGisApp(QWidget *parent)
 	ui.mapWidget->SetMap(&_map);
 	ui.layerWidget->SetMap(&_map);
 
-	SetCurrentMap(&_map);
-	SetCurrentMapWidget((IMapWidget*)ui.mapWidget);
+	_application._curMap = &_map;
+	_application._curMapWidget = (IMapWidget*)ui.mapWidget;
 	ui.mapWidget->AddMapTool(&_mapPanTool);
 	ui.mapWidget->AddMapTool(&_mapZoomTool);
 	ui.mapWidget->AddMapTool(&_rectZoomTool);

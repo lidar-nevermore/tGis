@@ -127,6 +127,7 @@
     <ClCompile Include="RasterGrayScaleLayerPropertyDialog.cpp" />
     <ClCompile Include="RasterRgbLayerPropertyDialog.cpp" />
     <ClCompile Include="tGisApp.cpp" />
+    <ClCompile Include="TGisQtApplication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="tGisApp.h" />
@@ -142,6 +143,7 @@
     <QtRcc Include="tGisApp.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TGisQtApplication.h" />
     <QtMoc Include="ListChoiseDialog.h" />
     <ClInclude Include="IconRes.h" />
     <QtMoc Include="QLayerWidget.h" />

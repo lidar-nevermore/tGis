@@ -34,11 +34,11 @@ struct TGIS_API IDataSourceProvider : public ITGisObject
 	virtual IDataSource* CreateDataSource(const char* creationString) = 0;
 	virtual void ReleaseDataSource(IDataSource*) = 0;
 
-	virtual int GetOpenedDatasetCount() = 0;
-	virtual IDataset* GetOpenedDataset(int) = 0;
+	virtual size_t GetOpenedDatasetCount() = 0;
+	virtual IDataset* GetOpenedDataset(size_t) = 0;
 
-	virtual int GetConnectedDataSourceCount() = 0;
-	virtual IDataSource* GetConnectedDataSource(int) = 0;
+	virtual size_t GetConnectedDataSourceCount() = 0;
+	virtual IDataSource* GetConnectedDataSource(size_t) = 0;
 
 	Event<IDataSourceProvider*, IDataset*> AfterDatasetOpenEvent;
 

@@ -144,12 +144,12 @@ void ObjectSampleToolDialog::UpdateChoise()
 {
 	bool valid = false;
 	ui.cboSamples->clear();
-	int providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
-	for (int i = 0; i < providerCount; i++)
+	size_t providerCount = DataSourceProviderRepository::INSTANCE().GetDataSourceProviderCount();
+	for (size_t i = 0; i < providerCount; i++)
 	{
 		IDataSourceProvider* provider = DataSourceProviderRepository::INSTANCE().GetDataSourceProvider(i);
-		int dsCount = provider->GetConnectedDataSourceCount();
-		for (int j = 0; j < dsCount; j++)
+		size_t dsCount = provider->GetConnectedDataSourceCount();
+		for (size_t j = 0; j < dsCount; j++)
 		{
 			IDataSource* ds = provider->GetConnectedDataSource(j);
 			if (ds->IsTypeOf(ObjectSampleDataSource::S_GetType()))
@@ -163,9 +163,9 @@ void ObjectSampleToolDialog::UpdateChoise()
 	}
 
 	ui.cboLayer->clear();
-	IMap* map = GetCurrentMap();
-	int layerCount = map->GetLayerCount();
-	for (int i = 0; i < layerCount; i++)
+	IMap* map = TGisApplication::INSTANCE().GetCurrentMap();
+	size_t layerCount = map->GetLayerCount();
+	for (size_t i = 0; i < layerCount; i++)
 	{
 		ILayer* layer = map->GetLayer(i);
 		IDataset* dataset = layer->GetDataset();

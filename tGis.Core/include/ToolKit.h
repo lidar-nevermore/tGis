@@ -27,12 +27,12 @@ public:
 	const char* GetName();
 
 	void AddTool(ITool* tool);
-	int GetToolCount();
-	ITool* GetTool(int);
+	size_t GetToolCount();
+	ITool* GetTool(size_t);
 
 	void AddToolKit(ToolKit* kit);
-	int GetToolKitCount();
-	ToolKit* GetToolKit(int);
+	size_t GetToolKitCount();
+	ToolKit* GetToolKit(size_t);
 	ToolKit* GetToolKit(const char* name);
 
 private:

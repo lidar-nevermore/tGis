@@ -62,6 +62,8 @@
     <ClInclude Include="include\ObjectSampleDataSourceProvider.h" />
     <ClInclude Include="include\OverlayLayer.h" />
     <ClInclude Include="include\OverlayRect.h" />
+    <ClInclude Include="include\Plugin.h" />
+    <ClInclude Include="include\PluginManager.h" />
     <ClInclude Include="include\RasterBinaryGrayScaleLayer.h" />
     <ClInclude Include="include\RasterBinaryGrayScaleLayerProvider.h" />
     <ClInclude Include="include\RasterGrayScaleLayerProvider.h" />
@@ -73,6 +75,7 @@
     <ClInclude Include="include\SimpleSymbolLibrary.h" />
     <ClInclude Include="include\Statistics.h" />
     <ClInclude Include="include\SymbolLibraryRepository.h" />
+    <ClInclude Include="include\TGisApplication.h" />
     <ClInclude Include="include\Tool.h" />
     <ClInclude Include="include\ToolKit.h" />
     <ClInclude Include="include\ToolKitRepository.h" />
@@ -122,6 +125,8 @@
     <ClCompile Include="src\ObjectSampleDataSourceProvider.cpp" />
     <ClCompile Include="src\OverlayLayer.cpp" />
     <ClCompile Include="src\OverlayRect.cpp" />
+    <ClCompile Include="src\Plugin.cpp" />
+    <ClCompile Include="src\PluginManager.cpp" />
     <ClCompile Include="src\RasterBandSeqBlockReader.cpp" />
     <ClCompile Include="src\RasterBandSeqPixelReader.cpp" />
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp" />
@@ -138,10 +143,10 @@
     <ClCompile Include="src\SimpleSymbolLibrary.cpp" />
     <ClCompile Include="src\Statistics.cpp" />
     <ClCompile Include="src\SymbolLibraryRepository.cpp" />
+    <ClCompile Include="src\TGisApplication.cpp" />
     <ClCompile Include="src\Tool.cpp" />
     <ClCompile Include="src\ToolKit.cpp" />
     <ClCompile Include="src\ToolKitRepository.cpp" />
-    <ClCompile Include="src\tOrganizer.cpp" />
     <ClCompile Include="src\VectorLayer.cpp" />
     <ClCompile Include="src\VectorSimpleLayer.cpp" />
     <ClCompile Include="src\VectorSimpleLayerProvider.cpp" />

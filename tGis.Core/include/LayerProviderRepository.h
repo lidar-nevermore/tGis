@@ -32,8 +32,8 @@ public:
 	~LayerProviderRepository();
 
 public:
-	int GetLayerProviderCount();
-	ILayerProvider* GetLayerProvider(int);
+	size_t GetLayerProviderCount();
+	ILayerProvider* GetLayerProvider(size_t);
 	void AddLayerProvider(ILayerProvider*);
 	ILayerProvider* GetLayerProvider(const char* layerType);
 
