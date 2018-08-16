@@ -20,3 +20,4 @@
 #include "ToolKitRepository.h"
 
 #include "TGisApplication.h"
+#include "PluginManager.h"

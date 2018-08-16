@@ -42,12 +42,6 @@
     <Filter Include="include\Organizer">
       <UniqueIdentifier>{ff866a89-9e1d-4b9c-81c6-86269367443c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\Plugin">
-      <UniqueIdentifier>{68a3e8ce-8739-4a8c-86a8-5fbde3bc9210}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Plugin">
-      <UniqueIdentifier>{f49f0c23-9ba8-424d-9352-09c933920fea}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\RasterBandSeqBlockReader.h">
@@ -266,13 +260,13 @@
     <ClInclude Include="include\EventBase.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\PluginManager.h">
-      <Filter>include\Plugin</Filter>
+    <ClInclude Include="include\TGisApplication.h">
+      <Filter>include\Organizer</Filter>
     </ClInclude>
     <ClInclude Include="include\Plugin.h">
-      <Filter>include\Plugin</Filter>
+      <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\TGisApplication.h">
+    <ClInclude Include="include\PluginManager.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -430,13 +424,13 @@
     <ClCompile Include="src\EventBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\PluginManager.cpp">
-      <Filter>src\Plugin</Filter>
+    <ClCompile Include="src\TGisApplication.cpp">
+      <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\Plugin.cpp">
-      <Filter>src\Plugin</Filter>
+      <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\TGisApplication.cpp">
+    <ClCompile Include="src\PluginManager.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
   </ItemGroup>
