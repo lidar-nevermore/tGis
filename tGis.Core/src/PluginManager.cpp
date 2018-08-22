@@ -68,7 +68,7 @@ void PluginManager::LoadPlugins()
 					plugin->Initialize();
 					_plugins.push_back(plugin);
 				}
-				catch (exception & e)
+				catch (exception)
 				{
 				}
 				LoadPluginEvent(plugin, csPluginPath);

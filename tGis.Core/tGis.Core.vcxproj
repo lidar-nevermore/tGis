@@ -61,6 +61,7 @@
     <ClInclude Include="include\RasterGrayScaleLayerProvider.h" />
     <ClInclude Include="include\RasterRgbLayer.h" />
     <ClInclude Include="include\RasterRgbLayerProvider.h" />
+    <ClInclude Include="include\RasterWriter.h" />
     <ClInclude Include="include\SimpleFillSymbol.h" />
     <ClInclude Include="include\SimpleLineSymbol.h" />
     <ClInclude Include="include\SimpleMarkerSymbol.h" />
@@ -99,6 +100,7 @@
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
     <ClCompile Include="src\GeoSurface.cpp" />
+    <ClCompile Include="src\Helper.cpp" />
     <ClCompile Include="src\ITGisObject.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerProvider.cpp" />
@@ -129,6 +131,7 @@
     <ClCompile Include="src\RasterLayer.cpp" />
     <ClCompile Include="src\RasterRgbLayer.cpp" />
     <ClCompile Include="src\RasterRgbLayerProvider.cpp" />
+    <ClCompile Include="src\RasterWriter.cpp" />
     <ClCompile Include="src\SimpleFillSymbol.cpp" />
     <ClCompile Include="src\SimpleLineSymbol.cpp" />
     <ClCompile Include="src\SimpleMarkerSymbol.cpp" />

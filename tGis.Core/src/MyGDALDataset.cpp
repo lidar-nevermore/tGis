@@ -142,6 +142,32 @@ bool MyGDALDataset::GetSupportedRasterFormatCreatable(size_t pos)
 	return _GDALInit->_SupportedRasterFormatCreatable.at(pos) == 1;
 }
 
+size_t MyGDALDataset::GetSupportedRasterFormatPos(const char * ext, bool * supported)
+{
+	if (supported != nullptr)
+		*supported = false;
+
+	if (GDALInit::IsExcludeExt(ext))
+		return _GDALInit->_SupportedRasterFormatExt.size();
+
+	size_t pos = 0;
+	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
+	{
+		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		{
+			if (_stricmp((*itt).c_str(), ext) == 0)
+			{
+				if (supported != nullptr)
+					*supported = true;
+				return pos;
+			}
+		}
+
+		pos++;
+	}
+	return _GDALInit->_SupportedRasterFormatExt.size();
+}
+
 bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
 {
 	if (GDALInit::IsExcludeExt(ext))
@@ -149,8 +175,6 @@ bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
 	{
-		//if (_stricmp((*it).at(0).c_str(), ext) == 0)
-		//	return true;
 		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
 		{
 			if (_stricmp((*itt).c_str(), ext) == 0)
@@ -180,6 +204,32 @@ bool MyGDALDataset::GetSupportedVectorFormatCreatable(size_t pos)
 	return _GDALInit->_SupportedVectorFormatCreatable.at(pos)==1;
 }
 
+size_t MyGDALDataset::GetSupportedVectorFormatPos(const char * ext, bool * supported)
+{
+	if (supported != nullptr)
+		*supported = false;
+
+	if (GDALInit::IsExcludeExt(ext))
+		return _GDALInit->_SupportedVectorFormatExt.size();
+
+	size_t pos = 0;
+	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)
+	{
+		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		{
+			if (_stricmp((*itt).c_str(), ext) == 0)
+			{
+				if (supported != nullptr)
+					*supported = true;
+				return pos;
+			}
+		}
+
+		pos++;
+	}
+	return _GDALInit->_SupportedVectorFormatExt.size();
+}
+
 bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)
 {
 	if (GDALInit::IsExcludeExt(ext))
@@ -187,13 +237,13 @@ bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)
 	{
-		if (_stricmp((*it).at(0).c_str(), ext) == 0)
-			return true;
-		//for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
-		//{
-		//	if (stricmp((*itt).c_str(), ext) == 0)
-		//		return true;
-		//}
+		//if (_stricmp((*it).at(0).c_str(), ext) == 0)
+		//	return true;
+		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
+		{
+			if (_stricmp((*itt).c_str(), ext) == 0)
+				return true;
+		}
 	}
 	return false;
 }

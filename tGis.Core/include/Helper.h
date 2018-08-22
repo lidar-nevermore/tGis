@@ -137,6 +137,10 @@ inline double _tgis_round(double val, int places) {
 	return !my_isnan(x) ? x : t;
 }
 
+inline void _tgis_localtime(struct tm * const tms,const time_t *tmt)
+{
+	localtime_s(tms, tmt);
+}
 
 inline void _tgis_str_split(char* str, const char *delim, std::vector<std::string>& out)
 {
@@ -154,20 +158,15 @@ inline void _tgis_str_split(char* str, const char *delim, std::vector<std::strin
 			}
 			d++;
 		};
-		if(not_delim)
+		if (not_delim)
 			out.push_back(std::string(p));
 		p = std::strtok(NULL, delim);
 	}
 }
 
+TGIS_API int _tgis_find_first_of(const char* s, const char* m, int offset);
 
-inline void _tgis_localtime(struct tm * const tms,const time_t *tmt)
-{
-	localtime_s(tms, tmt);
-}
-
-
-
+TGIS_API int _tgis_find_last_of(const char* s, const char* m, int offset);
 
 
 // this shit for shit
@@ -189,128 +188,6 @@ struct PtrDestructor
 };
 
 END_NAME_SPACE(tGis, Core)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// this shit for shit
-
-#ifdef PERCEPTRON_EXPORTS
-
-#define EXPORT_CLASS_ENABLE_DATA_STUB(CLASS_NAME) struct CLASS_NAME##DataStub
-
-
-#define EXPORT_CLASS_DEC_CONSTRUCTOR(CLASS_NAME,...)\
-CLASS_NAME(__VA_ARGS__);\
-CLASS_NAME(CLASS_NAME##DataStub* ,##__VA_ARGS__)
-
-#else
-
-#define EXPORT_CLASS_ENABLE_DATA_STUB(CLASS_NAME)
-
-
-#define EXPORT_CLASS_DEC_CONSTRUCTOR(CLASS_NAME,...)\
-CLASS_NAME(__VA_ARGS__)
-
-#endif
-
-
-
-#define EXPORT_CLASS_IMP_CONSTRUCTOR(CLASS_NAME,...)\
-CLASS_NAME##DataStub::CLASS_NAME##DataStub(__VA_ARGS__)\
-:CLASS_NAME(this ,##__VA_ARGS__)\
-{}\
-CLASS_NAME::CLASS_NAME(__VA_ARGS__)\
-{\
-    ::new (this) CLASS_NAME##DataStub(__VA_ARGS__);\
-}\
-CLASS_NAME::CLASS_NAME(CLASS_NAME##DataStub*, ##__VA_ARGS__)
-
-
-#define EXPORT_CLASS_DEC_ALLOCATOR(CLASS_NAME)\
-static void* operator new(size_t size);\
-static void operator delete(void *p)
-
-
-#define EXPORT_CLASS_IMP_ALLOCATOR(CLASS_NAME)\
-void* CLASS_NAME::operator new(size_t size)\
-{\
-    return malloc(sizeof(CLASS_NAME##DataStub));\
-}\
-void CLASS_NAME::operator delete(void *p)\
-{\
-	free(p);\
-}
-
-
-#define BEGIN_DATA_STUB(CLASS_NAME) \
-struct CLASS_NAME##DataStub : protected CLASS_NAME {
-
-
-#define END_DATA_STUB };
-
-
-#define DATA_STUB_SUPPORT_CONSTRUCTOR(CLASS_NAME,...)\
-CLASS_NAME##DataStub(__VA_ARGS__);
-
-
-#define GET_DATA_STUB(CLASS_NAME) CLASS_NAME##DataStub* DATA_STUB = ((CLASS_NAME##DataStub*)this)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif

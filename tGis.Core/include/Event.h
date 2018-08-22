@@ -392,16 +392,20 @@ private:
 
 struct TGIS_API Progress
 {
-	Progress(int value, int max = 100, const char* msg = nullptr)
+	Progress(int value, int max = 100, char* msg = nullptr)
 		:Value(value)
 		, Max(max)
 		, Message(msg)
 	{
 	}
 
-	const int Value;
+	int Value;
 	const int Max;
-	const char* const Message;
+	char* Message;
+
+private:
+	Progress(const Progress &) = delete;
+	Progress &operator=(const Progress &) = delete;
 };
 
 typedef IEventHandler<Progress> ProgressEventHandler;

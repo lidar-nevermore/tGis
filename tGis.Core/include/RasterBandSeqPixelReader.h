@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __I_RASTERBANDSEQPIXELREADER_H__
-#define __I_RASTERBANDSEQPIXELREADER_H__
+#ifndef __RASTERBANDSEQPIXELREADER_H__
+#define __RASTERBANDSEQPIXELREADER_H__
 
 #include "Helper.h"
 

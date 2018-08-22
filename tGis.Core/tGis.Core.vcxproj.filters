@@ -269,6 +269,9 @@
     <ClInclude Include="include\PluginManager.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
+    <ClInclude Include="include\RasterWriter.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
@@ -432,6 +435,12 @@
     </ClCompile>
     <ClCompile Include="src\PluginManager.cpp">
       <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterWriter.cpp">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Helper.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
