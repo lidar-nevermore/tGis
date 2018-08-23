@@ -12,10 +12,12 @@ struct GDALInit
 {
 	vector<vector<string>> _SupportedVectorFormatExt;
 	vector<string> _SupportedVectorFormatName;
+	vector<int> _SupportedVectorFormatDriverIndex;
 	vector<int> _SupportedVectorFormatCreatable;
 
 	vector<vector<string>> _SupportedRasterFormatExt;
 	vector<string> _SupportedRasterFormatName;
+	vector<int> _SupportedRasterFormatDriverIndex;
 	vector<int> _SupportedRasterFormatCreatable;
 
 	static char*  _excludeExt[];
@@ -91,6 +93,7 @@ struct GDALInit
 						else
 							_SupportedRasterFormatName.push_back(name);
 						_SupportedRasterFormatCreatable.push_back(bc);
+						_SupportedRasterFormatDriverIndex.push_back(i);
 					}
 					else
 					{
@@ -108,6 +111,7 @@ struct GDALInit
 							else
 								_SupportedVectorFormatName.push_back(name);
 							_SupportedVectorFormatCreatable.push_back(bc);
+							_SupportedVectorFormatDriverIndex.push_back(i);
 						}
 					}
 				}//end of ext not empty
@@ -166,6 +170,11 @@ size_t MyGDALDataset::GetSupportedRasterFormatPos(const char * ext, bool * suppo
 		pos++;
 	}
 	return _GDALInit->_SupportedRasterFormatExt.size();
+}
+
+int MyGDALDataset::GetSupportedRasterFormatDriverIndex(size_t pos)
+{
+	return _GDALInit->_SupportedRasterFormatDriverIndex.at(pos);
 }
 
 bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
@@ -228,6 +237,11 @@ size_t MyGDALDataset::GetSupportedVectorFormatPos(const char * ext, bool * suppo
 		pos++;
 	}
 	return _GDALInit->_SupportedVectorFormatExt.size();
+}
+
+int MyGDALDataset::GetSupportedVectorFormatDriverIndex(size_t pos)
+{
+	return _GDALInit->_SupportedVectorFormatDriverIndex.at(pos);
 }
 
 bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)

@@ -40,6 +40,12 @@
 #define TGIS_UTILITY_API TGIS_SYMBOL_IMPORT
 #endif
 
+#ifdef TGIS_SEGMENT_EXPORTS
+#define TGIS_SEGMENT_API TGIS_SYMBOL_EXPORT
+#else
+#define TGIS_SEGMENT_API TGIS_SYMBOL_IMPORT
+#endif
+
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
 

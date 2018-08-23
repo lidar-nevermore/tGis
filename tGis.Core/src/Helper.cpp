@@ -4,10 +4,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 void get_next(const char* m, int* next, int len)
 {
-	int i = -1, j = 0;
+	int i = -1, j = 0, n = 0;
 	int m_inx = len - 1;
 
-	do
+	for (n = 0; n < len; n++)
+		next[n] = -1;
+
+	while (j < m_inx)
 	{
 		if ((i < 0) || (m[i] == m[j]))
 		{
@@ -18,7 +21,7 @@ void get_next(const char* m, int* next, int len)
 		}
 		else
 			i = next[i];
-	} while (j < m_inx);
+	}
 }
 
 TGIS_API int _tgis_find_first_of(const char* s, const char* m, int offset)

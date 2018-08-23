@@ -50,6 +50,7 @@ public:
 	static const char* GetSupportedRasterFormatName(size_t);
 	static bool GetSupportedRasterFormatCreatable(size_t);
 	static size_t GetSupportedRasterFormatPos(const char* ext,bool* supported = nullptr);
+	static int GetSupportedRasterFormatDriverIndex(size_t);
 	static bool IsSupportedRasterFormatExt(const char*);
 
 	static size_t GetSupportedVectorFormatCount();
@@ -57,6 +58,7 @@ public:
 	static const char* GetSupportedVectorFormatName(size_t);
 	static bool GetSupportedVectorFormatCreatable(size_t);
 	static size_t GetSupportedVectorFormatPos(const char* ext, bool* supported = nullptr);
+	static int GetSupportedVectorFormatDriverIndex(size_t);
 	static bool IsSupportedVectorFormatExt(const char*);
 
 protected:

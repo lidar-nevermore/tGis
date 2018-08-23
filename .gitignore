@@ -7,8 +7,8 @@
 *.vcxproj.user
 *.obj
 /tGis.Core/x64/
-/tGis.GuiTest/x64/
-/tGis.GuiTest/GeneratedFiles/
+/tGis.CTest/x64/
+/tGis.Segment
 /tGis.Utility/x64/
 /tGis.Utility/GeneratedFiles/
-/tGis.Segment
+

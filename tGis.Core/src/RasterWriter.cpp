@@ -30,14 +30,19 @@ TGIS_API void WriteMemoryBlock(
 	int extPos = 1 + _tgis_find_last_of(path, ".", 0);
 	size_t drvPos = MyGDALDataset::GetSupportedRasterFormatPos(path + extPos, &supported);
 	bool creatable = false;
-	const char* drvName = "GTiff";
+	int drvIndex = -1;
 	if(supported)
 		creatable = MyGDALDataset::GetSupportedRasterFormatCreatable(drvPos);
 	if (creatable)
-		drvName = MyGDALDataset::GetSupportedRasterFormatName(drvPos);
+		drvIndex = MyGDALDataset::GetSupportedRasterFormatDriverIndex(drvPos);
 
-	GDALDriver *poDriver = GetGDALDriverManager()->GetDriverByName(drvName);
+	GDALDriver *poDriver = nullptr;
 	char **papszOptions = nullptr;
+	double geoTransform[6] = { 0,1,0,0,0,1 };
+	if (drvIndex > -1)
+		poDriver = GetGDALDriverManager()->GetDriver(drvIndex);
+	else
+		poDriver = GetGDALDriverManager()->GetDriverByName("GTiff");	
 	GDALDataset* outRaster = poDriver->Create(path, w, h, count, dt, papszOptions);
 	if (raster != nullptr)
 	{
@@ -45,7 +50,6 @@ TGIS_API void WriteMemoryBlock(
 		if (p != nullptr && strcmp(p, "") != 0)
 			outRaster->SetProjection(p);
 
-		double geoTransform[6];
 		raster->GetGeoTransform(geoTransform);
 		if (xOffset > 0 || yOffset > 0)
 		{
@@ -53,8 +57,8 @@ TGIS_API void WriteMemoryBlock(
 			rdt.Attach(raster);
 			rdt.Pixel2Spatial(xOffset, yOffset, geoTransform, geoTransform + 3);
 		}
-		outRaster->SetGeoTransform(geoTransform);
 	}
+	outRaster->SetGeoTransform(geoTransform);
 
 	Progress prog(0, 100 * count);
 	MyGDALProgressArg proga;
@@ -66,10 +70,10 @@ TGIS_API void WriteMemoryBlock(
 	rasterIoArg.pfnProgress = MyGDALProgressFunc;
 	GDALRasterIOExtraArg *pRasterIoArg = progressEvent == nullptr ? nullptr : &rasterIoArg;
 
-	for (int i = 1; i < count; i++)
+	for (int i = 1; i <= count; i++)
 	{
 		GDALRasterBand* outBand = outRaster->GetRasterBand(i);
-		outBand->RasterIO(GF_Write, 0, 0, w, h, mem + (i - 1), w, h, dt, 0, 0, pRasterIoArg);
+		outBand->RasterIO(GF_Write, 0, 0, w, h, mem[i - 1], w, h, dt, 0, 0, pRasterIoArg);
 		outBand->FlushCache();
 	}
 
