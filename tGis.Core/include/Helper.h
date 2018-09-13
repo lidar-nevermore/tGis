@@ -111,17 +111,16 @@
 #include <vector>
 #include <time.h>
 
-BEGIN_NAME_SPACE(tGis, Core)
 
-#define my_isinf(a)   ((_fpclass(a) == _FPCLASS_PINF) || (_fpclass(a) == _FPCLASS_NINF))
-#define my_isnan(x)   _isnan(x)
+#define _tgis_isinf(a)   ((_fpclass(a) == _FPCLASS_PINF) || (_fpclass(a) == _FPCLASS_NINF))
+#define _tgis_isnan(x)   _isnan(x)
 
 inline double _tgis_round(double val, int places) {
 	double t;
 	double f = pow(10.0, (double)places);
 	double x = val * f;
 
-	if (my_isinf(x) || my_isinf(x)) {
+	if (_tgis_isinf(x) || _tgis_isinf(x)) {
 		return val;
 	}
 
@@ -140,7 +139,7 @@ inline double _tgis_round(double val, int places) {
 	}
 	x = t / f;
 
-	return !my_isnan(x) ? x : t;
+	return !_tgis_isnan(x) ? x : t;
 }
 
 inline void _tgis_localtime(struct tm * const tms,const time_t *tmt)
@@ -178,22 +177,20 @@ TGIS_API int _tgis_find_last_of(const char* s, const char* m, int offset);
 // this shit for shit
 
 template<class T>
-struct PtrDestructor
+struct _tGisObjectDestructor
 {
-	PtrDestructor(T* ptr)
+	_tGisObjectDestructor(T* ptr)
 	{
 		_ptr = ptr;
 	}
 
-	~PtrDestructor()
+	~_tGisObjectDestructor()
 	{
 		delete _ptr;
 	}
 
 	T* _ptr;
 };
-
-END_NAME_SPACE(tGis, Core)
 
 
 #endif

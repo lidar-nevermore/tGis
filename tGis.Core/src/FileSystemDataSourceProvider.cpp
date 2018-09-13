@@ -20,7 +20,7 @@ FileSystemDataSourceProvider & FileSystemDataSourceProvider::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new FileSystemDataSourceProvider();
-		static PtrDestructor<FileSystemDataSourceProvider> shit(_instance);
+		static _tGisObjectDestructor<FileSystemDataSourceProvider> shit(_instance);
 		_instance->AddSubProvider(&ObjectSampleDataSourceProvider::INSTANCE());
 	}
 

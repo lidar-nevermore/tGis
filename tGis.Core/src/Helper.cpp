@@ -1,8 +1,6 @@
 #include "Helper.h"
 
-BEGIN_NAME_SPACE(tGis, Core)
-
-void get_next(const char* m, int* next, int len)
+void _tgis_get_next(const char* m, int* next, int len)
 {
 	int i = -1, j = 0, n = 0;
 	int m_inx = len - 1;
@@ -35,7 +33,7 @@ TGIS_API int _tgis_find_first_of(const char* s, const char* m, int offset)
 
 	int* next = (int*)malloc(m_len * sizeof(int));
 
-	get_next(m, next,m_len);
+	_tgis_get_next(m, next,m_len);
 
 	while (i<m_len && j<s_len)
 	{
@@ -64,7 +62,7 @@ TGIS_API int _tgis_find_last_of(const char* s, const char* m, int offset)
 
 	int* next = (int*)malloc(m_len * sizeof(int));
 
-	get_next(m, next, m_len);
+	_tgis_get_next(m, next, m_len);
 
 	while (true)
 	{
@@ -92,6 +90,3 @@ TGIS_API int _tgis_find_last_of(const char* s, const char* m, int offset)
 
 	return last_inx;
 }
-
-
-END_NAME_SPACE(tGis, Core)

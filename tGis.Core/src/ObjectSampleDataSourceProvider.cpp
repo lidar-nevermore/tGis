@@ -18,7 +18,7 @@ ObjectSampleDataSourceProvider & ObjectSampleDataSourceProvider::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new ObjectSampleDataSourceProvider();
-		static PtrDestructor<ObjectSampleDataSourceProvider> shit(_instance);
+		static _tGisObjectDestructor<ObjectSampleDataSourceProvider> shit(_instance);
 	}
 
 	return *_instance;

@@ -11,4 +11,6 @@
 /tGis.Segment
 /tGis.Utility/x64/
 /tGis.Utility/GeneratedFiles/
+/**/ipch
+*.ipch
 

@@ -15,7 +15,7 @@ LayerProviderRepository & LayerProviderRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new LayerProviderRepository();
-		static PtrDestructor<LayerProviderRepository> shit(_instance);
+		static _tGisObjectDestructor<LayerProviderRepository> shit(_instance);
 	}
 
 	return *_instance;

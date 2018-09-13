@@ -12,7 +12,7 @@ ToolKitRepository & ToolKitRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new ToolKitRepository();
-		static PtrDestructor<ToolKitRepository> shit(_instance);
+		static _tGisObjectDestructor<ToolKitRepository> shit(_instance);
 	}
 
 	return *_instance;

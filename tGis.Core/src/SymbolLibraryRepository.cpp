@@ -11,7 +11,7 @@ SymbolLibraryRepository & SymbolLibraryRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new SymbolLibraryRepository();
-		static PtrDestructor<SymbolLibraryRepository> shit(_instance);
+		static _tGisObjectDestructor<SymbolLibraryRepository> shit(_instance);
 	}
 
 	return *_instance;

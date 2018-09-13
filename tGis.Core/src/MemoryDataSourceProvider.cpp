@@ -24,7 +24,7 @@ MemoryDataSourceProvider & MemoryDataSourceProvider::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new MemoryDataSourceProvider();
-		static PtrDestructor<MemoryDataSourceProvider> shit(_instance);
+		static _tGisObjectDestructor<MemoryDataSourceProvider> shit(_instance);
 	}
 
 	return *_instance;

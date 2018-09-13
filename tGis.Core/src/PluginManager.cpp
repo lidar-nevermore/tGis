@@ -10,7 +10,7 @@ PluginManager & PluginManager::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new PluginManager();
-		static PtrDestructor<PluginManager> shit(_instance);
+		static _tGisObjectDestructor<PluginManager> shit(_instance);
 	}
 
 	return *_instance;

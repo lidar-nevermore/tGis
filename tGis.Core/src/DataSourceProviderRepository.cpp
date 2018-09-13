@@ -14,7 +14,7 @@ DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new DataSourceProviderRepository();
-		static PtrDestructor<DataSourceProviderRepository> shit(_instance);
+		static _tGisObjectDestructor<DataSourceProviderRepository> shit(_instance);
 		_instance->AddDataSourceProvider(&FileSystemDataSourceProvider::INSTANCE());
 		_instance->AddDataSourceProvider(&MemoryDataSourceProvider::INSTANCE());
 	}

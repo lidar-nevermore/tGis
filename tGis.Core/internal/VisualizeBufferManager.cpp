@@ -12,7 +12,7 @@ VisualizeBufferManager & VisualizeBufferManager::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new VisualizeBufferManager();
-		static PtrDestructor<VisualizeBufferManager> shit(_instance);
+		static _tGisObjectDestructor<VisualizeBufferManager> shit(_instance);
 	}
 
 	return *_instance;
