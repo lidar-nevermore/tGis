@@ -42,6 +42,10 @@ MyGDALRasterDataset::MyGDALRasterDataset(IDataSource * ds)
 {
 }
 
+MyGDALRasterDataset::MyGDALRasterDataset()
+{
+}
+
 MyGDALRasterDataset::~MyGDALRasterDataset()
 {
 }

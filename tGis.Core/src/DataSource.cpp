@@ -66,6 +66,36 @@ void DataSource::Disconnect()
 	prd->RemoveConnectedDataSource(this);
 }
 
+void DataSource::Disconnect(IDataset * dt)
+{
+	for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
+	{
+		IDataset* dtTemp = *it;
+		if (dt == dtTemp)
+		{
+			_vecDataset.erase(it);
+			dt->Close();
+			delete dt;
+			break;
+		}
+	}
+}
+
+void DataSource::Disconnect(IDataSource * ds)
+{
+	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
+	{
+		IDataSource* dsTemp = *it;
+		if (ds == dsTemp)
+		{
+			_vecDataSource.erase(it);
+			IDataSourceProvider* provider = dsTemp->GetProvider();
+			provider->ReleaseDataSource(dsTemp);
+			break;
+		}
+	}
+}
+
 size_t DataSource::GetDatasetCount()
 {
 	return _vecDataset.size();

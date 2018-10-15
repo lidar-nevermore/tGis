@@ -2,7 +2,7 @@
 #include "IDataSourceProvider.h"
 #include "FileSystemDataSourceProvider.h"
 #include "ObjectSampleDataSourceProvider.h"
-#include "MemoryDataSourceProvider.h"
+
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -16,7 +16,6 @@ DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
 		_instance = new DataSourceProviderRepository();
 		static _tGisObjectDestructor<DataSourceProviderRepository> shit(_instance);
 		_instance->AddDataSourceProvider(&FileSystemDataSourceProvider::INSTANCE());
-		_instance->AddDataSourceProvider(&MemoryDataSourceProvider::INSTANCE());
 	}
 
 	return *_instance;
@@ -39,8 +38,7 @@ DataSourceProviderRepository::~DataSourceProviderRepository()
 		//
 		//哈哈！但是这个条件判定会导致FileSystemDataSourceProvider一定在DataSourceProviderRepository后析构
 		if (dsp != &FileSystemDataSourceProvider::INSTANCE()
-			&& dsp != &ObjectSampleDataSourceProvider::INSTANCE()
-			&& dsp != &MemoryDataSourceProvider::INSTANCE())
+			&& dsp != &ObjectSampleDataSourceProvider::INSTANCE())
 			dsp->Release();
 	}
 }

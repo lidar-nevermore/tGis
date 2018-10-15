@@ -21,6 +21,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_API MyGDALMemRasterDataset : public MyGDALRasterDataset
 {
+	friend class MemoryDataSourceProvider;
 public:
 	const char* GetType();
 	static const char* S_GetType();
@@ -31,8 +32,10 @@ public:
 private:
 	static const char* const _type;
 
-public:
+protected:
 	MyGDALMemRasterDataset(IDataSource* ds = nullptr, const char* name = nullptr);
+
+public:
 	~MyGDALMemRasterDataset();
 
 public:

@@ -29,8 +29,11 @@ public:
 private:
 	static const char* const _type;
 
-public:
+protected:
 	MyGDALRasterDataset(IDataSource* ds);
+
+public:
+	MyGDALRasterDataset();
 	virtual ~MyGDALRasterDataset();
 
 protected:

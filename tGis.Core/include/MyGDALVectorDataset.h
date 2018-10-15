@@ -22,6 +22,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_API MyGDALVectorDataset : public MyGDALDataset
 {
+	friend class FileSystemDataSource;
 public:
 	const char* GetType();
 	static const char* S_GetType();
@@ -32,10 +33,12 @@ public:
 private:
 	static const char* const _type;
 
+protected:
+	MyGDALVectorDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
+
 public:
 	MyGDALVectorDataset();
-	MyGDALVectorDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
-	~MyGDALVectorDataset();
+	virtual ~MyGDALVectorDataset();
 
 public:
 	using MyGDALDataset::GetGDALDataset;

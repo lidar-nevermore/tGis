@@ -66,8 +66,11 @@ protected:
 	bool _autoClose;
 	GDALAccess _eAccess;
 
-public:
+protected:
 	MyGDALDataset(IDataSource* ds);
+
+public:
+	MyGDALDataset();
 	virtual ~MyGDALDataset();
 
 public:

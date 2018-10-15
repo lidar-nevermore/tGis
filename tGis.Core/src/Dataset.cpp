@@ -3,14 +3,11 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-
-Dataset::Dataset()
-{
-}
-
 Dataset::Dataset(IDataSource * ds)
 {
 	_dataSource = ds;
+	if (_dataSource != nullptr)
+		((DataSource*)_dataSource)->_vecDataset.push_back(this);
 }
 
 
@@ -20,12 +17,14 @@ Dataset::~Dataset()
 
 void Dataset::Open()
 {
-	((DataSource*)_dataSource)->AddOpenedDataset(this);
+	if(_dataSource != nullptr)
+	    ((DataSource*)_dataSource)->AddOpenedDataset(this);
 }
 
 void Dataset::Close()
 {
-	((DataSource*)_dataSource)->RemoveOpenedDataset(this);
+	if (_dataSource != nullptr)
+	    ((DataSource*)_dataSource)->RemoveOpenedDataset(this);
 }
 
 

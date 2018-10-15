@@ -88,6 +88,7 @@ void FileSystemDataSource::Connect()
 		return;
 
 	_connected = true;
+
 	string find_path = _path + TGIS_PATH_SEPARATOR_STR + "*";
 	_tgis_finddata_t file;
 	intptr_t flag;
@@ -119,12 +120,10 @@ void FileSystemDataSource::Connect()
 					if (MyGDALDataset::IsSupportedRasterFormatExt(ext.c_str()))
 					{
 						MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(this,subpath.c_str(), eAccess);
-						_vecDataset.push_back(dt);
 					}
 					else if (MyGDALDataset::IsSupportedVectorFormatExt(ext.c_str()))
 					{
 						MyGDALVectorDataset* dt = new MyGDALVectorDataset(this,subpath.c_str(), eAccess);
-						_vecDataset.push_back(dt);
 					}
 				}
 			}
@@ -135,6 +134,50 @@ void FileSystemDataSource::Connect()
 	_tgis_findclose(handle);
 
 	DataSource::Connect();
+}
+
+void FileSystemDataSource::Connect(const char * creationString, IDataset ** dtOut)
+{
+	string path(creationString);
+	size_t pos = path.find_last_of(TGIS_EXT_SEPARATOR_CHAR);
+	if (pos != path.npos)
+	{
+		string ext = path.substr(pos + 1);
+		GDALAccess eAccess = GA_ReadOnly;
+		if (_tgis_access(path.c_str(), _TGIS_A_WRITE) == _TGIS_R_OK)
+			eAccess = GA_Update;
+		if (MyGDALDataset::IsSupportedRasterFormatExt(ext.c_str()))
+		{
+			MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(this, path.c_str(), eAccess);
+			if (*dtOut != nullptr)
+				*dtOut = dt;
+		}
+		else if (MyGDALDataset::IsSupportedVectorFormatExt(ext.c_str()))
+		{
+			MyGDALVectorDataset* dt = new MyGDALVectorDataset(this, path.c_str(), eAccess);
+			if (*dtOut != nullptr)
+				*dtOut = dt;
+		}
+	}
+	if (!_connected)
+	{
+		_connected = true;
+		DataSource::Connect();
+	}
+}
+
+void FileSystemDataSource::Connect(const char * creationString, IDataSource ** dsOut)
+{
+	IDataSource* ds = FileSystemDataSourceProvider::INSTANCE().CreateDataSource(creationString);
+	if (*dsOut != nullptr)
+		*dsOut = ds;
+	_vecDataSource.push_back(ds);
+
+	if (!_connected)
+	{
+		_connected = true;
+		DataSource::Connect();
+	}
 }
 
 void FileSystemDataSource::Disconnect(bool raiseEvent)

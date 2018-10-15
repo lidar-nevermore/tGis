@@ -4,6 +4,7 @@
 #define __DATASOURCE_H__
 
 #include "IDataSource.h"
+#include "IDataset.h"
 
 #include "Helper.h"
 #include <vector>
@@ -47,6 +48,8 @@ public:
 	virtual bool IsConnected();
 	virtual void Connect();
 	virtual void Disconnect();
+	virtual void Disconnect(IDataset*);
+	virtual void Disconnect(IDataSource*);
 
 	virtual size_t GetDatasetCount();
 	virtual IDataset* GetDataset(size_t);

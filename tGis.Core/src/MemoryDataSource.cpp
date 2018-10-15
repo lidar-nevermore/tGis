@@ -25,6 +25,14 @@ const char * MemoryDataSource::S_GetType()
 	return _type;
 }
 
+void MemoryDataSource::Connect(const char * creationString, IDataset ** dtOut)
+{
+}
+
+void MemoryDataSource::Connect(const char * creationString, IDataSource ** dsOut)
+{
+}
+
 END_NAME_SPACE(tGis, Core)
 
 
