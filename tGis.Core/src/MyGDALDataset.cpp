@@ -267,6 +267,11 @@ MyGDALDataset::MyGDALDataset(IDataSource * ds)
 {
 }
 
+MyGDALDataset::MyGDALDataset()
+	: Dataset(nullptr)
+{
+}
+
 MyGDALDataset::~MyGDALDataset()
 {
 	Detach();

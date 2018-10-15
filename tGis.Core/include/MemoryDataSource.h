@@ -31,6 +31,9 @@ private:
 public:
 	virtual const char* GetType();
 	static const char* S_GetType();
+
+	void Connect(const char* creationString, IDataset** dtOut);
+	void Connect(const char* creationString, IDataSource** dsOut);
 };
 
 END_NAME_SPACE(tGis, Core)

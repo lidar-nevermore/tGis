@@ -20,7 +20,11 @@ struct TGIS_API IDataSource : public ITGisObject
 
 	virtual bool IsConnected() = 0;
 	virtual void Connect() = 0;
+	virtual void Connect(const char* creationString, IDataset** dtOut) = 0;
+	virtual void Connect(const char* creationString, IDataSource** dsOut) = 0;
 	virtual void Disconnect() = 0;
+	virtual void Disconnect(IDataset*) = 0;
+	virtual void Disconnect(IDataSource*) = 0;
 
 	virtual size_t GetDatasetCount() = 0;
 	virtual IDataset* GetDataset(size_t) = 0;

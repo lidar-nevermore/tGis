@@ -15,9 +15,10 @@ struct IDataSource;
 class TGIS_API Dataset : public IDataset
 {
 public:
-	Dataset();
-	Dataset(IDataSource* ds);
 	virtual ~Dataset();
+
+protected:
+	Dataset(IDataSource* ds);
 
 public:
 	virtual void Open();

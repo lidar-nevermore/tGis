@@ -53,7 +53,7 @@ TGIS_API void WriteMemoryBlock(
 		raster->GetGeoTransform(geoTransform);
 		if (xOffset > 0 || yOffset > 0)
 		{
-			MyGDALRasterDataset rdt(nullptr);
+			MyGDALRasterDataset rdt;
 			rdt.Attach(raster);
 			rdt.Pixel2Spatial(xOffset, yOffset, geoTransform, geoTransform + 3);
 		}

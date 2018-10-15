@@ -105,11 +105,11 @@ void FileSystemDataSourceProvider::ReleaseDataSource(IDataSource * ds)
 
 	if (pos != _mapDataSource.end())
 	{
-		ds->Disconnect();
 		FileSystemDataSource* fds = (FileSystemDataSource*)ds;
 		fds->_refCount--;
 		if (fds->_refCount == 0)
 		{
+			ds->Disconnect();
 			delete ds;
 		}
 	

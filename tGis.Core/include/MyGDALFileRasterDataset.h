@@ -21,6 +21,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_API MyGDALFileRasterDataset : public MyGDALRasterDataset
 {
+	friend class FileSystemDataSource;
 public:
 	const char* GetType();
 	static const char* S_GetType();
@@ -31,9 +32,11 @@ public:
 private:
 	static const char* const _type;
 
+protected:
+	MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
+
 public:
 	MyGDALFileRasterDataset();
-	MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	~MyGDALFileRasterDataset();
 
 public:

@@ -46,6 +46,8 @@ public:
 	virtual const char* GetCreationString();
 
 	virtual void Connect();
+	virtual void Connect(const char* creationString, IDataset** dtOut);
+	virtual void Connect(const char* creationString, IDataSource** dsOut);
 	virtual void Disconnect();
 };
 
