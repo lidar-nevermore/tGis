@@ -305,7 +305,7 @@
   <action name="zoomInAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/Zoomin.png</normaloff>:/tGisApp/Resources/Zoomin.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/Zoomin.png</normaloff>:/tGisApp/Resources/Action/Zoomin.png</iconset>
    </property>
    <property name="text">
     <string>放大</string>
@@ -317,7 +317,7 @@
   <action name="zoomOutAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/Zoomout.png</normaloff>:/tGisApp/Resources/Zoomout.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/Zoomout.png</normaloff>:/tGisApp/Resources/Action/Zoomout.png</iconset>
    </property>
    <property name="text">
     <string>缩小</string>
@@ -332,7 +332,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/ZoomFree.png</normaloff>:/tGisApp/Resources/ZoomFree.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/ZoomFree.png</normaloff>:/tGisApp/Resources/Action/ZoomFree.png</iconset>
    </property>
    <property name="text">
     <string>自由缩放</string>
@@ -347,7 +347,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/ZoomRect.png</normaloff>:/tGisApp/Resources/ZoomRect.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/ZoomRect.png</normaloff>:/tGisApp/Resources/Action/ZoomRect.png</iconset>
    </property>
    <property name="text">
     <string>拉框放大</string>
@@ -362,7 +362,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/Pan.png</normaloff>:/tGisApp/Resources/Pan.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/Pan.png</normaloff>:/tGisApp/Resources/Action/Pan.png</iconset>
    </property>
    <property name="text">
     <string>自由移动</string>
@@ -374,7 +374,7 @@
   <action name="entireMapAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/Entire.png</normaloff>:/tGisApp/Resources/Entire.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/Entire.png</normaloff>:/tGisApp/Resources/Action/Entire.png</iconset>
    </property>
    <property name="text">
     <string>全图</string>
@@ -386,7 +386,7 @@
   <action name="refreshMapAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/RefreshMap.png</normaloff>:/tGisApp/Resources/RefreshMap.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/RefreshMap.png</normaloff>:/tGisApp/Resources/Action/RefreshMap.png</iconset>
    </property>
    <property name="text">
     <string>刷新地图</string>
@@ -398,7 +398,7 @@
   <action name="removeLayerAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/RemoveLayer.png</normaloff>:/tGisApp/Resources/RemoveLayer.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/RemoveLayer.png</normaloff>:/tGisApp/Resources/Action/RemoveLayer.png</iconset>
    </property>
    <property name="text">
     <string>移除图层</string>
@@ -410,7 +410,7 @@
   <action name="zoomLayerAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/ZoomLayer.png</normaloff>:/tGisApp/Resources/ZoomLayer.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/ZoomLayer.png</normaloff>:/tGisApp/Resources/Action/ZoomLayer.png</iconset>
    </property>
    <property name="text">
     <string>缩放至图层</string>
@@ -422,7 +422,7 @@
   <action name="zoomOriginalAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/ZoomOriginal.png</normaloff>:/tGisApp/Resources/ZoomOriginal.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/ZoomOriginal.png</normaloff>:/tGisApp/Resources/Action/ZoomOriginal.png</iconset>
    </property>
    <property name="text">
     <string>原始比例图层</string>
@@ -437,7 +437,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/LayerVisible.png</normaloff>:/tGisApp/Resources/LayerVisible.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/LayerVisible.png</normaloff>:/tGisApp/Resources/Action/LayerVisible.png</iconset>
    </property>
    <property name="text">
     <string>图层可见</string>
@@ -449,7 +449,7 @@
   <action name="layerAttributeAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/LayerAttribute.png</normaloff>:/tGisApp/Resources/LayerAttribute.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/LayerAttribute.png</normaloff>:/tGisApp/Resources/Action/LayerAttribute.png</iconset>
    </property>
    <property name="text">
     <string>图层属性</string>
@@ -461,7 +461,7 @@
   <action name="removeAllLayersAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/RemoveAllLayers.png</normaloff>:/tGisApp/Resources/RemoveAllLayers.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/RemoveAllLayers.png</normaloff>:/tGisApp/Resources/Action/RemoveAllLayers.png</iconset>
    </property>
    <property name="text">
     <string>移除所有图层</string>
@@ -476,7 +476,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/LayerUp.png</normaloff>:/tGisApp/Resources/LayerUp.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/LayerUp.png</normaloff>:/tGisApp/Resources/Action/LayerUp.png</iconset>
    </property>
    <property name="text">
     <string>上移一层</string>
@@ -491,7 +491,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/LayerTop.png</normaloff>:/tGisApp/Resources/LayerTop.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/LayerTop.png</normaloff>:/tGisApp/Resources/Action/LayerTop.png</iconset>
    </property>
    <property name="text">
     <string>移动到顶</string>
@@ -506,7 +506,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/LayerDown.png</normaloff>:/tGisApp/Resources/LayerDown.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/LayerDown.png</normaloff>:/tGisApp/Resources/Action/LayerDown.png</iconset>
    </property>
    <property name="text">
     <string>下移一层</string>
@@ -521,7 +521,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/LayerBottom.png</normaloff>:/tGisApp/Resources/LayerBottom.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/LayerBottom.png</normaloff>:/tGisApp/Resources/Action/LayerBottom.png</iconset>
    </property>
    <property name="text">
     <string>移动到底</string>
@@ -533,7 +533,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/TakeObjectSample.png</normaloff>:/tGisApp/Resources/TakeObjectSample.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/TakeObjectSample.png</normaloff>:/tGisApp/Resources/Action/TakeObjectSample.png</iconset>
    </property>
    <property name="text">
     <string>扣取栅格子区域</string>
@@ -548,7 +548,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/Grid.png</normaloff>:/tGisApp/Resources/Grid.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/Grid.png</normaloff>:/tGisApp/Resources/Action/Grid.png</iconset>
    </property>
    <property name="text">
     <string>显示格网</string>
@@ -560,7 +560,7 @@
   <action name="mapSpatialRefAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/MapSpatialRef.png</normaloff>:/tGisApp/Resources/MapSpatialRef.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/MapSpatialRef.png</normaloff>:/tGisApp/Resources/Action/MapSpatialRef.png</iconset>
    </property>
    <property name="text">
     <string>地图空间参考</string>
@@ -572,7 +572,7 @@
   <action name="openFileDataSourceAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/OpenFileDataSource.png</normaloff>:/tGisApp/Resources/OpenFileDataSource.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/OpenFileDataSource.png</normaloff>:/tGisApp/Resources/Action/OpenFileDataSource.png</iconset>
    </property>
    <property name="text">
     <string>打开文件数据源</string>
@@ -584,7 +584,7 @@
   <action name="closeFileDataSourceAction">
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/CloseFileDataSource.png</normaloff>:/tGisApp/Resources/CloseFileDataSource.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/CloseFileDataSource.png</normaloff>:/tGisApp/Resources/Action/CloseFileDataSource.png</iconset>
    </property>
    <property name="text">
     <string>关闭文件数据源</string>
@@ -599,7 +599,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/RefreshDataSource.png</normaloff>:/tGisApp/Resources/RefreshDataSource.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/RefreshDataSource.png</normaloff>:/tGisApp/Resources/Action/RefreshDataSource.png</iconset>
    </property>
    <property name="text">
     <string>刷新数据源</string>
@@ -614,7 +614,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/DatasetInfo.png</normaloff>:/tGisApp/Resources/DatasetInfo.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/DatasetInfo.png</normaloff>:/tGisApp/Resources/Action/DatasetInfo.png</iconset>
    </property>
    <property name="text">
     <string>数据集信息</string>
@@ -629,7 +629,7 @@
    </property>
    <property name="icon">
     <iconset resource="tGisApp.qrc">
-     <normaloff>:/tGisApp/Resources/CloseDataset.png</normaloff>:/tGisApp/Resources/CloseDataset.png</iconset>
+     <normaloff>:/tGisApp/Resources/Action/CloseDataset.png</normaloff>:/tGisApp/Resources/Action/CloseDataset.png</iconset>
    </property>
    <property name="text">
     <string>关闭数据集</string>
