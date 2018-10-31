@@ -18,7 +18,7 @@ QToolKitWidget::QToolKitWidget(QWidget *parent)
 		QStandardItem* pItem = new QStandardItem();
 		pItem->setText(QString::fromLocal8Bit(kit->GetName()));
 		pItem->setEditable(false);
-		QIcon icon(":/tGisApp/Images/ToolKit/toolkit.png");
+		QIcon icon(":/tGisApp/Resources/ToolKit/toolkit.png");
 		pItem->setIcon(icon);
 
 		QVariant userData;
@@ -51,7 +51,7 @@ void QToolKitWidget::AddToolKitNode(QStandardItem * parent, ToolKit * kit)
 		QStandardItem* pItem = new QStandardItem();
 		pItem->setText(QString::fromLocal8Bit(subKit->GetName()));
 		pItem->setEditable(false);
-		QIcon icon(":/tGisApp/Images/ToolKit/toolkit.png");
+		QIcon icon(":/tGisApp/Resources/ToolKit/toolkit.png");
 		pItem->setIcon(icon);
 		QVariant userData;
 		userData.setValue<ToolKitPtr>(subKit);
@@ -70,7 +70,7 @@ void QToolKitWidget::AddToolKitNode(QStandardItem * parent, ToolKit * kit)
 		QStandardItem* pItem = new QStandardItem();
 		pItem->setText(QString::fromLocal8Bit(tool->GetName()));
 		pItem->setEditable(false);
-		QIcon icon(":/tGisApp/Images/ToolKit/tool.png");
+		QIcon icon(":/tGisApp/Resources/ToolKit/tool.png");
 		pItem->setIcon(icon);
 
 		QVariant userData;
