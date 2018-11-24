@@ -274,10 +274,15 @@ void RasterBandSeqPixelReader::ForEachPixel(FOREACHPIXEL_FUNC proc, void* user)
 		{
 			buffer.xBlockOff = xb;
 			buffer.yBlockOff = yb;
+			buffer.xBlockSize = _xBlockSize;
+			buffer.yBlockSize = _yBlockSize;
 
-			_band->ReadBlock(xb,yb,_blockBuffer);
-			_band->GetActualBlockSize(xb, yb, &(buffer.xBlockSize), &(buffer.yBlockSize));
-			CalcPixelTraverseParam(xb,yb,buffer.xBlockSize,buffer.yBlockSize);
+			_band->ReadBlock(xb, yb, _blockBuffer);
+
+			int xBlockSize;
+			int yBlockSize;
+			_band->GetActualBlockSize(xb, yb, &xBlockSize, &yBlockSize);
+			CalcPixelTraverseParam(xb, yb, xBlockSize, yBlockSize);
 
 			buffer.xBlockLTC = _curBlockX;
 			buffer.yBlockLTC = _curBlockY;
@@ -341,10 +346,15 @@ void RasterBandSeqPixelReader::ForEachBlock(FOREACHBLOCK_FUNC proc, void* user)
 		{
 			buffer.xBlockOff = xb;
 			buffer.yBlockOff = yb;
+			buffer.xBlockSize = _xBlockSize;
+			buffer.yBlockSize = _yBlockSize;
 
-			_band->ReadBlock(xb,yb,_blockBuffer);
-			_band->GetActualBlockSize(xb, yb, &(buffer.xBlockSize), &(buffer.yBlockSize));
-			CalcPixelTraverseParam(xb,yb,buffer.xBlockSize,buffer.yBlockSize);
+			_band->ReadBlock(xb, yb, _blockBuffer);
+
+			int xBlockSize;
+			int yBlockSize;
+			_band->GetActualBlockSize(xb, yb, &xBlockSize, &yBlockSize);
+			CalcPixelTraverseParam(xb, yb, xBlockSize, yBlockSize);
 
 			buffer.xBlockLTC = _curBlockX;
 			buffer.yBlockLTC = _curBlockY;

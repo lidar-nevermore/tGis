@@ -6,6 +6,7 @@
 #include "Helper.h"
 #include "gdal.h"
 #include "gdal_priv.h"
+#include <cassert>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -28,45 +29,110 @@ public:
 	~RasterBandStorageBlockGridReader(void);
 
 	//遍历方向 ORDER_ROW 行主序遍历 ORDER_COL 列主序遍历
-	int GetMajorOrder();
+	int GetMajorOrder()
+	{
+		return _majorOrder;
+	}
 
 	//获取存储块缓存矩阵水平方向上占据的块数量
-	int GetStorageBlockCountX();
+	int GetStorageBlockCountX()
+	{
+		return _xBlockCount;
+	}
 
 	//获取存储块缓存矩阵竖直方向上占据的块数量
-	int GetStorageBlockCountY();
+	int GetStorageBlockCountY()
+	{
+		return _yBlockCount;
+	}
 
 	//获取存储块缓存矩阵的指针
-	void** GetGridHandler();
+	void** GetGridHandler()
+	{
+		return (void**)_gridHandler;
+	}
+
+	int GetStorageBlockSizeX()
+	{
+		return _xBlockSize;
+	}
+
+	int GetStorageBlockSizeY()
+	{
+		return _yBlockSize;
+	}
 
 	//获取存储块缓存矩阵中水平第storageBlockPosX个块的宽度 单位像素
-	int GetStorageBlockSizeX(int storageBlockPosX);
+	int GetStorageBlockSizeX(int storageBlockPosX)
+	{
+		if (storageBlockPosX == _xBlockCount - 1)
+			return _xEndBlockSize;
+		else return _xBlockSize;
+	}
 
 	//获取存储块缓存矩阵中竖直第bufferBlockPosY个块的高度 单位像素
-	int GetStorageBlockSizeY(int storageBlockPosY);
+	int GetStorageBlockSizeY(int storageBlockPosY)
+	{
+		if (storageBlockPosY == _yBlockCount - 1)
+			return _yEndBlockSize;
+		else return _yBlockSize;
+	}
 
 	//重新开始遍历读取，新建之后的对象不用调用这个方法即可直接读取
 	void ResetReading();
 
 	//设置读取块的大小，必须小于构建此读取器时传入的读取块大小
-	void SetReadingBlockSize(int width,int height);
+	void SetReadingBlockSize(int width, int height)
+	{
+		assert(width >= 0);
+		assert(height >= 0);
+		assert(width <= _xMaxReadSize);
+		assert(height <= _yMaxReadSize);
 
-	bool ContainReadingBlock(int x,int y);
+		_xReadSize = width;
+		_yReadSize = height;
+	}
+
+	//所要读取的读取块是否包含在当前缓存矩阵中 如果不包含需要调用Move??方法使包含之
+	bool ContainReadingBlock(int x, int y)
+	{
+		if (x >= _xBegin
+			&& y >= _yBegin
+			&& x + _xReadSize <= _xEnd
+			&& y + _yReadSize <= _yEnd)
+		{
+			return true;
+		}
+
+		return false;
+	}
 
 	//获取取以x和y为左上角坐标宽高分别是width和height的一块像素，内存在内部进行管理，不需要释放
 	void* GetOneReadingBlock(int x,int y);
 
 	//获取当前存储块缓存矩阵的起始X坐标 单位像素
-	int GetStorageBlockGridBeginX();
+	int GetStorageBlockGridBeginX()
+	{
+		return _xBegin;
+	}
 
 	//获取当前存储块缓存矩阵的起始Y坐标 单位像素
-	int GetStorageBlockGridBeginY();
+	int GetStorageBlockGridBeginY()
+	{
+		return _yBegin;
+	}
 
 	//获取当前存储块缓存矩阵的终止X坐标 单位像素，不包含在缓存块里
-	int GetStorageBlockGridEndX();
+	int GetStorageBlockGridEndX()
+	{
+		return _xEnd;
+	}
 
 	//获取当前存储块缓存矩阵的终止Y坐标 单位像素，不包含在缓存块里
-	int GetStorageBlockGridEndY();
+	int GetStorageBlockGridEndY()
+	{
+		return _yEnd;
+	}
 
 	//按照遍历主序方向向前滚动读取一行或者一列块
 	//当存储块缓存矩阵内部的数据读取完毕之后，调用此接口

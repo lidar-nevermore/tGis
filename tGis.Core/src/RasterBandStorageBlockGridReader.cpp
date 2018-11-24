@@ -217,40 +217,6 @@ RasterBandStorageBlockGridReader::~RasterBandStorageBlockGridReader(void)
 	FreeMemory();
 }
 
-int RasterBandStorageBlockGridReader::GetMajorOrder()
-{
-	return _majorOrder;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockCountX()
-{
-	return _xBlockCount;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockCountY()
-{
-	return _yBlockCount;
-}
-
-void** RasterBandStorageBlockGridReader::GetGridHandler()
-{
-	return (void**)_gridHandler;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockSizeX( int storageBlockPosX )
-{
-	if(storageBlockPosX == _xBlockCount-1)
-		return _xEndBlockSize;
-	else return _xBlockSize;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockSizeY( int storageBlockPosY )
-{
-	if(storageBlockPosY == _yBlockCount-1)
-		return _yEndBlockSize;
-	else return _yBlockSize;
-}
-
 void RasterBandStorageBlockGridReader::ResetReading()
 {
 	void** blockBuffer = (void**)_gridHandler;
@@ -279,34 +245,6 @@ void RasterBandStorageBlockGridReader::ResetReading()
 
 	_lastMoveDirection = MOV_NONE;
 }
-
-
-void RasterBandStorageBlockGridReader::SetReadingBlockSize( int width,int height )
-{
-	assert(width>=0);
-	assert(height>=0);
-	assert(width<=_xMaxReadSize);
-	assert(height<=_yMaxReadSize);
-
-	_xReadSize = width;
-	_yReadSize = height;
-}
-
-
-bool RasterBandStorageBlockGridReader::ContainReadingBlock( int x,int y )
-{
-	if (x>=_xBegin
-		&& y>=_yBegin
-		&& x+_xReadSize<=_xEnd
-		&& y+_yReadSize<=_yEnd)
-	{
-		return true;
-	}
-
-	return false;
-}
-
-
 
 void* RasterBandStorageBlockGridReader::GetOneReadingBlock( int x,int y )
 {
@@ -373,7 +311,7 @@ void* RasterBandStorageBlockGridReader::GetOneReadingBlock( int x,int y )
 
 			blockBuffer += i*_xBlockCount+j;
 
-			char* rPtIB = (char*)(*blockBuffer) + ryPosIB*xBlockSize*_dataBytes+rxPosIB*_dataBytes;
+			char* rPtIB = (char*)(*blockBuffer) + ryPosIB*_xBlockSize*_dataBytes+rxPosIB*_dataBytes;
 			char* rPtIR = (char*)_readBuffer + (_yReadSize-lrySize)*_xReadSize*_dataBytes+(_xReadSize-lrxSize)*_dataBytes;
 			
 			for (int k = 0; k < rySize; k++)
@@ -390,26 +328,6 @@ void* RasterBandStorageBlockGridReader::GetOneReadingBlock( int x,int y )
 	}
 
 	return _readBuffer;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockGridBeginX()
-{
-	return _xBegin;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockGridBeginY()
-{
-	return _yBegin;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockGridEndX()
-{
-	return _xEnd;
-}
-
-int RasterBandStorageBlockGridReader::GetStorageBlockGridEndY()
-{
-	return _yEnd;
 }
 
 int RasterBandStorageBlockGridReader::MoveNext()
@@ -862,37 +780,45 @@ bool RasterBandStorageBlockGridReader::MoveArbitrarily( int x, int y,int preferr
 		{
 			if (*blockBufferFlag != 1)
 			{
-				int m = i;
-				int n = j;
-				//新存储块缓存矩阵 中的待处理存储块的位置
-				void** blockBufferN = blockBuffer;
+				//递归地将旧存储块矩阵中仍然有效的存储块挪动到新存储块矩阵的中
+
+				//指向 旧存储块缓存矩阵 中的指针，初始化到 (i,j) 处
+				void** blockBufferO = blockBuffer;
+				//将起始挪动的位置初始化为 (i,j) 
+				int m = j;
+				int n = i;
+
 				bool goOn = true;
 
 				while (goOn)
 				{
-					int xBlock = xBlockBegin+n;
-					int yBlock = yBlockBegin+m;
+					//存储块缓存矩阵 中 (m,n) 处的块 在 图像上的块坐标
+					int xBlock = _xBlockBegin + m;
+					int yBlock = _yBlockBegin + n;
+					//旧存储块缓存矩阵 中 (m,n) 处的块 在 新存储块缓存矩阵 中的坐标
+					m = xBlock - xBlockBegin;
+					n = yBlock - yBlockBegin;
 
-					*(_gridHandlerFlag + m*_xBlockCount + n) = 1;
-
-					n = xBlock-_xBlockBegin;
-					m = yBlock-_yBlockBegin;
-
-					goOn = n<_xBlockCount && m<_yBlockCount;
-
-					if (goOn)
+					if (m > 0
+						&& m < _xBlockCount
+						&& n > 0
+						&& n < _yBlockCount)
 					{
-						//新存储块缓存矩阵 中的待处理存储块 在 旧存储块缓存矩阵 中的位置
-						void** blockBufferP = (void**)_gridHandler + m*_xBlockCount + n;
+						goOn = true;
+						*(_gridHandlerFlag + n*_xBlockCount + m) = 1;
 
-						void* blockTemp = *blockBufferN;
-						*blockBufferN = *blockBufferP;
-						*blockBufferP = blockTemp;
-						blockBufferN = blockBufferP;
+						//存储块缓存矩阵 中 指向 (m,n) 处的块的指针
+						void** blockBufferP = (void**)_gridHandler + n*_xBlockCount + m;
+
+						void* blockTemp = *blockBufferP;
+						*blockBufferP = *blockBufferO;
+						*blockBufferO = blockTemp;
 					}
 					else
 					{
-						_band->ReadBlock(xBlock,yBlock,*blockBufferN);
+						goOn = false;
+						*(_gridHandlerFlag + i*_xBlockCount + j) = 1;
+						_band->ReadBlock(xBlockBegin + j, yBlockBegin + i, *blockBuffer);
 					}
 				};
 			}

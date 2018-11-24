@@ -58,6 +58,10 @@ public:
 
 	int GetYSize() { return _ySize; }
 
+	int GetXBlockSize() { return _xBlockSize; }
+
+	int GetYBlockSize() { return _yBlockSize; }
+
 	void ResetPixelReading();
 
 	//遍历像素; raster 当前遍历的影像 band 当前遍历的波段 pix 像素值 x,y 像素的图像坐标 orgPix 原始像素值指针   xPos,yPos 当前遍历至像素在块中坐标

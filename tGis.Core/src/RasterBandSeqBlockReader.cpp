@@ -298,7 +298,7 @@ void RasterBandSeqBlockReader::ForEachBlock(FOREACHBLOCK_FUNC proc, void* user)
 					{
 						if(_aoiGridReader->MoveArbitrarily(xAoi,yAoi,m) == false)
 						{
-							int x = 0;
+							assert(false);
 						}
 					}
 
