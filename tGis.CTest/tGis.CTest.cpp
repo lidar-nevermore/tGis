@@ -17,6 +17,7 @@ int main()
 	double min[] = { 0,0,0 };
 	double max[] = { 255,255,255 };
 	TangRuiSegment(raster.GetGDALDataset(), band, min, max, 3, 0, 0, 800, 800, 1.0, 7);
+	system("pause");
     return 0;
 }
 
