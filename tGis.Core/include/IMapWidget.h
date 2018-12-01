@@ -25,6 +25,9 @@ template class TGIS_API Event<IMapWidget*, IMapTool*>;
 
 struct TGIS_API IMapWidget
 {
+	//获取表面左上角相对于桌面的坐标
+	virtual void GetPos(int* x, int* y) = 0;
+
 	virtual void SetMap(IMap*) = 0;
 	virtual IMap* GetMap() = 0;
 	virtual IGeoSurface* GetGeoSurface() = 0;

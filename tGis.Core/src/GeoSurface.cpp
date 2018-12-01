@@ -21,10 +21,16 @@ GeoSurface::~GeoSurface()
 	}
 }
 
-void GeoSurface::SetViewResolution(double resolution)
+void GeoSurface::SetViewScale(double scale)
 {
-	_resolution = resolution;
+	_scale = scale;
+
 	UpdateViewPort();
+}
+
+void GeoSurface::GetViewScale(double *scale)
+{
+	*scale = _scale;
 }
 
 void GeoSurface::SetViewCenter(double spatialCenterX, double spatialCenterY)
@@ -34,21 +40,31 @@ void GeoSurface::SetViewCenter(double spatialCenterX, double spatialCenterY)
 	UpdateViewPort();
 }
 
+void GeoSurface::GetViewCenter(double * spatialCenterX, double * spatialCenterY)
+{
+	if (spatialCenterX != nullptr)
+		*spatialCenterX = _spatialCenterX;
+
+	if (spatialCenterY != nullptr)
+		*spatialCenterY = _spatialCenterY;
+}
+
 void GeoSurface::GetViewSize(int * surfW, int * surfH)
 {
 	*surfW = _surfWidth;
 	*surfH = _surfHeight;
 }
 
-void GeoSurface::SetViewPort(double spatialCenterX, double spatialCenterY, double resolution)
+void GeoSurface::SetViewPort(double spatialCenterX, double spatialCenterY, double scale)
 {
 	_spatialCenterX = spatialCenterX;
 	_spatialCenterY = spatialCenterY;
-	_resolution = resolution;
+	_scale = scale;
+
 	UpdateViewPort();
 }
 
-void GeoSurface::GetViewPort(double *spatialCenterX, double *spatialCenterY, double *resolution)
+void GeoSurface::GetViewPort(double *spatialCenterX, double *spatialCenterY, double* scale)
 {
 	if (spatialCenterX != nullptr)
 		*spatialCenterX = _spatialCenterX;
@@ -56,17 +72,17 @@ void GeoSurface::GetViewPort(double *spatialCenterX, double *spatialCenterY, dou
 	if (spatialCenterY != nullptr)
 		*spatialCenterY = _spatialCenterY;
 
-	if (resolution != nullptr)
-		*resolution = _resolution;
+	if (scale != nullptr)
+		*scale = _scale;
 }
 
 void GeoSurface::IncludeEnvelope(const OGREnvelope * envelope)
 {
 	double height = envelope->MaxY - envelope->MinY;
 	double width = envelope->MaxX - envelope->MinX;
-	double resolution = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
 
-	_resolution = resolution;
+	_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
+
 	SetViewCenter((envelope->MaxX + envelope->MinX) / 2.0, (envelope->MaxY + envelope->MinY) / 2.0);
 }
 
@@ -74,28 +90,28 @@ void GeoSurface::IncludeEnvelope(double spatialLeft, double spatialTop, double s
 {
 	double height = spatialRight - spatialLeft;
 	double width = spatialBottom - spatialTop;
-	double resolution = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
 
-	_resolution = resolution;
+	_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
+
 	SetViewCenter((spatialRight + spatialLeft) / 2.0, (spatialBottom + spatialTop) / 2.0);
 }
 
 void GeoSurface::Surface2Spatial(int surfX, int surfY, double * spatialX, double * spatialY)
 {
-	*spatialX = _spatialLeft + surfX*_resolution;
-	*spatialY = _spatialTop - surfY*_resolution;
+	*spatialX = _spatialLeft + surfX*_scale;
+	*spatialY = _spatialTop - surfY*_scale;
 }
 
 void GeoSurface::Spatial2Surface(double spatialX, double spatialY, double * surfX, double * surfY)
 {
-	*surfX = (spatialX - _spatialLeft) / _resolution;
-	*surfY = (_spatialTop - spatialY) / _resolution;
+	*surfX = (spatialX - _spatialLeft) / _scale;
+	*surfY = (_spatialTop - spatialY) / _scale;
 }
 
 void GeoSurface::Spatial2Surface(double spatialX, double spatialY, int * surfX, int * surfY)
 {
-	*surfX = (int)_tgis_round((spatialX - _spatialLeft) / _resolution, 0);
-	*surfY = (int)_tgis_round((_spatialTop - spatialY) / _resolution, 0);
+	*surfX = (int)_tgis_round((spatialX - _spatialLeft) / _scale, 0);
+	*surfY = (int)_tgis_round((_spatialTop - spatialY) / _scale, 0);
 }
 
 const OGREnvelope * GeoSurface::GetEnvelope()
@@ -121,7 +137,7 @@ void GeoSurface::SwithSurface()
 {
 	_osSurf4PresentWidth = _surfWidth;
 	_osSurf4PresentHeight = _surfHeight;
-	_osSurf4PresentResolution = _resolution;
+	_osSurf4PresentScale = _scale;
 	_osSurf4PresentSpatialLeft = _spatialLeft;
 	_osSurf4PresentSpatialTop = _spatialTop;
 	_osSurf4PresentSpatialRight = _envelope.MaxX;
@@ -134,8 +150,8 @@ void GeoSurface::SwithSurface()
 
 void GeoSurface::UpdateViewPort()
 {
-	double halfW = _resolution*_surfWidth / 2.0;
-	double halfH = _resolution*_surfHeight / 2.0;
+	double halfW = _scale*_surfWidth / 2.0;
+	double halfH = _scale*_surfHeight / 2.0;
 	_spatialLeft = _spatialCenterX - halfW;
 	_spatialTop = _spatialCenterY + halfH;
 	_envelope.MinX = _spatialLeft;

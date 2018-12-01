@@ -14,10 +14,12 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct TGIS_API IGeoSurface : public ISurface
 {
-	virtual void SetViewResolution(double resolution) = 0;
+	virtual void SetViewScale(double scale) = 0;
+	virtual void GetViewScale(double* scale) = 0;
 	virtual void SetViewCenter(double spatialCenterX, double spatialCenterY) = 0;
-	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, double resolution) = 0;
-	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, double *resolution) = 0;
+	virtual void GetViewCenter(double* spatialCenterX, double* spatialCenterY) = 0;
+	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, double scale) = 0;
+	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, double* scale) = 0;
 	virtual void IncludeEnvelope(const OGREnvelope*) = 0;
 	virtual void IncludeEnvelope(double spatialLeft, double spatialTop, double spatialRight, double spatialBottom) = 0;
 

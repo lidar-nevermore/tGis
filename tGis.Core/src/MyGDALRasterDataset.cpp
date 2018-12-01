@@ -48,6 +48,7 @@ MyGDALRasterDataset::MyGDALRasterDataset()
 
 MyGDALRasterDataset::~MyGDALRasterDataset()
 {
+	Detach();
 }
 
 void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose, double noDataValue)
@@ -88,6 +89,26 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose, double no
 			band->SetNoDataValue(noDataValue);
 		}
 	}
+}
+
+void MyGDALRasterDataset::Detach()
+{
+	if (_spatialRef != nullptr)
+	{
+		OSRDestroySpatialReference(_spatialRef);
+		_spatialRef = nullptr;
+	}
+	MyGDALDataset::Detach();
+}
+
+void MyGDALRasterDataset::Close()
+{
+	if (_spatialRef != nullptr)
+	{
+		OSRDestroySpatialReference(_spatialRef);
+		_spatialRef = nullptr;
+	}
+	MyGDALDataset::Close();
 }
 
 const double* MyGDALRasterDataset::GetGeoTransform()

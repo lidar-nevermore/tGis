@@ -19,11 +19,13 @@ protected:
 	virtual ~GeoSurface();
 
 public:
-	virtual void SetViewResolution(double resolution);
+	virtual void SetViewScale(double scale);
+	virtual void GetViewScale(double* scale);
 	virtual void SetViewCenter(double spatialCenterX, double spatialCenterY);
+	virtual void GetViewCenter(double* spatialCenterX, double* spatialCenterY);
 	virtual void GetViewSize(int* surfW, int* surfH);
-	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, double resolution);
-	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, double *resolution);
+	virtual void SetViewPort(double spatialCenterX, double spatialCenterY, double scale);
+	virtual void GetViewPort(double *spatialCenterX, double *spatialCenterY, double* scale);
 	virtual void IncludeEnvelope(const OGREnvelope*);
 	virtual void IncludeEnvelope(double spatialLeft, double spatialTop, double spatialRight, double spatialBottom);
 	virtual void Surface2Spatial(int surfX, int surfY, double *spatialX, double *spatialY);
@@ -43,7 +45,7 @@ protected:
 	//screen spatial pos
 	double _spatialCenterX;
 	double _spatialCenterY;
-	double _resolution;
+	double _scale;
 	double _spatialLeft;
 	double _spatialTop;
 	//screen size in pix
@@ -51,7 +53,7 @@ protected:
 	int _surfHeight;
 
 	//visible spatial area of off screen surface for presenting
-	double _osSurf4PresentResolution;
+	double _osSurf4PresentScale;
 	double _osSurf4PresentSpatialLeft;
 	double _osSurf4PresentSpatialTop;
 	double _osSurf4PresentSpatialRight;

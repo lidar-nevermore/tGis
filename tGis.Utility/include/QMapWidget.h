@@ -25,6 +25,7 @@ public:
 	~QMapWidget();
 
 public:
+	void GetPos(int* x, int* y);
 	void SetMap(IMap*);
 	IMap* GetMap();
 	IGeoSurface* GetGeoSurface();

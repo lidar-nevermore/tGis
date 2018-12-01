@@ -82,7 +82,8 @@ protected:
 	//绘制表面像素与影像像元边长的比值
 	//也等于一个绘制表面像素相当于多少个影像像元
 	//小于1 影像放大  大于1 影像缩小
-	double _surfPixRatio;
+	double _surfPixRatioX;
+	double _surfPixRatioY;
 
 	//当影像缩放到超过1：1时需要将原始像元读取出来再进行重采样
 	//即_surfPixRatio<1时

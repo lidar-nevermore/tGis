@@ -188,14 +188,14 @@ void RasterBinaryGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int re
 	unsigned char* itSurfBuf = surfBuffer;
 	for (int m = 0; m < paintingHeight; m++)
 	{
-		int readBufRow = (int)floor((m + 0.4999999999)*_surfPixRatio + alignRmrY);
+		int readBufRow = (int)floor((m + 0.4999999999)*_surfPixRatioY + alignRmrY);
 		if (readBufRow < 0)
 			readBufRow = 0;
 		if (readBufRow >= readingHeight)
 			readBufRow = readingHeight - 1;
 		for (int n = 0; n < paintingWidth; n++)
 		{
-			int readBufCol = (int)floor((n + 0.4999999999)*_surfPixRatio + alignRmrX);
+			int readBufCol = (int)floor((n + 0.4999999999)*_surfPixRatioX + alignRmrX);
 			if (readBufCol < 0)
 				readBufCol = 0;
 			if (readBufCol >= readingWidth)

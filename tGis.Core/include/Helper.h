@@ -120,7 +120,7 @@ inline double _tgis_round(double val, int places) {
 	double f = pow(10.0, (double)places);
 	double x = val * f;
 
-	if (_tgis_isinf(x) || _tgis_isinf(x)) {
+	if (_tgis_isinf(x) || _tgis_isnan(x)) {
 		return val;
 	}
 

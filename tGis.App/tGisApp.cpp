@@ -156,20 +156,20 @@ void tGisApp::MapToolAddedOrChanged(IMapWidget * mapWidget, IMapTool * mapTool)
 void tGisApp::on_zoomInAction_triggered(bool checked)
 {
 	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
-	double resolution;
-	surface->GetViewPort(nullptr, nullptr, &resolution);
-	resolution *= 0.96;
-	surface->SetViewResolution(resolution);
+	double scale;
+	surface->GetViewScale(&scale);
+	scale *= 0.96;
+	surface->SetViewScale(scale);
 	ui.mapWidget->PresentMap();
 }
 
 void tGisApp::on_zoomOutAction_triggered(bool checked)
 {
 	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
-	double resolution;
-	surface->GetViewPort(nullptr, nullptr, &resolution);
-	resolution *= 1.042;
-	surface->SetViewResolution(resolution);
+	double scale;
+	surface->GetViewScale(&scale);
+	scale *= 1.042;
+	surface->SetViewScale(scale);
 	ui.mapWidget->RepaintMap();
 }
 
@@ -227,7 +227,7 @@ void tGisApp::on_zoomOriginalAction_triggered(bool checked)
 			MyGDALRasterDataset* gdalDataset = (MyGDALRasterDataset*)dataset;
 			double res = gdalDataset->GetGeoTransform()[1];
 			IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
-			surface->SetViewResolution(res);
+			surface->SetViewScale(res);
 			ui.mapWidget->RepaintMap();
 		}
 	}

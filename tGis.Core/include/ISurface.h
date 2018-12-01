@@ -9,8 +9,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct TGIS_API ISurface
 {
-	//获取表面左上角相对于桌面的坐标
-	virtual void GetViewPos(int* x, int* y) = 0;
 	virtual void GetViewSize(int* surfW, int* surfH) = 0;
 
 	virtual void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;

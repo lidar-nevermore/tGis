@@ -32,7 +32,7 @@ void ObjectSampleTool::Execute()
 	int x;
 	int y;
 	
-	mapWidget->GetGeoSurface()->GetViewPos(&x, &y);
+	mapWidget->GetPos(&x, &y);
 	_widget->move(x,y);
 	_widget->UpdateChoise();
 	_widget->show();

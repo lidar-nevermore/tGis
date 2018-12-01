@@ -251,14 +251,14 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, d
 	unsigned char* itSurfBuf = surfBuffer;
 	for (int m = 0; m < paintingHeight; m++)
 	{
-		int readBufRow = (int)_tgis_round((m + 0.4999999999)*_surfPixRatio + alignRmrY, 0);
+		int readBufRow = (int)_tgis_round((m + 0.4999999999)*_surfPixRatioY + alignRmrY, 0);
 		if (readBufRow < 0)
 			readBufRow = 0;
 		if (readBufRow >= readingHeight)
 			readBufRow = readingHeight - 1;
 		for (int n = 0; n < paintingWidth; n++)
 		{
-			int readBufCol = (int)_tgis_round((n + 0.4999999999)*_surfPixRatio + alignRmrX, 0);
+			int readBufCol = (int)_tgis_round((n + 0.4999999999)*_surfPixRatioX + alignRmrX, 0);
 			if (readBufCol < 0)
 				readBufCol = 0;
 			if (readBufCol >= readingWidth)
@@ -292,14 +292,14 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, d
 		unsigned char* itSurfBuf = surfBuffer;
 		for (int m = 0; m < paintingHeight; m++)
 		{
-			int readBufRow = (int)_tgis_round((m + 0.4999999999)*_surfPixRatio + alignRmrY, 0);
+			int readBufRow = (int)_tgis_round((m + 0.4999999999)*_surfPixRatioY + alignRmrY, 0);
 			if (readBufRow < 0)
 				readBufRow = 0;
 			if (readBufRow >= readingHeight)
 				readBufRow = readingHeight - 1;
 			for (int n = 0; n < paintingWidth; n++)
 			{
-				int readBufCol = (int)_tgis_round((n + 0.4999999999)*_surfPixRatio + alignRmrX, 0);
+				int readBufCol = (int)_tgis_round((n + 0.4999999999)*_surfPixRatioX + alignRmrX, 0);
 				if (readBufCol < 0)
 					readBufCol = 0;
 				if (readBufCol >= readingWidth)
@@ -331,14 +331,14 @@ void RasterRgbLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, d
 		unsigned char* itSurfBuf = surfBuffer;
 		for (int m = 0; m < paintingHeight; m++)
 		{
-			int readBufRow = (int)_tgis_round((m + 0.4999999999)*_surfPixRatio + alignRmrY, 0);
+			int readBufRow = (int)_tgis_round((m + 0.4999999999)*_surfPixRatioY + alignRmrY, 0);
 			if (readBufRow < 0)
 				readBufRow = 0;
 			if (readBufRow >= readingHeight)
 				readBufRow = readingHeight - 1;
 			for (int n = 0; n < paintingWidth; n++)
 			{
-				int readBufCol = (int)_tgis_round((n + 0.4999999999)*_surfPixRatio + alignRmrX, 0);
+				int readBufCol = (int)_tgis_round((n + 0.4999999999)*_surfPixRatioX + alignRmrX, 0);
 				if (readBufCol < 0)
 					readBufCol = 0;
 				if (readBufCol >= readingWidth)
@@ -415,10 +415,8 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 				if (_bBandIndex == _gBandIndex)
 					itSurfBuf[0] = itSurfBuf[1];
 
-				if (itSurfBuf[3] == 0 && RasterLayer::IsNoDataValue(_gNoDataLogic, _gNoDataValue, pixValue))
+				if (RasterLayer::IsNoDataValue(_gNoDataLogic, _gNoDataValue, pixValue))
 					itSurfBuf[3] = 0;
-				else
-					itSurfBuf[3] = _alpha;
 
 				itPixBuf += _gDataBytes;
 				itSurfBuf += 4;
@@ -444,10 +442,8 @@ void RasterRgbLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int 
 
 				itSurfBuf[0] = _bLut[lutPos];
 
-				if (itSurfBuf[3] == 0 && RasterLayer::IsNoDataValue(_bNoDataLogic, _bNoDataValue, pixValue))
+				if (RasterLayer::IsNoDataValue(_bNoDataLogic, _bNoDataValue, pixValue))
 					itSurfBuf[3] = 0;
-				else
-					itSurfBuf[3] = _alpha;
 
 				itPixBuf += _bDataBytes;
 				itSurfBuf += 4;

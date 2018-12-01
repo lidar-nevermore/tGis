@@ -114,16 +114,6 @@ inline void QtGeoSurface::DeleteQPoints(QPoint * pts)
 	delete[] pts;
 }
 
-void QtGeoSurface::GetViewPos(int * x, int * y)
-{
-	QPoint pt = _mapWidget->pos();
-	QPoint gpt = _mapWidget->mapToGlobal(pt);
-	if (x != nullptr)
-		*x = gpt.x();
-	if (y != nullptr)
-		*y = gpt.y();
-}
-
 void QtGeoSurface::SetViewSize(int surfW, int surfH)
 {
 	_surfWidth = surfW;

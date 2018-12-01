@@ -28,6 +28,16 @@ QMapWidget::~QMapWidget()
 {
 }
 
+void QMapWidget::GetPos(int * x, int * y)
+{
+	QPoint pt = pos();
+	QPoint gpt = mapToGlobal(pt);
+	if (x != nullptr)
+		*x = gpt.x();
+	if (y != nullptr)
+		*y = gpt.y();
+}
+
 void QMapWidget::SetMap(IMap *map)
 {
 	_map = map;

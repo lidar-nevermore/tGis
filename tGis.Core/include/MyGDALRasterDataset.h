@@ -35,6 +35,7 @@ protected:
 public:
 	MyGDALRasterDataset();
 	virtual ~MyGDALRasterDataset();
+	virtual void Close();
 
 protected:
 	double _geoTransform[6];
@@ -42,9 +43,10 @@ protected:
 
 public:
 	using MyGDALDataset::GetGDALDataset;
-	using MyGDALDataset::Detach;
 	using MyGDALDataset::SetAutoClose;
 	using MyGDALDataset::GetAutoClose;
+
+	void Detach();
 
 	void Attach(GDALDataset* dataset, bool autoClose = false, double noDataValue = NAN);
 
