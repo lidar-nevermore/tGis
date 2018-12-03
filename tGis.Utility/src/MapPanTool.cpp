@@ -22,10 +22,10 @@ void MapPanTool::MouseDown(void * ev)
 	Qt::MouseButtons buttons = e->buttons();
 	if(buttons & Qt::LeftButton)
 	{ 
-		IGeoSurface* surface = _mapWidget->GetGeoSurface();
+		GeoViewPort* viewPort = _mapWidget->GetViewPort();
 		_mouseDownX = e->x();
 		_mouseDownY = e->y();
-		surface->Surface2Spatial(_mouseDownX, _mouseDownY, &_mouseDownSpatialX, &_mouseDownSpatialY);
+		viewPort->Surface2Spatial(_mouseDownX, _mouseDownY, &_mouseDownSpatialX, &_mouseDownSpatialY);
 	}
 }
 
@@ -39,15 +39,15 @@ void MapPanTool::MouseMove(void *ev)
 		int my = e->y();
 		if (mx != _mouseDownX && my != _mouseDownY)
 		{
-			IGeoSurface* surface = _mapWidget->GetGeoSurface();
+			GeoViewPort* viewPort = _mapWidget->GetViewPort();
 			double mouseX;
 			double mouseY;
-			surface->Surface2Spatial(mx, my, &mouseX, &mouseY);
+			viewPort->Surface2Spatial(mx, my, &mouseX, &mouseY);
 
 			double spatialCenterX;
 			double spatialCenterY;
-			surface->GetViewPort(&spatialCenterX, &spatialCenterY, nullptr);
-			surface->SetViewCenter(spatialCenterX + _mouseDownSpatialX - mouseX, spatialCenterY + _mouseDownSpatialY - mouseY);
+			viewPort->GetSpatialCenter(&spatialCenterX, &spatialCenterY);
+			viewPort->SetSpatialCenter(spatialCenterX + _mouseDownSpatialX - mouseX, spatialCenterY + _mouseDownSpatialY - mouseY);
 			_mapWidget->PresentMap();
 		}
 	}

@@ -16,19 +16,11 @@ class QtGeoSurface : public GeoSurface
 {
 	friend class QMapWidget;
 private:
-	QtGeoSurface(QMapWidget* mapWidget);
+	QtGeoSurface();
 	~QtGeoSurface();
 
 private:
-	QMapWidget* _mapWidget;
-	bool _paintOnAttachedQPainter;
-	QPainter* _painter;
 	QPixmap* _osSurf4Paint;
-	QPixmap* _osSurf4Present;
-
-	unsigned char _surfBackgroundR;
-	unsigned char _surfBackgroundG;
-	unsigned char _surfBackgroundB;
 
 private:
 	inline void EnsurePaintSurfaceValid();
@@ -37,15 +29,19 @@ private:
 	inline QPoint* CreateQPoints(int count, int* surfX, int* surfY);
 	inline void DeleteQPoints(QPoint* pts);
 
-	void SetViewSize(int surfW, int surfH);
+private:
+	bool _paintOnAttachedQPainter;
+	QPainter* _attachedPainter;
 	void AttachQPainter(QPainter* painter);
 	void DetachQPainter();
-	void PresentMap();
-	void SwithSurface();
 	void BeginPaintOnAttachedQPainter();
 	void EndPaintOnAttachedQPainter();
 
 public:
+	void Present(IWidget* w, int wX, int wY);
+	void Present(IWidget* w, int wX, int wY, int wW, int wH);
+	void Present(IWidget* w, int wX, int wY, int wW, int wH, int surfX, int surfY, int surfW, int surfH);
+
 	void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
 	void DrawPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
 	void FillPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft);

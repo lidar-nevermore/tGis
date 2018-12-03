@@ -272,6 +272,12 @@
     <ClInclude Include="include\RasterWriter.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="include\IWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GeoViewPort.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
@@ -441,6 +447,9 @@
     </ClCompile>
     <ClCompile Include="src\Helper.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeoViewPort.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

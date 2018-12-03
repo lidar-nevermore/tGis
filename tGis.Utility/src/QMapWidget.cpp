@@ -11,16 +11,13 @@ BEGIN_NAME_SPACE(tGis, Utility)
 
 QMapWidget::QMapWidget(QWidget *parent)
 	:QWidget(parent)
-	, _geoSurface(this)
+	,MapWidget(&_geoSurface)
 {
 	_firstResizing = true;
 	_map = nullptr;
 	_backgroundR = 255;
 	_backgroundG = 255;
 	_backgroundB = 255;
-	_geoSurface._surfBackgroundR = _backgroundR;
-	_geoSurface._surfBackgroundG = _backgroundG;
-	_geoSurface._surfBackgroundB = _backgroundB;
 }
 
 
@@ -28,14 +25,24 @@ QMapWidget::~QMapWidget()
 {
 }
 
-void QMapWidget::GetPos(int * x, int * y)
+void QMapWidget::Client2Screen(int cliX, int cliY, int * scrX, int * scrY)
 {
-	QPoint pt = pos();
+	QPoint pt(cliX, cliY);
 	QPoint gpt = mapToGlobal(pt);
-	if (x != nullptr)
-		*x = gpt.x();
-	if (y != nullptr)
-		*y = gpt.y();
+	if (scrX != nullptr)
+		*scrX = gpt.x();
+	if (scrX != nullptr)
+		*scrX = gpt.y();
+}
+
+void QMapWidget::Screen2Client(int scrX, int scrY, int * cliX, int * cliY)
+{
+	QPoint pt(scrX, scrY);
+	QPoint gpt = mapFromGlobal(pt);
+	if (cliX != nullptr)
+		*cliX = gpt.x();
+	if (cliY != nullptr)
+		*cliY = gpt.y();
 }
 
 void QMapWidget::SetMap(IMap *map)
@@ -48,45 +55,35 @@ IMap * QMapWidget::GetMap()
 	return _map;
 }
 
-IGeoSurface * QMapWidget::GetGeoSurface()
-{
-	return (IGeoSurface*)&_geoSurface;
-}
-
-IOverlayLayer * QMapWidget::GetScreenLayer()
-{
-	return nullptr;
-}
-
 void QMapWidget::SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B)
 {
 	_backgroundR = R;
 	_backgroundG = G;
 	_backgroundB = B;
-	_geoSurface._surfBackgroundR = _backgroundR;
-	_geoSurface._surfBackgroundG = _backgroundG;
-	_geoSurface._surfBackgroundB = _backgroundB;
 }
 
 void QMapWidget::RepaintMap()
 {
 	MapWidget::RepaintMap();
-	_geoSurface.SwithSurface();
 	update();
 }
 
 void QMapWidget::PresentMap()
 {
+	MapWidget::PresentMap();
 	update();
 }
 
 void QMapWidget::paintEvent(QPaintEvent *)
 {
 	QSize sz = size();
+	{
+		QPainter painter(this);
+		painter.fillRect(0, 0, sz.width(), sz.height(), QColor(_backgroundR, _backgroundG, _backgroundB));
+	}
+	PresentMap();
 	QPainter painter(this);
-	painter.fillRect(0, 0, sz.width(), sz.height(), QColor(_backgroundR, _backgroundG, _backgroundB));
 	_geoSurface.AttachQPainter(&painter);
-	_geoSurface.PresentMap();
 	_geoSurface.BeginPaintOnAttachedQPainter();
 	_overlayLayer.Paint((IGeoSurface*)&_geoSurface);
 	_geoSurface.EndPaintOnAttachedQPainter();
@@ -112,13 +109,15 @@ void QMapWidget::resizeEvent(QResizeEvent * e)
 	QSize sz = e->size();
 	int width = sz.width();
 	int height = sz.height();
-	IMapWidget* mapWidget = this;
+	
+	SetSurfaceSize(width, height);
 
-	_geoSurface.SetViewSize(width, height);
 	QDesktopWidget * desktop = QApplication::desktop();
 	int curMonitor = desktop->screenNumber(this);
 	QRect rect = desktop->screenGeometry(curMonitor);
 	SetMaxSurfaceSize(rect.width(), rect.height());
+
+	IMapWidget* mapWidget = this;
 	if (_firstResizing)
 	{
 		_firstResizing = false;

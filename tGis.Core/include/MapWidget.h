@@ -12,17 +12,26 @@
 
 using namespace std;
 
+
+
 BEGIN_NAME_SPACE(tGis, Core)
+
+class GeoSurface;
 
 class TGIS_API MapWidget : public IMapWidget
 {
 public:
-	MapWidget();
+	MapWidget(GeoSurface* geoSurface);
 	virtual ~MapWidget();
 
-	virtual IMap* GetMap() = 0;
-	virtual IGeoSurface* GetGeoSurface() = 0;
-	virtual IOverlayLayer* GetOverlayLayer();
+	virtual GeoViewPort* GetViewPort() 
+	{
+		return &_viewPort;
+	};
+	virtual IOverlayLayer* GetOverlayLayer()
+	{
+		return &_overlayLayer;
+	};
 
 	virtual bool AddMapTool(IMapTool*);
 	virtual bool RemoveMapTool(IMapTool*);
@@ -30,7 +39,9 @@ public:
 	virtual void GetBackgroundColor(unsigned char* R, unsigned char* G, unsigned char* B);
 	virtual void SetGridVisible(bool);
 	virtual bool GetGridVisible();
+
 	virtual void RepaintMap();
+	virtual void PresentMap();
 
 	virtual void MouseDown(void*);
 	virtual void MouseMove(void*);
@@ -44,6 +55,14 @@ public:
 	virtual void KeyPress(void*);
 
 protected:
+	void SetSurfaceSize(int surfW, int surfH)
+	{
+		_viewPort.SetSurfaceSize(surfW, surfH);
+	}
+
+protected:
+	GeoSurface* _geoSurface;
+	GeoViewPort _viewPort;
 	OverlayLayer _overlayLayer;
 	vector<IMapTool*> _vecMapTool;
 	unsigned char _backgroundR;

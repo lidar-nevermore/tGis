@@ -156,9 +156,9 @@ bool RasterLayer::PreparePaint(IGeoSurface* surf)
 		return false;
 	if (_alpha == 0)
 		return false;
-
-	OGREnvelope aoienvelope = *(_raster->GetEnvelope());
-	aoienvelope.Intersect(*(surf->GetEnvelope()));
+	OGREnvelope aoienvelope;
+	surf->GetViewPort()->GetEnvelope(&aoienvelope);
+	aoienvelope.Intersect(*(_raster->GetEnvelope()));
 	if (!aoienvelope.IsInit())
 		return false;
 
@@ -181,8 +181,8 @@ bool RasterLayer::PreparePaint(IGeoSurface* surf)
 	double maxInSurfX = 0;
 	double maxInSurfY = 0;
 
-	surf->Spatial2Surface(aoienvelope.MinX, aoienvelope.MinY, &minInSurfX, &minInSurfY);
-	surf->Spatial2Surface(aoienvelope.MaxX, aoienvelope.MaxY, &maxInSurfX, &maxInSurfY);
+	surf->GetViewPort()->Spatial2Surface(aoienvelope.MinX, aoienvelope.MinY, &minInSurfX, &minInSurfY);
+	surf->GetViewPort()->Spatial2Surface(aoienvelope.MaxX, aoienvelope.MaxY, &maxInSurfX, &maxInSurfY);
 
 	_minSurfX = min(minInSurfX, maxInSurfX);
 	_minSurfY = min(minInSurfY, maxInSurfY);

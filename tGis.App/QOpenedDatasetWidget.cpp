@@ -200,18 +200,18 @@ void QOpenedDatasetWidget::NodeDoubleClicked(const QModelIndex & index)
 			{
 				IMap* map = TGisApplication::INSTANCE().GetCurrentMap();
 				IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
-				IGeoSurface* geoSurface = mapWidget->GetGeoSurface();
+				GeoViewPort* viewPort = mapWidget->GetViewPort();
 				size_t layerCount = map->GetLayerCount();
 				size_t layerPos = map->AddLayer(layer);
 				if (layerPos == layerCount)
 				{
 					if (layerCount == 0)
 					{
-						geoSurface->SetSpatialReference(layer->GetSpatialReference());
+						viewPort->SetSpatialReference(layer->GetSpatialReference());
 					}
 					const OGREnvelope* envelope = layer->GetEnvelope();
 
-					geoSurface->IncludeEnvelope(envelope);
+					viewPort->IncludeEnvelope(envelope);
 
 					mapWidget->RepaintMap();
 				}

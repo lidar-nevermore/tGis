@@ -35,13 +35,13 @@ void TakeObjectSampleTool::SetObjectSampleDataSource(ObjectSampleDataSource * sa
 void TakeObjectSampleTool::MouseUp(void *ev)
 {
 	DrawRectTool::MouseUp(ev);
-	IGeoSurface* surf = _mapWidget->GetGeoSurface();
+	GeoViewPort* viewPort = _mapWidget->GetViewPort();
 	double spatialLeft;
 	double spatialTop;
 	double spatialRight;
 	double spatialBottom;
-	surf->Surface2Spatial(_rect._left, _rect._top, &spatialLeft, &spatialTop);
-	surf->Surface2Spatial(_rect._right, _rect._bottom, &spatialRight, &spatialBottom);
+	viewPort->Surface2Spatial(_rect._left, _rect._top, &spatialLeft, &spatialTop);
+	viewPort->Surface2Spatial(_rect._right, _rect._bottom, &spatialRight, &spatialBottom);
 
 	double pixLeftd;
 	double pixTopd;

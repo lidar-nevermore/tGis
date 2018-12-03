@@ -7,9 +7,13 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+struct IWidget;
+
 struct TGIS_API ISurface
 {
-	virtual void GetViewSize(int* surfW, int* surfH) = 0;
+	virtual void Present(IWidget* w, int wX, int wY) = 0;
+	virtual void Present(IWidget* w, int wX, int wY, int wW, int wH) = 0;
+	virtual void Present(IWidget* w, int wX, int wY, int wW, int wH, int surfX, int surfY, int surfW, int surfH) = 0;
 
 	virtual void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;
 	virtual void DrawPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;

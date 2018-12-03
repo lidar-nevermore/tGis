@@ -60,10 +60,10 @@ void ObjectSampleDialog::OnMapWidgetLoaded(IMapWidget * mapWidget, int width, in
 {
 	_map.AddLayer(_layer);
 	const OGREnvelope* envelope = _layer->GetEnvelope();
-	ui.mapWidget->GetGeoSurface()->IncludeEnvelope(envelope);
-	IGeoSurface* surf = ui.mapWidget->GetGeoSurface();
-	surf->Spatial2Surface(_sampleAreaLeft, _sampleAreaTop, &_sampleRect._left, &_sampleRect._top);
-	surf->Spatial2Surface(_sampleAreaRight, _sampleAreaBottom, &_sampleRect._right, &_sampleRect._bottom);
+	GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
+	viewPort->IncludeEnvelope(envelope);
+	viewPort->Spatial2Surface(_sampleAreaLeft, _sampleAreaTop, &_sampleRect._left, &_sampleRect._top);
+	viewPort->Spatial2Surface(_sampleAreaRight, _sampleAreaBottom, &_sampleRect._right, &_sampleRect._bottom);
 	ui.mapWidget->GetOverlayLayer()->AddOverlayObject(&_sampleRect);
 }
 

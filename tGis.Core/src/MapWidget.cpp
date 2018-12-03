@@ -1,27 +1,23 @@
 #include "MapWidget.h"
 #include "IMap.h"
-#include "IGeoSurface.h"
+#include "GeoSurface.h"
 #include "IMapTool.h"
 #include "MapTool.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-MapWidget::MapWidget()
+MapWidget::MapWidget(GeoSurface* geoSurface)
 {
 	_gridVisible = false;
 	_backgroundR = 255;
 	_backgroundG = 255;
 	_backgroundB = 255;
+	_geoSurface = geoSurface;
 }
 
 
 MapWidget::~MapWidget()
 {
-}
-
-IOverlayLayer * MapWidget::GetOverlayLayer()
-{
-	return &_overlayLayer;
 }
 
 bool MapWidget::AddMapTool(IMapTool * tool)
@@ -93,8 +89,33 @@ void MapWidget::RepaintMap()
 	if (map == nullptr)
 		return;
 
-	IGeoSurface* surface = this->GetGeoSurface();
-	map->Paint(surface);
+	_geoSurface->SetViewPort(&_viewPort);
+	_geoSurface->FillRect(0, 0, _viewPort._surfWidth, _viewPort._surfHeight, _backgroundR, _backgroundG, _backgroundB, 255, 1);
+	map->Paint(_geoSurface);
+	_geoSurface->Present(this, 0, 0);
+}
+
+void MapWidget::PresentMap()
+{
+	double surfSpatialLeft;
+	double surfSpatialTop;
+	double surfSpatialRight;
+	double surfSpatialBottom;
+
+	_geoSurface->GetViewPort()->GetEnvelope(&surfSpatialLeft, &surfSpatialTop, &surfSpatialRight, &surfSpatialBottom);
+	
+	double surfPresentLeft;
+	double surfPresentTop;
+	double surfPresentRight;
+	double surfPresentBottom;
+	
+	_viewPort.Spatial2Surface(surfSpatialLeft, surfSpatialTop, &surfPresentLeft, &surfPresentTop);
+	_viewPort.Spatial2Surface(surfSpatialRight, surfSpatialBottom, &surfPresentRight, &surfPresentBottom);
+
+	int surfPresentWidth = (int)_tgis_round(surfPresentRight - surfPresentLeft, 0);
+	int surfPresentHeight = (int)_tgis_round(surfPresentBottom - surfPresentTop, 0);
+
+	_geoSurface->Present(this, (int)surfPresentLeft, (int)surfPresentTop, surfPresentWidth, surfPresentHeight);
 }
 
 void MapWidget::MouseDown(void * e)

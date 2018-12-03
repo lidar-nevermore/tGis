@@ -20,6 +20,7 @@
     <ClInclude Include="include\FileSystemDataSource.h" />
     <ClInclude Include="include\FileSystemDataSourceProvider.h" />
     <ClInclude Include="include\GeoSurface.h" />
+    <ClInclude Include="include\GeoViewPort.h" />
     <ClInclude Include="include\Helper.h" />
     <ClInclude Include="include\IDataset.h" />
     <ClInclude Include="include\IDataSource.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="include\ISymbolLibrary.h" />
     <ClInclude Include="include\ITGisObject.h" />
     <ClInclude Include="include\ITool.h" />
+    <ClInclude Include="include\IWidget.h" />
     <ClInclude Include="include\Layer.h" />
     <ClInclude Include="include\LayerProvider.h" />
     <ClInclude Include="include\LayerProviderRepository.h" />
@@ -100,6 +102,7 @@
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
     <ClCompile Include="src\GeoSurface.cpp" />
+    <ClCompile Include="src\GeoViewPort.cpp" />
     <ClCompile Include="src\Helper.cpp" />
     <ClCompile Include="src\ITGisObject.cpp" />
     <ClCompile Include="src\Layer.cpp" />

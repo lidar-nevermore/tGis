@@ -6,13 +6,11 @@
 BEGIN_NAME_SPACE(tGis, Utility)
 
 
-QtGeoSurface::QtGeoSurface(QMapWidget* mapWidget)
+QtGeoSurface::QtGeoSurface()
 {
-	_mapWidget = mapWidget;
 	_paintOnAttachedQPainter = false;
-	_painter = nullptr;
+	_attachedPainter = nullptr;
 	_osSurf4Paint = nullptr;
-	_osSurf4Present = nullptr;
 }
 
 
@@ -30,12 +28,14 @@ inline void QtGeoSurface::EnsurePaintSurfaceValid()
 		psw = sz.width();
 		psh = sz.height();
 	}
-	if (_surfWidth > psw && _surfHeight > psh)
+	int surfWidth;
+	int surfHeight;
+	_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
+	if (surfWidth > psw && surfHeight > psh)
 	{
 		if (_osSurf4Paint != nullptr)
 			delete _osSurf4Paint;
-		_osSurf4Paint = new QPixmap(_surfWidth, _surfHeight);
-		_osSurf4Paint->fill(QColor(_surfBackgroundR, _surfBackgroundG, _surfBackgroundB));
+		_osSurf4Paint = new QPixmap(surfWidth, surfHeight);
 	}
 }
 
@@ -114,38 +114,14 @@ inline void QtGeoSurface::DeleteQPoints(QPoint * pts)
 	delete[] pts;
 }
 
-void QtGeoSurface::SetViewSize(int surfW, int surfH)
-{
-	_surfWidth = surfW;
-	_surfHeight = surfH;
-	UpdateViewPort();
-}
-
 void QtGeoSurface::AttachQPainter(QPainter * painter)
 {
-	_painter = painter;
+	_attachedPainter = painter;
 }
 
 void QtGeoSurface::DetachQPainter()
 {
-	_painter = nullptr;
-}
-
-void QtGeoSurface::PresentMap()
-{
-	if(_osSurf4Present != nullptr)
-		_painter->drawPixmap(_osSurfPresentPosX, _osSurfPresentPosY, _osSurfPresentWidth, _osSurfPresentHeight, *_osSurf4Present, 0, 0, _osSurf4PresentWidth, _osSurf4PresentHeight);
-}
-
-void QtGeoSurface::SwithSurface()
-{
-	GeoSurface::SwithSurface();
-	if (_osSurf4Present != nullptr)
-	{
-		delete _osSurf4Present;
-	}
-	_osSurf4Present = _osSurf4Paint;
-	_osSurf4Paint = nullptr;
+	_attachedPainter = nullptr;
 }
 
 void QtGeoSurface::BeginPaintOnAttachedQPainter()
@@ -156,6 +132,33 @@ void QtGeoSurface::BeginPaintOnAttachedQPainter()
 void QtGeoSurface::EndPaintOnAttachedQPainter()
 {
 	_paintOnAttachedQPainter = false;
+}
+
+void QtGeoSurface::Present(IWidget * w, int wX, int wY)
+{
+	if (_osSurf4Paint == nullptr)
+		return;
+	QMapWidget* widget = (QMapWidget*)w;
+	QPainter painter(widget);
+	painter.drawPixmap(wX, wY, *_osSurf4Paint);
+}
+
+void QtGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
+{
+	if (_osSurf4Paint == nullptr)
+		return;
+	QMapWidget* widget = (QMapWidget*)w;
+	QPainter painter(widget);
+	painter.drawPixmap(wX, wY, wW, wH, *_osSurf4Paint);
+}
+
+void QtGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH, int surfX, int surfY, int surfW, int surfH)
+{
+	if (_osSurf4Paint == nullptr)
+		return;
+	QMapWidget* widget = (QMapWidget*)w;
+	QPainter painter(widget);
+	painter.drawPixmap(wX, wY, wW, wH, *_osSurf4Paint, surfX, surfY, surfW, surfH);
 }
 
 class QPainterPtrFreeHelper
@@ -169,20 +172,20 @@ public:
 	~QPainterPtrFreeHelper()
 	{
 		if (_autoDelte)
-			delete _painter;
+			delete _attachedPainter;
 	}
 
 	operator QPainter&() {
-		return *_painter;
+		return *_attachedPainter;
 	}
 
 	QPainter& operator*() {
-		return *_painter;
+		return *_attachedPainter;
 	}
 
 	QPainterPtrFreeHelper &operator=(QPainter* painter)
 	{
-		_painter = painter;
+		_attachedPainter = painter;
 		return *this;
 	}
 
@@ -192,7 +195,7 @@ private:
 
 public:
 	bool _autoDelte;
-	QPainter* _painter;
+	QPainter* _attachedPainter;
 };
 
 void QtGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
@@ -201,10 +204,10 @@ void QtGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned ch
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{
@@ -233,10 +236,10 @@ void QtGeoSurface::DrawPolygon(int count, int * surfX, int * surfY, unsigned cha
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{
@@ -265,10 +268,10 @@ void QtGeoSurface::FillPolygon(int count, int * surfX, int * surfY, unsigned cha
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{
@@ -296,10 +299,10 @@ void QtGeoSurface::DrawEllipse(int surfX, int surfY, int width, int height, unsi
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{
@@ -324,10 +327,10 @@ void QtGeoSurface::FillEllipse(int surfX, int surfY, int width, int height, unsi
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{
@@ -352,10 +355,10 @@ void QtGeoSurface::DrawRect(int surfX, int surfY, int width, int height, unsigne
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{
@@ -380,10 +383,10 @@ void QtGeoSurface::FillRect(int surfX, int surfY, int width, int height, unsigne
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{
@@ -407,10 +410,10 @@ void QtGeoSurface::DrawImage(const unsigned char * buf, int surfX, int surfY, in
 
 	if (_paintOnAttachedQPainter)
 	{
-		if (_painter == nullptr)
+		if (_attachedPainter == nullptr)
 			return;
 
-		painter_ptr = _painter;
+		painter_ptr = _attachedPainter;
 	}
 	else
 	{

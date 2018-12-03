@@ -147,7 +147,7 @@ inline void VectorSimpleLayer::DrawPoint(int* xb, int* yb, IGeoSurface* surf, OG
 	ev.MinY = spatialY;
 	if (_envelope.Contains(ev))
 	{
-		surf->Spatial2Surface(geometry->getX(), geometry->getY(), &x, &y);
+		surf->GetViewPort()->Spatial2Surface(geometry->getX(), geometry->getY(), &x, &y);
 		_simpleMarkerSymbol.Paint(surf, 1, &x, &y, nullptr, nullptr);
 	}
 }
@@ -161,7 +161,7 @@ inline int VectorSimpleLayer::TransferGeometryPoints(int * x, int * y, IGeoSurfa
 
 	int surfW;
 	int surfH;
-	surf->GetViewSize(&surfW, &surfH);
+	surf->GetViewPort()->GetSurfaceSize(&surfW, &surfH);
 	int ptcount = geometry->getNumPoints();
 	int pti = 0;
 	int spti = 0;
@@ -178,7 +178,7 @@ inline int VectorSimpleLayer::TransferGeometryPoints(int * x, int * y, IGeoSurfa
 	{
 		int sx;
 		int sy;
-		surf->Spatial2Surface(geometry->getX(pti), geometry->getY(pti), &sx, &sy);
+		surf->GetViewPort()->Spatial2Surface(geometry->getX(pti), geometry->getY(pti), &sx, &sy);
 
 		*(x + spti) = sx;
 		*(y + spti) = sy;
@@ -368,7 +368,7 @@ inline void VectorSimpleLayer::DrawMultiPoint(int* xb, int* yb, IGeoSurface* sur
 		ev.MinY = spatialY;
 		if (_envelope.Contains(ev))
 		{
-			surf->Spatial2Surface(pt->getX(), pt->getY(), &x, &y);
+			surf->GetViewPort()->Spatial2Surface(pt->getX(), pt->getY(), &x, &y);
 			_simpleMarkerSymbol.Paint(surf, 1, &x, &y, nullptr, nullptr);
 		}
 	}

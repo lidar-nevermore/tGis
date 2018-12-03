@@ -25,12 +25,15 @@ public:
 	~QMapWidget();
 
 public:
-	void GetPos(int* x, int* y);
+	void Client2Screen(int cliX, int cliY, int *scrX, int *scrY);
+	void Screen2Client(int scrX, int scrY, int *cliX, int *cliY);
+
+public:
 	void SetMap(IMap*);
 	IMap* GetMap();
-	IGeoSurface* GetGeoSurface();
-	IOverlayLayer* GetScreenLayer();
+
 	void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
+
 	void RepaintMap();
 	void PresentMap();
 

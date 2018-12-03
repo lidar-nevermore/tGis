@@ -32,7 +32,7 @@ void ObjectSampleTool::Execute()
 	int x;
 	int y;
 	
-	mapWidget->GetPos(&x, &y);
+	mapWidget->Client2Screen(0, 0, &x, &y);
 	_widget->move(x,y);
 	_widget->UpdateChoise();
 	_widget->show();

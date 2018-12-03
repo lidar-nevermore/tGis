@@ -19,15 +19,15 @@ MapZoomTool::~MapZoomTool()
 void MapZoomTool::MouseWheel(void *ev)
 {
 	QWheelEvent* e = (QWheelEvent*)ev;
-	IGeoSurface* surface = _mapWidget->GetGeoSurface();
+	GeoViewPort* viewPort = _mapWidget->GetViewPort();
 	double scale;
-	surface->GetViewScale(&scale);
+	viewPort->GetViewScale(&scale);
 
 	int mx = e->x();
 	int my = e->y();
 	double mouseX1;
 	double mouseY1;
-	surface->Surface2Spatial(mx, my, &mouseX1, &mouseY1);
+	viewPort->Surface2Spatial(mx, my, &mouseX1, &mouseY1);
 
 	QPoint numDegrees = e->angleDelta();
 
@@ -49,15 +49,15 @@ void MapZoomTool::MouseWheel(void *ev)
 		}
 	}
 
-	surface->SetViewScale(newScale);
+	viewPort->SetViewScale(newScale);
 
 	double mouseX2;
 	double mouseY2;
-	surface->Surface2Spatial(mx, my, &mouseX2, &mouseY2);
+	viewPort->Surface2Spatial(mx, my, &mouseX2, &mouseY2);
 	double spatialCenterX;
 	double spatialCenterY;
-	surface->GetViewPort(&spatialCenterX, &spatialCenterY, nullptr);
-	surface->SetViewCenter(spatialCenterX + mouseX1 - mouseX2, spatialCenterY + mouseY1 - mouseY2);
+	viewPort->GetSpatialCenter(&spatialCenterX, &spatialCenterY);
+	viewPort->SetSpatialCenter(spatialCenterX + mouseX1 - mouseX2, spatialCenterY + mouseY1 - mouseY2);
 	if (newScale > scale)
 	{
 		_mapWidget->RepaintMap();

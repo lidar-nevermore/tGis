@@ -5,7 +5,8 @@
 
 #include "Helper.h"
 #include "Event.h"
-
+#include "IWidget.h"
+#include "GeoViewPort.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -23,14 +24,11 @@ template class TGIS_API Event<IMapWidget*, int, int>;
 template struct TGIS_API IEventHandler<IMapWidget*, IMapTool*>;
 template class TGIS_API Event<IMapWidget*, IMapTool*>;
 
-struct TGIS_API IMapWidget
+struct TGIS_API IMapWidget : public IWidget
 {
-	//获取表面左上角相对于桌面的坐标
-	virtual void GetPos(int* x, int* y) = 0;
-
 	virtual void SetMap(IMap*) = 0;
 	virtual IMap* GetMap() = 0;
-	virtual IGeoSurface* GetGeoSurface() = 0;
+	virtual GeoViewPort* GetViewPort() = 0;
 	virtual IOverlayLayer* GetOverlayLayer() = 0;
 
 	virtual bool AddMapTool(IMapTool*) = 0;
@@ -42,17 +40,6 @@ struct TGIS_API IMapWidget
 
 	virtual void RepaintMap() = 0;
 	virtual void PresentMap() = 0;
-
-	virtual void MouseDown(void*) = 0;
-	virtual void MouseMove(void*) = 0;
-	virtual void MouseUp(void*) = 0;
-	virtual void MouseClicked(void*) = 0;
-	virtual void MouseDoubleClicked(void*) = 0;
-	virtual void MouseWheel(void*) = 0;
-
-	virtual void KeyDown(void*) = 0;
-	virtual void KeyUp(void*) = 0;
-	virtual void KeyPress(void*) = 0;
 
 	Event<IMapWidget*, int, int> LoadedEvent;
 	Event<IMapWidget*, int, int> SizeChangedEvent;

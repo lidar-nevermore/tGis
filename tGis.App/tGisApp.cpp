@@ -155,28 +155,28 @@ void tGisApp::MapToolAddedOrChanged(IMapWidget * mapWidget, IMapTool * mapTool)
 
 void tGisApp::on_zoomInAction_triggered(bool checked)
 {
-	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
+	GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
 	double scale;
-	surface->GetViewScale(&scale);
+	viewPort->GetViewScale(&scale);
 	scale *= 0.96;
-	surface->SetViewScale(scale);
+	viewPort->SetViewScale(scale);
 	ui.mapWidget->PresentMap();
 }
 
 void tGisApp::on_zoomOutAction_triggered(bool checked)
 {
-	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
+	GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
 	double scale;
-	surface->GetViewScale(&scale);
+	viewPort->GetViewScale(&scale);
 	scale *= 1.042;
-	surface->SetViewScale(scale);
+	viewPort->SetViewScale(scale);
 	ui.mapWidget->RepaintMap();
 }
 
 void tGisApp::on_entireMapAction_triggered(bool checked)
 {
-	IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
-	surface->IncludeEnvelope(_map.GetEnvelope());
+	GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
+	viewPort->IncludeEnvelope(_map.GetEnvelope());
 	ui.mapWidget->RepaintMap();
 }
 
@@ -210,8 +210,8 @@ void tGisApp::on_zoomLayerAction_triggered(bool checked)
 	ILayer* layer = ui.layerWidget->GetSelectedLayer();
 	if (layer != nullptr)
 	{
-		IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
-		surface->IncludeEnvelope(layer->GetEnvelope());
+		GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
+		viewPort->IncludeEnvelope(layer->GetEnvelope());
 		ui.mapWidget->RepaintMap();
 	}
 }
@@ -226,8 +226,8 @@ void tGisApp::on_zoomOriginalAction_triggered(bool checked)
 		{
 			MyGDALRasterDataset* gdalDataset = (MyGDALRasterDataset*)dataset;
 			double res = gdalDataset->GetGeoTransform()[1];
-			IGeoSurface* surface = ui.mapWidget->GetGeoSurface();
-			surface->SetViewScale(res);
+			GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
+			viewPort->SetViewScale(res);
 			ui.mapWidget->RepaintMap();
 		}
 	}
