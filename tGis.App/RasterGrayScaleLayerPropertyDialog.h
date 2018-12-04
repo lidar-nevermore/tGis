@@ -13,6 +13,7 @@ using namespace tGis::Core;
 
 class RasterGrayScaleLayerPropertyDialog : public QDialog
 {
+	Q_OBJECT
 public:
 	explicit RasterGrayScaleLayerPropertyDialog(QWidget *parent = 0);
 	~RasterGrayScaleLayerPropertyDialog();

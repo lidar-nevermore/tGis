@@ -31,8 +31,8 @@ void QMapWidget::Client2Screen(int cliX, int cliY, int * scrX, int * scrY)
 	QPoint gpt = mapToGlobal(pt);
 	if (scrX != nullptr)
 		*scrX = gpt.x();
-	if (scrX != nullptr)
-		*scrX = gpt.y();
+	if (scrY != nullptr)
+		*scrY = gpt.y();
 }
 
 void QMapWidget::Screen2Client(int scrX, int scrY, int * cliX, int * cliY)

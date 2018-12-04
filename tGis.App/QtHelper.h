@@ -36,6 +36,7 @@ public:
 
 private:
 	explicit QtHelper(QObject *parent = nullptr);
+private:
 	~QtHelper();
 
 private:

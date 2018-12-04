@@ -10,6 +10,7 @@ using namespace tGis::Core;
 
 class RasterRgbLayerPropertyDialog : public QDialog
 {
+	Q_OBJECT
 public:
 	RasterRgbLayerPropertyDialog(QWidget *parent = 0);
 	~RasterRgbLayerPropertyDialog();

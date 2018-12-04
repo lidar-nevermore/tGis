@@ -99,18 +99,35 @@ void tGisApp::BeforeDataSourceDisconnect(IDataSourceProvider * provider, IDataSo
 {
 }
 
-void tGisApp::LayerAdded(IMapPtr, ILayerPtr)
+void tGisApp::LayerAdded(IMapPtr map, ILayerPtr layer)
 {
+	IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
+	GeoViewPort* viewPort = mapWidget->GetViewPort();
+	if (map->GetLayerCount() == 1)
+	{
+		viewPort->SetSpatialReference(layer->GetSpatialReference());
+	}
+	const OGREnvelope* envelope = layer->GetEnvelope();
+	viewPort->IncludeEnvelope(envelope);
 	ui.mapWidget->RepaintMap();
 }
 
-void tGisApp::LayerRemoved(IMapPtr, ILayerPtr)
+void tGisApp::LayerRemoved(IMapPtr map, ILayerPtr layer)
 {
+	IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
+	GeoViewPort* viewPort = mapWidget->GetViewPort();
+	if (map->GetLayerCount() == 0)
+	{
+		viewPort->SetSpatialReference(nullptr);
+	}
 	ui.mapWidget->RepaintMap();
 }
 
 void tGisApp::LayerCleared(IMapPtr)
 {
+	IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
+	GeoViewPort* viewPort = mapWidget->GetViewPort();
+	viewPort->SetSpatialReference(nullptr);
 	ui.mapWidget->RepaintMap();
 }
 
@@ -158,7 +175,7 @@ void tGisApp::on_zoomInAction_triggered(bool checked)
 	GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
 	double scale;
 	viewPort->GetViewScale(&scale);
-	scale *= 0.96;
+	scale *= 0.96; //360/375
 	viewPort->SetViewScale(scale);
 	ui.mapWidget->PresentMap();
 }
@@ -168,7 +185,7 @@ void tGisApp::on_zoomOutAction_triggered(bool checked)
 	GeoViewPort* viewPort = ui.mapWidget->GetViewPort();
 	double scale;
 	viewPort->GetViewScale(&scale);
-	scale *= 1.042;
+	scale *= 1.042; //375/360
 	viewPort->SetViewScale(scale);
 	ui.mapWidget->RepaintMap();
 }

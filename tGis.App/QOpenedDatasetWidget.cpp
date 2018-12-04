@@ -201,25 +201,14 @@ void QOpenedDatasetWidget::NodeDoubleClicked(const QModelIndex & index)
 				IMap* map = TGisApplication::INSTANCE().GetCurrentMap();
 				IMapWidget* mapWidget = TGisApplication::INSTANCE().GetCurrentMapWidget();
 				GeoViewPort* viewPort = mapWidget->GetViewPort();
-				size_t layerCount = map->GetLayerCount();
-				size_t layerPos = map->AddLayer(layer);
-				if (layerPos == layerCount)
+				bool addSuccessed;
+				map->AddLayer(layer, &addSuccessed);
+				if (!addSuccessed)
 				{
-					if (layerCount == 0)
-					{
-						viewPort->SetSpatialReference(layer->GetSpatialReference());
-					}
-					const OGREnvelope* envelope = layer->GetEnvelope();
-
-					viewPort->IncludeEnvelope(envelope);
-
-					mapWidget->RepaintMap();
-				}
-				else
-				{
+					provider->ReleaseLayer(layer);
 					QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
 						QStringLiteral("Warning"),
-						QStringLiteral("投影不一致，其无法转换。图层添加失败！"),
+						QStringLiteral("投影不一致，且无法转换。图层添加失败！"),
 						QMessageBox::Yes, QMessageBox::Yes);
 				}
 			}

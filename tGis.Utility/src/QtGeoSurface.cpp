@@ -172,20 +172,20 @@ public:
 	~QPainterPtrFreeHelper()
 	{
 		if (_autoDelte)
-			delete _attachedPainter;
+			delete _painter;
 	}
 
 	operator QPainter&() {
-		return *_attachedPainter;
+		return *_painter;
 	}
 
 	QPainter& operator*() {
-		return *_attachedPainter;
+		return *_painter;
 	}
 
 	QPainterPtrFreeHelper &operator=(QPainter* painter)
 	{
-		_attachedPainter = painter;
+		_painter = painter;
 		return *this;
 	}
 
@@ -195,7 +195,7 @@ private:
 
 public:
 	bool _autoDelte;
-	QPainter* _attachedPainter;
+	QPainter* _painter;
 };
 
 void QtGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)

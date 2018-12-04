@@ -260,7 +260,7 @@ void RasterRgbLayerPropertyDialog::RasterRgbLayerProperty(ILayerProvider *provid
 		double maxB = bMaxStr.toDouble();
 		if (minB < maxB)
 		{
-			layer->SetMinMaxG(minB, maxB);
+			layer->SetMinMaxB(minB, maxB);
 		}
 
 		int noDataLogicR = 0;
