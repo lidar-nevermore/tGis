@@ -19,6 +19,7 @@ BEGIN_NAME_SPACE(tGis, Utility)
 
 class TGIS_UTILITY_API QMapWidget : public QWidget,public MapWidget
 {
+	friend class QtGeoSurface;
 	Q_OBJECT
 public:
 	explicit QMapWidget(QWidget *parent = 0);

@@ -149,16 +149,32 @@ void QtGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
 		return;
 	QMapWidget* widget = (QMapWidget*)w;
 	QPainter painter(widget);
+	QSize sz = widget->size();
+    painter.fillRect(
+		0, 0, sz.width(), sz.height(),
+		QColor(widget->_backgroundR, widget->_backgroundG, widget->_backgroundB));
 	painter.drawPixmap(wX, wY, wW, wH, *_osSurf4Paint);
-}
 
-void QtGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH, int surfX, int surfY, int surfW, int surfH)
-{
-	if (_osSurf4Paint == nullptr)
-		return;
-	QMapWidget* widget = (QMapWidget*)w;
-	QPainter painter(widget);
-	painter.drawPixmap(wX, wY, wW, wH, *_osSurf4Paint, surfX, surfY, surfW, surfH);
+	IOverlayLayer* overlayLayer = widget->GetOverlayLayer();
+	AttachQPainter(&painter);
+	BeginPaintOnAttachedQPainter();
+	overlayLayer->Paint((IGeoSurface*)this);
+	EndPaintOnAttachedQPainter();
+	DetachQPainter();
+	if (widget->_gridVisible)
+	{
+		QPen pen(QColor(225, 35, 225, 255), 1, Qt::DashLine);
+		painter.setPen(pen);
+		painter.setBrush(Qt::NoBrush);
+		for (int x = 25; x < sz.width(); x += 25)
+		{
+			painter.drawLine(x, 0, x, sz.height());
+		}
+		for (int y = 25; y < sz.height(); y += 25)
+		{
+			painter.drawLine(0, y, sz.width(), y);
+		}
+	}
 }
 
 class QPainterPtrFreeHelper

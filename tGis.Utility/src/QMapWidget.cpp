@@ -76,32 +76,7 @@ void QMapWidget::PresentMap()
 
 void QMapWidget::paintEvent(QPaintEvent *)
 {
-	QSize sz = size();
-	{
-		QPainter painter(this);
-		painter.fillRect(0, 0, sz.width(), sz.height(), QColor(_backgroundR, _backgroundG, _backgroundB));
-	}
 	PresentMap();
-	QPainter painter(this);
-	_geoSurface.AttachQPainter(&painter);
-	_geoSurface.BeginPaintOnAttachedQPainter();
-	_overlayLayer.Paint((IGeoSurface*)&_geoSurface);
-	_geoSurface.EndPaintOnAttachedQPainter();
-	_geoSurface.DetachQPainter();
-	if (_gridVisible)
-	{
-		QPen pen(QColor(225, 35, 225, 255), 1, Qt::DashLine);
-		painter.setPen(pen);
-		painter.setBrush(Qt::NoBrush);
-		for (int x = 25; x < sz.width(); x += 25)
-		{
-			painter.drawLine(x, 0, x, sz.height());
-		}
-		for (int y = 25; y < sz.height(); y += 25)
-		{
-			painter.drawLine(0, y, sz.width(), y);
-		}
-	}
 }
 
 void QMapWidget::resizeEvent(QResizeEvent * e)
