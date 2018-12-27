@@ -15,7 +15,7 @@ class GDALRasterBand;
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGIS_API RasterBinaryGrayScaleLayer : public RasterLayer
+class TGIS_CORE_API RasterBinaryGrayScaleLayer : public RasterLayer
 {
 	friend class RasterBinaryGrayScaleLayerProvider;
 protected:

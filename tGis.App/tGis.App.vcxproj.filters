@@ -83,6 +83,15 @@
     <QtMoc Include="QtHelper.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="RasterBinaryGrayScaleLayerPropertyDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RasterGrayScaleLayerPropertyDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RasterRgbLayerPropertyDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="tGisApp.ui">
@@ -108,15 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IconRes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RasterRgbLayerPropertyDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RasterGrayScaleLayerPropertyDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RasterBinaryGrayScaleLayerPropertyDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TGisQtApplication.h">

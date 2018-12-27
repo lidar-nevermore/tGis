@@ -1,3 +1,4 @@
+#include "tGisCoreCfg.h"
 #include "ISymbol.h"
 #include "ISymbolLibrary.h"
 #include "SimpleMarkerSymbol.h"

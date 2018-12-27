@@ -4,13 +4,13 @@
 #define __I_MAPTOOL_H__
 
 #include "Helper.h"
-
+#include "tGisCoreCfg.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IMapWidget;
 
-struct TGIS_API IMapTool
+struct TGIS_CORE_API IMapTool
 {
 	friend class MapWidget;
 

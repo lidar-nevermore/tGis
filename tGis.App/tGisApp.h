@@ -15,7 +15,7 @@
 #include "RasterSubsetTool.h"
 
 using namespace tGis::Core;
-using namespace tGis::Utility;
+using namespace tGis::Gui;
 
 class QLayerWidget;
 

@@ -20,7 +20,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
 
-class TGIS_API MemoryDataSourceProvider : public DataSourceProvider
+class TGIS_CORE_API MemoryDataSourceProvider : public DataSourceProvider
 {
 	friend class MemoryDataSource;
 public:

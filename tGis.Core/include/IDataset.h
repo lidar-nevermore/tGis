@@ -13,7 +13,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataSource;
 
-struct TGIS_API IDataset : public ITGisObject
+struct TGIS_CORE_API IDataset : public ITGisObject
 {
 	virtual const char* GetName() = 0;
 	virtual const char* GetCreationString() = 0;

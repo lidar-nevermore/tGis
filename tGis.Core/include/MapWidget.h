@@ -18,7 +18,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class GeoSurface;
 
-class TGIS_API MapWidget : public IMapWidget
+class TGIS_CORE_API MapWidget : public IMapWidget
 {
 public:
 	MapWidget(GeoSurface* geoSurface);

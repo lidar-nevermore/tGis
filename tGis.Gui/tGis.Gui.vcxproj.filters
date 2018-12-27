@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\DrawRectTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapPanTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapZoomTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QMapWidget.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\QtGeoSurface.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RectZoomTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterSubsetTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\DrawRectTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MapPanTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MapZoomTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="include\QtGeoSurface.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RectZoomTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterSubsetTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGisGui.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGisGuiCfg.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="include\Map">
+      <UniqueIdentifier>{ca1266c5-f2b9-4dff-a0f6-2961e4c10cba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Map">
+      <UniqueIdentifier>{d5f4cd35-9ac5-4be7-9a1a-bfd1adb075e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="internal">
+      <UniqueIdentifier>{bdb36426-f30e-4303-99db-e71865c7247a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="include\QMapWidget.h">
+      <Filter>include\Map</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="form\RasterSubArea.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+</Project>

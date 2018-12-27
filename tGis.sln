@@ -7,11 +7,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Core", "tGis.Core\tGis
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.App", "tGis.App\tGis.App.vcxproj", "{3DC5BB6E-2BC4-4FBF-8A1D-E46AA81D683B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Utility", "tGis.Utility\tGis.Utility.vcxproj", "{F31A174E-8284-4378-8672-2EE61D836C9E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Gui", "tGis.Gui\tGis.Gui.vcxproj", "{EF71AD99-C26E-4C93-AFE3-02DF2F5D79F7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Segment", "tGis.Segment\tGis.Segment.vcxproj", "{E8A1BABC-C04A-41DA-A22B-ADC33EE46F86}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{B5DD7267-D818-45BF-BD55-990536149212}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.CTest", "tGis.CTest\tGis.CTest.vcxproj", "{B0C39CB6-EA14-4F18-A9A0-DAD07EF82138}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Basics", "Basics", "{7F89E88B-EA01-45D3-BCA1-A4FD743A9668}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Segment", "Basics\tGis.Segment\tGis.Segment.vcxproj", "{E8A1BABC-C04A-41DA-A22B-ADC33EE46F86}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.CTest", "Basics\tGis.CTest\tGis.CTest.vcxproj", "{B0C39CB6-EA14-4F18-A9A0-DAD07EF82138}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Sampling", "Plugins\tGis.Sampling\tGis.Sampling.vcxproj", "{F31A174E-8284-4378-8672-2EE61D836C9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,12 +39,12 @@ Global
 		{3DC5BB6E-2BC4-4FBF-8A1D-E46AA81D683B}.Release|x64.ActiveCfg = Release|x64
 		{3DC5BB6E-2BC4-4FBF-8A1D-E46AA81D683B}.Release|x64.Build.0 = Release|x64
 		{3DC5BB6E-2BC4-4FBF-8A1D-E46AA81D683B}.Release|x86.ActiveCfg = Release|x64
-		{F31A174E-8284-4378-8672-2EE61D836C9E}.Debug|x64.ActiveCfg = Debug|x64
-		{F31A174E-8284-4378-8672-2EE61D836C9E}.Debug|x64.Build.0 = Debug|x64
-		{F31A174E-8284-4378-8672-2EE61D836C9E}.Debug|x86.ActiveCfg = Debug|x64
-		{F31A174E-8284-4378-8672-2EE61D836C9E}.Release|x64.ActiveCfg = Release|x64
-		{F31A174E-8284-4378-8672-2EE61D836C9E}.Release|x64.Build.0 = Release|x64
-		{F31A174E-8284-4378-8672-2EE61D836C9E}.Release|x86.ActiveCfg = Release|x64
+		{EF71AD99-C26E-4C93-AFE3-02DF2F5D79F7}.Debug|x64.ActiveCfg = Debug|x64
+		{EF71AD99-C26E-4C93-AFE3-02DF2F5D79F7}.Debug|x64.Build.0 = Debug|x64
+		{EF71AD99-C26E-4C93-AFE3-02DF2F5D79F7}.Debug|x86.ActiveCfg = Debug|x64
+		{EF71AD99-C26E-4C93-AFE3-02DF2F5D79F7}.Release|x64.ActiveCfg = Release|x64
+		{EF71AD99-C26E-4C93-AFE3-02DF2F5D79F7}.Release|x64.Build.0 = Release|x64
+		{EF71AD99-C26E-4C93-AFE3-02DF2F5D79F7}.Release|x86.ActiveCfg = Release|x64
 		{E8A1BABC-C04A-41DA-A22B-ADC33EE46F86}.Debug|x64.ActiveCfg = Debug|x64
 		{E8A1BABC-C04A-41DA-A22B-ADC33EE46F86}.Debug|x64.Build.0 = Debug|x64
 		{E8A1BABC-C04A-41DA-A22B-ADC33EE46F86}.Debug|x86.ActiveCfg = Debug|x64
@@ -53,8 +59,19 @@ Global
 		{B0C39CB6-EA14-4F18-A9A0-DAD07EF82138}.Release|x64.Build.0 = Release|x64
 		{B0C39CB6-EA14-4F18-A9A0-DAD07EF82138}.Release|x86.ActiveCfg = Release|Win32
 		{B0C39CB6-EA14-4F18-A9A0-DAD07EF82138}.Release|x86.Build.0 = Release|Win32
+		{F31A174E-8284-4378-8672-2EE61D836C9E}.Debug|x64.ActiveCfg = Debug|x64
+		{F31A174E-8284-4378-8672-2EE61D836C9E}.Debug|x64.Build.0 = Debug|x64
+		{F31A174E-8284-4378-8672-2EE61D836C9E}.Debug|x86.ActiveCfg = Debug|x64
+		{F31A174E-8284-4378-8672-2EE61D836C9E}.Release|x64.ActiveCfg = Release|x64
+		{F31A174E-8284-4378-8672-2EE61D836C9E}.Release|x64.Build.0 = Release|x64
+		{F31A174E-8284-4378-8672-2EE61D836C9E}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E8A1BABC-C04A-41DA-A22B-ADC33EE46F86} = {7F89E88B-EA01-45D3-BCA1-A4FD743A9668}
+		{B0C39CB6-EA14-4F18-A9A0-DAD07EF82138} = {7F89E88B-EA01-45D3-BCA1-A4FD743A9668}
+		{F31A174E-8284-4378-8672-2EE61D836C9E} = {B5DD7267-D818-45BF-BD55-990536149212}
 	EndGlobalSection
 EndGlobal

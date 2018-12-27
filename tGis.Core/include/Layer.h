@@ -18,7 +18,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
 
-class TGIS_API Layer : public ILayer
+class TGIS_CORE_API Layer : public ILayer
 {
 	friend class Map;
 public:

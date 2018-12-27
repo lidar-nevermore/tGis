@@ -10,7 +10,7 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API LayerProvider : public ILayerProvider
+class TGIS_CORE_API LayerProvider : public ILayerProvider
 {
 public:
 	typedef ILayer*(*CreationUI)(ILayerProvider*, IDataset*);

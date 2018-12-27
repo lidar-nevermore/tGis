@@ -22,7 +22,7 @@ void _tgis_get_next(const char* m, int* next, int len)
 	}
 }
 
-TGIS_API int _tgis_find_first_of(const char* s, const char* m, int offset)
+TGIS_HELPER_API int _tgis_find_first_of(const char* s, const char* m, int offset)
 {
 	int j = offset, i = 0;//这里的串的第1个元素下标是0
 	int s_len = (int)strlen(s);
@@ -50,7 +50,7 @@ TGIS_API int _tgis_find_first_of(const char* s, const char* m, int offset)
 	else return -1;
 }
 
-TGIS_API int _tgis_find_last_of(const char* s, const char* m, int offset)
+TGIS_HELPER_API int _tgis_find_last_of(const char* s, const char* m, int offset)
 {
 	int j = offset, i = 0;//这里的串的第1个元素下标是0
 	int s_len = (int)strlen(s);

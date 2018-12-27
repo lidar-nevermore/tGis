@@ -17,7 +17,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API Map : public IMap
+class TGIS_CORE_API Map : public IMap
 {
 public:
 	Map();

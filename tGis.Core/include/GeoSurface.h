@@ -12,7 +12,7 @@
 using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
-class TGIS_API GeoSurface : public IGeoSurface
+class TGIS_CORE_API GeoSurface : public IGeoSurface
 {
 	friend class MapWidget;
 protected:

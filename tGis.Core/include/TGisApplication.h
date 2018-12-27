@@ -5,17 +5,24 @@
 
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 #include "tEntity.h"
 #include "tVisualize.h"
+#include "Event.h"
+
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API TGisApplication
+template struct TGIS_CORE_API IEventHandler<const char*, const char*, const char*, const char*>;
+template class TGIS_CORE_API Event<const char*, const char*, const char*, const char*>;
+
+class TGIS_CORE_API TGisApplication
 {
 private:
 	static TGisApplication* _instance;
 public:
 	static TGisApplication& INSTANCE();
+	static Event<const char*, const char*, const char*, const char*> LoadPluginEvent;
 
 protected:
 	TGisApplication();

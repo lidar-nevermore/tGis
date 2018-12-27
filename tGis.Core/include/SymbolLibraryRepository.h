@@ -4,6 +4,7 @@
 #define __SYMBOLLIBRARYREPOSITORY_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 #include <vector>
 #include <map>
@@ -15,7 +16,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISymbolLibrary;
 
-class TGIS_API SymbolLibraryRepository
+class TGIS_CORE_API SymbolLibraryRepository
 {
 public:
 	static SymbolLibraryRepository* _instance;

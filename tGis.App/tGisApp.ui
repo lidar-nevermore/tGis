@@ -28,7 +28,7 @@
      <number>1</number>
     </property>
     <item>
-     <widget class="tGis::Utility::QMapWidget" name="mapWidget" native="true"/>
+     <widget class="tGis::Gui::QMapWidget" name="mapWidget" native="true"/>
     </item>
    </layout>
   </widget>
@@ -647,7 +647,7 @@
    <header>qdatasourcewidget.h</header>
   </customwidget>
   <customwidget>
-   <class>tGis::Utility::QMapWidget</class>
+   <class>tGis::Gui::QMapWidget</class>
    <extends>QWidget</extends>
    <header>qmapwidget.h</header>
    <container>1</container>

@@ -10,7 +10,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISymbol;
 
-class TGIS_API SimpleSymbolLibrary : public ISymbolLibrary
+class TGIS_CORE_API SimpleSymbolLibrary : public ISymbolLibrary
 {
 public:
 	static SimpleSymbolLibrary INSTANCE;

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="ObjectSample">
+      <UniqueIdentifier>{8011ae37-a955-4f58-a7d7-26b151ee2485}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="form\ObjectSampleDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="form\ObjectSampleLabelDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="form\ObjectSampleToolDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ObjectSample\ObjectSampleDialog.h">
+      <Filter>ObjectSample</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectSample\ObjectSampleLabelDialog.h">
+      <Filter>ObjectSample</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectSample\ObjectSampleTool.h">
+      <Filter>ObjectSample</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectSample\ObjectSampleToolDialog.h">
+      <Filter>ObjectSample</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectSample\TakeObjectSampleTool.h">
+      <Filter>ObjectSample</Filter>
+    </ClInclude>
+    <ClInclude Include="tGisSampling.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ObjectSample\TakeObjectSampleTool.cpp">
+      <Filter>ObjectSample</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectSample\ObjectSampleToolDialog.cpp">
+      <Filter>ObjectSample</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectSample\ObjectSampleTool.cpp">
+      <Filter>ObjectSample</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectSample\ObjectSampleLabelDialog.cpp">
+      <Filter>ObjectSample</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectSample\ObjectSampleDialog.cpp">
+      <Filter>ObjectSample</Filter>
+    </ClCompile>
+    <ClCompile Include="QtHelper.cpp" />
+    <ClCompile Include="tGisSampling.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="QtHelper.h" />
+  </ItemGroup>
+</Project>

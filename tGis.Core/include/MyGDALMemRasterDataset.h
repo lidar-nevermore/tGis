@@ -19,7 +19,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API MyGDALMemRasterDataset : public MyGDALRasterDataset
+class TGIS_CORE_API MyGDALMemRasterDataset : public MyGDALRasterDataset
 {
 	friend class MemoryDataSourceProvider;
 public:

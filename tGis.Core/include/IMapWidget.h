@@ -4,6 +4,7 @@
 #define __I_MAPWIDGET_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 #include "Event.h"
 #include "IWidget.h"
 #include "GeoViewPort.h"
@@ -18,13 +19,13 @@ struct IOverlayLayer;
 struct IMapWidget;
 struct ILayerProvider;
 
-template struct TGIS_API IEventHandler<IMapWidget*, int, int>;
-template class TGIS_API Event<IMapWidget*, int, int>;
+template struct TGIS_CORE_API IEventHandler<IMapWidget*, int, int>;
+template class TGIS_CORE_API Event<IMapWidget*, int, int>;
 
-template struct TGIS_API IEventHandler<IMapWidget*, IMapTool*>;
-template class TGIS_API Event<IMapWidget*, IMapTool*>;
+template struct TGIS_CORE_API IEventHandler<IMapWidget*, IMapTool*>;
+template class TGIS_CORE_API Event<IMapWidget*, IMapTool*>;
 
-struct TGIS_API IMapWidget : public IWidget
+struct TGIS_CORE_API IMapWidget : public IWidget
 {
 	virtual void SetMap(IMap*) = 0;
 	virtual IMap* GetMap() = 0;

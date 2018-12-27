@@ -4,12 +4,13 @@
 #define __I_TGISOBJECT_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 class OGRSpatialReference;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGIS_API ITGisObject
+struct TGIS_CORE_API ITGisObject
 {
 	ITGisObject() {};
 	virtual ~ITGisObject() {};

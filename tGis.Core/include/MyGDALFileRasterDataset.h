@@ -19,7 +19,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API MyGDALFileRasterDataset : public MyGDALRasterDataset
+class TGIS_CORE_API MyGDALFileRasterDataset : public MyGDALRasterDataset
 {
 	friend class FileSystemDataSource;
 public:

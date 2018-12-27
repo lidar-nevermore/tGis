@@ -16,7 +16,7 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGIS_API MemoryDataSource : public DataSource
+class TGIS_CORE_API MemoryDataSource : public DataSource
 {
 	friend class MemoryDataSourceProvider;
 protected:

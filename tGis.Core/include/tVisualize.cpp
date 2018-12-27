@@ -4,7 +4,7 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-TGIS_API void SetMaxSurfaceSize(int width, int height)
+TGIS_CORE_API void SetMaxSurfaceSize(int width, int height)
 {
 	VisualizeBufferManager::INSTANCE().SetMaxSurfaceSize(width, height);
 }

@@ -17,7 +17,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
 
-class TGIS_API DataSourceProvider : public IDataSourceProvider
+class TGIS_CORE_API DataSourceProvider : public IDataSourceProvider
 {
 	friend class DataSource;
 public:

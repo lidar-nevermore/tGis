@@ -4,10 +4,11 @@
 #define __STATISTICS_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGIS_API Statistics
+struct TGIS_CORE_API Statistics
 {
 	double max;
 	double min;

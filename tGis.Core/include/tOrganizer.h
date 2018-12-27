@@ -1,3 +1,4 @@
+#include "tGisCoreCfg.h"
 #include "tEntity.h"
 #include "tVisualize.h"
 
@@ -20,4 +21,3 @@
 #include "ToolKitRepository.h"
 
 #include "TGisApplication.h"
-#include "PluginManager.h"

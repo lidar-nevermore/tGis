@@ -85,7 +85,7 @@ size_t Map::AddLayer(ILayer *layer, bool* added)
 		*added = false;
 
 	bool canAdd = false;
-	int layerCount = _vecLayer.size();
+	size_t layerCount = _vecLayer.size();
 	const OGRSpatialReference* clayerSpatialRef = layer->GetSpatialReference();
 	OGRSpatialReference* layerSpatialRef = nullptr;
 	if(clayerSpatialRef != nullptr)

@@ -1,3 +1,4 @@
+#include "tGisCoreCfg.h"
 #include "IDataset.h"
 #include "IDataSource.h"
 #include "IGeoSurface.h"

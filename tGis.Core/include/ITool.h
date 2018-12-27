@@ -4,10 +4,11 @@
 #define __I_TOOL_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGIS_API ITool
+struct TGIS_CORE_API ITool
 {
 	virtual const char* GetName() = 0;
 

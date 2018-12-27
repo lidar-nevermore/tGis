@@ -4,13 +4,14 @@
 #define __I_WIDGET_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 #include "Event.h"
 
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-struct TGIS_API IWidget
+struct TGIS_CORE_API IWidget
 {
 	virtual void Client2Screen(int cliX, int cliY, int *scrX, int *scrY) = 0;
 	virtual void Screen2Client(int scrX, int scrY, int *cliX, int *cliY) = 0;

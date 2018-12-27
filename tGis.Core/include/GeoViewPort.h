@@ -4,13 +4,14 @@
 #define __GEOVIEWPORT_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API GeoViewPort
+class TGIS_CORE_API GeoViewPort
 {
 	friend class MapWidget;
 public:

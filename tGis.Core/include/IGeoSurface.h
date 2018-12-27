@@ -4,6 +4,7 @@
 #define __I_GEOSURFACE_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 #include "ISurface.h"
 #include "GeoViewPort.h"
@@ -13,7 +14,7 @@ class OGRSpatialReference;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGIS_API IGeoSurface : public ISurface
+struct TGIS_CORE_API IGeoSurface : public ISurface
 {
 	virtual const GeoViewPort* GetViewPort() const = 0;
 

@@ -5,13 +5,14 @@
 
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
 struct ILayer;
 
-struct TGIS_API ILayerProvider
+struct TGIS_CORE_API ILayerProvider
 {
 	virtual const char* GetType() = 0;
 	virtual const char* GetName() = 0;

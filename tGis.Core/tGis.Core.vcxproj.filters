@@ -263,20 +263,26 @@
     <ClInclude Include="include\TGisApplication.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\Plugin.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\PluginManager.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
     <ClInclude Include="include\RasterWriter.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\IWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\GeoViewPort.h">
       <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IWidget.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGisCoreCfg.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\Plugin.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\PluginManager.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGisCore.h">
+      <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -436,12 +442,6 @@
     <ClCompile Include="src\TGisApplication.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\Plugin.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PluginManager.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
     <ClCompile Include="src\RasterWriter.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
@@ -450,6 +450,12 @@
     </ClCompile>
     <ClCompile Include="src\GeoViewPort.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\Plugin.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\PluginManager.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

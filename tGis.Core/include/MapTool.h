@@ -10,7 +10,7 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGIS_API MapTool : public IMapTool
+class TGIS_CORE_API MapTool : public IMapTool
 {
 	friend class MapWidget;
 public:

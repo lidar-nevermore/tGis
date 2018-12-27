@@ -16,94 +16,83 @@
 //exports helper
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
-#define TGIS_SYMBOL_IMPORT __declspec(dllimport)
-#define TGIS_SYMBOL_EXPORT __declspec(dllexport)
+  #define TGIS_SYMBOL_IMPORT __declspec(dllimport)
+  #define TGIS_SYMBOL_EXPORT __declspec(dllexport)
 #else
-#if __GNUC__ >= 4
-#define TGIS_SYMBOL_IMPORT __attribute__ ((visibility ("default")))
-#define TGIS_SYMBOL_EXPORT __attribute__ ((visibility ("default")))
-#else
-#define TGIS_SYMBOL_IMPORT __attribute__((dllimport))
-#define TGIS_SYMBOL_EXPORT __attribute__((dllexport))
-#endif
-#endif
-
-#ifdef TGIS_EXPORTS
-#define TGIS_API TGIS_SYMBOL_EXPORT
-#else
-#define TGIS_API TGIS_SYMBOL_IMPORT
+  #if __GNUC__ >= 4
+    #define TGIS_SYMBOL_IMPORT __attribute__ ((visibility ("default")))
+    #define TGIS_SYMBOL_EXPORT __attribute__ ((visibility ("default")))
+  #else
+    #define TGIS_SYMBOL_IMPORT __attribute__((dllimport))
+    #define TGIS_SYMBOL_EXPORT __attribute__((dllexport))
+  #endif
 #endif
 
-#ifdef TGIS_UTILITY_EXPORTS
-#define TGIS_UTILITY_API TGIS_SYMBOL_EXPORT
+#ifdef TGIS_HELPER_EXPORTS
+  #define TGIS_HELPER_API TGIS_SYMBOL_EXPORT
 #else
-#define TGIS_UTILITY_API TGIS_SYMBOL_IMPORT
-#endif
-
-#ifdef TGIS_SEGMENT_EXPORTS
-#define TGIS_SEGMENT_API TGIS_SYMBOL_EXPORT
-#else
-#define TGIS_SEGMENT_API TGIS_SYMBOL_IMPORT
+  #define TGIS_HELPER_API TGIS_SYMBOL_IMPORT
 #endif
 
 
+//portability helper
 #if defined(_MSC_VER) || defined(__MINGW32__)
 
-#include <Windows.h>
-#include <direct.h>
-#include <stdlib.h>
-#include <io.h>
-
-#define _tgis_max max
-
-#define TGIS_MAX_PATH _MAX_PATH 
-
-#define TGIS_PATH_SEPARATOR_CHAR  '\\'
-
-#define TGIS_PATH_SEPARATOR_STR  "\\"
-
-#define TGIS_EXT_SEPARATOR_CHAR  '.'
-
-#define TGIS_EXT_SEPARATOR_STR  "."
-
-#define _tgis_getcwd  _getcwd
-
-#define _tgis_finddata_t _finddata_t
-
-#define _tgis_findfirst _findfirst
-
-#define _tgis_findnext _findnext
-
-#define _tgis_findclose _findclose
- 
-#define _TGIS_A_HIDDEN _A_HIDDEN
-
-#define _TGIS_A_SYSTEM _A_SYSTEM
-
-#define _TGIS_A_SUBDIR _A_SUBDIR
-
-#define _TGIS_A_RDONLY _A_RDONLY
-
-
-
-#define _tgis_access _access
-
-#define _TGIS_A_EXIST 0
-
-#define _TGIS_A_WRITE 2
-
-#define _TGIS_A_READ  4
-
-#define _TGIS_A_READ_WRITE  6
-
-#define _TGIS_R_OK 0
-
+  #include <Windows.h>
+  #include <direct.h>
+  #include <stdlib.h>
+  #include <io.h>
+  
+  #define _tgis_max max
+  
+  #define TGIS_MAX_PATH _MAX_PATH 
+  
+  #define TGIS_PATH_SEPARATOR_CHAR  '\\'
+  
+  #define TGIS_PATH_SEPARATOR_STR  "\\"
+  
+  #define TGIS_EXT_SEPARATOR_CHAR  '.'
+  
+  #define TGIS_EXT_SEPARATOR_STR  "."
+  
+  #define _tgis_getcwd  _getcwd
+  
+  #define _tgis_finddata_t _finddata_t
+  
+  #define _tgis_findfirst _findfirst
+  
+  #define _tgis_findnext _findnext
+  
+  #define _tgis_findclose _findclose
+   
+  #define _TGIS_A_HIDDEN _A_HIDDEN
+  
+  #define _TGIS_A_SYSTEM _A_SYSTEM
+  
+  #define _TGIS_A_SUBDIR _A_SUBDIR
+  
+  #define _TGIS_A_RDONLY _A_RDONLY
+  
+  
+  
+  #define _tgis_access _access
+  
+  #define _TGIS_A_EXIST 0
+  
+  #define _TGIS_A_WRITE 2
+  
+  #define _TGIS_A_READ  4
+  
+  #define _TGIS_A_READ_WRITE  6
+  
+  #define _TGIS_R_OK 0
+  
 #endif
 
 
 
 
-//custom method
+//common method
 
 #include <math.h>
 #include <float.h>
@@ -169,9 +158,9 @@ inline void _tgis_str_split(char* str, const char *delim, std::vector<std::strin
 	}
 }
 
-TGIS_API int _tgis_find_first_of(const char* s, const char* m, int offset);
+TGIS_HELPER_API int _tgis_find_first_of(const char* s, const char* m, int offset);
 
-TGIS_API int _tgis_find_last_of(const char* s, const char* m, int offset);
+TGIS_HELPER_API int _tgis_find_last_of(const char* s, const char* m, int offset);
 
 
 // this shit for shit

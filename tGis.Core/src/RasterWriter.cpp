@@ -20,7 +20,7 @@ int CPL_STDCALL MyGDALProgressFunc(double dfComplete, const char *pszMessage, vo
 	return CE_None;
 }
 
-TGIS_API void WriteMemoryBlock(
+TGIS_CORE_API void WriteMemoryBlock(
 	const char* path, 
 	void** mem, GDALDataType dt, int w, int h, int count,
 	ProgressEvent * progressEvent,
@@ -81,7 +81,7 @@ TGIS_API void WriteMemoryBlock(
 	GDALClose((GDALDatasetH)outRaster);
 }
 
-TGIS_API void CopyRaster(const char* path,
+TGIS_CORE_API void CopyRaster(const char* path,
 	GDALDataset * raster,
 	int xOffset, int yOffset, int xSize, int ySize,
 	int dstXSize, int dstYSize,

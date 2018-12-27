@@ -40,7 +40,7 @@ typedef ObjectSampleMetadata* ObjectSampleMetadataPtr;
 //样本图片的命名方式为 有效区宽_有效区高_其它部分.tif
 //有效区域一定在样本图片的中央
 //类别名就是用来存储此类别样本图片的目录名
-class TGIS_API ObjectSampleDataSource : public FileSystemDataSource
+class TGIS_CORE_API ObjectSampleDataSource : public FileSystemDataSource
 {
 	friend class ObjectSampleDataSourceProvider;
 protected:

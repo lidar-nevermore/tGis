@@ -4,6 +4,7 @@
 #define __LAYERPROVIDERREPOSITORY_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 #include <vector>
 #include <map>
@@ -16,7 +17,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct ILayerProvider;
 struct IDataset;
 
-class TGIS_API LayerProviderRepository
+class TGIS_CORE_API LayerProviderRepository
 {
 private:
 	static LayerProviderRepository* _instance;

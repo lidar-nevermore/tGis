@@ -4,6 +4,7 @@
 #define __RASTERWRITER_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 #include "Event.h"
 
 #pragma warning( disable: 4251 )
@@ -13,14 +14,14 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-TGIS_API void WriteMemoryBlock(
+TGIS_CORE_API void WriteMemoryBlock(
 	const char* path, 
 	void** mem, GDALDataType dt, int w, int h, int count = 0,
 	ProgressEvent * progressEvent = nullptr,
 	GDALDataset * raster = nullptr, int xOffset = 0, int yOffset = 0);
 
 
-TGIS_API void CopyRaster(
+TGIS_CORE_API void CopyRaster(
 	const char* path, 
 	GDALDataset * raster,
 	int xOffset, int yOffset, int xSize, int ySize,

@@ -4,12 +4,13 @@
 #define __I_SURFACE_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IWidget;
 
-struct TGIS_API ISurface
+struct TGIS_CORE_API ISurface
 {
 	virtual void Present(IWidget* w, int wX, int wY) = 0;
 	virtual void Present(IWidget* w, int wX, int wY, int wW, int wH) = 0;

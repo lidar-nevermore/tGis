@@ -4,8 +4,10 @@
 #define __I_DATASOURCEPROVIDER_H__
 
 #include "Helper.h"
-#include "Event.h"
 #include "ITGisObject.h"
+#include "tGisCoreCfg.h"
+#include "Event.h"
+
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -15,13 +17,13 @@ struct IDataset;
 
 typedef IEventHandler<IDataSourceProvider*, IDataset*> DatasetEventHandler;
 
-template struct TGIS_API IEventHandler<IDataSourceProvider*, IDataset*>;
-template class TGIS_API Event<IDataSourceProvider*, IDataset*>;
+template struct TGIS_CORE_API IEventHandler<IDataSourceProvider*, IDataset*>;
+template class TGIS_CORE_API Event<IDataSourceProvider*, IDataset*>;
 
-template struct TGIS_API IEventHandler<IDataSourceProvider*, IDataSource*>;
-template class TGIS_API Event<IDataSourceProvider*, IDataSource*>;
+template struct TGIS_CORE_API IEventHandler<IDataSourceProvider*, IDataSource*>;
+template class TGIS_CORE_API Event<IDataSourceProvider*, IDataSource*>;
 
-struct TGIS_API IDataSourceProvider : public ITGisObject
+struct TGIS_CORE_API IDataSourceProvider : public ITGisObject
 {
 	virtual const char* GetName() = 0;
 

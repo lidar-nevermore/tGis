@@ -8,7 +8,7 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API Tool : public ITool
+class TGIS_CORE_API Tool : public ITool
 {
 public:
 	Tool();

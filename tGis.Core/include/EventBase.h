@@ -4,6 +4,7 @@
 #define __EVENTBASE_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -11,7 +12,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class EventSystemInitializer;
 
-class TGIS_API EventBase
+class TGIS_CORE_API EventBase
 {
 public:
 	EventBase() {};

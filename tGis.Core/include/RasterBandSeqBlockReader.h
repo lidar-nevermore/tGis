@@ -4,6 +4,7 @@
 #define __RASTERBANDSEQBLOCKREADER_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -13,7 +14,7 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 //按块读取像素，一般用来做卷积计算用
-class TGIS_API RasterBandSeqBlockReader
+class TGIS_CORE_API RasterBandSeqBlockReader
 {
 public:
 	// x,y为读取像素块左上角的像素坐标

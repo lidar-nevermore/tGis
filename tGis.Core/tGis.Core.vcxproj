@@ -56,8 +56,6 @@
     <ClInclude Include="include\ObjectSampleDataSourceProvider.h" />
     <ClInclude Include="include\OverlayLayer.h" />
     <ClInclude Include="include\OverlayRect.h" />
-    <ClInclude Include="include\Plugin.h" />
-    <ClInclude Include="include\PluginManager.h" />
     <ClInclude Include="include\RasterBinaryGrayScaleLayer.h" />
     <ClInclude Include="include\RasterBinaryGrayScaleLayerProvider.h" />
     <ClInclude Include="include\RasterGrayScaleLayerProvider.h" />
@@ -71,6 +69,8 @@
     <ClInclude Include="include\Statistics.h" />
     <ClInclude Include="include\SymbolLibraryRepository.h" />
     <ClInclude Include="include\TGisApplication.h" />
+    <ClInclude Include="include\tGisCore.h" />
+    <ClInclude Include="include\tGisCoreCfg.h" />
     <ClInclude Include="include\Tool.h" />
     <ClInclude Include="include\ToolKit.h" />
     <ClInclude Include="include\ToolKitRepository.h" />
@@ -88,11 +88,15 @@
     <ClInclude Include="include\VectorSimpleLayer.h" />
     <ClInclude Include="include\VectorSimpleLayerProvider.h" />
     <ClInclude Include="internal\elr_mtx.h" />
+    <ClInclude Include="internal\Plugin.h" />
+    <ClInclude Include="internal\PluginManager.h" />
     <ClInclude Include="internal\VisualizeBufferManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\tVisualize.cpp" />
     <ClCompile Include="internal\elr_mtx.c" />
+    <ClCompile Include="internal\Plugin.cpp" />
+    <ClCompile Include="internal\PluginManager.cpp" />
     <ClCompile Include="internal\VisualizeBufferManager.cpp" />
     <ClCompile Include="src\Dataset.cpp" />
     <ClCompile Include="src\DataSource.cpp" />
@@ -122,8 +126,6 @@
     <ClCompile Include="src\ObjectSampleDataSourceProvider.cpp" />
     <ClCompile Include="src\OverlayLayer.cpp" />
     <ClCompile Include="src\OverlayRect.cpp" />
-    <ClCompile Include="src\Plugin.cpp" />
-    <ClCompile Include="src\PluginManager.cpp" />
     <ClCompile Include="src\RasterBandSeqBlockReader.cpp" />
     <ClCompile Include="src\RasterBandSeqPixelReader.cpp" />
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp" />
@@ -193,7 +195,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;TGIS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;TGIS_CORE_EXPORTS;TGIS_HELPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -213,7 +215,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;TGIS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;TGIS_CORE_EXPORTS;TGIS_HELPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

@@ -10,7 +10,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class TGIS_API ObjectSampleDataSourceProvider : public FileSystemDataSourceProvider
+class TGIS_CORE_API ObjectSampleDataSourceProvider : public FileSystemDataSourceProvider
 {
 	friend class FileSystemDataSource;
 public:

@@ -13,7 +13,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 class MyGDALRasterDataset;
 class RasterBinaryGrayScaleLayer;
 
-class TGIS_API RasterBinaryGrayScaleLayerProvider : public LayerProvider
+class TGIS_CORE_API RasterBinaryGrayScaleLayerProvider : public LayerProvider
 {
 private:
 	static const char* const _name;

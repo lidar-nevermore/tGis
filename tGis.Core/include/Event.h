@@ -390,7 +390,7 @@ private:
 	Event<Args...>* _event;
 };
 
-struct TGIS_API Progress
+struct TGIS_CORE_API Progress
 {
 	Progress(int value, int max = 100, char* msg = nullptr)
 		:Value(value)
@@ -411,8 +411,8 @@ private:
 typedef IEventHandler<Progress> ProgressEventHandler;
 typedef Event<Progress> ProgressEvent;
 
-template struct TGIS_API IEventHandler<Progress>;
-template class TGIS_API Event<Progress>;
+template struct TGIS_CORE_API IEventHandler<Progress>;
+template class TGIS_CORE_API Event<Progress>;
 
 
 END_NAME_SPACE(tGis, Core)

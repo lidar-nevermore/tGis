@@ -4,7 +4,7 @@
 #define __I_OVERLAYLAYER_H__
 
 #include "Helper.h"
-
+#include "tGisCoreCfg.h"
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -12,7 +12,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IOverlayObject;
 struct IGeoSurface;
 
-struct TGIS_API IOverlayLayer
+struct TGIS_CORE_API IOverlayLayer
 {
 	virtual bool GetVisible() = 0;
 	virtual void SetVisible(bool) = 0;

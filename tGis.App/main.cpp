@@ -7,7 +7,7 @@
 
 #include "tOrganizer.h"
 #include "tUtility.h"
-#include "tGis.Utility.h"
+#include "tGisGui.h"
 
 #include "QtHelper.h"
 
@@ -15,8 +15,6 @@ using namespace tGis::Core;
 
 int main(int argc, char *argv[])
 {
-	tGis::Utility::InitializeModule();
-
 	RasterGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterGrayScaleLayerPropertyDialog::CreateRasterGrayScaleLayer);
 	RasterGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterGrayScaleLayerPropertyDialog::RasterGrayScaleLayerProperty);
 	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetCreationUI(&RasterBinaryGrayScaleLayerPropertyDialog::CreateRasterBinaryGrayScaleLayer);

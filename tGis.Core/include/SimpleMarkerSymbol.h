@@ -10,7 +10,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISurface;
 
-class TGIS_API SimpleMarkerSymbol : public TSymbol<char>
+class TGIS_CORE_API SimpleMarkerSymbol : public TSymbol<char>
 {
 public:
 	static const int IdentifierBegin = 0;

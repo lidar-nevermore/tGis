@@ -4,6 +4,7 @@
 #define __DATASOURCEREPOSITORY_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 #include "IDataSourceProvider.h"
 
@@ -16,7 +17,7 @@ using namespace std;
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGIS_API DataSourceProviderRepository
+class TGIS_CORE_API DataSourceProviderRepository
 {
 private:
 	static DataSourceProviderRepository* _instance;

@@ -4,6 +4,7 @@
 #define __RASTERBANDSEQPIXELREADER_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
@@ -36,7 +37,7 @@ typedef struct _StorageBlockBuffer
 } StorageBlockBuffer;
 
 
-class TGIS_API RasterBandSeqPixelReader
+class TGIS_CORE_API RasterBandSeqPixelReader
 {
 public:
 	typedef void(*FOREACHPIXEL_FUNC)(void* user, GDALRasterBand* band, double pix, int x, int y, void* orgPix, StorageBlockBuffer* block, int xPosIB, int yPosIB);

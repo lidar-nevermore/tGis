@@ -4,13 +4,14 @@
 #define __I_SYMBOL_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISurface;
 struct ISymbolLibrary;
 
-struct TGIS_API ISymbol
+struct TGIS_CORE_API ISymbol
 {
 	virtual const ISymbolLibrary* GetSymbolLibrary() = 0;
 

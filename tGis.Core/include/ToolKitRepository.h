@@ -4,6 +4,7 @@
 #define __TOOLKITREPOSITORY_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 #include <vector>
 #include <map>
@@ -15,7 +16,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class ToolKit;
 
-class TGIS_API ToolKitRepository
+class TGIS_CORE_API ToolKitRepository
 {
 private:
 	static ToolKitRepository* _instance;

@@ -1,16 +1,13 @@
 /.vs/
-/tGis.App/GeneratedFiles/
-/tGis.App/x64/
+/**/GeneratedFiles/
+/**/x64/
 /x64/
 *.VC.db
 *.VC.VC.opendb
 *.vcxproj.user
 *.obj
-/tGis.Core/x64/
-/tGis.CTest/x64/
-/tGis.Segment
-/tGis.Utility/x64/
-/tGis.Utility/GeneratedFiles/
+/Basics/tGis.CTest
+/Basics/tGis.Segment
 /**/ipch
 *.ipch
 

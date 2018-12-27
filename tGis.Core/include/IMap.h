@@ -4,6 +4,7 @@
 #define __I_MAP_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 #include "ILayer.h"
 #include "Event.h"
 
@@ -12,13 +13,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataset;
 struct IGeoSurface;
 
-template struct TGIS_API IEventHandler<IMap*>;
-template class TGIS_API Event<IMap*>;
+template struct TGIS_CORE_API IEventHandler<IMap*>;
+template class TGIS_CORE_API Event<IMap*>;
 
-template struct TGIS_API IEventHandler<IMap*, ILayer*>;
-template class TGIS_API Event<IMap*, ILayer*>;
+template struct TGIS_CORE_API IEventHandler<IMap*, ILayer*>;
+template class TGIS_CORE_API Event<IMap*, ILayer*>;
 
-struct TGIS_API IMap
+struct TGIS_CORE_API IMap
 {
 	typedef void(*LayerFunc)(ILayer*);
 

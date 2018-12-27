@@ -18,7 +18,7 @@ class SimpleMarkerSymbol;
 class SimpleLineSymbol;
 class SimpleFillSymbol;
 
-class TGIS_API VectorSimpleLayerProvider : public LayerProvider
+class TGIS_CORE_API VectorSimpleLayerProvider : public LayerProvider
 {
 private:
 	static const char* const _name;

@@ -12,7 +12,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataSource;
 
-class TGIS_API Dataset : public IDataset
+class TGIS_CORE_API Dataset : public IDataset
 {
 public:
 	virtual ~Dataset();

@@ -5,7 +5,6 @@
 #include <QApplication>
 #include "QLayerWidget.h"
 #include "Event.h"
-#include "PluginManager.h"
 
 using namespace tGis::Core;
 
@@ -15,8 +14,6 @@ tGisApp::tGisApp(QWidget *parent)
 	, _AfterDatasetOpenEventHandler(this, &tGisApp::AfterDatasetOpen)
 	, _BeforeDatasetCloseEventHandler(this, &tGisApp::BeforeDatasetClose)
 {
-	PluginManager::INSTANCE().LoadPlugins();
-
 	ui.setupUi(this);
 
 	_selectedObjectSampleDataSource = nullptr;

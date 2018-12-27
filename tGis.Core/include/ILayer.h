@@ -4,6 +4,7 @@
 #define __I_LAYER_H__
 
 #include "Helper.h"
+#include "tGisCoreCfg.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -15,7 +16,7 @@ struct IGeoSurface;
 struct IMap;
 struct ILayerProvider;
 
-struct TGIS_API ILayer
+struct TGIS_CORE_API ILayer
 {
 	virtual const char* GetType() = 0;
 	virtual ILayerProvider* GetProvider() = 0;

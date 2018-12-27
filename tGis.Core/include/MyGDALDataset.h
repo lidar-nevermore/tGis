@@ -20,7 +20,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct GDALInit;
 struct IDataSource;
 
-class TGIS_API MyGDALDataset : public Dataset
+class TGIS_CORE_API MyGDALDataset : public Dataset
 {
 public:
 	virtual const char* GetName();

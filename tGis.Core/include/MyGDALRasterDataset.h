@@ -18,7 +18,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataSource;
 
-class TGIS_API MyGDALRasterDataset : public MyGDALDataset
+class TGIS_CORE_API MyGDALRasterDataset : public MyGDALDataset
 {
 public:
 	virtual const char* GetType();
