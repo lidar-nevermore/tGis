@@ -32,13 +32,12 @@ public:
 	~ToolKitRepository();
 
 public:
-	void AddToolKit(ToolKit* kit);
 	void AddToolKit(int count, ...);
+	void AddToolKit(ToolKit* kit);	
 	size_t GetToolKitCount();
 	ToolKit* GetToolKit(size_t);
 	ToolKit* GetToolKit(const char* name);
 	
-
 private:
 	vector<ToolKit*> _vecToolKit;
 	map<string, ToolKit*> _mapToolKit;

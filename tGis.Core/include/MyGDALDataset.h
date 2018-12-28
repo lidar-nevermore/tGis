@@ -52,6 +52,7 @@ public:
 	static size_t GetSupportedRasterFormatPos(const char* ext,bool* supported = nullptr);
 	static int GetSupportedRasterFormatDriverIndex(size_t);
 	static bool IsSupportedRasterFormatExt(const char*);
+	static bool IsSupportedRasterFormatFirstExt(const char*);
 
 	static size_t GetSupportedVectorFormatCount();
 	static const vector<string>& GetSupportedVectorFormatExt(size_t);
@@ -60,6 +61,7 @@ public:
 	static size_t GetSupportedVectorFormatPos(const char* ext, bool* supported = nullptr);
 	static int GetSupportedVectorFormatDriverIndex(size_t);
 	static bool IsSupportedVectorFormatExt(const char*);
+	static bool IsSupportedVectorFormatFirstExt(const char*);
 
 protected:
 	GDALDataset* _dataset;

@@ -19,7 +19,7 @@ ObjectSampleTool::~ObjectSampleTool()
 
 const char * ObjectSampleTool::GetName()
 {
-	return "¿ÛÑù±¾Í¼";
+	return "Image Subset";
 }
 
 void ObjectSampleTool::Execute()

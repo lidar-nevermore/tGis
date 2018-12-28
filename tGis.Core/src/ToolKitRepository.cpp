@@ -29,8 +29,26 @@ ToolKitRepository::~ToolKitRepository()
 
 void ToolKitRepository::AddToolKit(ToolKit * kit)
 {
-	_vecToolKit.push_back(kit);
-	_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
+	ToolKit* toFillKit = GetToolKit(kit->GetName());
+	if (toFillKit == NULL)
+	{
+		_vecToolKit.push_back(kit);
+		_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
+	}
+	else
+	{
+		size_t toolCount = kit->GetToolCount();
+		for (size_t i = 0; i < toolCount; i++)
+		{
+			toFillKit->AddTool(kit->GetTool(i));
+		}
+
+		size_t toolkitCount = kit->GetToolKitCount();
+		for (size_t i = 0; i < toolkitCount; i++)
+		{
+			toFillKit->AddToolKit(kit->GetToolKit(i));
+		}
+	}
 }
 
 
@@ -63,6 +81,12 @@ void ToolKitRepository::AddToolKit(int count, ...)
 			for (size_t j = 0; j < toolCount; j++)
 			{
 				toFillKit->AddTool(kit->GetTool(j));
+			}
+
+			size_t toolkitCount = kit->GetToolKitCount();
+			for (size_t i = 0; i < toolkitCount; i++)
+			{
+				toFillKit->AddToolKit(kit->GetToolKit(i));
 			}
 		}
 	}

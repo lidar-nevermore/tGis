@@ -193,6 +193,19 @@ bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
 	return false;
 }
 
+bool MyGDALDataset::IsSupportedRasterFormatFirstExt(const char * ext)
+{
+	if (GDALInit::IsExcludeExt(ext))
+		return false;
+
+	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
+	{
+		if (_stricmp((*it).at(0).c_str(), ext) == 0)
+			return true;
+	}
+	return false;
+}
+
 size_t MyGDALDataset::GetSupportedVectorFormatCount()
 {
 	return _GDALInit->_SupportedVectorFormatExt.size();
@@ -251,13 +264,24 @@ bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)
 	{
-		//if (_stricmp((*it).at(0).c_str(), ext) == 0)
-		//	return true;
 		for (vector<string>::iterator itt = (*it).begin(); itt != (*it).end(); itt++)
 		{
 			if (_stricmp((*itt).c_str(), ext) == 0)
 				return true;
 		}
+	}
+	return false;
+}
+
+bool MyGDALDataset::IsSupportedVectorFormatFirstExt(const char * ext)
+{
+	if (GDALInit::IsExcludeExt(ext))
+		return false;
+
+	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)
+	{
+		if (_stricmp((*it).at(0).c_str(), ext) == 0)
+			return true;
 	}
 	return false;
 }

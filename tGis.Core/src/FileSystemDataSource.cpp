@@ -117,11 +117,11 @@ void FileSystemDataSource::Connect()
 					string ext = subpath.substr(pos+1);
 					GDALAccess eAccess = (file.attrib&_TGIS_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
 
-					if (MyGDALDataset::IsSupportedRasterFormatExt(ext.c_str()))
+					if (MyGDALDataset::IsSupportedRasterFormatFirstExt(ext.c_str()))
 					{
 						MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(this,subpath.c_str(), eAccess);
 					}
-					else if (MyGDALDataset::IsSupportedVectorFormatExt(ext.c_str()))
+					else if (MyGDALDataset::IsSupportedVectorFormatFirstExt(ext.c_str()))
 					{
 						MyGDALVectorDataset* dt = new MyGDALVectorDataset(this,subpath.c_str(), eAccess);
 					}
@@ -146,13 +146,13 @@ void FileSystemDataSource::Connect(const char * creationString, IDataset ** dtOu
 		GDALAccess eAccess = GA_ReadOnly;
 		if (_tgis_access(path.c_str(), _TGIS_A_WRITE) == _TGIS_R_OK)
 			eAccess = GA_Update;
-		if (MyGDALDataset::IsSupportedRasterFormatExt(ext.c_str()))
+		if (MyGDALDataset::IsSupportedRasterFormatFirstExt(ext.c_str()))
 		{
 			MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(this, path.c_str(), eAccess);
 			if (*dtOut != nullptr)
 				*dtOut = dt;
 		}
-		else if (MyGDALDataset::IsSupportedVectorFormatExt(ext.c_str()))
+		else if (MyGDALDataset::IsSupportedVectorFormatFirstExt(ext.c_str()))
 		{
 			MyGDALVectorDataset* dt = new MyGDALVectorDataset(this, path.c_str(), eAccess);
 			if (*dtOut != nullptr)
