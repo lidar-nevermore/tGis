@@ -4,34 +4,29 @@
 
 using namespace tGis::Core;
 
+QString SegmentationDialog::_initialDir = QDir::homePath();
+
 SegmentationDialog::SegmentationDialog(QWidget *parent)
 	:QDialog(parent)
 {
 	ui.setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 
-	_initialDir = QDir::homePath();
+	_gaussianCoef = 0.9;
+	_texturePeriod = 7;
+	_lowPercentage = 0.53;
+	_highPercentage = 0.23;
+	_damStrength = 0.3;
+	_poolStrength = 0.03;
+
 	connect(ui.btnInputImg, &QPushButton::clicked, this, &SegmentationDialog::on_btnInputImg_clicked);
 	connect(ui.btnOutputShp, &QPushButton::clicked, this, &SegmentationDialog::on_btnOutputShp_clicked);
+	connect(ui.buttonBox, &QDialogButtonBox::accepted, this, &SegmentationDialog::on_accepted);
 }
 
 
 SegmentationDialog::~SegmentationDialog()
 {
-}
-
-const char * SegmentationDialog::GetInputImage()
-{
-	if (_inputImage.empty())
-		return NULL;
-	return _inputImage.c_str();
-}
-
-const char * SegmentationDialog::GetOutputShape()
-{
-	if (_outputShape.empty())
-		return NULL;
-	return _outputShape.c_str();
 }
 
 void SegmentationDialog::on_btnInputImg_clicked(bool checked)
@@ -66,6 +61,8 @@ void SegmentationDialog::on_btnInputImg_clicked(bool checked)
 		ui.leInputImg->setText(qtPath);
 		QString path = QDir::toNativeSeparators(qtPath);
 		_inputImage = path.toLocal8Bit().data();
+		_outputShape.clear();
+		ui.leOutputShp->setText(QStringLiteral(""));
 	}
 }
 
@@ -88,4 +85,25 @@ void SegmentationDialog::on_btnOutputShp_clicked(bool checked)
 		QString path = QDir::toNativeSeparators(qtPath);
 		_outputShape = path.toLocal8Bit().data();
 	}
+}
+
+void SegmentationDialog::on_accepted()
+{
+	QString strGaussianCoef = ui.leGauss->text();
+	_gaussianCoef = strGaussianCoef.toDouble();
+
+	QString strTexturePeriod = ui.leTexturePeriod->text();
+	_texturePeriod = strTexturePeriod.toInt();
+
+	QString strLowPercentage = ui.leLowPercentage->text();
+	_lowPercentage = strLowPercentage.toDouble();
+
+	QString strHighPercentage = ui.leHighPercentage->text();
+	_highPercentage = strHighPercentage.toDouble();
+
+	QString strDamStrength = ui.leDamStrength->text();
+	_damStrength = strDamStrength.toDouble();
+
+	QString strPoolStrength = ui.lePoolStrength->text();
+	_poolStrength = strPoolStrength.toDouble();
 }

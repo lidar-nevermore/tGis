@@ -16,18 +16,24 @@ public:
 	SegmentationDialog(QWidget *parent = 0);
 	~SegmentationDialog();
 
+
 private:
-	string _inputImage;
-	string _outputShape;
-	QString _initialDir;
+	static QString _initialDir;
 
 public:
-	const char* GetInputImage();
-	const char* GetOutputShape();
+	string _inputImage;
+	string _outputShape;
+	double _gaussianCoef;
+	int _texturePeriod;
+	double _lowPercentage;
+	double _highPercentage;
+	double _damStrength;
+	double _poolStrength;
 
 private slots:
 	void on_btnInputImg_clicked(bool checked);
 	void on_btnOutputShp_clicked(bool checked);
+	void on_accepted();
 
 private:
 	Ui::SegmentationDialog ui;

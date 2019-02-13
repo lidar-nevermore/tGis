@@ -21,7 +21,7 @@ SegmentationTool::~SegmentationTool()
 
 const char * SegmentationTool::GetName()
 {
-	return "Dam Breaking";
+	return "Dam Razing";
 }
 
 void SegmentationTool::Execute()
@@ -29,16 +29,16 @@ void SegmentationTool::Execute()
 	SegmentationDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	if (dlg.exec() == QDialog::Accepted)
 	{
-		if (dlg.GetInputImage() == NULL)
+		if (dlg._inputImage.empty())
 			return;
 
-		if (dlg.GetOutputShape() == NULL)
+		if (dlg._outputShape.empty())
 			return;
 
 		try
 		{
 			MyGDALFileRasterDataset raster;
-			raster.Attach(dlg.GetInputImage(), GA_ReadOnly, true);
+			raster.Attach(dlg._inputImage.c_str(), GA_ReadOnly, true);
 			GDALDataset *dataset = raster.GetGDALDataset();
 			int band[] = { 1,2,3 };
 			double min[] = { 0,0,0 };
@@ -56,9 +56,18 @@ void SegmentationTool::Execute()
 				int xSize = dataset->GetRasterXSize();
 				int ySize = dataset->GetRasterYSize();
 
-				TangRuiSegment(dataset, dlg.GetOutputShape(),
+				TangRuiSegment(dataset, dlg._outputShape.c_str(),
 					band, min, max, bandCount,
-					0, 0, min(1000, xSize), min(1000, ySize), 1.0, 7);
+					0, 0, min(1000, xSize), min(1000, ySize),
+					dlg._gaussianCoef,
+					dlg._texturePeriod,
+					3.0,
+					dlg._poolStrength,
+					dlg._damStrength,
+					1.0,
+					dlg._lowPercentage,
+					dlg._highPercentage
+					);
 
 				QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
 					QStringLiteral("ÏûÏ¢"),
