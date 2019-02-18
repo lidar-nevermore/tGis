@@ -61,6 +61,7 @@ void SegmentationTool::Execute()
 					0, 0, min(1000, xSize), min(1000, ySize),
 					dlg._gaussianCoef,
 					dlg._texturePeriod,
+					dlg._useTexture,
 					3.0,
 					dlg._poolStrength,
 					dlg._damStrength,

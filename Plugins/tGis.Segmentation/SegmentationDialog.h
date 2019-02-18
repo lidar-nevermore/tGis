@@ -29,6 +29,7 @@ public:
 	double _highPercentage;
 	double _damStrength;
 	double _poolStrength;
+	bool _useTexture;
 
 private slots:
 	void on_btnInputImg_clicked(bool checked);

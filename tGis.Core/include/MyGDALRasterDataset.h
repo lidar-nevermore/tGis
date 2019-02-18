@@ -38,6 +38,10 @@ public:
 	virtual void Close();
 
 protected:
+	//padfTransform[1] is the x position increment of each pixel column, padfTransform[2] is the x position increment of each pixel row.
+	//padfTransform[4] is the y position increment of each pixel column, padfTransform[5] is the y position increment of each pixel row.
+	//In a north up image, padfTransform[1] is the pixel width, and padfTransform[5] is the pixel height. 
+	//The upper left corner of the upper left pixel is at position (padfTransform[0],padfTransform[3]).
 	double _geoTransform[6];
 
 

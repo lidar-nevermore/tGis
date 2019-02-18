@@ -67,7 +67,6 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose, double no
 		OSRDestroySpatialReference(_spatialRef);
 		_spatialRef = nullptr;
 		_geoTransform[5] = -abs(_geoTransform[5]);
-		_geoTransform[3] = yRasterSize;
 	}
 
 	double x1, y1, x2, y2, x3, y3;
