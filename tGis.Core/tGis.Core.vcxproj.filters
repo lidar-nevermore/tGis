@@ -272,9 +272,6 @@
     <ClInclude Include="include\IWidget.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGisCoreCfg.h">
-      <Filter>internal</Filter>
-    </ClInclude>
     <ClInclude Include="internal\Plugin.h">
       <Filter>internal</Filter>
     </ClInclude>
@@ -282,7 +279,10 @@
       <Filter>internal</Filter>
     </ClInclude>
     <ClInclude Include="include\tGisCore.h">
-      <Filter>internal</Filter>
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGisCoreCfg.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

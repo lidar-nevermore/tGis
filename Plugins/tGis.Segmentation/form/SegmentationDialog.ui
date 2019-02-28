@@ -24,7 +24,7 @@
    <item row="1" column="1">
     <widget class="QLineEdit" name="leGauss">
      <property name="text">
-      <string>0.9</string>
+      <string>0.8</string>
      </property>
     </widget>
    </item>
@@ -103,7 +103,7 @@
    <item row="2" column="3">
     <widget class="QLineEdit" name="leLowPercentage">
      <property name="text">
-      <string>0.53</string>
+      <string>0.47</string>
      </property>
     </widget>
    </item>
