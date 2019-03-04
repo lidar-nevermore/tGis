@@ -1,16 +1,16 @@
-#include "tGisSegmentation.h"
+#include "tGisWaterExtraction.h"
 
 #include "tUtility.h"
 #include "tOrganizer.h"
-#include "SegmentationTool.h"
+#include "WaterExtractionTool.h"
 
 using namespace tGis::Core;
 
-ToolKit mlToolKit("Segmentation");
+ToolKit mlToolKit("Recognition");
 
 void TGIS_SYMBOL_EXPORT __cdecl _tGisPluginInitialize(void)
 {
-	mlToolKit.AddTool(&(SegmentationTool::INSTANCE));
+	mlToolKit.AddTool(&(WaterExtractionTool::INSTANCE));
 	ToolKitRepository::INSTANCE().AddToolKit(&mlToolKit);
 }
 

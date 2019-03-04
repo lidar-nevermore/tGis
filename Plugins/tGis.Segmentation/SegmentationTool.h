@@ -7,8 +7,6 @@
 
 using namespace tGis::Core;
 
-class SegmentationDialog;
-
 class SegmentationTool : public ITool
 {
 public:

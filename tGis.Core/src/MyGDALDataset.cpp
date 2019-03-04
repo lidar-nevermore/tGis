@@ -8,7 +8,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct GDALInit
+struct GDALInitializer
 {
 	vector<vector<string>> _SupportedVectorFormatExt;
 	vector<string> _SupportedVectorFormatName;
@@ -37,7 +37,7 @@ struct GDALInit
 		return false;
 	}
 
-	GDALInit()
+	GDALInitializer()
 	{
 		GDALAllRegister();          //GDAL所有操作都需要先注册格式
 		OGRRegisterAll();
@@ -120,10 +120,14 @@ struct GDALInit
 	}//end of constructor
 };
 
-char* GDALInit::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf", "\0" };
+char* GDALInitializer::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf", "\0" };
 
-GDALInit* MyGDALDataset::_GDALInit = new GDALInit();
+GDALInitializer* MyGDALDataset::_GDALInit = new GDALInitializer();
 
+bool MyGDALDataset::GDALInit()
+{
+	return _GDALInit != NULL;
+}
 
 
 size_t MyGDALDataset::GetSupportedRasterFormatCount()
@@ -151,7 +155,7 @@ size_t MyGDALDataset::GetSupportedRasterFormatPos(const char * ext, bool * suppo
 	if (supported != nullptr)
 		*supported = false;
 
-	if (GDALInit::IsExcludeExt(ext))
+	if (GDALInitializer::IsExcludeExt(ext))
 		return _GDALInit->_SupportedRasterFormatExt.size();
 
 	size_t pos = 0;
@@ -179,7 +183,7 @@ int MyGDALDataset::GetSupportedRasterFormatDriverIndex(size_t pos)
 
 bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
 {
-	if (GDALInit::IsExcludeExt(ext))
+	if (GDALInitializer::IsExcludeExt(ext))
 		return false;
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
@@ -195,7 +199,7 @@ bool MyGDALDataset::IsSupportedRasterFormatExt(const char * ext)
 
 bool MyGDALDataset::IsSupportedRasterFormatFirstExt(const char * ext)
 {
-	if (GDALInit::IsExcludeExt(ext))
+	if (GDALInitializer::IsExcludeExt(ext))
 		return false;
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedRasterFormatExt.begin(); it != _GDALInit->_SupportedRasterFormatExt.end(); it++)
@@ -231,7 +235,7 @@ size_t MyGDALDataset::GetSupportedVectorFormatPos(const char * ext, bool * suppo
 	if (supported != nullptr)
 		*supported = false;
 
-	if (GDALInit::IsExcludeExt(ext))
+	if (GDALInitializer::IsExcludeExt(ext))
 		return _GDALInit->_SupportedVectorFormatExt.size();
 
 	size_t pos = 0;
@@ -259,7 +263,7 @@ int MyGDALDataset::GetSupportedVectorFormatDriverIndex(size_t pos)
 
 bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)
 {
-	if (GDALInit::IsExcludeExt(ext))
+	if (GDALInitializer::IsExcludeExt(ext))
 		return false;
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)
@@ -275,7 +279,7 @@ bool MyGDALDataset::IsSupportedVectorFormatExt(const char * ext)
 
 bool MyGDALDataset::IsSupportedVectorFormatFirstExt(const char * ext)
 {
-	if (GDALInit::IsExcludeExt(ext))
+	if (GDALInitializer::IsExcludeExt(ext))
 		return false;
 
 	for (vector<vector<string>>::iterator it = _GDALInit->_SupportedVectorFormatExt.begin(); it != _GDALInit->_SupportedVectorFormatExt.end(); it++)

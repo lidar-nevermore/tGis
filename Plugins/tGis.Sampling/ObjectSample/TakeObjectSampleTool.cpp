@@ -1,6 +1,7 @@
 #include "TakeObjectSampleTool.h"
 #include "ObjectSampleDialog.h"
 
+#include "tUtility.h"
 #include "tOrganizer.h"
 
 #include <QMessageBox>

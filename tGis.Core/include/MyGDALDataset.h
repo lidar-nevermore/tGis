@@ -17,11 +17,14 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct GDALInit;
+struct GDALInitializer;
 struct IDataSource;
 
 class TGIS_CORE_API MyGDALDataset : public Dataset
 {
+public:
+	static bool GDALInit();
+
 public:
 	virtual const char* GetName();
 	virtual const char* GetCreationString();
@@ -42,7 +45,7 @@ protected:
 	string _name;
 
 private:
-	static GDALInit* _GDALInit;
+	static GDALInitializer* _GDALInit;
 
 public:
 	static size_t GetSupportedRasterFormatCount();

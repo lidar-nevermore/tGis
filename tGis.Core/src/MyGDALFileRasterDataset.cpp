@@ -105,32 +105,26 @@ void MyGDALFileRasterDataset::AttachHDF(const char* file, GDALAccess eAccess, co
 		{
 			for (int i = 0; papszSUBDATASETS[i] != NULL; i++)
 			{
-				if (i % 2 != 0)
-					continue;
+				std::string tmpstr = std::string(papszSUBDATASETS[i]);
+				size_t espos = tmpstr.find_first_of("=");
+				std::string subitem = tmpstr.substr(0, espos);
+				transform(subitem.begin(), subitem.end(), subitem.begin(), ::toupper);
 
-				if (i == 2 * subdataset)
+				if (subitem.rfind("NAME") == espos - 4)
 				{
-					std::string tmpstr = std::string(papszSUBDATASETS[i]);
-					_path = tmpstr.substr(tmpstr.find_first_of("=") + 1);
+					size_t uspos = subitem.find_last_of("_");
+					//SUBDATASET_num_NAME
+					std::string num = subitem.substr(11, uspos - 11);
+					int inum = atoi(num.c_str());
 
-					char subset[32] = { 0 };
-					strcpy(subset, ":SUBDATASET_");
-					_itoa(subdataset, subset + 12, 10);
-					string file_path(file);
-					size_t pos = file_path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
-					if (pos == _path.npos)
+					if (inum == subdataset)
 					{
-						_name = file_path + subset;
+						std::string subname = tmpstr.substr(tmpstr.find_first_of("=") + 1);
+						size_t infpos = tmpstr.rfind("\":");
+						std::string inf = tmpstr.substr(infpos + 2);
+						GDALDataset *dataset = (GDALDataset*)GDALOpen(subname.c_str(), eAccess);
+						Attach(dataset, autoClose);
 					}
-					else
-					{
-						_name = file_path.substr(pos + 1) + subset;
-					}
-
-
-					GDALDataset *dataset = (GDALDataset*)GDALOpen(_path.c_str(), eAccess);
-					Attach(dataset, autoClose,noDataValue);
-					break;
 				}
 			}//end for  
 		}

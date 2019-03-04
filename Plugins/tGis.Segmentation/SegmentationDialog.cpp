@@ -57,11 +57,11 @@ void SegmentationDialog::on_btnInputImg_clicked(bool checked)
 	if (fileDlg.exec() == QDialog::Accepted)
 	{
 		QString qtPath = fileDlg.selectedFiles().at(0);
+		QString nqtPath = QDir::toNativeSeparators(qtPath);
 		QFileInfo finfo(qtPath);
 		_initialDir = finfo.absolutePath();
-		ui.leInputImg->setText(qtPath);
-		QString path = QDir::toNativeSeparators(qtPath);
-		_inputImage = path.toLocal8Bit().data();
+		ui.leInputImg->setText(qtPath);		
+		_inputImage = nqtPath.toLocal8Bit().data();
 		_outputShape.clear();
 		ui.leOutputShp->setText(QStringLiteral(""));
 	}
@@ -80,11 +80,11 @@ void SegmentationDialog::on_btnOutputShp_clicked(bool checked)
 	if (fileDlg.exec() == QDialog::Accepted)
 	{
 		QString qtPath = fileDlg.selectedFiles().at(0);
+		QString nqtPath = QDir::toNativeSeparators(qtPath);
 		QFileInfo finfo(qtPath);
 		_initialDir = finfo.absolutePath();
-		ui.leOutputShp->setText(qtPath);
-		QString path = QDir::toNativeSeparators(qtPath);
-		_outputShape = path.toLocal8Bit().data();
+		ui.leOutputShp->setText(nqtPath);
+		_outputShape = nqtPath.toLocal8Bit().data();
 	}
 }
 
