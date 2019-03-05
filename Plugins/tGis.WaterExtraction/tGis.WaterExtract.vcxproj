@@ -111,12 +111,18 @@
     <QtMoc Include="QtHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="MeanShiftCluster.cpp" />
     <ClCompile Include="QtHelper.cpp" />
+    <ClCompile Include="RasterBinarize.cpp" />
+    <ClCompile Include="RasterSubset.cpp" />
     <ClCompile Include="tGisWaterExtraction.cpp" />
     <ClCompile Include="WaterExtractionTool.cpp" />
     <ClCompile Include="WaterExtrationDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MeanShiftCluster.h" />
+    <ClInclude Include="RasterBinarize.h" />
+    <ClInclude Include="RasterSubset.h" />
     <ClInclude Include="tGisWaterExtraction.h" />
     <ClInclude Include="WaterExtractionTool.h" />
     <ClInclude Include="WaterExtrationDialog.h" />

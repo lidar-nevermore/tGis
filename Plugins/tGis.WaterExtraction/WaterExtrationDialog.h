@@ -25,7 +25,7 @@ public:
 
 	int _subDataset;
 	int _band;
-	int _dataType;
+	int _imageType;
 
 	double _expThreshold;
 	double _lowRange;

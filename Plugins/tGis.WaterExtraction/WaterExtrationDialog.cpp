@@ -206,7 +206,7 @@ void WaterExtrationDialog::on_accepted()
 {
 	_subDataset = ui.cboSubDataset->currentIndex() + 1;
 	_band = ui.cboInputBand->currentIndex() + 1;
-	_dataType = ui.cboInputType->currentIndex();
+	_imageType = ui.cboInputType->currentIndex();
 
 	QString strExpThreshold = ui.leExpThreshold->text();
 	_expThreshold = strExpThreshold.toDouble();

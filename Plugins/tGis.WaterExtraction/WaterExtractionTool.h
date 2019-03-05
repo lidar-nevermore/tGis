@@ -4,7 +4,9 @@
 #define __WATEREXTRACTIONTOOL_H__
 
 #include "tGisCore.h"
+#include <string>
 
+using namespace std;
 using namespace tGis::Core;
 
 class WaterExtractionTool : public ITool
@@ -19,6 +21,21 @@ public:
 public:
 	const char* GetName();
 	void Execute();
+
+private:
+	void WaterExtract(
+		string& inputImage,
+		string& aoiImage,
+		string& outputDir,
+		int subDataset,
+		int band,
+		int imgType,
+		double expThreshold,
+		double lowRange,
+		double highRange,
+		int histBins,
+		int radiusBins,
+		int maxIteration);
 };
 
 
