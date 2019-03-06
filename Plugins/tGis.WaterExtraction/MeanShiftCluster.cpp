@@ -189,8 +189,6 @@ bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<b
 	//对直方图进行均值滤波
 	for (int j = 0; j < entryCount; j++)
 	{
-		clusterFlags[j] = 1;
-
 		int lowPos = j - radius;
 		if (lowPos < 0)
 			lowPos = 0;
@@ -216,18 +214,31 @@ bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<b
 		int p_3[3] = { 0,1,0 };//0 表示肯定不是局部峰值 1 表示不确定是否是局部峰值 2 表示是局部峰值 
 		if (j > 0)
 		{
-			n_3[0] = convergeFlags[j - 1];
 			p_3[0] = clusterFlags[j - 1];
+			n_3[0] = convergeFlags[j - 1];
 		}
 		n_3[1] = convergeFlags[j];
-		p_3[1] = clusterFlags[j];
 		if (j + 1 < entryCount)
-		{
 			n_3[2] = convergeFlags[j + 1];
-			p_3[2] = clusterFlags[j + 1];
-		}
 
 		int n_max = max(n_3[0], max(n_3[1], n_3[2]));
+
+		if (n_3[1] == n_max && j + 1 < entryCount)
+		{
+			if (n_3[2] < n_max)
+			{
+				p_3[2] = 0;
+				clusterFlags[j + 1] = 0;
+			}
+			else if (n_3[2] == n_max)
+			{
+				p_3[1] = 1;
+				clusterFlags[j] = 1;
+				p_3[2] = 1;
+				clusterFlags[j + 1] = 1;
+			}
+		}
+
 		int may_peak_around = 0; // 2领域中可能是极值点的点数
 		int	pro_peak_around = 0; // 2领域中支持中心点是极值点的点数
 		int	con_peak_around = 0; // 2领域中反对中心点是极值点的点数
@@ -290,26 +301,27 @@ bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<b
 	}
 	
 	//过滤局部极大值
+	int diameter = radius + radius + 1;
 	int maxIteration = maxIt;
 	bool converged = false;
 	for (int i = 0; converged == false && i < maxIteration; i++)
 	{
 		converged = true;
 
-		for (int j = radius; j <= entryCount; j++)
+		for (int j = diameter; j <= entryCount; j++)
 		{
 			int clusterCount = 0;
-			int maxPos = j - radius;
-			int maxCount = pixCounts[maxPos];
+			int maxPos = -1;
+			int maxCount = -1;
 
-			for (int k = maxPos; k < j; k++)
+			for (int k = j - diameter; k < j; k++)
 			{
 				if (clusterFlags[k] != 0)
 				{
 					clusterCount++;
-					if (pixCounts[k] > maxCount)
+					if (convergeFlags[k] > maxCount)
 					{
-						maxCount = pixCounts[k];
+						maxCount = convergeFlags[k];
 						maxPos = k;
 					}
 				}
@@ -318,7 +330,7 @@ bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<b
 			converged &= clusterCount <= 1;
 			if (clusterCount > 1)
 			{
-				for (int k = j - radius; k < j; k++)
+				for (int k = j - diameter; k < j; k++)
 				{
 					clusterFlags[k] = 0;
 				}
@@ -328,6 +340,9 @@ bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<b
 	}
 
 	vector<int> cluster_centers;
+
+	if(clusterFlags[0] == 0)
+		cluster_centers.push_back(0);
 	//找聚类中心
 	for (int j = 0; j < entryCount; j++)
 	{
@@ -336,6 +351,8 @@ bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<b
 			cluster_centers.push_back(j);
 		}
 	}
+	if (clusterFlags[entryMax] == 0)
+		cluster_centers.push_back(entryMax);
 
 	//判定类别的范围
 	_clusters.clear();

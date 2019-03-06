@@ -104,8 +104,6 @@ void WaterExtractionTool::WaterExtract(
 		yOffset = 0;
 		xSize = inRaster.GetGDALDataset()->GetRasterXSize();
 		ySize = inRaster.GetGDALDataset()->GetRasterYSize();
-
-		aoiImage = nullptr;
 	}
 	else
 	{

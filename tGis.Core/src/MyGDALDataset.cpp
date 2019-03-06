@@ -293,11 +293,15 @@ bool MyGDALDataset::IsSupportedVectorFormatFirstExt(const char * ext)
 MyGDALDataset::MyGDALDataset(IDataSource * ds)
 	:Dataset(ds)
 {
+	_dataset = nullptr;
+	_spatialRef = nullptr;
 }
 
 MyGDALDataset::MyGDALDataset()
 	: Dataset(nullptr)
 {
+	_dataset = nullptr;
+	_spatialRef = nullptr;
 }
 
 MyGDALDataset::~MyGDALDataset()
