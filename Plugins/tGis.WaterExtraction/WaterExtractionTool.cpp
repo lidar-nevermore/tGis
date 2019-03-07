@@ -6,6 +6,7 @@
 #include "RasterBinarize.h"
 #include "RasterSubset.h"
 #include "MeanShiftCluster.h"
+#include <exception>
 
 using namespace tGis::Core;
 
@@ -31,23 +32,33 @@ void WaterExtractionTool::Execute()
 	WaterExtrationDialog dlg((QWidget*)QtHelper::INSTANCE.GetMainWindow());
 	if (dlg.exec() == QDialog::Accepted)
 	{
-		WaterExtract(dlg._inputImage,
-			dlg._aoiImage,
-			dlg._outputDir,
-			dlg._subDataset,
-			dlg._band,
-			dlg._imageType,
-			dlg._expThreshold,
-			dlg._lowRange,
-			dlg._highRange,
-			dlg._histBins,
-			dlg._radiusBins,
-			dlg._maxIteration);
+		try
+		{
+			WaterExtract(dlg._inputImage,
+				dlg._aoiImage,
+				dlg._outputDir,
+				dlg._subDataset,
+				dlg._band,
+				dlg._imageType,
+				dlg._expThreshold,
+				dlg._lowRange,
+				dlg._highRange,
+				dlg._histBins,
+				dlg._radiusBins,
+				dlg._maxIteration);
 
-		QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
-			QStringLiteral("消息"),
-			QStringLiteral("水体提取已经完成！"),
-			QMessageBox::Yes, QMessageBox::Yes);
+			QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
+				QStringLiteral("消息"),
+				QStringLiteral("水体提取已经完成！"),
+				QMessageBox::Yes, QMessageBox::Yes);
+		}
+		catch (std::exception & ex)
+		{
+			QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
+				QStringLiteral("错误"),
+				QString::fromLocal8Bit(ex.what()),
+				QMessageBox::Yes, QMessageBox::Yes);
+		}
 	}
 }
 
@@ -115,16 +126,6 @@ void WaterExtractionTool::WaterExtract(
 		yOffset = reader.GetYOffset();
 		xSize = reader.GetXSize();
 		ySize = reader.GetYSize();
-
-		if (xSize == 0 || ySize == 0)
-		{
-			QMessageBox::information((QWidget*)QtHelper::INSTANCE.GetMainWindow(),
-				QStringLiteral("错误"),
-				QStringLiteral("aoi影像和待处理影像无交集！"),
-				QMessageBox::Yes, QMessageBox::Yes);
-
-			return;
-		}
 	}
 
 	MeanShiftCluster meanshift(inRaster.GetGDALDataset(), band, aoi.GetGDALDataset(), 1);
