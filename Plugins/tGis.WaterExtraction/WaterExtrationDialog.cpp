@@ -24,6 +24,9 @@ WaterExtrationDialog::WaterExtrationDialog(QWidget *parent)
 	ui.cboInputType->addItem(QStringLiteral("NDVI"));
 	ui.cboInputType->addItem(QStringLiteral("REF"));
 
+	ui.cboIsBalanced->addItem(QStringLiteral("Uneven"));
+	ui.cboIsBalanced->addItem(QStringLiteral("Even"));
+
 	connect(ui.btnInputImage, &QPushButton::clicked, this, &WaterExtrationDialog::on_btnInputImage_clicked);
 	connect(ui.btnAoiImage, &QPushButton::clicked, this, &WaterExtrationDialog::on_btnAoiImage_clicked);
 	connect(ui.btnOutputDir, &QPushButton::clicked, this, &WaterExtrationDialog::on_btnOutputDir_clicked);
@@ -207,9 +210,8 @@ void WaterExtrationDialog::on_accepted()
 	_subDataset = ui.cboSubDataset->currentIndex() + 1;
 	_band = ui.cboInputBand->currentIndex() + 1;
 	_imageType = ui.cboInputType->currentIndex();
-
-	QString strExpThreshold = ui.leExpThreshold->text();
-	_expThreshold = strExpThreshold.toDouble();
+	_isBalanced = ui.cboIsBalanced->currentIndex() == 1;
+	
 
 	QString strLowRange = ui.leLowRange->text();
 	_lowRange = strLowRange.toDouble();

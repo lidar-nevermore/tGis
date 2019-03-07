@@ -94,14 +94,7 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>EXP Threshold</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLineEdit" name="leExpThreshold">
-     <property name="text">
-      <string>-1000</string>
+      <string>Is Pixel Even</string>
      </property>
     </widget>
    </item>
@@ -208,6 +201,9 @@
       <enum>QComboBox::AdjustToContents</enum>
      </property>
     </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="cboIsBalanced"/>
    </item>
   </layout>
  </widget>

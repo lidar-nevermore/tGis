@@ -27,7 +27,7 @@ public:
 	int _band;
 	int _imageType;
 
-	double _expThreshold;
+	bool _isBalanced;
 	double _lowRange;
 	double _highRange;
 

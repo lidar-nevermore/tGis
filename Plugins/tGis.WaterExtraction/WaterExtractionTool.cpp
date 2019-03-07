@@ -40,7 +40,7 @@ void WaterExtractionTool::Execute()
 				dlg._subDataset,
 				dlg._band,
 				dlg._imageType,
-				dlg._expThreshold,
+				dlg._isBalanced,
 				dlg._lowRange,
 				dlg._highRange,
 				dlg._histBins,
@@ -69,7 +69,7 @@ void WaterExtractionTool::WaterExtract(
 	int subDataset,
 	int band,
 	int imgType,
-	double expThreshold,
+	bool isBalanced,
 	double lowRange,
 	double highRange,
 	int histBins,
@@ -130,7 +130,7 @@ void WaterExtractionTool::WaterExtract(
 
 	MeanShiftCluster meanshift(inRaster.GetGDALDataset(), band, aoi.GetGDALDataset(), 1);
 
-	meanshift.Process(histBins, radiusBins,
+	meanshift.Process(histBins, radiusBins, imgType == 0,
 		[lowRange, highRange]
 	(double pix)->bool
 	{
@@ -138,8 +138,10 @@ void WaterExtractionTool::WaterExtract(
 			return true;
 		return false;
 	},
+		isBalanced,
 		maxIteration);
 
+	double initialThreshold = meanshift.GetInitialThreshold();
 	int ccount = meanshift.GetClusterCount();
 	double th = 0;
 
@@ -152,14 +154,14 @@ void WaterExtractionTool::WaterExtract(
 			double center;
 			double heigh;
 			meanshift.GetClusterInfo(c, &low, &center, &heigh);
-			if (center > expThreshold)
+			if (low >= initialThreshold)
 			{
 				th = low;
 				break;
 			}
 		}
 	}
-	else if (imgType == 1) //NDVI
+	else //NDVI 反射率
 	{
 		for (int c = ccount - 1; c >= 0; c--)
 		{
@@ -167,22 +169,7 @@ void WaterExtractionTool::WaterExtract(
 			double center;
 			double heigh;
 			meanshift.GetClusterInfo(c, &low, &center, &heigh);
-			if (center < expThreshold)
-			{
-				th = heigh;
-				break;
-			}
-		}
-	}
-	else //反射率
-	{
-		for (int c = 0; c < ccount; c++)
-		{
-			double low;
-			double center;
-			double heigh;
-			meanshift.GetClusterInfo(c, &low, &center, &heigh);
-			if (center > expThreshold)
+			if (heigh <= initialThreshold)
 			{
 				th = heigh;
 				break;

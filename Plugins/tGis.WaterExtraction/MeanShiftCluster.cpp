@@ -90,7 +90,13 @@ void PixelValueStat2(void* user, GDALRasterBand* band, double pix, int x, int y,
 }
 
 
-bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<bool(double pix)>& func, int maxIt)
+bool MeanShiftCluster::Process(
+	int entryCount,
+	int radius,
+	bool positive,
+	const std::function<bool(double pix)>& func,
+	bool isBalanced,
+	int maxIt)
 {
 	//直方图中心节点的像素值
 	double *centerPixValue = nullptr;
@@ -356,71 +362,121 @@ bool MeanShiftCluster::Process(int entryCount, int radius, const std::function<b
 
 	//判定类别的范围
 	_clusters.clear();
+	int topPos = 0;
+	int topCenPixCount = 0;
 	double lowPixValue = minPixValue;
 	for (int i = 0; i < cluster_centers.size() - 1; i++)
 	{
-		double totalPixCount = 0;
-		int thresholdPos = 0;
 		int pos_s = cluster_centers[i];
 		int pos_e = cluster_centers[i + 1];
-		for (int j = pos_s; j <= pos_e; j++)
-		{
-			totalPixCount += pixCounts[j];
-		}
-
-		if (totalPixCount == 0 || (pos_s+1) == pos_e)
-		{
-			_cluster_t c;
-			c.Min = lowPixValue;
-			c.Cen = centerPixValue[pos_s];
-			c.Max = (centerPixValue[pos_s] + centerPixValue[pos_e]) / 2;
-			lowPixValue = c.Max;
-			_clusters.push_back(c);
-			continue;
-		}
-
-		double w0, w1, u0tmp, u1tmp, u0, u1, u, deltaTmp, deltaMax = 0;
-		for (int j = pos_s; j <= pos_e; j++)
-		{
-			w0 = w1 = u0tmp = u1tmp = u0 = u1 = u = deltaTmp = 0;
-			for (int k = pos_s; k <= pos_e; k++)
-			{
-				if (k <= j)   //背景部分  
-				{
-					w0 += pixCounts[k];
-					u0tmp += centerPixValue[k] * pixCounts[k];
-				}
-				else   //前景部分  
-				{
-					w1 += pixCounts[k];
-					u1tmp += centerPixValue[k] * pixCounts[k];
-				}
-			}
-
-			u0 = u0tmp / w0;
-			u1 = u1tmp / w1;
-			u = (u0tmp + u1tmp) / totalPixCount;
-			deltaTmp = w0 * pow((u0 - u), 2) + w1 * pow((u1 - u), 2);
-			if (deltaTmp > deltaMax)
-			{
-				deltaMax = deltaTmp;
-				thresholdPos = j;
-			}
-		}
+		int thresholdPos = (pos_s + pos_e)/2;
 
 		_cluster_t c;
 		c.Min = lowPixValue;
 		c.Cen = centerPixValue[pos_s];
-		c.Max = centerPixValue[thresholdPos];
-		lowPixValue = c.Max;
-		_clusters.push_back(c);
+		c.CenPixCount = convergeFlags[pos_s];
+
+		if ((pos_s+1) == pos_e)
+		{
+			c.Max = (centerPixValue[pos_s] + centerPixValue[pos_e]) / 2;
+			lowPixValue = c.Max;
+			_clusters.push_back(c);
+		}
+		else
+		{			
+			double w0, w1, u0tmp, u1tmp, u0, u1, u, deltaTmp, deltaMax = 0;
+			for (int j = pos_s; j <= pos_e; j++)
+			{
+				w0 = w1 = u0tmp = u1tmp = u0 = u1 = u = deltaTmp = 0;
+				for (int k = pos_s; k <= pos_e; k++)
+				{
+					if (k <= j)   //背景部分  
+					{
+						w0 += pixCounts[k];
+						u0tmp += centerPixValue[k] * pixCounts[k];
+					}
+					else   //前景部分  
+					{
+						w1 += pixCounts[k];
+						u1tmp += centerPixValue[k] * pixCounts[k];
+					}
+				}
+
+				double sum = w0 + w1;
+				if (sum <= 0)
+					break;
+				u0 = u0tmp / w0;
+				u1 = u1tmp / w1;
+				u = (u0tmp + u1tmp) / sum;
+				deltaTmp = w0 * pow((u0 - u), 2) + w1 * pow((u1 - u), 2);
+				if (deltaTmp > deltaMax)
+				{
+					deltaMax = deltaTmp;
+					thresholdPos = j;
+				}
+			}
+
+			c.Max = centerPixValue[thresholdPos];
+			lowPixValue = c.Max;
+			_clusters.push_back(c);
+		}
+
+		if (topCenPixCount < c.CenPixCount
+			|| (positive && topCenPixCount == c.CenPixCount))
+		{
+			topCenPixCount = c.CenPixCount;
+			topPos = thresholdPos;
+		}
 	}
 
+	int lastCen = cluster_centers.at(cluster_centers.size() - 1);
 	_cluster_t c;
 	c.Min = lowPixValue;
-	c.Cen = centerPixValue[cluster_centers[cluster_centers.size()-1]];
-	c.Max = centerPixValue[entryMax];
+	c.Cen = centerPixValue[lastCen];
+	c.Max = maxPixValue;
+	c.CenPixCount = convergeFlags[lastCen];
 	_clusters.push_back(c);
+
+
+	//计算初始阈值
+	int thresholdPos = 0;
+	int pos_s = 0;
+	int pos_e = entryMax;
+	if (isBalanced == false)
+	{
+		pos_s = positive ? topPos : 0;
+		pos_e = positive ? entryMax : topPos;
+	}
+	double w0, w1, u0tmp, u1tmp, u0, u1, u, deltaTmp, deltaMax = 0;
+	for (int j = pos_s; j <= pos_e; j++)
+	{
+		w0 = w1 = u0tmp = u1tmp = u0 = u1 = u = deltaTmp = 0;
+		for (int k = pos_s; k <= pos_e; k++)
+		{
+			if (k <= j)   //背景部分  
+			{
+				w0 += pixCounts[k];
+				u0tmp += centerPixValue[k] * pixCounts[k];
+			}
+			else   //前景部分  
+			{
+				w1 += pixCounts[k];
+				u1tmp += centerPixValue[k] * pixCounts[k];
+			}
+		}
+
+		u0 = u0tmp / w0;
+		u1 = u1tmp / w1;
+		u = (u0tmp + u1tmp) / (w0 + w1);
+		deltaTmp = w0 * pow((u0 - u), 2) + w1 * pow((u1 - u), 2);
+		if (deltaTmp > deltaMax)
+		{
+			deltaMax = deltaTmp;
+			thresholdPos = j;
+		}
+	}
+	
+	_initialThreshold = centerPixValue[thresholdPos];
 
 	delete[] clusterFlags;
 	delete[] centerPixValue;

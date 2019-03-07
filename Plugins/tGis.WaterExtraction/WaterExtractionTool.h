@@ -30,7 +30,7 @@ private:
 		int subDataset,
 		int band,
 		int imgType,
-		double expThreshold,
+		bool isBalanced,
 		double lowRange,
 		double highRange,
 		int histBins,

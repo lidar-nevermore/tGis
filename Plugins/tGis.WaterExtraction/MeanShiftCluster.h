@@ -24,8 +24,10 @@ private:
 		double Cen;
 		double Max;
 		int PixCount;
+		int CenPixCount;
 	};
 	vector<_cluster_t> _clusters;
+	double _initialThreshold;
 
 public:
 	MeanShiftCluster(GDALDataset* raster, int band, GDALDataset* aoiRaster, const int aoiBand);
@@ -35,6 +37,13 @@ public:
 
 	void GetClusterInfo(int cluster, double *low, double *center, double *heigh);
 
-	bool Process(int entryCount, int radius, const std::function<bool(double pix)>& func, int maxIteration = 1000);
+	double GetInitialThreshold() { return _initialThreshold;  }
+
+	bool Process(int entryCount, 
+		int radius, 
+		bool positive,
+		const std::function<bool(double pix)>& func,
+		bool isBalanced,
+		int maxIteration = 1000);
 };
 
