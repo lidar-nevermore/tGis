@@ -59,7 +59,7 @@ Plugin::Plugin(const char* cfg)
 		file.close();
 		std::wstring_convert<std::codecvt_utf8<wchar_t>> wstr_converter;
 		wstring wpath = wstr_converter.from_bytes(_file);
-		_hModule = LoadLibraryEx((LPCWSTR)(wpath.c_str()), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
+		_hModule = LoadLibraryExW((LPCWSTR)(wpath.c_str()), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
 		if (_hModule != NULL)
 		{
 			_initializeProc = reinterpret_cast<PLUGIN_INITIALIZE_PROC>(::GetProcAddress(_hModule, "_tGisPluginInitialize"));

@@ -452,10 +452,10 @@
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="internal\Plugin.cpp">
-      <Filter>src</Filter>
+      <Filter>internal</Filter>
     </ClCompile>
     <ClCompile Include="internal\PluginManager.cpp">
-      <Filter>src</Filter>
+      <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 	RasterBinaryGrayScaleLayerProvider::INSTANCE.SetPropertyUI(&RasterBinaryGrayScaleLayerPropertyDialog::RasterBinaryGrayScaleLayerProperty);
 	RasterRgbLayerProvider::INSTANCE.SetCreationUI(&RasterRgbLayerPropertyDialog::CreateRasterRgbLayer);
 	RasterRgbLayerProvider::INSTANCE.SetPropertyUI(&RasterRgbLayerPropertyDialog::RasterRgbLayerProperty);
-
+	QApplication::addLibraryPath("./qtplugins");
 	QApplication a(argc, argv);
 	tGisApp w;
 	QtHelper::INSTANCE.setObjectName(QStringLiteral("QtHelper"));
