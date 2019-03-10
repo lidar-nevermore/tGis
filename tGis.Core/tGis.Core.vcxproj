@@ -88,6 +88,8 @@
     <ClInclude Include="include\VectorSimpleLayer.h" />
     <ClInclude Include="include\VectorSimpleLayerProvider.h" />
     <ClInclude Include="internal\elr_mtx.h" />
+    <ClInclude Include="internal\iconf.h" />
+    <ClInclude Include="internal\ilog.h" />
     <ClInclude Include="internal\Plugin.h" />
     <ClInclude Include="internal\PluginManager.h" />
     <ClInclude Include="internal\VisualizeBufferManager.h" />
@@ -95,6 +97,8 @@
   <ItemGroup>
     <ClCompile Include="include\tVisualize.cpp" />
     <ClCompile Include="internal\elr_mtx.c" />
+    <ClCompile Include="internal\iconf.c" />
+    <ClCompile Include="internal\ilog.c" />
     <ClCompile Include="internal\Plugin.cpp" />
     <ClCompile Include="internal\PluginManager.cpp" />
     <ClCompile Include="internal\VisualizeBufferManager.cpp" />

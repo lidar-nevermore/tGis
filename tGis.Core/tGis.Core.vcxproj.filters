@@ -284,6 +284,12 @@
     <ClInclude Include="include\tGisCoreCfg.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="internal\ilog.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\iconf.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
@@ -455,6 +461,12 @@
       <Filter>internal</Filter>
     </ClCompile>
     <ClCompile Include="internal\PluginManager.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\ilog.c">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\iconf.c">
       <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>
