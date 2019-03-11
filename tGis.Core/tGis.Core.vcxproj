@@ -15,6 +15,7 @@
     <ClInclude Include="include\DataSource.h" />
     <ClInclude Include="include\DataSourceProvider.h" />
     <ClInclude Include="include\DataSourceProviderRepository.h" />
+    <ClInclude Include="include\elr_mtx.h" />
     <ClInclude Include="include\Event.h" />
     <ClInclude Include="include\EventBase.h" />
     <ClInclude Include="include\FileSystemDataSource.h" />
@@ -71,6 +72,7 @@
     <ClInclude Include="include\TGisApplication.h" />
     <ClInclude Include="include\tGisCore.h" />
     <ClInclude Include="include\tGisCoreCfg.h" />
+    <ClInclude Include="include\tinyxml2.h" />
     <ClInclude Include="include\Tool.h" />
     <ClInclude Include="include\ToolKit.h" />
     <ClInclude Include="include\ToolKitRepository.h" />
@@ -87,8 +89,6 @@
     <ClInclude Include="include\VectorLayer.h" />
     <ClInclude Include="include\VectorSimpleLayer.h" />
     <ClInclude Include="include\VectorSimpleLayerProvider.h" />
-    <ClInclude Include="internal\elr_mtx.h" />
-    <ClInclude Include="internal\iconf.h" />
     <ClInclude Include="internal\ilog.h" />
     <ClInclude Include="internal\Plugin.h" />
     <ClInclude Include="internal\PluginManager.h" />
@@ -96,8 +96,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\tVisualize.cpp" />
-    <ClCompile Include="internal\elr_mtx.c" />
-    <ClCompile Include="internal\iconf.c" />
     <ClCompile Include="internal\ilog.c" />
     <ClCompile Include="internal\Plugin.cpp" />
     <ClCompile Include="internal\PluginManager.cpp" />
@@ -106,6 +104,7 @@
     <ClCompile Include="src\DataSource.cpp" />
     <ClCompile Include="src\DataSourceProvider.cpp" />
     <ClCompile Include="src\DataSourceProviderRepository.cpp" />
+    <ClCompile Include="src\elr_mtx.c" />
     <ClCompile Include="src\EventBase.cpp" />
     <ClCompile Include="src\FileSystemDataSource.cpp" />
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp" />
@@ -148,6 +147,7 @@
     <ClCompile Include="src\Statistics.cpp" />
     <ClCompile Include="src\SymbolLibraryRepository.cpp" />
     <ClCompile Include="src\TGisApplication.cpp" />
+    <ClCompile Include="src\tinyxml2.cpp" />
     <ClCompile Include="src\Tool.cpp" />
     <ClCompile Include="src\ToolKit.cpp" />
     <ClCompile Include="src\ToolKitRepository.cpp" />
@@ -199,7 +199,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;TGIS_CORE_EXPORTS;TGIS_HELPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -219,7 +219,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;TGIS_CORE_EXPORTS;TGIS_HELPER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

@@ -1,13 +1,16 @@
 #ifndef __ELR_MTX_H__
 #define __ELR_MTX_H__
 
-
-#if defined(_MSC_VER) || defined(__MINGW32__)
-#include <windows.h>
+#include "tGisCoreCfg.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+
+#if defined(_MSC_VER) || defined(__MINGW32__)
+
+#include <windows.h>
 
 /*! \brief platform independent mutex type.
  *
@@ -43,7 +46,7 @@ typedef LONG                  elr_counter_t;
  *
  *  make a increment of v by one atomicly.
  */
-elr_counter_t elr_atomic_inc(elr_atomic_t* v);
+TGIS_CORE_API elr_counter_t elr_atomic_inc(elr_atomic_t* v);
 
 /*
 ** 原子自减操作
@@ -54,7 +57,7 @@ elr_counter_t elr_atomic_inc(elr_atomic_t* v);
  *
  *  make a decrement of v by one atomicly.
  */
-elr_counter_t elr_atomic_dec(elr_atomic_t* v);
+TGIS_CORE_API elr_counter_t elr_atomic_dec(elr_atomic_t* v);
 
 /*
 ** 初始化互斥体，返回0表示初始化失败
@@ -64,22 +67,22 @@ elr_counter_t elr_atomic_dec(elr_atomic_t* v);
  *  \param mtx pointer to a mutex.
  *  \retval zero if failed.
  */
-int  elr_mtx_init(elr_mtx *mtx);
+TGIS_CORE_API int  elr_mtx_init(elr_mtx *mtx);
 
 /*! \brief waits on a mutex.
  *  \param mtx pointer to a mutex.
  */
-void elr_mtx_lock (elr_mtx *mtx);
+TGIS_CORE_API void elr_mtx_lock (elr_mtx *mtx);
 
 /*! \brief releases on a mutex.
  *  \param mtx pointer to a mutex.
  */
-void elr_mtx_unlock(elr_mtx *mtx);
+TGIS_CORE_API void elr_mtx_unlock(elr_mtx *mtx);
 
 /*! \brief initialize a mutex.
  *  \param mtx pointer to a mutex.
  */
-void elr_mtx_finalize(elr_mtx *mtx);
+TGIS_CORE_API void elr_mtx_finalize(elr_mtx *mtx);
 
 #ifdef __cplusplus
 }  /* end of the 'extern "C"' block */
