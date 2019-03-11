@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-#include <stdarg.h>
 #include <time.h>
 #include <direct.h>
 #include "elr_mtx.h"
@@ -37,7 +36,7 @@ typedef struct __loger_t
 _loger_t;
 
 
-loger_t  _initial_log(const char *path, int level, int console)
+TGIS_CORE_API loger_t  _init_log(const char *path, int level, int console)
 {
 	_loger_t *loger = (_loger_t*)malloc(sizeof(_loger_t));
 	struct tm localtm;
@@ -69,9 +68,16 @@ loger_t  _initial_log(const char *path, int level, int console)
 	return loger;
 }
 
-void  _print_log(loger_t loger, int level, const char *format, ...)
+TGIS_CORE_API void  _print_log(loger_t loger, int level, const char *format, ...)
 {
 	va_list args;
+	va_start(args, format);
+	_vprint_log(loger, level, format, args);
+	va_end(args);
+}
+
+TGIS_CORE_API void _vprint_log(loger_t loger, int level, const char * format, va_list args)
+{
 	_loger_t* log = (_loger_t*)loger;
 	struct tm ltnow;
 	char   date[11];
@@ -92,8 +98,6 @@ void  _print_log(loger_t loger, int level, const char *format, ...)
 		log->fp = fopen(log->path, "a+");
 	}
 
-	va_start(args, format);
-
 	elr_mtx_lock(&log->mtx);
 	if (log->console)
 	{
@@ -109,10 +113,9 @@ void  _print_log(loger_t loger, int level, const char *format, ...)
 		fputs("\n\n", log->fp);
 	}
 	elr_mtx_unlock(&log->mtx);
-	va_end(args);
 }
 
-void  _finalize_log(loger_t loger)
+TGIS_CORE_API void  _finalize_log(loger_t loger)
 {
 	_loger_t* log = (_loger_t*)loger;
 
@@ -125,7 +128,7 @@ void  _finalize_log(loger_t loger)
 	}
 }
 
-void _flush_log(loger_t loger)
+TGIS_CORE_API void _flush_log(loger_t loger)
 {
 	_loger_t* log = (_loger_t*)loger;
 

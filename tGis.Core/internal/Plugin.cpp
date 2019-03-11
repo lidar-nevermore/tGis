@@ -14,6 +14,8 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 Plugin::Plugin(const char* cfg)
 {
+	const char* plugin_name = NULL;
+	const char* plugin_file = NULL;
 	const size_t len = 32768; // 512k
 	char buffer[len] = { 0 };
 	ifstream file;
@@ -57,6 +59,10 @@ Plugin::Plugin(const char* cfg)
 		} while (readSize == len);
 
 		file.close();
+
+		plugin_name = _name.c_str();
+		plugin_file = _file.c_str();
+		TGIS_LOG_FORMAT(LOG_INFO, "loading...\nname=%s\nfile=%s", plugin_name, plugin_file);
 		std::wstring_convert<std::codecvt_utf8<wchar_t>> wstr_converter;
 		wstring wpath = wstr_converter.from_bytes(_file);
 		_hModule = LoadLibraryExW((LPCWSTR)(wpath.c_str()), NULL, LOAD_WITH_ALTERED_SEARCH_PATH);
@@ -66,15 +72,12 @@ Plugin::Plugin(const char* cfg)
 			_finalizeProc = reinterpret_cast<PLUGIN_FINALIZE_PROC>(::GetProcAddress(_hModule, "_tGisPluginFinalize"));
 		}
 
-		const char* plugin_name = _name.c_str();
-		const char* plugin_file = _file.c_str();
-		const char* result = NULL;
+		const char* result = "OK";
 		if (_hModule == NULL)
 			result = "Loading module failed!";
-
-		if (_initializeProc == NULL || _finalizeProc == NULL)
+		else if (_initializeProc == NULL || _finalizeProc == NULL)
 			result = "Not a valid plugin!";
-
+		TGIS_LOG_FORMAT(LOG_INFO, "%s", result);
 		TGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
 	}
 	catch (exception &ex)
@@ -82,9 +85,8 @@ Plugin::Plugin(const char* cfg)
 		file.close();
 		string msg = "exception:";
 		msg.append(ex.what());
-		const char* plugin_name = NULL;
-		const char* plugin_file = NULL;
 		const char* result = msg.c_str();
+		TGIS_LOG_FORMAT(LOG_ERR, "%s", result);
 		TGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
 	}
 }

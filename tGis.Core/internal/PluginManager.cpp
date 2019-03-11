@@ -23,7 +23,7 @@ PluginManager::PluginManager()
 
 	_pluginsPath = exePathBuffer;
 	_pluginsPath.append(TGIS_PATH_SEPARATOR_STR);
-	_pluginsPath.append("plugins");
+	_pluginsPath.append("Plugins");
 	_pluginsPath.append(TGIS_PATH_SEPARATOR_STR);
 }
 

@@ -281,13 +281,13 @@
     <ClInclude Include="include\tGisCoreCfg.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="internal\ilog.h">
-      <Filter>internal</Filter>
-    </ClInclude>
     <ClInclude Include="include\tinyxml2.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
     <ClInclude Include="include\elr_mtx.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ilog.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
   </ItemGroup>
@@ -460,13 +460,13 @@
     <ClCompile Include="internal\PluginManager.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="internal\ilog.c">
-      <Filter>internal</Filter>
-    </ClCompile>
     <ClCompile Include="src\tinyxml2.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="src\elr_mtx.c">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ilog.c">
       <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>

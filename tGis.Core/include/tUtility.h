@@ -1,4 +1,9 @@
 #include "tGisCoreCfg.h"
+
+#include "elr_mpl.h"
+#include "tinyxml2.h"
+#include "ilog.h"
+
 #include "MyGDALRasterDataset.h"
 #include "RasterBandSeqBlockReader.h"
 #include "RasterBandSeqPixelReader.h"

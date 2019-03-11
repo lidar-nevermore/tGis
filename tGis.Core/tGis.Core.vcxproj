@@ -29,6 +29,7 @@
     <ClInclude Include="include\IGeoSurface.h" />
     <ClInclude Include="include\ILayer.h" />
     <ClInclude Include="include\ILayerProvider.h" />
+    <ClInclude Include="include\ilog.h" />
     <ClInclude Include="include\IMap.h" />
     <ClInclude Include="include\IMapTool.h" />
     <ClInclude Include="include\IMapWidget.h" />
@@ -89,14 +90,12 @@
     <ClInclude Include="include\VectorLayer.h" />
     <ClInclude Include="include\VectorSimpleLayer.h" />
     <ClInclude Include="include\VectorSimpleLayerProvider.h" />
-    <ClInclude Include="internal\ilog.h" />
     <ClInclude Include="internal\Plugin.h" />
     <ClInclude Include="internal\PluginManager.h" />
     <ClInclude Include="internal\VisualizeBufferManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\tVisualize.cpp" />
-    <ClCompile Include="internal\ilog.c" />
     <ClCompile Include="internal\Plugin.cpp" />
     <ClCompile Include="internal\PluginManager.cpp" />
     <ClCompile Include="internal\VisualizeBufferManager.cpp" />
@@ -111,6 +110,7 @@
     <ClCompile Include="src\GeoSurface.cpp" />
     <ClCompile Include="src\GeoViewPort.cpp" />
     <ClCompile Include="src\Helper.cpp" />
+    <ClCompile Include="src\ilog.c" />
     <ClCompile Include="src\ITGisObject.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerProvider.cpp" />
@@ -199,7 +199,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;ENABLE_ILOG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -219,7 +219,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;ENABLE_ILOG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\include;$(ProjectDir)\internal</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
