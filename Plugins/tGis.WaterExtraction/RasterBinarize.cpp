@@ -101,16 +101,7 @@ public:
 
 	~BiPixelFunctor()
 	{
-
-	}
-
-	void FlushCache()
-	{
-		if (_save)
-		{
-			_save = false;
-			_outBand->RasterIO(GF_Write, _curXBlockLTC, _curYBlockLTC, _curXBlockSize, _curYBlockSize, _outBuffer, _curXBlockSize, _curYBlockSize, GDT_Byte, 0, 0);
-		}
+		_outBand->RasterIO(GF_Write, _curXBlockLTC, _curYBlockLTC, _curXBlockSize, _curYBlockSize, _outBuffer, _curXBlockSize, _curYBlockSize, GDT_Byte, 0, 0);
 	}
 
 	void operator ()(GDALRasterBand* band,double pix, int x,int y, void* orgPix, StorageBlockBuffer* block, int xPosIB, int yPosIB)
@@ -173,7 +164,6 @@ int RasterBinarize::Process(const char* outRasterPath,const unsigned char fPixVa
 
 	BiPixelFunctor functor(_outBuffer,_outBufferSize,reader.GetXOffset(),reader.GetYOffset(),outBand,&pixCount,fPixValue, tester);
 	reader.ForEachPixel(PixelBinarize, &functor);
-	functor.FlushCache();
     outBand->FlushCache();
 	outRaster->FlushCache();
 	GDALClose((GDALDatasetH)outRaster);
