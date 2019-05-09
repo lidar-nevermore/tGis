@@ -23,6 +23,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Segmentation", "Plugin
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.WaterExtraction", "Plugins\tGis.WaterExtraction\tGis.WaterExtract.vcxproj", "{D411EC77-B92B-44FC-8713-15A613879F99}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.RegionMerging", "Plugins\tGis.RegionMerging\tGis.RegionMerging.vcxproj", "{57540203-203E-4B96-825F-F7ED7C3BA59B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,12 @@ Global
 		{D411EC77-B92B-44FC-8713-15A613879F99}.Release|x64.ActiveCfg = Release|x64
 		{D411EC77-B92B-44FC-8713-15A613879F99}.Release|x64.Build.0 = Release|x64
 		{D411EC77-B92B-44FC-8713-15A613879F99}.Release|x86.ActiveCfg = Release|x64
+		{57540203-203E-4B96-825F-F7ED7C3BA59B}.Debug|x64.ActiveCfg = Debug|x64
+		{57540203-203E-4B96-825F-F7ED7C3BA59B}.Debug|x64.Build.0 = Debug|x64
+		{57540203-203E-4B96-825F-F7ED7C3BA59B}.Debug|x86.ActiveCfg = Debug|x64
+		{57540203-203E-4B96-825F-F7ED7C3BA59B}.Release|x64.ActiveCfg = Release|x64
+		{57540203-203E-4B96-825F-F7ED7C3BA59B}.Release|x64.Build.0 = Release|x64
+		{57540203-203E-4B96-825F-F7ED7C3BA59B}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,5 +99,6 @@ Global
 		{F31A174E-8284-4378-8672-2EE61D836C9E} = {B5DD7267-D818-45BF-BD55-990536149212}
 		{62D75178-667A-4D81-9A81-D4326C8F3C94} = {B5DD7267-D818-45BF-BD55-990536149212}
 		{D411EC77-B92B-44FC-8713-15A613879F99} = {B5DD7267-D818-45BF-BD55-990536149212}
+		{57540203-203E-4B96-825F-F7ED7C3BA59B} = {B5DD7267-D818-45BF-BD55-990536149212}
 	EndGlobalSection
 EndGlobal
