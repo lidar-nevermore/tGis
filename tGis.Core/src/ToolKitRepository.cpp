@@ -1,5 +1,6 @@
 #include "ToolKitRepository.h"
 #include "ToolKit.h"
+#include <memory>
 #include <stdarg.h>
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -12,7 +13,7 @@ ToolKitRepository & ToolKitRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new ToolKitRepository();
-		static _tGisObjectDestructor<ToolKitRepository> shit(_instance);
+		static unique_ptr<ToolKitRepository> shit(_instance);
 	}
 
 	return *_instance;

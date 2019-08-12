@@ -386,6 +386,8 @@ public:
 private:
 	bool _valid;
 	EventHandler _handler;
+	//_handler是否是在本类的实例内部创建的
+	//内部创建的_handler在移除时需要释放内存
 	bool _isInternalHandler;
 	Event<Args...>* _event;
 };

@@ -1,7 +1,7 @@
 #include "MemoryDataSourceProvider.h"
 #include "MemoryDataSource.h"
 #include "RasterBandSeqPixelReader.h"
-
+#include <memory>
 #include <cassert>
 
 #include "gdal.h"
@@ -24,7 +24,7 @@ MemoryDataSourceProvider & MemoryDataSourceProvider::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new MemoryDataSourceProvider();
-		static _tGisObjectDestructor<MemoryDataSourceProvider> shit(_instance);
+		static unique_ptr<MemoryDataSourceProvider> shit(_instance);
 	}
 
 	return *_instance;

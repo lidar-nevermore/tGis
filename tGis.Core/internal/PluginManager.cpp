@@ -1,5 +1,6 @@
 #include "PluginManager.h"
 #include "Plugin.h"
+#include <memory>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -10,7 +11,7 @@ PluginManager & PluginManager::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new PluginManager();
-		static _tGisObjectDestructor<PluginManager> shit(_instance);
+		static unique_ptr<PluginManager> shit(_instance);
 	}
 
 	return *_instance;
@@ -39,36 +40,26 @@ PluginManager::~PluginManager()
 	}
 }
 
+void PluginManager::OnTraverseDir(void * usr, const char * dir, const char * name, unsigned int attrib)
+{
+	PluginManager* pm = (PluginManager*)usr;
+
+	if (!(attrib&_TGIS_A_HIDDEN)
+		&& !(attrib&_TGIS_A_SYSTEM)
+		&& !(attrib&_TGIS_A_SUBDIR))
+	{
+		string pluginPath = pm->_pluginsPath + name;
+		const char* csPluginPath = pluginPath.c_str();
+		Plugin* plugin = nullptr;
+		plugin = new Plugin(csPluginPath);
+		plugin->Initialize();
+		pm->_plugins.push_back(plugin);
+	}
+}
+
 void PluginManager::LoadPlugins()
 {
-	string findPath(_pluginsPath);
-	findPath.append("*.tgis.plugin");
-
-	_tgis_finddata_t file;
-	intptr_t flag;
-	intptr_t handle;
-	flag = handle = _tgis_findfirst(findPath.c_str(), &file);
-	while (flag != -1) 
-	{
-		if (strcmp(file.name, ".") != 0
-			&& strcmp(file.name, "..") != 0
-			&& !(file.attrib&_TGIS_A_HIDDEN)
-			&& !(file.attrib&_TGIS_A_SYSTEM)
-			)
-		{
-			if (!(file.attrib&_TGIS_A_SUBDIR))
-			{
-				string pluginPath = _pluginsPath + file.name;
-				const char* csPluginPath = pluginPath.c_str();
-				Plugin* plugin = nullptr;
-				plugin = new Plugin(csPluginPath);
-				plugin->Initialize();
-				_plugins.push_back(plugin);
-			}
-		}
-		flag = _tgis_findnext(handle, &file);
-	}
-	_tgis_findclose(handle);
+	_tgis_traverse_dir(_pluginsPath.c_str(), "*.tgis.plugin", this, OnTraverseDir);
 }
 
 

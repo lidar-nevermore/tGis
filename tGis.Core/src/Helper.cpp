@@ -33,7 +33,7 @@ TGIS_CORE_API int _tgis_find_first_of(const char* s, const char* m, int offset)
 
 	int* next = (int*)malloc(m_len * sizeof(int));
 
-	_tgis_get_next(m, next,m_len);
+	_tgis_get_next(m, next, m_len);
 
 	while (i<m_len && j<s_len)
 	{
@@ -82,7 +82,7 @@ TGIS_CORE_API int _tgis_find_last_of(const char* s, const char* m, int offset)
 			j = last_inx + 1;
 			i = 0;
 		}
-		else 
+		else
 			break;
 	}
 
@@ -90,3 +90,45 @@ TGIS_CORE_API int _tgis_find_last_of(const char* s, const char* m, int offset)
 
 	return last_inx;
 }
+
+#if defined(_MSC_VER) || defined(__MINGW32__)
+
+TGIS_CORE_API void _tgis_traverse_dir(const char * dir, const char* pat, void * usr, _tgis_on_traverse on_traverse)
+{
+	_finddata_t file;
+	intptr_t handle;
+	intptr_t flag;
+	char path[TGIS_MAX_PATH] = { 0 };
+	strcpy(path, dir);
+	strcat(path, TGIS_PATH_SEPARATOR_STR);
+	strcat(path, pat);
+
+	flag = handle = _findfirst(path, &file);
+	while (flag != -1)
+	{
+		if (strcmp(file.name, ".") != 0
+			&& strcmp(file.name, "..") != 0)
+		{
+			unsigned int attrib = 0;
+			if (file.attrib&_A_SUBDIR)
+				attrib = attrib | _TGIS_A_SUBDIR;
+			if (file.attrib&_A_NORMAL)
+				attrib = attrib | _TGIS_A_NORMAL;
+			if (file.attrib&_A_SYSTEM)
+				attrib = attrib | _TGIS_A_SYSTEM;
+			if (file.attrib&_A_HIDDEN)
+				attrib = attrib | _TGIS_A_HIDDEN;
+			if (file.attrib&_A_RDONLY)
+				attrib = attrib | _TGIS_A_RDONLY;
+
+			on_traverse(usr, dir, file.name, attrib);
+		}
+
+		flag = _findnext(handle, &file);
+	}
+
+	_findclose(handle);
+}
+
+#endif
+

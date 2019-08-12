@@ -5,68 +5,58 @@
 
 #include "tGisCoreCfg.h"
 
+#include <math.h>
+#include <float.h>
+#include <string>
+#include <vector>
+#include <time.h>
+
 //portability helper
 #if defined(_MSC_VER) || defined(__MINGW32__)
 
-  #include <Windows.h>
+  #include <windows.h>
   #include <direct.h>
   #include <stdlib.h>
   #include <io.h>
   
   #define _tgis_max max
   
+
   #define TGIS_MAX_PATH _MAX_PATH 
-  
   #define TGIS_PATH_SEPARATOR_CHAR  '\\'
-  
   #define TGIS_PATH_SEPARATOR_STR  "\\"
-  
   #define TGIS_EXT_SEPARATOR_CHAR  '.'
-  
   #define TGIS_EXT_SEPARATOR_STR  "."
-  
+
   #define _tgis_getcwd  _getcwd
-  
-  #define _tgis_finddata_t _finddata_t
-  
-  #define _tgis_findfirst _findfirst
-  
-  #define _tgis_findnext _findnext
-  
-  #define _tgis_findclose _findclose
-   
+
+  #define _TGIS_A_NORMAL _A_NORMAL
   #define _TGIS_A_HIDDEN _A_HIDDEN
-  
   #define _TGIS_A_SYSTEM _A_SYSTEM
-  
-  #define _TGIS_A_SUBDIR _A_SUBDIR
-  
   #define _TGIS_A_RDONLY _A_RDONLY
+  #define _TGIS_A_SUBDIR _A_SUBDIR
+  typedef void(*_tgis_on_traverse)(void* usr, const char * dir, const char* name, unsigned int attrib);
   
-  
-  
+  TGIS_CORE_API void _tgis_traverse_dir(const char* dir, const char* pat, void* usr, _tgis_on_traverse on_traverse);
+
+  #define _TGIS_OK_EXIST    0  
+  #define _TGIS_OK_WRITE    2  
+  #define _TGIS_OK_READ     4  
+  #define _TGIS_OK_ACCESS   0
+
   #define _tgis_access _access
-  
-  #define _TGIS_A_EXIST 0
-  
-  #define _TGIS_A_WRITE 2
-  
-  #define _TGIS_A_READ  4
-  
-  #define _TGIS_A_READ_WRITE  6
-  
-  #define _TGIS_R_OK 0
-  
+
+
+
+  inline void _tgis_localtime(struct tm * const tms, const time_t *tmt)
+  {
+	  localtime_s(tms, tmt);
+  }
+
 #endif
 
 
 //common method
-
-#include <math.h>
-#include <float.h>
-#include <string>
-#include <vector>
-#include <time.h>
 
 
 #define _tgis_isinf(a)   ((_fpclass(a) == _FPCLASS_PINF) || (_fpclass(a) == _FPCLASS_NINF))
@@ -99,11 +89,6 @@ inline double _tgis_round(double val, int places) {
 	return !_tgis_isnan(x) ? x : t;
 }
 
-inline void _tgis_localtime(struct tm * const tms,const time_t *tmt)
-{
-	localtime_s(tms, tmt);
-}
-
 inline void _tgis_str_split(char* str, const char *delim, std::vector<std::string>& out)
 {
 	char * p = std::strtok(str, delim);
@@ -129,25 +114,6 @@ inline void _tgis_str_split(char* str, const char *delim, std::vector<std::strin
 TGIS_CORE_API int _tgis_find_first_of(const char* s, const char* m, int offset);
 
 TGIS_CORE_API int _tgis_find_last_of(const char* s, const char* m, int offset);
-
-
-// this shit for shit
-
-template<class T>
-struct _tGisObjectDestructor
-{
-	_tGisObjectDestructor(T* ptr)
-	{
-		_ptr = ptr;
-	}
-
-	~_tGisObjectDestructor()
-	{
-		delete _ptr;
-	}
-
-	T* _ptr;
-};
 
 
 #endif

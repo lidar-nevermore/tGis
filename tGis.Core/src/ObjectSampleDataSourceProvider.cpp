@@ -1,6 +1,6 @@
 #include "ObjectSampleDataSourceProvider.h"
 #include "ObjectSampleDataSource.h"
-
+#include <memory>
 
 #include <cassert>
 
@@ -18,7 +18,7 @@ ObjectSampleDataSourceProvider & ObjectSampleDataSourceProvider::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new ObjectSampleDataSourceProvider();
-		static _tGisObjectDestructor<ObjectSampleDataSourceProvider> shit(_instance);
+		static unique_ptr<ObjectSampleDataSourceProvider> shit(_instance);
 	}
 
 	return *_instance;
@@ -44,7 +44,7 @@ bool ObjectSampleDataSourceProvider::IsObjectSampleDataSource(const char * path_
 		path.append(TGIS_PATH_SEPARATOR_STR);
 	}
 	path.append("tgis.sample");
-	if (_tgis_access(path.c_str(), _TGIS_A_READ_WRITE) == _TGIS_R_OK)
+	if (_tgis_access(path.c_str(), _TGIS_OK_WRITE| _TGIS_OK_READ) == _TGIS_OK_ACCESS)
 	{
 		return true;
 	}

@@ -3,6 +3,7 @@
 #include "FileSystemDataSourceProvider.h"
 #include "ObjectSampleDataSourceProvider.h"
 #include "MemoryDataSourceProvider.h"
+#include <memory>
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -15,7 +16,7 @@ DataSourceProviderRepository & DataSourceProviderRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new DataSourceProviderRepository();
-		static _tGisObjectDestructor<DataSourceProviderRepository> shit(_instance);
+		static unique_ptr<DataSourceProviderRepository> shit(_instance);
 		_instance->AddDataSourceProvider(&FileSystemDataSourceProvider::INSTANCE());
 		_instance->AddDataSourceProvider(&MemoryDataSourceProvider::INSTANCE());
 	}

@@ -82,6 +82,45 @@ const char * FileSystemDataSource::GetCreationString()
 	return _path.c_str();
 }
 
+void FileSystemDataSource::OnTraverseDir(void * usr, const char * dir, const char * name, unsigned int attrib)
+{
+	FileSystemDataSource* fsDataSrc = (FileSystemDataSource*)usr;
+
+	if (!(attrib&_TGIS_A_HIDDEN)
+		&& !(attrib&_TGIS_A_SYSTEM))
+	{
+		char path[TGIS_MAX_PATH] = { 0 };
+		strcpy(path, dir);
+		strcat(path, TGIS_PATH_SEPARATOR_STR);
+		strcat(path, name);
+
+		if (attrib&_TGIS_A_SUBDIR)
+		{
+			IDataSource* ds = FileSystemDataSourceProvider::INSTANCE().CreateDataSource(path);
+			fsDataSrc->_vecDataSource.push_back(ds);
+		}
+		else
+		{
+			size_t pos = _tgis_find_last_of(name, TGIS_EXT_SEPARATOR_STR, 0);
+			if (pos != -1)
+			{
+				const char* ext = name + pos + 1;
+				GDALAccess eAccess = (attrib&_TGIS_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
+
+				if (MyGDALDataset::IsSupportedRasterFormatFirstExt(ext))
+				{
+					MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(fsDataSrc, path, eAccess);
+				}
+				else if (MyGDALDataset::IsSupportedVectorFormatFirstExt(ext))
+				{
+					MyGDALVectorDataset* dt = new MyGDALVectorDataset(fsDataSrc, path, eAccess);
+				}
+			}
+		}
+	}
+}
+
+
 void FileSystemDataSource::Connect()
 {
 	if (_connected)
@@ -89,49 +128,7 @@ void FileSystemDataSource::Connect()
 
 	_connected = true;
 
-	string find_path = _path + TGIS_PATH_SEPARATOR_STR + "*";
-	_tgis_finddata_t file;
-	intptr_t flag;
-	intptr_t handle;
-	flag = handle = _tgis_findfirst(find_path.c_str(), &file);
-	while (flag != -1)
-	{
-		string subpath = _path + TGIS_PATH_SEPARATOR_STR + file.name;
-
-		if (strcmp(file.name, ".") != 0 
-			&& strcmp(file.name, "..") != 0 
-			&& !(file.attrib&_TGIS_A_HIDDEN)
-			&& !(file.attrib&_TGIS_A_SYSTEM)
-			)
-		{
-			if (file.attrib&_TGIS_A_SUBDIR)
-			{
-				IDataSource* ds = FileSystemDataSourceProvider::INSTANCE().CreateDataSource(subpath.c_str());
-				_vecDataSource.push_back(ds);
-			}
-			else
-			{
-				size_t pos = subpath.find_last_of(TGIS_EXT_SEPARATOR_CHAR);
-				if (pos != subpath.npos)
-				{
-					string ext = subpath.substr(pos+1);
-					GDALAccess eAccess = (file.attrib&_TGIS_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
-
-					if (MyGDALDataset::IsSupportedRasterFormatFirstExt(ext.c_str()))
-					{
-						MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(this,subpath.c_str(), eAccess);
-					}
-					else if (MyGDALDataset::IsSupportedVectorFormatFirstExt(ext.c_str()))
-					{
-						MyGDALVectorDataset* dt = new MyGDALVectorDataset(this,subpath.c_str(), eAccess);
-					}
-				}
-			}
-		}
-
-		flag = _tgis_findnext(handle, &file);
-	};
-	_tgis_findclose(handle);
+	_tgis_traverse_dir(_path.c_str(),"*", this, OnTraverseDir);
 
 	DataSource::Connect();
 }
@@ -144,7 +141,7 @@ void FileSystemDataSource::Connect(const char * creationString, IDataset ** dtOu
 	{
 		string ext = path.substr(pos + 1);
 		GDALAccess eAccess = GA_ReadOnly;
-		if (_tgis_access(path.c_str(), _TGIS_A_WRITE) == _TGIS_R_OK)
+		if (_tgis_access(path.c_str(), _TGIS_OK_WRITE) == _TGIS_OK_ACCESS)
 			eAccess = GA_Update;
 		if (MyGDALDataset::IsSupportedRasterFormatFirstExt(ext.c_str()))
 		{
@@ -205,7 +202,6 @@ void FileSystemDataSource::Disconnect(bool raiseEvent)
 		_vecDataset.clear();
 	}
 }
-
 
 void FileSystemDataSource::Disconnect()
 {

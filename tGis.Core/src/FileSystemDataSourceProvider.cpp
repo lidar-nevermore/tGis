@@ -1,7 +1,7 @@
 #include "FileSystemDataSourceProvider.h"
 #include "ObjectSampleDataSourceProvider.h"
 #include "FileSystemDataSource.h"
-
+#include <memory>
 #include <cassert>
 
 using namespace std;
@@ -20,7 +20,7 @@ FileSystemDataSourceProvider & FileSystemDataSourceProvider::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new FileSystemDataSourceProvider();
-		static _tGisObjectDestructor<FileSystemDataSourceProvider> shit(_instance);
+		static unique_ptr<FileSystemDataSourceProvider> shit(_instance);
 		_instance->AddSubProvider(&ObjectSampleDataSourceProvider::INSTANCE());
 	}
 

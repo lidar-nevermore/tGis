@@ -14,6 +14,11 @@ Map::Map()
 
 Map::~Map()
 {
+	if (_spatialRef != nullptr)
+	{
+		_spatialRef->Dereference();
+	}
+
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
 	{
 		ILayer* layer = *it;
@@ -22,11 +27,6 @@ Map::~Map()
 	}
 	_vecLayer.clear();
 	LayerClearedEvent(std::forward<IMapPtr>(this));
-
-	if (_spatialRef != nullptr)
-	{
-		_spatialRef->Release();
-	}
 }
 
 const char * Map::GetName()

@@ -37,6 +37,8 @@ protected:
 private:
 	void Disconnect(bool raiseEvent);
 
+	static void OnTraverseDir(void* usr, const char * dir, const char* name, unsigned int attrib);
+
 public:
 	virtual const char* GetType();
 	static const char* S_GetType();

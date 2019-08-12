@@ -1,6 +1,10 @@
 #include "VisualizeBufferManager.h"
+#include "tGisCoreCfg.h"
+
+#include <memory>
 #include <cstdlib>
 #include <cassert>
+
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -12,7 +16,7 @@ VisualizeBufferManager & VisualizeBufferManager::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new VisualizeBufferManager();
-		static _tGisObjectDestructor<VisualizeBufferManager> shit(_instance);
+		static std::unique_ptr<VisualizeBufferManager> shit(_instance);
 	}
 
 	return *_instance;

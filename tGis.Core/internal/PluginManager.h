@@ -31,6 +31,9 @@ private:
 	string _pluginsPath;
 	vector<Plugin*> _plugins;
 
+private:
+	static void OnTraverseDir(void* usr, const char * dir, const char* name, unsigned int attrib);
+
 public:
 	void LoadPlugins();
 	const char* GetPluginsPath() { return _pluginsPath.c_str(); }

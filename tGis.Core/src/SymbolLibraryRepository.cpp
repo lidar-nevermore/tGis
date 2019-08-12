@@ -1,5 +1,6 @@
 #include "SymbolLibraryRepository.h"
 #include "SimpleSymbolLibrary.h"
+#include <memory>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -11,7 +12,7 @@ SymbolLibraryRepository & SymbolLibraryRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new SymbolLibraryRepository();
-		static _tGisObjectDestructor<SymbolLibraryRepository> shit(_instance);
+		static unique_ptr<SymbolLibraryRepository> shit(_instance);
 	}
 
 	return *_instance;

@@ -4,6 +4,7 @@
 #include "RasterBinaryGrayScaleLayerProvider.h"
 #include "VectorSimpleLayerProvider.h"
 #include "RasterRgbLayerProvider.h"
+#include <memory>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -15,7 +16,7 @@ LayerProviderRepository & LayerProviderRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new LayerProviderRepository();
-		static _tGisObjectDestructor<LayerProviderRepository> shit(_instance);
+		static unique_ptr<LayerProviderRepository> shit(_instance);
 	}
 
 	return *_instance;

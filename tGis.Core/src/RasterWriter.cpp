@@ -22,9 +22,9 @@ int CPL_STDCALL MyGDALProgressFunc(double dfComplete, const char *pszMessage, vo
 
 TGIS_CORE_API void WriteMemoryBlock(
 	const char* path, 
-	void** mem, GDALDataType dt, int w, int h, int count,
+	void** mem, GDALDataType dt, int w, int h, int count, double noDataValue,
 	ProgressEvent * progressEvent,
-	GDALDataset * raster, int xOffset, int yOffset)
+	GDALDataset * raster, int xOffset, int yOffset, int xSize, int ySize)
 {
 	bool supported = false;
 	int extPos = 1 + _tgis_find_last_of(path, ".", 0);
@@ -57,6 +57,20 @@ TGIS_CORE_API void WriteMemoryBlock(
 			rdt.Attach(raster);
 			rdt.Pixel2Spatial(xOffset, yOffset, geoTransform, geoTransform + 3);
 		}
+
+		if (xSize != w)
+		{
+			double xRatio = (double)xSize / w;
+			geoTransform[1] *= xRatio;
+			geoTransform[2] *= xRatio;
+		}
+
+		if (ySize != h)
+		{
+			double yRatio = (double)ySize / h;
+			geoTransform[4] *= yRatio;
+			geoTransform[5] *= yRatio;
+		}
 	}
 	outRaster->SetGeoTransform(geoTransform);
 
@@ -73,6 +87,7 @@ TGIS_CORE_API void WriteMemoryBlock(
 	for (int i = 1; i <= count; i++)
 	{
 		GDALRasterBand* outBand = outRaster->GetRasterBand(i);
+		outBand->SetNoDataValue(noDataValue);
 		outBand->RasterIO(GF_Write, 0, 0, w, h, mem[i - 1], w, h, dt, 0, 0, pRasterIoArg);
 		outBand->FlushCache();
 	}

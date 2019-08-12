@@ -16,9 +16,9 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 TGIS_CORE_API void WriteMemoryBlock(
 	const char* path, 
-	void** mem, GDALDataType dt, int w, int h, int count = 0,
+	void** mem, GDALDataType dt, int w, int h, int count = 1, double noDataValue = 0,
 	ProgressEvent * progressEvent = nullptr,
-	GDALDataset * raster = nullptr, int xOffset = 0, int yOffset = 0);
+	GDALDataset * raster = nullptr, int xOffset = 0, int yOffset = 0, int xSize = 0, int ySize = 0);
 
 
 TGIS_CORE_API void CopyRaster(
