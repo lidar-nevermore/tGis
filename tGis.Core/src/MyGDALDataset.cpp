@@ -39,10 +39,6 @@ struct GDALInitializer
 
 	GDALInitializer()
 	{
-		GDALAllRegister();          //GDAL所有操作都需要先注册格式
-		OGRRegisterAll();
-		CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");  //支持中文路径
-
 		char exePathBuffer[TGIS_MAX_PATH];
 		_tgis_getcwd(exePathBuffer, TGIS_MAX_PATH);
 
@@ -54,10 +50,13 @@ struct GDALInitializer
 		pluginPath.append(TGIS_PATH_SEPARATOR_STR);
 		pluginPath.append("gdalplugins");
 
-
+		CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");  //支持中文路径
 		CPLSetConfigOption("GDAL_DATA", dataPath.c_str());
 		CPLSetConfigOption("GEOTIFF_CSV", dataPath.c_str());
 		CPLSetConfigOption("GDAL_DRIVER_PATH", pluginPath.c_str());
+
+		GDALAllRegister();          //GDAL所有操作都需要先注册格式
+		OGRRegisterAll();
 
 		GDALDriverManager* dm = GetGDALDriverManager();
 		int drc = dm->GetDriverCount();
