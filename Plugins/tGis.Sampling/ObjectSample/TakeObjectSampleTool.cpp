@@ -103,7 +103,7 @@ void TakeObjectSampleTool::MouseUp(void *ev)
 		time_t tmt;
 		struct tm tms;
 		time(&tmt);
-		_tgis_localtime(&tms, &tmt);
+		_tgis_localtime(&tmt, &tms);
 		char buffer[100] = { 0 };
 		sprintf(buffer, "%d_%d_%d_%04d%02d%02d%02d%02d%02d.tif", osm->Label, sampleSizeX, sampleSizeY, tms.tm_year, tms.tm_mon, tms.tm_mday, tms.tm_hour, tms.tm_min, tms.tm_sec);
 		sampleSavePath.append(TGIS_PATH_SEPARATOR_CHAR);

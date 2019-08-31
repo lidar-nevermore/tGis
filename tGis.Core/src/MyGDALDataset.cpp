@@ -40,7 +40,7 @@ struct GDALInitializer
 	GDALInitializer()
 	{
 		char exePathBuffer[TGIS_MAX_PATH];
-		_tgis_getcwd(exePathBuffer, TGIS_MAX_PATH);
+		_tgis_get_exe_dir(exePathBuffer, TGIS_MAX_PATH);
 
 		string dataPath(exePathBuffer);
 		dataPath.append(TGIS_PATH_SEPARATOR_STR);
@@ -336,10 +336,6 @@ void MyGDALDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose
 	{
 		_dataset = dataset;
 		_autoClose = autoClose;
-	}
-	else
-	{
-		throw std::exception("不支持打开此格式的影像！");
 	}
 }
 

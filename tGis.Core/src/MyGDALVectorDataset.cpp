@@ -86,7 +86,8 @@ MyGDALVectorDataset::~MyGDALVectorDataset()
 void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
 {
 	MyGDALDataset::Attach(file, eAccess, autoClose);
-	Attach(_dataset, autoClose);
+	if (_dataset != nullptr)
+		Attach(_dataset, autoClose);
 }
 
 void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)

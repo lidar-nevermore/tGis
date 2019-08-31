@@ -28,7 +28,7 @@
   #define TGIS_EXT_SEPARATOR_CHAR  '.'
   #define TGIS_EXT_SEPARATOR_STR  "."
 
-  #define _tgis_getcwd  _getcwd
+  TGIS_CORE_API void _tgis_get_exe_dir(char *dir, int size);
 
   #define _TGIS_A_NORMAL _A_NORMAL
   #define _TGIS_A_HIDDEN _A_HIDDEN
@@ -48,7 +48,7 @@
 
 
 
-  inline void _tgis_localtime(struct tm * const tms, const time_t *tmt)
+  inline void _tgis_localtime(const time_t *tmt, struct tm * tms)
   {
 	  localtime_s(tms, tmt);
   }
@@ -115,5 +115,5 @@ TGIS_CORE_API int _tgis_find_first_of(const char* s, const char* m, int offset);
 
 TGIS_CORE_API int _tgis_find_last_of(const char* s, const char* m, int offset);
 
-
+TGIS_CORE_API char* _tgis_str_trim(char *src);
 #endif

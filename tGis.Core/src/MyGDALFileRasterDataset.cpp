@@ -85,7 +85,8 @@ void MyGDALFileRasterDataset::Open()
 void MyGDALFileRasterDataset::Attach(const char* file, GDALAccess eAccess, bool autoClose, double noDataValue)
 {
 	MyGDALDataset::Attach(file, eAccess, autoClose);
-	MyGDALRasterDataset::Attach(_dataset, autoClose, noDataValue);
+	if(_dataset != nullptr)
+		MyGDALRasterDataset::Attach(_dataset, autoClose, noDataValue);
 }
 
 void MyGDALFileRasterDataset::AttachHDF(const char* file, GDALAccess eAccess, const int subdataset, bool autoClose, double noDataValue)
