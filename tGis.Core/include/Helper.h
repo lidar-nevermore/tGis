@@ -28,7 +28,7 @@
   #define TGIS_EXT_SEPARATOR_CHAR  '.'
   #define TGIS_EXT_SEPARATOR_STR  "."
 
-  TGIS_CORE_API void _tgis_get_exe_dir(char *dir, int size);
+  TGIS_CORE_API void _tgis_get_exe_dir(char* dir, int* size);
 
   #define _TGIS_A_NORMAL _A_NORMAL
   #define _TGIS_A_HIDDEN _A_HIDDEN

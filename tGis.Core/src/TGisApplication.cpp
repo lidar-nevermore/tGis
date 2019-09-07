@@ -21,7 +21,7 @@ TGisApplication::TGisApplication()
 {
 	if (_instance != NULL)
 		throw exception("Only allow one instance!");
-	_tgis_get_exe_dir(_exeDir, TGIS_MAX_PATH);
+	_tgis_get_exe_dir(_exeDir, nullptr);
 	std::string logPath = _exeDir;
 	logPath.append(TGIS_PATH_SEPARATOR_STR);
 	logPath.append("Log");

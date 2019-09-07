@@ -40,7 +40,7 @@ struct GDALInitializer
 	GDALInitializer()
 	{
 		char exePathBuffer[TGIS_MAX_PATH];
-		_tgis_get_exe_dir(exePathBuffer, TGIS_MAX_PATH);
+		_tgis_get_exe_dir(exePathBuffer, nullptr);
 
 		string dataPath(exePathBuffer);
 		dataPath.append(TGIS_PATH_SEPARATOR_STR);

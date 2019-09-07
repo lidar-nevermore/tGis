@@ -20,7 +20,7 @@ PluginManager & PluginManager::INSTANCE()
 PluginManager::PluginManager()
 {
 	char exePathBuffer[TGIS_MAX_PATH];
-	_tgis_get_exe_dir(exePathBuffer, TGIS_MAX_PATH);
+	_tgis_get_exe_dir(exePathBuffer, nullptr);
 
 	_pluginsPath = exePathBuffer;
 	_pluginsPath.append(TGIS_PATH_SEPARATOR_STR);

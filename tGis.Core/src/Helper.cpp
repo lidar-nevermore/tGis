@@ -123,11 +123,14 @@ TGIS_CORE_API char * _tgis_str_trim(char * src)
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
 
-TGIS_CORE_API void _tgis_get_exe_dir(char * dir, int size)
+TGIS_CORE_API void _tgis_get_exe_dir(char * dir, int * size)
 {
-	::GetModuleFileNameA(NULL, (LPSTR)dir, size);
+	int sz = size == nullptr ? TGIS_MAX_PATH : *size;
+	::GetModuleFileNameA(NULL, (LPSTR)dir, sz);
 	int sep = _tgis_find_last_of(dir, TGIS_PATH_SEPARATOR_STR, 0);
 	dir[sep] = '\0';
+	if(size != nullptr)
+	    *size = sep;
 }
 
 TGIS_CORE_API void _tgis_traverse_dir(const char * dir, const char* pat, void * usr, _tgis_on_traverse on_traverse)
