@@ -13,11 +13,18 @@
   <property name="windowTitle">
    <string>Dam Razing</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0,0">
-   <item row="1" column="2">
-    <widget class="QLabel" name="label_6">
+  <layout class="QGridLayout" name="gridLayout" rowstretch="0,0,0,0,0,0,0,0">
+   <item row="0" column="0">
+    <widget class="QLabel" name="label">
      <property name="text">
-      <string>H Percentage</string>
+      <string>Input Image</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5">
+    <widget class="QLineEdit" name="leDamStrength">
+     <property name="text">
+      <string>0.300</string>
      </property>
     </widget>
    </item>
@@ -28,58 +35,10 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="5">
-    <widget class="QPushButton" name="btnOutputShp">
+   <item row="2" column="2">
+    <widget class="QLabel" name="label_5">
      <property name="text">
-      <string notr="true">...</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0">
-    <widget class="QLabel" name="label">
-     <property name="text">
-      <string>Input Image</string>
-     </property>
-    </widget>
-   </item>
-   <item row="7" column="1" colspan="4">
-    <widget class="QLineEdit" name="leOutputShp"/>
-   </item>
-   <item row="7" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string notr="true">Output Shape</string>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="5">
-    <widget class="QPushButton" name="btnInputImg">
-     <property name="text">
-      <string notr="true">...</string>
-     </property>
-    </widget>
-   </item>
-   <item row="8" column="0" colspan="6">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1" colspan="4">
-    <widget class="QLineEdit" name="leInputImg">
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>Gauss Delta</string>
+      <string>L Percentage</string>
      </property>
     </widget>
    </item>
@@ -87,6 +46,13 @@
     <widget class="QLineEdit" name="leTexturePeriod">
      <property name="text">
       <string>7</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="5">
+    <widget class="QPushButton" name="btnOutputShp">
+     <property name="text">
+      <string notr="true">...</string>
      </property>
     </widget>
    </item>
@@ -100,28 +66,21 @@
    <item row="1" column="3">
     <widget class="QLineEdit" name="leHighPercentage">
      <property name="text">
-      <string>0.23</string>
+      <string>0.000</string>
      </property>
     </widget>
    </item>
-   <item row="2" column="3">
-    <widget class="QLineEdit" name="leLowPercentage">
-     <property name="text">
-      <string>0.47</string>
+   <item row="0" column="1" colspan="4">
+    <widget class="QLineEdit" name="leInputImg">
+     <property name="readOnly">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
-   <item row="1" column="5">
-    <widget class="QLineEdit" name="leDamStrength">
+   <item row="0" column="5">
+    <widget class="QPushButton" name="btnInputImg">
      <property name="text">
-      <string>0.3</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>L Percentage</string>
+      <string notr="true">...</string>
      </property>
     </widget>
    </item>
@@ -132,6 +91,37 @@
      </property>
     </widget>
    </item>
+   <item row="2" column="5">
+    <widget class="QLineEdit" name="lePoolStrength">
+     <property name="text">
+      <string>0.030</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Gauss Delta</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0" colspan="6">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="3">
+    <widget class="QLineEdit" name="leLowPercentage">
+     <property name="text">
+      <string>0.000</string>
+     </property>
+    </widget>
+   </item>
    <item row="2" column="4">
     <widget class="QLabel" name="label_8">
      <property name="text">
@@ -139,22 +129,22 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="5">
-    <widget class="QLineEdit" name="lePoolStrength">
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_2">
      <property name="text">
-      <string>0.03</string>
+      <string notr="true">Output Image</string>
      </property>
     </widget>
    </item>
-   <item row="3" column="0" colspan="2">
-    <widget class="QCheckBox" name="chkUseTexture">
+   <item row="1" column="2">
+    <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>Use Texture Difference</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
+      <string>H Percentage</string>
      </property>
     </widget>
+   </item>
+   <item row="6" column="1" colspan="4">
+    <widget class="QLineEdit" name="leOutputShp"/>
    </item>
   </layout>
  </widget>

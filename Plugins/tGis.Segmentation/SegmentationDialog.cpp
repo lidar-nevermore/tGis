@@ -12,13 +12,12 @@ SegmentationDialog::SegmentationDialog(QWidget *parent)
 	ui.setupUi(this);
 	setWindowFlags(Qt::Dialog | Qt::WindowCloseButtonHint);
 
-	_gaussianCoef = 0.9;
+	_gaussianCoef = 0.8;
 	_texturePeriod = 7;
-	_lowPercentage = 0.53;
-	_highPercentage = 0.23;
-	_damStrength = 0.3;
-	_poolStrength = 0.03;
-	_useTexture = true;
+	_lowPercentage = 0.000;
+	_highPercentage = 0.000;
+	_damStrength = 0.300;
+	_poolStrength = 0.030;
 
 	connect(ui.btnInputImg, &QPushButton::clicked, this, &SegmentationDialog::on_btnInputImg_clicked);
 	connect(ui.btnOutputShp, &QPushButton::clicked, this, &SegmentationDialog::on_btnOutputShp_clicked);
@@ -107,6 +106,4 @@ void SegmentationDialog::on_accepted()
 
 	QString strPoolStrength = ui.lePoolStrength->text();
 	_poolStrength = strPoolStrength.toDouble();
-
-	_useTexture = ui.chkUseTexture->isChecked();
 }
