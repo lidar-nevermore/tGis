@@ -342,7 +342,8 @@ inline void VectorSimpleLayer::DrawPolygon(int* x, int* y, IGeoSurface* surf, OG
 		int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 		*(x + ptcount) = *x;
 		*(y + ptcount) = *y;
-		_simpleFillSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
+		//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
+		_simpleLineSymbol.SetColor(0, 255, 255, 255);
 		_simpleLineSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
 	}
 }
@@ -400,7 +401,7 @@ inline void VectorSimpleLayer::DrawMultiPolygon(int* x, int* y, IGeoSurface* sur
 			int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 			*(x + ptcount) = *x;
 			*(y + ptcount) = *y;
-			_simpleFillSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
+			//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
 			_simpleLineSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
 		}
 	}

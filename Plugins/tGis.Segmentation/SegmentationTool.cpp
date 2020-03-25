@@ -62,10 +62,10 @@ void SegmentationTool::Execute()
 					dlg._gaussianCoef,
 					dlg._texturePeriod,
 					2,
-					1000,
+					3000,
+					dlg._poolStrength,
+					dlg._damStrength,
 					0.03,
-					0.3,
-					0.23,
 					1.00,
 					dlg._lowPercentage,
 					dlg._highPercentage
