@@ -21,7 +21,7 @@ SegmentationTool::~SegmentationTool()
 
 const char * SegmentationTool::GetName()
 {
-	return "Dam Razing";
+	return "Dam Burst";
 }
 
 void SegmentationTool::Execute()
