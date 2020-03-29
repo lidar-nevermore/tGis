@@ -88,7 +88,7 @@ TGIS_CORE_API void _vprint_log(loger_t loger, int level, const char * format, va
 
 	now = time(NULL);
 	memcpy(&ltnow, localtime(&now), sizeof(struct tm));
-	sprintf(date, "%4d-%02d-%02d", 1900 + ltnow.tm_year, ltnow.tm_mon, ltnow.tm_mday);
+	sprintf(date, "%4d-%02d-%02d", 1900 + ltnow.tm_year, ltnow.tm_mon+1, ltnow.tm_mday);
 
 	if (strncmp(log->pdate, date, 10) != 0)
 	{
