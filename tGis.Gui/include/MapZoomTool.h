@@ -6,6 +6,8 @@
 #include "tVisualize.h"
 #include "tGisGuiCfg.h"
 
+#include "QMapWidget.h"
+
 using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Gui)
@@ -16,7 +18,9 @@ public:
 	MapZoomTool();
 	~MapZoomTool();
 
-	void MouseWheel(void*);
+private:
+	void SetMapWidget(IMapWidget* mapWidget);
+	void MouseWheel(QMapWidget*, QWheelEvent*);
 };
 
 END_NAME_SPACE(tGis, Gui)

@@ -104,22 +104,22 @@ void QMapWidget::resizeEvent(QResizeEvent * e)
 
 void QMapWidget::mousePressEvent(QMouseEvent *e)
 {
-	MapWidget::MouseDown(e);
+	MousePressEvent(this, std::forward<QMouseEvent*>(e));
 }
 
 void QMapWidget::mouseReleaseEvent(QMouseEvent *e)
 {
-	MapWidget::MouseUp(e);
+	MouseReleaseEvent(this, e);
 }
 
 void QMapWidget::mouseMoveEvent(QMouseEvent *e)
 {
-	MapWidget::MouseMove(e);
+	MouseMoveEvent(this, std::forward<QMouseEvent*>(e));
 }
 
 void QMapWidget::wheelEvent(QWheelEvent * e)
 {
-	MapWidget::MouseWheel(e);
+	WheelEvent(this, std::forward<QWheelEvent*>(e));
 }
 
 

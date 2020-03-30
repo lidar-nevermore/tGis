@@ -14,10 +14,31 @@ MapZoomTool::MapZoomTool()
 
 MapZoomTool::~MapZoomTool()
 {
+	if (_mapWidget != nullptr)
+		_mapWidget->RemoveMapTool(this);
 }
 
-void MapZoomTool::MouseWheel(void *ev)
+void MapZoomTool::SetMapWidget(IMapWidget * mapWidget)
 {
+	if (mapWidget == nullptr && _mapWidget != nullptr)
+	{
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->WheelEvent.Remove<>(this, &MapZoomTool::MouseWheel);
+	}
+	_mapWidget = mapWidget;
+	if (mapWidget != nullptr)
+	{
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->WheelEvent.Add<>(this, &MapZoomTool::MouseWheel);
+	}
+}
+
+
+void MapZoomTool::MouseWheel(QMapWidget*, QWheelEvent *ev)
+{
+	if (_enabled == false)
+		return;
+
 	QWheelEvent* e = (QWheelEvent*)ev;
 	GeoViewPort* viewPort = _mapWidget->GetViewPort();
 	double scale;

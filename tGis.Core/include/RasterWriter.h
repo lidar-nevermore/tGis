@@ -6,6 +6,7 @@
 #include "Helper.h"
 #include "tGisCoreCfg.h"
 #include "Event.h"
+#include "Progress.h"
 
 #pragma warning( disable: 4251 )
 #include "gdal.h"

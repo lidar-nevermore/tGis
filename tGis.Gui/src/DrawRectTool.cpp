@@ -1,7 +1,9 @@
 
 #include "qevent.h"
+
 #include "DrawRectTool.h"
 
+using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
@@ -13,7 +15,8 @@ DrawRectTool::DrawRectTool()
 
 DrawRectTool::~DrawRectTool()
 {
-
+	if (_mapWidget != nullptr)
+		_mapWidget->RemoveMapTool(this);
 }
 
 void DrawRectTool::SetMapWidget(IMapWidget * mapWidget)
@@ -22,18 +25,29 @@ void DrawRectTool::SetMapWidget(IMapWidget * mapWidget)
 	{
 		IOverlayLayer* overlay = _mapWidget->GetOverlayLayer();
 		overlay->RemoveOverlayObject(&_rect);
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->MousePressEvent.Remove<DrawRectTool>(this, &DrawRectTool::MouseDown);
+		widget->MouseMoveEvent.Remove<DrawRectTool>(this, &DrawRectTool::MouseMove);
+		widget->MouseReleaseEvent.Remove<DrawRectTool>(this, &DrawRectTool::MouseUp);
 	}
-	MapTool::SetMapWidget(mapWidget);
+	_mapWidget = mapWidget;
 	if(mapWidget != nullptr)
 	{
 		IOverlayLayer* overlay = mapWidget->GetOverlayLayer();
 		overlay->AddOverlayObject(&_rect);
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->MousePressEvent.Add<DrawRectTool>(this, &DrawRectTool::MouseDown);
+		widget->MouseMoveEvent.Add<DrawRectTool>(this, &DrawRectTool::MouseMove);
+		widget->MouseReleaseEvent.Add<DrawRectTool>(this, &DrawRectTool::MouseUp);
 	}
 }
 
 
-void DrawRectTool::MouseDown(void * ev)
+void DrawRectTool::MouseDown(QMapWidget* s, QMouseEvent * ev)
 {
+	if (_enabled == false)
+		return;
+
 	QMouseEvent* e = (QMouseEvent*)ev;
 	Qt::MouseButtons buttons = e->buttons();
 	if (buttons & Qt::LeftButton)
@@ -46,8 +60,11 @@ void DrawRectTool::MouseDown(void * ev)
 	}
 }
 
-void DrawRectTool::MouseMove(void * ev)
+void DrawRectTool::MouseMove(QMapWidget* s, QMouseEvent * ev)
 {
+	if (_enabled == false)
+		return;
+
 	QMouseEvent* e = (QMouseEvent*)ev;
 	Qt::MouseButtons buttons = e->buttons();
 	if (buttons & Qt::LeftButton)
@@ -58,8 +75,11 @@ void DrawRectTool::MouseMove(void * ev)
 	}
 }
 
-void DrawRectTool::MouseUp(void *)
+void DrawRectTool::MouseUp(QMapWidget* s, QMouseEvent *)
 {
+	if (_enabled == false)
+		return;
+
 	_rect.SetVisible(false);
 	_mapWidget->PresentMap();
 }

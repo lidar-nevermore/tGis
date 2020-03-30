@@ -15,6 +15,12 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
+template struct TGIS_GUI_API IEventHandler<QMapWidget*, QMouseEvent*>;
+template class TGIS_GUI_API Event<QMapWidget*, QMouseEvent*>;
+
+template struct TGIS_GUI_API IEventHandler<QMapWidget*, QWheelEvent*>;
+template class TGIS_GUI_API Event<QMapWidget*, QWheelEvent*>;
+
 class TGIS_GUI_API QMapWidget : public QWidget,public MapWidget
 {
 	friend class QtGeoSurface;
@@ -35,6 +41,12 @@ public:
 
 	void RepaintMap();
 	void PresentMap();
+
+public:
+	Event<QMapWidget*, QMouseEvent*> MousePressEvent;
+	Event<QMapWidget*, QMouseEvent*> MouseReleaseEvent;
+	Event<QMapWidget*, QMouseEvent*> MouseMoveEvent;
+	Event<QMapWidget*, QWheelEvent*> WheelEvent;
 
 private:
 	QtGeoSurface _geoSurface;

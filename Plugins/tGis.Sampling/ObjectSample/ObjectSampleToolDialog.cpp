@@ -35,6 +35,7 @@ ObjectSampleToolDialog::ObjectSampleToolDialog(IMapWidget* mapWidget, QWidget *p
 
 ObjectSampleToolDialog::~ObjectSampleToolDialog()
 {
+
 }
 
 void ObjectSampleToolDialog::MapToolAddedOrChanged(IMapWidget *mapWidget, IMapTool *mapTool)
@@ -101,6 +102,11 @@ void ObjectSampleToolDialog::LayerCleared(IMapPtr map)
 	_takeObjectSampleTool.SetEnabled(false);
 	ui.chkRect->setChecked(false);
 	ui.chkRect->setEnabled(false);
+}
+
+void ObjectSampleToolDialog::BeforeMapWidgetDestory(IMapWidget * widget)
+{
+	widget->RemoveMapTool(&_takeObjectSampleTool);
 }
 
 void ObjectSampleToolDialog::AfterDataSourceConnect(IDataSourceProvider * provider, IDataSource * ds)

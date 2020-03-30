@@ -4,6 +4,8 @@
 #include "tVisualize.h"
 #include "tGisGuiCfg.h"
 
+#include "QMapWidget.h"
+
 using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Gui)
@@ -14,12 +16,12 @@ public:
 	DrawRectTool();
 	virtual ~DrawRectTool();
 
-public:
+protected:
 	virtual void SetMapWidget(IMapWidget* mapWidget);
 
-	virtual void MouseDown(void*);
-	virtual void MouseMove(void*);
-	virtual void MouseUp(void*);
+	virtual void MouseDown(QMapWidget*, QMouseEvent*);
+	virtual void MouseMove(QMapWidget*, QMouseEvent*);
+	virtual void MouseUp(QMapWidget*, QMouseEvent*);
 
 
 protected:

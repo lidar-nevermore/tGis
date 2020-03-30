@@ -14,14 +14,17 @@ template<typename ...Args>
 struct IEventHandler
 {
 	virtual void operator()(Args&... args) = 0;
+	virtual void operator()(const Args&... args) = 0;
+	//virtual void operator()(Args&&... args) = 0;
+	//virtual void operator()(const Args&&... args) = 0;
 
-	IEventHandler() {};
-	virtual ~IEventHandler() {};
-
-	virtual bool IsEqual(IEventHandler<Args...>* handler)
+	virtual bool IsEqual(const IEventHandler<Args...>* handler)
 	{
 		return this == handler;
 	}
+
+	IEventHandler() {};
+	virtual ~IEventHandler() {};
 
 private:
 	IEventHandler(const IEventHandler &) = delete;
@@ -33,7 +36,7 @@ class MemberEventHandler : public IEventHandler<Args...>
 {
 public:
 	typedef void(T::*Handler)(Args...);
-	MemberEventHandler(T* receiver, Handler handler)
+	MemberEventHandler(T* receiver,const Handler handler)
 	{
 		_receiver = receiver;
 		_handler = handler;
@@ -41,7 +44,7 @@ public:
 
 	virtual ~MemberEventHandler() {};
 
-	virtual bool IsEqual(const IEventHandler<Args...>* handler)
+	virtual bool IsEqual(const IEventHandler<Args...>* handler) override
 	{
 		if (this == handler)
 			return true;
@@ -79,28 +82,48 @@ public:
 		(_receiver->*_handler)(args...);
 	}
 
+	void operator()(const Args&... args)
+	{
+		(_receiver->*_handler)(args...);
+	}
+
+	//void operator()(Args&&... args)
+	//{
+	//	(_receiver->*_handler)(args...);
+	//}
+
+	//void operator()(const Args&&... args)
+	//{
+	//	(_receiver->*_handler)(args...);
+	//}
+
 private:
 	Handler _handler;
 	T* _receiver;
+
+private:
+	MemberEventHandler(const MemberEventHandler &) = delete;
+	MemberEventHandler &operator=(const MemberEventHandler &) = delete;
 };
 
-template<typename Callable, typename ...Args>
-class CallableEventHandler : public IEventHandler<Args...>
+template<typename ...Args>
+class FunctionEventHandler : public IEventHandler<Args...>
 {
 public:
-	CallableEventHandler(const Callable& handler)
+	typedef void(__cdecl*Handler)(Args...);
+	FunctionEventHandler(Handler handler)
 	{
 		_handler = handler;
 	}
 
-	virtual ~CallableEventHandler() {};
+	virtual ~FunctionEventHandler() {};
 
 	virtual bool IsEqual(const IEventHandler<Args...>* handler)
 	{
 		if (this == handler)
 			return true;
 
-		CallableEventHandler<Callable, Args...>* h = dynamic_cast<CallableEventHandler<Callable, Args...>*>(const_cast<IEventHandler<Args...>*>(handler));
+		FunctionEventHandler<Args...>* h = dynamic_cast<FunctionEventHandler<Args...>*>(const_cast<IEventHandler<Args...>*>(handler));
 
 		if (h == nullptr)
 			return false;
@@ -134,15 +157,34 @@ public:
 		_handler(args...);
 	}
 
+	void operator()(const Args&... args)
+	{
+		_handler(args...);
+	}
+
+	//void operator()(Args&&... args)
+	//{
+	//	_handler(args...);
+	//}
+
+	//void operator()(const Args&&... args)
+	//{
+	//	_handler(args...);
+	//}
+
 private:
-	const Callable _handler;
+	Handler _handler;
+
+private:
+	FunctionEventHandler(const FunctionEventHandler &) = delete;
+	FunctionEventHandler &operator=(const FunctionEventHandler &) = delete;
 };
 
 template<typename ...Args>
 class Event : public EventBase
 {
 public:
-	typedef IEventHandler<Args...>* EventHandler;
+	typedef IEventHandler<Args...>* EventHandler;	
 
 public:
 	Event() 
@@ -153,7 +195,7 @@ public:
 		_isInternalHandler = false;
 	};
 
-	Event(const EventHandler& h)
+	Event(const EventHandler h)
 	{
 		_handler = h;
 		_valid = true;
@@ -174,7 +216,7 @@ public:
 		}
 	};
 
-	const Event<Args...>& operator = (const EventHandler& h)
+	const Event<Args...>& operator = (const EventHandler h)
 	{
 		_handler = h;
 		_valid = true;
@@ -219,7 +261,7 @@ public:
 		}
 	}
 
-	void Raise(Args&&... args)
+	void Raise(const Args&... args)
 	{
 		if (_valid)
 		{
@@ -231,18 +273,52 @@ public:
 		}
 	}
 
+	//void Raise(Args&&... args)
+	//{
+	//	if (_valid)
+	//	{
+	//		(*_handler)(args...);
+	//	}
+	//	if (_event != nullptr)
+	//	{
+	//		_event->Raise(args...);
+	//	}
+	//}
+
+	//void Raise(const Args&&... args)
+	//{
+	//	if (_valid)
+	//	{
+	//		(*_handler)(args...);
+	//	}
+	//	if (_event != nullptr)
+	//	{
+	//		_event->Raise(args...);
+	//	}
+	//}
+
 	void operator()(Args&... args)
 	{
 		this->Raise(args...);
 	}
 
-	void operator()(Args&&... args)
+	void operator()(const Args&... args)
 	{
 		this->Raise(args...);
 	}
 
+	//void operator()(Args&&... args)
+	//{
+	//	this->Raise(args...);
+	//}
+
+	//void operator()(const Args&&... args)
+	//{
+	//	this->Raise(args...);
+	//}
+
 private:
-	void Add(const EventHandler& h, bool isInternalHandler)
+	void Add(const EventHandler h, bool isInternalHandler)
 	{
 		if (_valid)
 		{
@@ -265,17 +341,20 @@ private:
 	}
 
 public:
-	void Add(const EventHandler& h)
+	void Add(const EventHandler h)
 	{
 		this->Add(h, false);
 	}
 
-	void Remove(const EventHandler& h)
+	void Remove(const EventHandler h)
 	{
 		if (_valid && _handler->IsEqual(h))
 		{
 			if (_isInternalHandler)
+			{
 				delete _handler;
+				_handler = nullptr;
+			}
 
 			if (_event == nullptr)
 			{
@@ -288,6 +367,7 @@ public:
 				_handler = _event->_handler;
 				_event = _event->_event;
 
+				event_->_handler = nullptr;
 				event_->_event = nullptr;
 				event_->_valid = false;
 				delete event_;				
@@ -298,7 +378,7 @@ public:
 			_event->Remove(h);
 		}
 	}
-
+	
 	template<typename T>
 	void Add(T* receiver, void(T::*h)(Args...))
 	{
@@ -313,17 +393,15 @@ public:
 		this->Remove(&handler);
 	}
 
-	template<typename Callable>
-	void Add(const Callable& h)
+	void Add(void(*h)(Args...))
 	{
-		CallableEventHandler<Callable, Args...>* handler = new CallableEventHandler<Callable, Args...>(h);
+		FunctionEventHandler<Args...>* handler = new FunctionEventHandler<Args...>(h);
 		this->Add(handler, true);
 	}
 
-	template<typename Callable>
-	void Remove(const Callable& h)
+	void Remove(void(*h)(Args...))
 	{
-		CallableEventHandler<Callable, Args...> handler(h);
+		FunctionEventHandler<Args...> handler(h);
 		this->Remove(&handler);
 	}
 
@@ -355,14 +433,14 @@ public:
 
 public:
 
-	const Event<Args...>& operator += (const EventHandler& h)
+	const Event<Args...>& operator += (const EventHandler h)
 	{
 		this->Add(h);
 
 		return *this;
 	}
 
-	const Event<Args...>& operator -= (const EventHandler& h)
+	const Event<Args...>& operator -= (const EventHandler h)
 	{
 		this->Remove(h);
 
@@ -391,31 +469,6 @@ private:
 	bool _isInternalHandler;
 	Event<Args...>* _event;
 };
-
-struct TGIS_CORE_API Progress
-{
-	Progress(int value, int max = 100, char* msg = nullptr)
-		:Value(value)
-		, Max(max)
-		, Message(msg)
-	{
-	}
-
-	int Value;
-	const int Max;
-	char* Message;
-
-private:
-	Progress(const Progress &) = delete;
-	Progress &operator=(const Progress &) = delete;
-};
-
-typedef IEventHandler<Progress> ProgressEventHandler;
-typedef Event<Progress> ProgressEvent;
-
-template struct TGIS_CORE_API IEventHandler<Progress>;
-template class TGIS_CORE_API Event<Progress>;
-
 
 END_NAME_SPACE(tGis, Core)
 

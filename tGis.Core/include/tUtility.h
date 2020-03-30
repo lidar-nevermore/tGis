@@ -14,3 +14,4 @@
 #include "ITool.h"
 #include "Tool.h"
 #include "ToolKit.h"
+#include "Progress.h"

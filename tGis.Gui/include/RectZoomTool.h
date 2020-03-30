@@ -18,8 +18,9 @@ public:
 	RectZoomTool();
 	~RectZoomTool();
 
-public:
-	virtual void MouseUp(void*);
+private:
+	void SetMapWidget(IMapWidget* mapWidget);
+	void MouseUp(QMapWidget* s, QMouseEvent *);
 };
 
 

@@ -14,10 +14,34 @@ MapPanTool::MapPanTool()
 
 MapPanTool::~MapPanTool()
 {
+	if (_mapWidget != nullptr)
+		_mapWidget->RemoveMapTool(this);
 }
 
-void MapPanTool::MouseDown(void * ev)
+void MapPanTool::SetMapWidget(IMapWidget * mapWidget)
 {
+	if (mapWidget == nullptr && _mapWidget != nullptr)
+	{
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->MousePressEvent.Remove<>(this, &MapPanTool::MouseDown);
+		widget->MouseMoveEvent.Remove<>(this, &MapPanTool::MouseMove);
+		widget->MouseReleaseEvent.Remove<>(this, &MapPanTool::MouseUp);
+	}
+	_mapWidget = mapWidget;
+	if (mapWidget != nullptr)
+	{
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->MousePressEvent.Add<>(this, &MapPanTool::MouseDown);
+		widget->MouseMoveEvent.Add<>(this, &MapPanTool::MouseMove);
+		widget->MouseReleaseEvent.Add<>(this, &MapPanTool::MouseUp);
+	}
+}
+
+void MapPanTool::MouseDown(QMapWidget*, QMouseEvent * ev)
+{
+	if (_enabled == false)
+		return;
+
 	QMouseEvent* e = (QMouseEvent*)ev;
 	Qt::MouseButtons buttons = e->buttons();
 	if(buttons & Qt::LeftButton)
@@ -29,8 +53,11 @@ void MapPanTool::MouseDown(void * ev)
 	}
 }
 
-void MapPanTool::MouseMove(void *ev)
+void MapPanTool::MouseMove(QMapWidget*, QMouseEvent *ev)
 {
+	if (_enabled == false)
+		return;
+
 	QMouseEvent* e = (QMouseEvent*)ev;
 	Qt::MouseButtons buttons = e->buttons();
 	if (buttons & Qt::LeftButton)
@@ -53,8 +80,11 @@ void MapPanTool::MouseMove(void *ev)
 	}
 }
 
-void MapPanTool::MouseUp(void* ev)
+void MapPanTool::MouseUp(QMapWidget*, QMouseEvent* ev)
 {
+	if (_enabled == false)
+		return;
+
 	_mapWidget->RepaintMap();
 }
 

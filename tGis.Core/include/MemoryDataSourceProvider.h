@@ -13,6 +13,7 @@
 #include <string>
 
 #include "Event.h"
+#include "Progress.h"
 
 using namespace std;
 

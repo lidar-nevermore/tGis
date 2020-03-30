@@ -43,17 +43,6 @@ public:
 	virtual void RepaintMap();
 	virtual void PresentMap();
 
-	virtual void MouseDown(void*);
-	virtual void MouseMove(void*);
-	virtual void MouseUp(void*);
-	virtual void MouseClicked(void*);
-	virtual void MouseDoubleClicked(void*);
-	virtual void MouseWheel(void*);
-
-	virtual void KeyDown(void*);
-	virtual void KeyUp(void*);
-	virtual void KeyPress(void*);
-
 protected:
 	void SetSurfaceSize(int surfW, int surfH)
 	{

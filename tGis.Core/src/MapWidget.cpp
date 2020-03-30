@@ -18,6 +18,14 @@ MapWidget::MapWidget(GeoSurface* geoSurface)
 
 MapWidget::~MapWidget()
 {
+	vector<IMapTool*>::iterator it = _vecMapTool.begin(); 
+	while(it != _vecMapTool.end())
+	{
+		IMapTool* tool = *it;
+		tool->SetMapWidget(nullptr);
+		it = _vecMapTool.erase(it);
+		MapToolRemovedEvent(this, tool);
+	}
 }
 
 bool MapWidget::AddMapTool(IMapTool * tool)
@@ -118,86 +126,6 @@ void MapWidget::PresentMap()
 	_geoSurface->Present(this, (int)surfPresentLeft, (int)surfPresentTop, surfPresentWidth, surfPresentHeight);
 }
 
-void MapWidget::MouseDown(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->MouseDown(e);
-	}
-}
-
-void MapWidget::MouseMove(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->MouseMove(e);
-	}
-}
-
-void MapWidget::MouseUp(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->MouseUp(e);
-	}
-}
-
-void MapWidget::MouseClicked(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->MouseClicked(e);
-	}
-}
-
-void MapWidget::MouseDoubleClicked(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->MouseDoubleClicked(e);
-	}
-}
-
-void MapWidget::MouseWheel(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->MouseWheel(e);
-	}
-}
-
-void MapWidget::KeyDown(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->KeyDown(e);
-	}
-}
-
-void MapWidget::KeyUp(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->KeyUp(e);
-	}
-}
-
-void MapWidget::KeyPress(void * e)
-{
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
-	{
-		if ((*it)->GetEnabled())
-			(*it)->KeyPress(e);
-	}
-}
 
 
 END_NAME_SPACE(tGis, Core)

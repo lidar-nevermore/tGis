@@ -35,6 +35,7 @@ private:
 	void LayerAdded(IMapPtr, ILayerPtr);
 	void LayerRemoved(IMapPtr, ILayerPtr);
 	void LayerCleared(IMapPtr);
+	void BeforeMapWidgetDestory(IMapWidget*);
 
 	void AfterDataSourceConnect(IDataSourceProvider*, IDataSource*);
 	void BeforeDataSourceDisconnect(IDataSourceProvider*, IDataSource*);

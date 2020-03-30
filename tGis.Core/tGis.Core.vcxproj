@@ -58,6 +58,7 @@
     <ClInclude Include="include\ObjectSampleDataSourceProvider.h" />
     <ClInclude Include="include\OverlayLayer.h" />
     <ClInclude Include="include\OverlayRect.h" />
+    <ClInclude Include="include\Progress.h" />
     <ClInclude Include="include\RasterBinaryGrayScaleLayer.h" />
     <ClInclude Include="include\RasterBinaryGrayScaleLayerProvider.h" />
     <ClInclude Include="include\RasterGrayScaleLayerProvider.h" />

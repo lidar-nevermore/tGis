@@ -290,6 +290,9 @@
     <ClInclude Include="include\ilog.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="include\Progress.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\FileSystemDataSourceProvider.cpp">

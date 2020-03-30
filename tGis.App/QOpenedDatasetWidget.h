@@ -52,6 +52,7 @@ private:
 		QOpenedDatasetWidget* _widget;
 		QStandardItem* _node;
 		void operator()(IDataSourceProviderPtr& dsp, IDatasetPtr& dataset);
+		void operator()(const IDataSourceProviderPtr& dsp, const IDatasetPtr& dataset);
 	};
 
 	struct QDatasetCloseEventHandler : public DatasetEventHandler
@@ -59,6 +60,7 @@ private:
 		QOpenedDatasetWidget* _widget;
 		QStandardItem* _node;
 		void operator()(IDataSourceProviderPtr& dsp, IDatasetPtr& dataset);
+		void operator()(const IDataSourceProviderPtr& dsp, const IDatasetPtr& dataset);
 	};
 
 	QList<QDatasetOpenEventHandler*> _QDatasetOpenEventHandlers;

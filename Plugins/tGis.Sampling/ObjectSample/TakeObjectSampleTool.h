@@ -26,8 +26,9 @@ public:
 	void SetRasterLayer(ILayer* layer);
 	void SetObjectSampleDataSource(ObjectSampleDataSource* samples);
 
-public:
-	virtual void MouseUp(void*);
+private:
+	void SetMapWidget(IMapWidget* mapWidget);
+	void MouseUp(QMapWidget* s, QMouseEvent *);
 };
 
 

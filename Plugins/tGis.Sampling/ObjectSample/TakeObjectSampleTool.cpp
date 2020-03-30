@@ -20,6 +20,8 @@ TakeObjectSampleTool::TakeObjectSampleTool()
 
 TakeObjectSampleTool::~TakeObjectSampleTool()
 {
+	if (_mapWidget != nullptr)
+		_mapWidget->RemoveMapTool(this);
 }
 
 void TakeObjectSampleTool::SetRasterLayer(ILayer * layer)
@@ -33,9 +35,37 @@ void TakeObjectSampleTool::SetObjectSampleDataSource(ObjectSampleDataSource * sa
 	_samples = samples;
 }
 
-void TakeObjectSampleTool::MouseUp(void *ev)
+void TakeObjectSampleTool::SetMapWidget(IMapWidget * mapWidget)
 {
-	DrawRectTool::MouseUp(ev);
+	if (mapWidget == nullptr && _mapWidget != nullptr)
+	{
+		IOverlayLayer* overlay = _mapWidget->GetOverlayLayer();
+		overlay->RemoveOverlayObject(&_rect);
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->MousePressEvent.Remove<TakeObjectSampleTool>(this, &TakeObjectSampleTool::MouseDown);
+		widget->MouseMoveEvent.Remove<TakeObjectSampleTool>(this, &TakeObjectSampleTool::MouseMove);
+		widget->MouseReleaseEvent.Remove<>(this, &TakeObjectSampleTool::MouseUp);
+	}
+	_mapWidget = mapWidget;
+	if (mapWidget != nullptr)
+	{
+		IOverlayLayer* overlay = mapWidget->GetOverlayLayer();
+		overlay->AddOverlayObject(&_rect);
+		QMapWidget* widget = (QMapWidget*)_mapWidget;
+		widget->MousePressEvent.Add<TakeObjectSampleTool>(this, &TakeObjectSampleTool::MouseDown);
+		widget->MouseMoveEvent.Add<TakeObjectSampleTool>(this, &TakeObjectSampleTool::MouseMove);
+		widget->MouseReleaseEvent.Add<>(this, &TakeObjectSampleTool::MouseUp);
+	}
+}
+
+void TakeObjectSampleTool::MouseUp(QMapWidget* s, QMouseEvent *ev)
+{
+	if (_enabled == false)
+		return;
+
+	_rect.SetVisible(false);
+	_mapWidget->PresentMap();
+
 	GeoViewPort* viewPort = _mapWidget->GetViewPort();
 	double spatialLeft;
 	double spatialTop;

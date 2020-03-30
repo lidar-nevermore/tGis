@@ -226,3 +226,13 @@ void QOpenedDatasetWidget::QDatasetCloseEventHandler::operator()(IDataSourceProv
 {
 	_widget->RemoveDatasetNode(_node, dsp, dataset);
 }
+
+void QOpenedDatasetWidget::QDatasetOpenEventHandler::operator()(const IDataSourceProviderPtr& dsp, const IDatasetPtr & dataset)
+{
+	_widget->AddDatasetNode(_node, dsp, dataset);
+}
+
+void QOpenedDatasetWidget::QDatasetCloseEventHandler::operator()(const IDataSourceProviderPtr& dsp, const IDatasetPtr & dataset)
+{
+	_widget->RemoveDatasetNode(_node, dsp, dataset);
+}

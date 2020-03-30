@@ -6,6 +6,8 @@
 #include "tVisualize.h"
 #include "tGisGuiCfg.h"
 
+#include "QMapWidget.h"
+
 using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Gui)
@@ -16,10 +18,11 @@ public:
 	MapPanTool();
 	~MapPanTool();
 
-public:
-	void MouseDown(void*);
-	void MouseMove(void*);
-	void MouseUp(void*);
+private:
+	void SetMapWidget(IMapWidget* mapWidget);
+	void MouseDown(QMapWidget*, QMouseEvent*);
+	void MouseMove(QMapWidget*, QMouseEvent*);
+	void MouseUp(QMapWidget*, QMouseEvent*);
 
 private:
 	int _mouseDownX;

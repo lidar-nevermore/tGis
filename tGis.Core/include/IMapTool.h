@@ -19,17 +19,6 @@ struct TGIS_CORE_API IMapTool
 	virtual void SetEnabled(bool enabled) = 0;
 	virtual bool GetEnabled() = 0;
 
-	virtual void MouseDown(void*) = 0;
-	virtual void MouseMove(void*) = 0;
-	virtual void MouseUp(void*) = 0;
-	virtual void MouseClicked(void*) = 0;
-	virtual void MouseDoubleClicked(void*) = 0;
-	virtual void MouseWheel(void*) = 0;
-
-	virtual void KeyDown(void*) = 0;
-	virtual void KeyUp(void*) = 0;
-	virtual void KeyPress(void*) = 0;
-
 	IMapTool() {};
 	virtual ~IMapTool() {};
 
