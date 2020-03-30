@@ -6,7 +6,7 @@
 #include "Helper.h"
 #include "EventBase.h"
 #include "elr_mpl.h"
-
+#include <functional>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -37,9 +37,9 @@ class MemberEventHandler : public IEventHandler<Args...>
 public:
 	typedef void(T::*Handler)(Args...);
 	MemberEventHandler(T* receiver,const Handler handler)
+		:_receiver(receiver),
+		_handler(handler)
 	{
-		_receiver = receiver;
-		_handler = handler;
 	}
 
 	virtual ~MemberEventHandler() {};
@@ -98,7 +98,7 @@ public:
 	//}
 
 private:
-	Handler _handler;
+	const Handler _handler;
 	T* _receiver;
 
 private:
@@ -110,10 +110,10 @@ template<typename ...Args>
 class FunctionEventHandler : public IEventHandler<Args...>
 {
 public:
-	typedef void(__cdecl*Handler)(Args...);
-	FunctionEventHandler(Handler handler)
+	typedef void(__cdecl *Handler)(Args...);
+	FunctionEventHandler(const Handler handler)
+		:_handler(handler)
 	{
-		_handler = handler;
 	}
 
 	virtual ~FunctionEventHandler() {};
@@ -173,7 +173,7 @@ public:
 	//}
 
 private:
-	Handler _handler;
+	const Handler _handler;
 
 private:
 	FunctionEventHandler(const FunctionEventHandler &) = delete;
@@ -181,11 +181,81 @@ private:
 };
 
 template<typename ...Args>
-class Event : public EventBase
+class FunctorEventHandler : public IEventHandler<Args...>
 {
 public:
-	typedef IEventHandler<Args...>* EventHandler;	
+	FunctorEventHandler(const std::function<void(Args...)>* handler)
+		:_handler(handler)
+	{
+	}
 
+	virtual ~FunctorEventHandler() {};
+
+	virtual bool IsEqual(const IEventHandler<Args...>* handler)
+	{
+		if (this == handler)
+			return true;
+
+		FunctorEventHandler<Args...>* h = dynamic_cast<FunctorEventHandler<Args...>*>(const_cast<IEventHandler<Args...>*>(handler));
+
+		if (h == nullptr)
+			return false;
+
+		if (h->_handler == _handler)
+			return true;
+
+		return false;
+	}
+
+
+	static void* operator new(size_t size)
+	{
+		void* p = elr_mpl_alloc_multi(NULL, size);
+		if (p == NULL)
+		{
+			throw std::bad_alloc();
+		}
+
+		return p;
+	}
+
+	static void operator delete(void *p)
+	{
+		elr_mpl_free(p);
+	}
+
+public:
+	void operator()(Args&... args)
+	{
+		(*_handler)(args...);
+	}
+
+	void operator()(const Args&... args)
+	{
+		(*_handler)(args...);
+	}
+
+	//void operator()(Args&&... args)
+	//{
+	//	_handler(args...);
+	//}
+
+	//void operator()(const Args&&... args)
+	//{
+	//	_handler(args...);
+	//}
+
+private:
+	const std::function<void(Args...)>* _handler;
+
+private:
+	FunctorEventHandler(const FunctorEventHandler &) = delete;
+	FunctorEventHandler &operator=(const FunctorEventHandler &) = delete;
+};
+
+template<typename ...Args>
+class Event : public EventBase
+{
 public:
 	Event() 
 	{
@@ -195,7 +265,7 @@ public:
 		_isInternalHandler = false;
 	};
 
-	Event(const EventHandler h)
+	Event(IEventHandler<Args...>* h)
 	{
 		_handler = h;
 		_valid = true;
@@ -216,7 +286,7 @@ public:
 		}
 	};
 
-	const Event<Args...>& operator = (const EventHandler h)
+	const Event<Args...>& operator = (IEventHandler<Args...>* h)
 	{
 		_handler = h;
 		_valid = true;
@@ -318,7 +388,7 @@ public:
 	//}
 
 private:
-	void Add(const EventHandler h, bool isInternalHandler)
+	void Add(IEventHandler<Args...>* h, bool isInternalHandler)
 	{
 		if (_valid)
 		{
@@ -341,12 +411,12 @@ private:
 	}
 
 public:
-	void Add(const EventHandler h)
+	void Add(IEventHandler<Args...>* h)
 	{
 		this->Add(h, false);
 	}
 
-	void Remove(const EventHandler h)
+	void Remove(IEventHandler<Args...>* h)
 	{
 		if (_valid && _handler->IsEqual(h))
 		{
@@ -405,6 +475,18 @@ public:
 		this->Remove(&handler);
 	}
 
+	void Add(const std::function<void(Args...)>* h)
+	{
+		FunctorEventHandler<Args...>* handler = new FunctorEventHandler<Args...>(h);
+		this->Add(handler, true);
+	}
+
+	void Remove(const std::function<void(Args...)>* h)
+	{
+		FunctorEventHandler<Args...> handler(h);
+		this->Remove(&handler);
+	}
+
 	void Add(const Event<Args...>& e)
 	{
 		Event<Args...>* event_ = const_cast<Event<Args...>*>(&e);
@@ -433,14 +515,49 @@ public:
 
 public:
 
-	const Event<Args...>& operator += (const EventHandler h)
+	const Event<Args...>& operator += (IEventHandler<Args...>* h)
 	{
 		this->Add(h);
 
 		return *this;
 	}
 
-	const Event<Args...>& operator -= (const EventHandler h)
+	const Event<Args...>& operator -= (IEventHandler<Args...>* h)
+	{
+		this->Remove(h);
+
+		return *this;
+	}
+
+	const Event<Args...>& operator += (void(*h)(Args...))
+	{
+		this->Add(h);
+
+		return *this;
+	}
+
+	const Event<Args...>& operator -= (void(*h)(Args...))
+	{
+		this->Remove(h);
+
+		return *this;
+	}
+
+	const Event<Args...>& operator += (const std::function<void(Args...)>* h)
+	{
+		this->Add(h);
+
+		return *this;
+	}
+
+	const Event<Args...>& operator += (const std::function<void(Args...)>& h)
+	{
+		this->Add(&h);
+
+		return *this;
+	}
+
+	const Event<Args...>& operator -= (const std::function<void(Args...)>* h)
 	{
 		this->Remove(h);
 
@@ -463,7 +580,7 @@ public:
 
 private:
 	bool _valid;
-	EventHandler _handler;
+	IEventHandler<Args...>* _handler;
 	//_handler是否是在本类的实例内部创建的
 	//内部创建的_handler在移除时需要释放内存
 	bool _isInternalHandler;
