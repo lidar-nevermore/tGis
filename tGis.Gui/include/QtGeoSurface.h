@@ -40,6 +40,8 @@ private:
 public:
 	void Present(IWidget* w, int wX, int wY);
 	void Present(IWidget* w, int wX, int wY, int wW, int wH);
+	void BeginPaint(IWidget* w, bool isCache);
+	void EndPaint(IWidget* w, bool isCache);
 
 	void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);
 	void DrawPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt);

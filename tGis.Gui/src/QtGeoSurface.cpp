@@ -151,16 +151,44 @@ void QtGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
 {
 	if (_osSurf4Paint == nullptr)
 		return;
+
 	QMapWidget* widget = (QMapWidget*)w;
 	QPainter painter(widget);
-	QSize sz = widget->size();
-    painter.fillRect(
-		0, 0, sz.width(), sz.height(),
-		QColor(widget->_backgroundR, widget->_backgroundG, widget->_backgroundB));
 	int surfWidth;
 	int surfHeight;
 	_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
 	painter.drawPixmap(wX, wY, wW, wH, *_osSurf4Paint, 0, 0, surfWidth, surfHeight);
+}
+
+void QtGeoSurface::BeginPaint(IWidget* w, bool isCache)
+{
+	QMapWidget* widget = (QMapWidget*)w;
+	if (isCache == false)
+	{
+		int surfWidth;
+		int surfHeight;
+		_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
+		FillRect(0, 0, surfWidth, surfHeight,
+			widget->_backgroundR, widget->_backgroundG, widget->_backgroundB, 255, 1);
+	}
+	else
+	{
+		QPainter painter(widget);
+		QSize sz = widget->size();
+		painter.fillRect(
+			0, 0, sz.width(), sz.height(),
+			QColor(widget->_backgroundR, widget->_backgroundG, widget->_backgroundB));
+	}
+}
+
+void QtGeoSurface::EndPaint(IWidget* w, bool isCache)
+{
+	if (isCache == false)
+		Present(w, 0, 0);
+
+	QMapWidget* widget = (QMapWidget*)w;
+	QPainter painter(widget);
+	QSize sz = widget->size();
 
 	IOverlayLayer* overlayLayer = widget->GetOverlayLayer();
 	AttachQPainter(&painter);

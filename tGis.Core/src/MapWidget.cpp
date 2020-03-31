@@ -98,9 +98,9 @@ void MapWidget::RepaintMap()
 		return;
 
 	_geoSurface->SetViewPort(&_viewPort);
-	_geoSurface->FillRect(0, 0, _viewPort._surfWidth, _viewPort._surfHeight, _backgroundR, _backgroundG, _backgroundB, 255, 1);
+	_geoSurface->BeginPaint(this,false);
 	map->Paint(_geoSurface);
-	_geoSurface->Present(this, 0, 0);
+	_geoSurface->EndPaint(this,false);
 }
 
 void MapWidget::PresentMap()
@@ -123,7 +123,9 @@ void MapWidget::PresentMap()
 	int surfPresentWidth = (int)_tgis_round(surfPresentRight - surfPresentLeft, 0);
 	int surfPresentHeight = (int)_tgis_round(surfPresentBottom - surfPresentTop, 0);
 
+	_geoSurface->BeginPaint(this,true);
 	_geoSurface->Present(this, (int)surfPresentLeft, (int)surfPresentTop, surfPresentWidth, surfPresentHeight);
+	_geoSurface->EndPaint(this,true);
 }
 
 
