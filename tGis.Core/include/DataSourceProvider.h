@@ -20,10 +20,6 @@ struct IDataset;
 class TGIS_CORE_API DataSourceProvider : public IDataSourceProvider
 {
 	friend class DataSource;
-public:
-	typedef IDataSource*(*CreationUI)(IDataSourceProvider*);
-	typedef void*(*PropertyUI)(IDataSourceProvider*, IDataSource*, IDataset*);
-
 protected:
 	DataSourceProvider();
 	DataSourceProvider(const DataSourceProvider &) = delete;
@@ -46,9 +42,6 @@ public:
 	virtual ~DataSourceProvider();
 
 protected:
-	CreationUI _uiCreation;
-	PropertyUI _uiProperty;
-
 	//该集合中存放所有打开的数据集，包括子Provider打开的数据集
 	vector<IDataset*> _vecOpenedDataset;
 
@@ -62,10 +55,6 @@ protected:
 
 public:
 	virtual void AddSubProvider(IDataSourceProvider*);
-	void SetCreationUI(const CreationUI ui);
-	virtual IDataSource* UI_CreateDataSource();
-	void SetPropertyUI(const PropertyUI ui);
-	virtual void UI_DataSourceProperty(IDataSource*, IDataset*);
 
 	virtual IDataSource* CreateDataSource(const char * creationString);
 	virtual void ReleaseDataSource(IDataSource*);

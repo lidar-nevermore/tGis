@@ -31,8 +31,6 @@ struct TGIS_CORE_API IDataSourceProvider : public ITGisObject
 
 	virtual void AddSubProvider(IDataSourceProvider*) = 0;
 
-	virtual IDataSource* UI_CreateDataSource() = 0;
-	virtual void UI_DataSourceProperty(IDataSource*,IDataset*) = 0;
 	virtual IDataSource* CreateDataSource(const char* creationString) = 0;
 	virtual void ReleaseDataSource(IDataSource*) = 0;
 

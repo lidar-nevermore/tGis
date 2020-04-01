@@ -87,30 +87,6 @@ void DataSourceProvider::AddSubProvider(IDataSourceProvider * provider)
 	_vecSubProvider.push_back(provider);
 }
 
-void DataSourceProvider::SetCreationUI(const CreationUI ui)
-{
-	_uiCreation = ui;
-}
-
-IDataSource * DataSourceProvider::UI_CreateDataSource()
-{
-	assert(_uiCreation != nullptr);
-
-	return _uiCreation(this);
-}
-
-void DataSourceProvider::SetPropertyUI(const PropertyUI ui)
-{
-	_uiProperty = ui;
-}
-
-void DataSourceProvider::UI_DataSourceProperty(IDataSource *ds, IDataset *dt)
-{
-	assert(_uiProperty != nullptr);
-
-	_uiProperty(this, ds, dt);
-}
-
 IDataSource * DataSourceProvider::CreateDataSource(const char * creationString)
 {
 	for (vector<IDataSourceProvider*>::iterator it = _vecSubProvider.begin(); it != _vecSubProvider.end(); it++)
