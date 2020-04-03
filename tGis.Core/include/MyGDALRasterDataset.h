@@ -29,12 +29,12 @@ public:
 private:
 	static const char* const _type;
 
-protected:
-	MyGDALRasterDataset(IDataSource* ds);
-
 public:
+	MyGDALRasterDataset(IDataSource* ds);
 	MyGDALRasterDataset();
 	virtual ~MyGDALRasterDataset();
+
+public:
 	virtual void Close();
 
 protected:
@@ -44,15 +44,14 @@ protected:
 	//The upper left corner of the upper left pixel is at position (padfTransform[0],padfTransform[3]).
 	double _geoTransform[6];
 
-
 public:
 	using MyGDALDataset::GetGDALDataset;
 	using MyGDALDataset::SetAutoClose;
 	using MyGDALDataset::GetAutoClose;
 
-	void Detach();
-
 	void Attach(GDALDataset* dataset, bool autoClose = false, double noDataValue = NAN);
+
+	void Detach();
 
 	//Spatial position of the upper left corner of the pixel.
 	void Pixel2Spatial(int pixX,int pixY,double *projX, double *projY);

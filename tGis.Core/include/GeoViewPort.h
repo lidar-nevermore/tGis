@@ -28,8 +28,11 @@ private:
 
 public:
 	const OGRSpatialReference* GetSpatialReference() const;
+
+private:
 	void SetSpatialReference(const OGRSpatialReference*);
 
+public:
 	void GetSpatialCenter(double* spatialCenterX, double* spatialCenterY) const;
 	void SetSpatialCenter(double spatialCenterX, double spatialCenterY);
 

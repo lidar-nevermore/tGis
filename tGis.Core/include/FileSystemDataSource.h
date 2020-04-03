@@ -17,16 +17,9 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_CORE_API FileSystemDataSource : public DataSource
 {
-	friend class FileSystemDataSourceProvider;
-protected:
-	FileSystemDataSource(const char* path);
-	FileSystemDataSource(const char* path, IDataSourceProvider* provider);
-
 public:
+	FileSystemDataSource(const char* path);
 	virtual ~FileSystemDataSource();
-
-private:
-	int _refCount;
 
 private:
 	static const char* const _type;
@@ -35,8 +28,6 @@ protected:
 	string _path;
 
 private:
-	void Disconnect(bool raiseEvent);
-
 	static void OnTraverseDir(void* usr, const char * dir, const char* name, unsigned int attrib);
 
 public:
@@ -45,12 +36,7 @@ public:
 	virtual bool IsTypeOf(const char* type);
 	virtual bool IsTypeOf(ITGisObject* object);
 
-	virtual const char* GetCreationString();
-
 	virtual void Connect();
-	virtual void Connect(const char* creationString, IDataset** dtOut);
-	virtual void Connect(const char* creationString, IDataSource** dsOut);
-	virtual void Disconnect();
 };
 
 

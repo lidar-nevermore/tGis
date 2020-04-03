@@ -1,4 +1,4 @@
-#include "VectorSimpleLayer.h"
+#include "VectorSimpleLayerRender.h"
 #include "IGeoSurface.h"
 #include "VisualizeBufferManager.h"
 #include "MyGDALVectorDataset.h"
@@ -12,62 +12,33 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const VectorSimpleLayer::_type = "57D45D8B-E28E-4D5F-A588-1A55347A0C68";
+const char* const VectorSimpleLayerRender::_type = "57D45D8B-E28E-4D5F-A588-1A55347A0C68";
 
 
-VectorSimpleLayer::VectorSimpleLayer(ILayerProvider* provider)
-	:VectorLayer(provider)
-{
-}
-
-VectorSimpleLayer::VectorSimpleLayer(ILayerProvider* provider, MyGDALVectorDataset* vector, OGRLayer *layer, int geometryField, int labelField)
-	:VectorLayer(provider, vector,layer)
+VectorSimpleLayerRender::VectorSimpleLayerRender(ILayer* layer, int ogrLayerIndex, int geometryField, int labelField)
+	:VectorLayerRender(layer, ogrLayerIndex)
 {
 	_geometryField = geometryField;
 	_labelField = labelField;
 }
 
 
-VectorSimpleLayer::~VectorSimpleLayer()
+VectorSimpleLayerRender::~VectorSimpleLayerRender()
 {
 }
 
-
-void VectorSimpleLayer::SetOGRLayer(MyGDALVectorDataset* vector, OGRLayer * layer, int geometryField, int labelField)
-{
-	VectorLayer::SetOGRLayer(vector,layer);
-	_geometryField = geometryField;
-	_labelField = labelField;
-	_mapSpatialRef = nullptr;
-}
-
-const char * VectorSimpleLayer::GetType()
+const char * VectorSimpleLayerRender::GetType()
 {
 	return _type;
 }
 
-const char * VectorSimpleLayer::S_GetType()
+const char * VectorSimpleLayerRender::S_GetType()
 {
 	return _type;
 }
 
-const char * VectorSimpleLayer::GetCreationString()
+void VectorSimpleLayerRender::Paint(IGeoSurface * surf)
 {
-	return nullptr;
-}
-
-ILayer * VectorSimpleLayer::Clone(IDataset *dt)
-{
-	VectorSimpleLayer* layer = new VectorSimpleLayer(_provider);
-	memcpy(layer, this, sizeof(VectorSimpleLayer));
-	return layer;
-}
-
-void VectorSimpleLayer::Paint(IGeoSurface * surf)
-{
-	if (_visible == false)
-		return;
-
 	OGRFeature* feature = nullptr;
 	OGRGeometry* geometry = nullptr;
 	unsigned char* surfBuffer = VisualizeBufferManager::INSTANCE().AllocSurfaceBuffer();
@@ -75,10 +46,10 @@ void VectorSimpleLayer::Paint(IGeoSurface * surf)
 	int* x = (int*)surfBuffer;
 	int* y = (int*)pixBuffer;
 	PrepareCT();
-	_layer->ResetReading();
+	_ogrLayer->ResetReading();
 	do
 	{
-		feature = _layer->GetNextFeature();
+		feature = _ogrLayer->GetNextFeature();
 		if (feature != nullptr)
 		{
 			geometry = GetGeometry(feature);
@@ -117,7 +88,7 @@ void VectorSimpleLayer::Paint(IGeoSurface * surf)
 }
 
 
-inline OGRGeometry * VectorSimpleLayer::GetGeometry(OGRFeature *feature)
+inline OGRGeometry * VectorSimpleLayerRender::GetGeometry(OGRFeature *feature)
 {
 	if (_geometryField < 0)
 		return feature->GetGeometryRef();
@@ -125,12 +96,12 @@ inline OGRGeometry * VectorSimpleLayer::GetGeometry(OGRFeature *feature)
 		return feature->GetGeomFieldRef(_geometryField);
 }
 
-inline const char * VectorSimpleLayer::GetLabel(OGRFeature *)
+inline const char * VectorSimpleLayerRender::GetLabel(OGRFeature *)
 {
 	return nullptr;
 }
 
-inline void VectorSimpleLayer::DrawPoint(int* xb, int* yb, IGeoSurface* surf, OGRPoint *geometry)
+inline void VectorSimpleLayerRender::DrawPoint(int* xb, int* yb, IGeoSurface* surf, OGRPoint *geometry)
 {
 	if (_CT != nullptr)
 	{
@@ -152,7 +123,7 @@ inline void VectorSimpleLayer::DrawPoint(int* xb, int* yb, IGeoSurface* surf, OG
 	}
 }
 
-inline int VectorSimpleLayer::TransferGeometryPoints(int * x, int * y, IGeoSurface* surf, OGRSimpleCurve *geometry)
+inline int VectorSimpleLayerRender::TransferGeometryPoints(int * x, int * y, IGeoSurface* surf, OGRSimpleCurve *geometry)
 {
 	if (_CT != nullptr)
 	{
@@ -327,14 +298,14 @@ inline int VectorSimpleLayer::TransferGeometryPoints(int * x, int * y, IGeoSurfa
 	return spti;
 }
 
-inline void VectorSimpleLayer::DrawLineString(int* x, int* y, IGeoSurface* surf, OGRLineString *geometry)
+inline void VectorSimpleLayerRender::DrawLineString(int* x, int* y, IGeoSurface* surf, OGRLineString *geometry)
 {
 	int ptcount = TransferGeometryPoints(x, y, surf, geometry);
 
 	_simpleLineSymbol.Paint(surf, ptcount, x, y, nullptr, nullptr);
 }
 
-inline void VectorSimpleLayer::DrawPolygon(int* x, int* y, IGeoSurface* surf, OGRPolygon * geometry)
+inline void VectorSimpleLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* surf, OGRPolygon * geometry)
 {
 	OGRLinearRing*  exterior = geometry->getExteriorRing();
 	if (exterior != nullptr)
@@ -348,7 +319,7 @@ inline void VectorSimpleLayer::DrawPolygon(int* x, int* y, IGeoSurface* surf, OG
 	}
 }
 
-inline void VectorSimpleLayer::DrawMultiPoint(int* xb, int* yb, IGeoSurface* surf, OGRMultiPoint * geometry)
+inline void VectorSimpleLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurface* surf, OGRMultiPoint * geometry)
 {
 	if (_CT != nullptr)
 	{
@@ -377,7 +348,7 @@ inline void VectorSimpleLayer::DrawMultiPoint(int* xb, int* yb, IGeoSurface* sur
 
 }
 
-inline void VectorSimpleLayer::DrawMultiLineString(int* x, int* y, IGeoSurface* surf, OGRMultiLineString * geometry)
+inline void VectorSimpleLayerRender::DrawMultiLineString(int* x, int* y, IGeoSurface* surf, OGRMultiLineString * geometry)
 {
 	int c = geometry->getNumGeometries();
 	for (int i = 0; i < c; i++)
@@ -389,7 +360,7 @@ inline void VectorSimpleLayer::DrawMultiLineString(int* x, int* y, IGeoSurface* 
 	}
 }
 
-inline void VectorSimpleLayer::DrawMultiPolygon(int* x, int* y, IGeoSurface* surf, OGRMultiPolygon *geometry)
+inline void VectorSimpleLayerRender::DrawMultiPolygon(int* x, int* y, IGeoSurface* surf, OGRMultiPolygon *geometry)
 {
 	int c = geometry->getNumGeometries();
 	for (int i = 0; i < c; i++)

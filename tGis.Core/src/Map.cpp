@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "ITGisObject.h"
-#include "ILayerProvider.h"
+#include "IDataset.h"
+#include "ILayerRender.h"
 
 #include "ogr_spatialref.h"
 
@@ -14,19 +15,12 @@ Map::Map()
 
 Map::~Map()
 {
+	ClearLayers();
+
 	if (_spatialRef != nullptr)
 	{
 		_spatialRef->Dereference();
 	}
-
-	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
-	{
-		ILayer* layer = *it;
-		ILayerProvider* provider = layer->GetProvider();
-		provider->ReleaseLayer(layer);
-	}
-	_vecLayer.clear();
-	LayerClearedEvent(std::forward<IMapPtr>(this));
 }
 
 const char * Map::GetName()
@@ -47,11 +41,6 @@ const OGREnvelope * Map::GetEnvelope()
 const OGRSpatialReference * Map::GetSpatialReference()
 {
 	return _spatialRef;
-}
-
-bool Map::CanTransformFrom(const OGRSpatialReference *spatialRef)
-{
-	return ITGisObject::CanTransform(spatialRef, _spatialRef);
 }
 
 size_t Map::GetLayerCount()
@@ -86,7 +75,7 @@ size_t Map::AddLayer(ILayer *layer, bool* added)
 
 	bool canAdd = false;
 	size_t layerCount = _vecLayer.size();
-	const OGRSpatialReference* clayerSpatialRef = layer->GetSpatialReference();
+	const OGRSpatialReference* clayerSpatialRef = layer->GetDataset()->GetSpatialReference();
 	OGRSpatialReference* layerSpatialRef = nullptr;
 	if(clayerSpatialRef != nullptr)
 		layerSpatialRef = const_cast<OGRSpatialReference*>(clayerSpatialRef);
@@ -98,7 +87,7 @@ size_t Map::AddLayer(ILayer *layer, bool* added)
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}
-	else if(layer->CanTransformTo(_spatialRef))
+	else if(layer->GetRender()->CanTransformTo(_spatialRef))
 	{
 		canAdd = true;
 		MergeEnvelope(layerSpatialRef, layer->GetEnvelope());
@@ -165,7 +154,7 @@ void Map::RemoveLayer(IDataset * dt)
 bool Map::InsertLayer(size_t pos, ILayer * layer)
 {
 	bool canAdd = false;
-	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetSpatialReference());
+	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetDataset()->GetSpatialReference());
 	if (_vecLayer.size() == 0)
 	{
 		_spatialRef = layerSpatialRef;
@@ -174,7 +163,7 @@ bool Map::InsertLayer(size_t pos, ILayer * layer)
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}
-	else if (CanTransformFrom(layer->GetSpatialReference()))
+	else if (layer->GetRender()->CanTransformTo(_spatialRef))
 	{
 		canAdd = true;
 		MergeEnvelope(layerSpatialRef, layer->GetEnvelope());
@@ -212,22 +201,13 @@ void Map::MoveLayer(size_t from, size_t to)
 	}
 }
 
-void Map::ClearLayers(LayerFunc func)
+void Map::ClearLayers()
 {
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
 	{
 		ILayer* layer = *it;
-		
-		if (func == nullptr)
-		{
-			ILayerProvider* provider = layer->GetProvider();
-			provider->ReleaseLayer(layer);
-		}
-		else
-		{
-			layer->SetMap(nullptr);
-			func(layer);
-		}
+		if (layer->_is_in_heap)
+			delete layer;
 	}
 	_vecLayer.clear();
 	LayerClearedEvent(std::forward<IMapPtr>(this));
@@ -249,7 +229,7 @@ void Map::MergeEnvelope()
 	_envelope.MaxY = 0.0;
 	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
 	{
-		MergeEnvelope((*it)->GetSpatialReference(), (*it)->GetEnvelope());
+		MergeEnvelope((*it)->GetDataset()->GetSpatialReference(), (*it)->GetEnvelope());
 	}
 }
 

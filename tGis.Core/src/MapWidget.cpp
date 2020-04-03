@@ -1,18 +1,22 @@
 #include "MapWidget.h"
 #include "IMap.h"
+#include "ILayer.h"
+#include "IDataset.h"
 #include "GeoSurface.h"
 #include "IMapTool.h"
 #include "MapTool.h"
 
+
 BEGIN_NAME_SPACE(tGis, Core)
 
-MapWidget::MapWidget(GeoSurface* geoSurface)
+MapWidget::MapWidget()
 {
 	_gridVisible = false;
 	_backgroundR = 255;
 	_backgroundG = 255;
 	_backgroundB = 255;
-	_geoSurface = geoSurface;
+	_map = nullptr;
+	_geoSurface = nullptr;
 }
 
 
@@ -26,6 +30,49 @@ MapWidget::~MapWidget()
 		it = _vecMapTool.erase(it);
 		MapToolRemovedEvent(this, tool);
 	}
+}
+
+void MapWidget::SetMap(IMap *map)
+{
+	if (map == nullptr && _map != nullptr)
+	{
+		map->LayerAddedEvent.Remove(this, &MapWidget::LayerAdded);
+		map->LayerClearedEvent.Remove(this, &MapWidget::LayerCleared);
+		map->LayerRemovedEvent.Remove(this, &MapWidget::LayerRemoved);
+	}
+	_map = map;
+	if (_map != nullptr)
+	{
+		map->LayerAddedEvent.Add(this, &MapWidget::LayerAdded);
+		map->LayerClearedEvent.Add(this, &MapWidget::LayerCleared);
+		map->LayerRemovedEvent.Add(this, &MapWidget::LayerRemoved);
+	}	
+}
+
+void MapWidget::LayerAdded(IMapPtr map, ILayerPtr layer)
+{
+	if (map->GetLayerCount() == 1)
+	{
+		_viewPort.SetSpatialReference(layer->GetDataset()->GetSpatialReference());
+	}
+	const OGREnvelope* envelope = layer->GetEnvelope();
+	_viewPort.IncludeEnvelope(envelope);
+	RepaintMap();
+}
+
+void MapWidget::LayerRemoved(IMapPtr map, ILayerPtr layer)
+{
+	if (map->GetLayerCount() == 0)
+	{
+		_viewPort.SetSpatialReference(nullptr);
+	}
+	RepaintMap();
+}
+
+void MapWidget::LayerCleared(IMapPtr)
+{
+	_viewPort.SetSpatialReference(nullptr);
+	RepaintMap();
 }
 
 bool MapWidget::AddMapTool(IMapTool * tool)

@@ -6,6 +6,7 @@
 #include "Helper.h"
 
 #include "ILayer.h"
+#include "ILayerRender.h"
 
 #include <string>
 
@@ -22,28 +23,78 @@ class TGIS_CORE_API Layer : public ILayer
 {
 	friend class Map;
 public:
-	Layer(ILayerProvider* provider);
+	Layer(IDataset* dt);
 	virtual ~Layer();
 
 public:
-	virtual ILayerProvider* GetProvider();
-	virtual ILayer* Clone(IDataset*);
-	virtual const char* GetName();
-	virtual void SetName(const char* name);
-	virtual IMap* GetMap();
-	virtual void SetMap(IMap*);
-	virtual bool GetVisible();
-	virtual void SetVisible(bool);
-	virtual float GetOpacity();
-	virtual void SetOpacity(float);
+	virtual const char* GetName()
+	{
+		return _name.c_str();
+	}
+
+	virtual void SetName(const char* name)
+	{
+		_name = name;
+	}
+
+	virtual const OGREnvelope* GetEnvelope()
+	{
+		if (_render != nullptr)
+			return _render->GetEnvelope();
+		return nullptr;
+	}
+
+	virtual IDataset* GetDataset()
+	{
+		return _dataset;
+	}
+
+	virtual IMap* GetMap()
+	{
+		return _map;
+	}
+
+	virtual void SetMap(IMap* map)
+	{
+		_map = map;
+	}
+
+	virtual ILayerRender* GetRender()
+	{
+		return _render;
+	}
+
+	virtual void SetRender(ILayerRender* render)
+	{
+		_render = render;
+	}
+
+	virtual bool GetVisible()
+	{
+		return _visible;
+	}
+
+	virtual void SetVisible(bool visible)
+	{
+		_visible = visible;
+	}
+
+	virtual void Paint(IGeoSurface* surf)
+	{
+		if (_visible == false)
+			return;
+
+		if (_render != nullptr)
+			_render->Paint(surf);
+	}
+
 
 protected:
 	string _name;
 	bool _visible;
-	float _opacity;
-	unsigned char _alpha;
 	IMap* _map;
-	ILayerProvider* _provider;
+	ILayerRender* _render;
+	IDataset* _dataset;
 };
 
 END_NAME_SPACE(tGis, Core)

@@ -15,8 +15,9 @@ struct IDataSource;
 
 struct TGIS_CORE_API IDataset : public ITGisObject
 {
+	friend class DataSource;
+
 	virtual const char* GetName() = 0;
-	virtual const char* GetCreationString() = 0;
 
 	virtual bool IsReadOnly() = 0;
 	virtual bool IsOpened() = 0;

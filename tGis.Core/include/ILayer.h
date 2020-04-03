@@ -5,6 +5,7 @@
 
 #include "Helper.h"
 #include "tGisCoreCfg.h"
+#include "ITGisObject.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -14,26 +15,26 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataset;
 struct IGeoSurface;
 struct IMap;
-struct ILayerProvider;
+struct ILayerRender;
 
-struct TGIS_CORE_API ILayer
+struct TGIS_CORE_API ILayer : public ITGisObject
 {
-	virtual const char* GetType() = 0;
-	virtual ILayerProvider* GetProvider() = 0;
-	virtual ILayer* Clone(IDataset*) = 0;
-	virtual const char* GetCreationString() = 0;
+	friend class Map;
+
 	virtual const char* GetName() = 0;
 	virtual void SetName(const char*) = 0;
+	//Layer的数据在Layer所属Map的投影下的范围
 	virtual const OGREnvelope* GetEnvelope() = 0;
-	virtual const OGRSpatialReference* GetSpatialReference() = 0;
-	virtual bool CanTransformTo(const OGRSpatialReference*) = 0;
+
 	virtual IDataset* GetDataset() = 0;
 	virtual IMap* GetMap() = 0;
 	virtual void SetMap(IMap*) = 0;
+	virtual ILayerRender* GetRender() = 0;
+	virtual void SetRender(ILayerRender* render) = 0;
+
 	virtual bool GetVisible() = 0;
 	virtual void SetVisible(bool) = 0;
-	virtual float GetOpacity() = 0;
-	virtual void SetOpacity(float) = 0;
+
 	virtual void Paint(IGeoSurface*) = 0;
 
 	ILayer() {};

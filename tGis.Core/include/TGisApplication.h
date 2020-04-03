@@ -36,8 +36,6 @@ private:
 	char _exeDir[TGIS_MAX_PATH];
 
 public:
-	virtual IMap*  GetCurrentMap() = 0;
-	virtual IMapWidget*  GetCurrentMapWidget() = 0;
 	const char* GetExeDir() { return _exeDir; }
 	void* GetLogger() { return _loger; }
 };

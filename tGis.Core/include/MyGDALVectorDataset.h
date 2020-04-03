@@ -33,10 +33,8 @@ public:
 private:
 	static const char* const _type;
 
-protected:
-	MyGDALVectorDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
-
 public:
+	MyGDALVectorDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	MyGDALVectorDataset();
 	virtual ~MyGDALVectorDataset();
 

@@ -48,5 +48,18 @@ MyGDALMemRasterDataset::~MyGDALMemRasterDataset()
 {
 }
 
+void MyGDALMemRasterDataset::Attach(GDALDataset * dataset, bool autoClose, double noDataValue)
+{
+	const char* drName = dataset->GetDriverName();
+	if (memcmp("MEM", drName, 3) == 0)
+	{
+		MyGDALRasterDataset::Attach(dataset, autoClose, noDataValue);
+	}
+	else
+	{
+		throw std::exception("MyGDALMemRasterDataset中不可以附加非内存数据集！！");
+	}
+}
+
 END_NAME_SPACE(tGis, Core)
 

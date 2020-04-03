@@ -7,6 +7,7 @@
 
 #include "IMapWidget.h"
 #include "OverlayLayer.h"
+#include "IMap.h"
 
 #include <vector>
 
@@ -21,8 +22,14 @@ class GeoSurface;
 class TGIS_CORE_API MapWidget : public IMapWidget
 {
 public:
-	MapWidget(GeoSurface* geoSurface);
+	MapWidget();
 	virtual ~MapWidget();
+
+	virtual void SetMap(IMap*);
+	virtual IMap* GetMap()
+	{
+		return _map;
+	}
 
 	virtual GeoViewPort* GetViewPort() 
 	{
@@ -49,7 +56,14 @@ protected:
 		_viewPort.SetSurfaceSize(surfW, surfH);
 	}
 
+	void LayerAdded(IMapPtr, ILayerPtr);
+	void LayerRemoved(IMapPtr, ILayerPtr);
+	void LayerCleared(IMapPtr);
+
 protected:
+	IMap* _map;
+	//具体的MapWidget实现提供具体的GeoSurface,
+	//然后给该基类中_geoSurface指针赋值
 	GeoSurface* _geoSurface;
 	GeoViewPort _viewPort;
 	OverlayLayer _overlayLayer;

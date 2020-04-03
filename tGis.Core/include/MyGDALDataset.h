@@ -23,11 +23,12 @@ struct IDataSource;
 class TGIS_CORE_API MyGDALDataset : public Dataset
 {
 public:
+	//用于在实例化MyGDALDataset之前初始化GDAL
+	//如果程序首先就实例化MyGDALDataset，就不需要调用此方法
 	static bool GDALInit();
 
 public:
 	virtual const char* GetName();
-	virtual const char* GetCreationString();
 
 	virtual bool IsReadOnly();
 	virtual bool IsOpened();

@@ -18,9 +18,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_CORE_API MemoryDataSource : public DataSource
 {
-	friend class MemoryDataSourceProvider;
+private:
+	static MemoryDataSource* _instance;
+public:
+	static MemoryDataSource& INSTANCE();
+
 protected:
-	MemoryDataSource(const char* name);
+	MemoryDataSource();
 
 public:
 	~MemoryDataSource();
@@ -31,9 +35,8 @@ private:
 public:
 	virtual const char* GetType();
 	static const char* S_GetType();
-
-	void Connect(const char* creationString, IDataset** dtOut);
-	void Connect(const char* creationString, IDataSource** dsOut);
+	virtual bool IsTypeOf(const char* type);
+	virtual bool IsTypeOf(ITGisObject* object);
 };
 
 END_NAME_SPACE(tGis, Core)

@@ -1,24 +1,23 @@
 #include "DataSource.h"
-#include "DataSourceProvider.h"
-
+#include "DataSourceRepository.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-DataSource::DataSource(IDataSourceProvider * provider)
+DataSource::DataSource()
 {
-	_provider = provider;
+	_dataSource = nullptr;
 }
 
 DataSource::~DataSource()
 {
+	Disconnect();
 }
 
 
 void DataSource::AddOpenedDataset(IDataset * dt)
 {
 	_vecOpenedDataset.push_back(dt);
-	((DataSourceProvider*)_provider)->AddOpenedDataset(dt);
 }
 
 void DataSource::RemoveOpenedDataset(IDataset * dt)
@@ -31,22 +30,11 @@ void DataSource::RemoveOpenedDataset(IDataset * dt)
 			break;
 		}
 	}
-	((DataSourceProvider*)_provider)->RemoveOpenedDataset(dt);
 }
 
 const char * DataSource::GetName()
 {
 	return _name.c_str();
-}
-
-const char * DataSource::GetCreationString()
-{
-	return nullptr;
-}
-
-IDataSourceProvider * DataSource::GetProvider()
-{
-	return _provider;
 }
 
 bool DataSource::IsConnected()
@@ -56,44 +44,53 @@ bool DataSource::IsConnected()
 
 void DataSource::Connect()
 {
-	DataSourceProvider* prd = (DataSourceProvider*)_provider;
-	prd->AddConnectedDataSource(this);
+	_vecConnectedDataSource.push_back(this);
+	DataSourceRepository::INSTANCE().AddConnectedDataSource(this);
 }
 
 void DataSource::Disconnect()
 {
-	DataSourceProvider* prd = (DataSourceProvider*)_provider;
-	prd->RemoveConnectedDataSource(this);
-}
+	DataSourceRepository::INSTANCE().RemoveConnectedDataSource(this);
+	//从父数据源中删除自己
+	if (this->_dataSource != nullptr)
+	{
+		DataSource* parent = (DataSource*)this->_dataSource;
+		for (vector<IDataSource*>::iterator it = parent->_vecConnectedDataSource.begin(); it != parent->_vecConnectedDataSource.end(); it++)
+		{
+			if (this == *it)
+			{
+				parent->_vecConnectedDataSource.erase(it);
+				break;
+			}
+		}
+	}
+	//关闭已经打开的子数据源和子数据集
+	for (vector<IDataSource*>::iterator it = _vecConnectedDataSource.begin(); it != _vecConnectedDataSource.end(); it++)
+		(*it)->Disconnect();
+	for (vector<IDataset*>::iterator it = _vecOpenedDataset.begin(); it != _vecOpenedDataset.end(); it++)
+		(*it)->Close();
+	_vecConnectedDataSource.clear();
+	_vecOpenedDataset.clear();
 
-void DataSource::Disconnect(IDataset * dt)
-{
+	//释放子数据源和子数据集占据的内存
 	for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
 	{
-		IDataset* dtTemp = *it;
-		if (dt == dtTemp)
-		{
-			_vecDataset.erase(it);
-			dt->Close();
+		IDataset* dt = (IDataset*)(*it);
+		if(dt->_is_in_heap)
 			delete dt;
-			break;
-		}
+	}
+		
+	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
+	{
+		IDataSource* ds = (IDataSource*)(*it);
+		if (ds->_is_in_heap)
+			delete ds;
 	}
 }
 
-void DataSource::Disconnect(IDataSource * ds)
+IDataSource * DataSource::GetDataSource()
 {
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
-	{
-		IDataSource* dsTemp = *it;
-		if (ds == dsTemp)
-		{
-			_vecDataSource.erase(it);
-			IDataSourceProvider* provider = dsTemp->GetProvider();
-			provider->ReleaseDataSource(dsTemp);
-			break;
-		}
-	}
+	return _dataSource;
 }
 
 size_t DataSource::GetDatasetCount()
@@ -124,6 +121,16 @@ size_t DataSource::GetOpenedDatasetCount()
 IDataset * DataSource::GetOpenedDataset(size_t pos)
 {
 	return _vecOpenedDataset.at(pos);
+}
+
+size_t DataSource::GetConnectedDataSourceCount()
+{
+	return _vecConnectedDataSource.size();
+}
+
+IDataSource * DataSource::GetConnectedDataSource(size_t pos)
+{
+	return _vecConnectedDataSource.at(pos);
 }
 
 

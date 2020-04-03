@@ -21,13 +21,10 @@ template class TGIS_CORE_API Event<IMap*, ILayer*>;
 
 struct TGIS_CORE_API IMap
 {
-	typedef void(*LayerFunc)(ILayer*);
-
 	virtual const char* GetName() = 0;
 	virtual void SetName(const char*) = 0;
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
-	virtual bool CanTransformFrom(const OGRSpatialReference*) = 0;
 
 	virtual size_t GetLayerCount() = 0;
 	virtual ILayer* GetLayer(size_t) = 0;
@@ -38,7 +35,7 @@ struct TGIS_CORE_API IMap
 	virtual void RemoveLayer(ILayer*) = 0;
 	virtual void RemoveLayer(IDataset*) = 0;
 	virtual void MoveLayer(size_t from, size_t to) = 0;
-	virtual void ClearLayers(LayerFunc func = nullptr) = 0;
+	virtual void ClearLayers() = 0;
 
 	virtual void Paint(IGeoSurface*) = 0;
 

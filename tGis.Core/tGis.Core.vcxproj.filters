@@ -56,18 +56,6 @@
     <ClInclude Include="include\tEntity.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\FileSystemDataSourceProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\LayerProviderRepository.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IDataSourceProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ILayerProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
     <ClInclude Include="include\tOrganizer.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
@@ -86,16 +74,10 @@
     <ClInclude Include="include\FileSystemDataSource.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\GeoSurface.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="include\IDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
     <ClInclude Include="include\IDataSource.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IGeoSurface.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
     <ClInclude Include="include\ILayer.h">
@@ -110,17 +92,8 @@
     <ClInclude Include="include\MyGDALRasterDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterGrayScaleLayer.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RasterLayer.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="include\Helper.h">
       <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DataSourceProviderRepository.h">
-      <Filter>include\Organizer</Filter>
     </ClInclude>
     <ClInclude Include="include\IOverlayLayer.h">
       <Filter>include\Visualize</Filter>
@@ -130,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="include\OverlayLayer.h">
       <Filter>include\Visualize</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ISurface.h">
-      <Filter>include\Entity</Filter>
     </ClInclude>
     <ClInclude Include="include\ISymbol.h">
       <Filter>include\Symbol</Filter>
@@ -151,18 +121,6 @@
     </ClInclude>
     <ClInclude Include="include\Layer.h">
       <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\VectorSimpleLayer.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\VectorLayer.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\VectorSimpleLayerProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RasterGrayScaleLayerProvider.h">
-      <Filter>include\Organizer</Filter>
     </ClInclude>
     <ClInclude Include="include\ISymbolLibrary.h">
       <Filter>include\Symbol</Filter>
@@ -185,12 +143,6 @@
     <ClInclude Include="include\tVisualize.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterRgbLayer.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RasterRgbLayerProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
     <ClInclude Include="internal\VisualizeBufferManager.h">
       <Filter>internal</Filter>
     </ClInclude>
@@ -200,18 +152,6 @@
     <ClInclude Include="include\ITGisObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterBinaryGrayScaleLayer.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\RasterBinaryGrayScaleLayerProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ObjectSampleDataSource.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ObjectSampleDataSourceProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
     <ClInclude Include="include\MyGDALDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
@@ -220,15 +160,6 @@
     </ClInclude>
     <ClInclude Include="include\MyGDALMemRasterDataset.h">
       <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\DataSourceProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\MemoryDataSourceProvider.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\LayerProvider.h">
-      <Filter>include\Organizer</Filter>
     </ClInclude>
     <ClInclude Include="include\MemoryDataSource.h">
       <Filter>include\Entity</Filter>
@@ -293,14 +224,56 @@
     <ClInclude Include="include\Progress.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="include\DataSourceRepository.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ILayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\LayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IGeoSurface.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ISurface.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="include\GeoSurface.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="include\bi_list.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\hashmap.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\linked_array.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\sorted_list.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterLayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterRgbLayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterGrayScaleLayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RasterBinaryGrayScaleLayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VectorLayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VectorSimpleLayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\FileSystemDataSourceProvider.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LayerProviderRepository.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
@@ -316,13 +289,7 @@
     <ClCompile Include="src\MapWidget.cpp">
       <Filter>src\Visualize</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterLayer.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="src\FileSystemDataSource.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GeoSurface.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\Map.cpp">
@@ -330,12 +297,6 @@
     </ClCompile>
     <ClCompile Include="src\MyGDALRasterDataset.cpp">
       <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RasterGrayScaleLayer.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DataSourceProviderRepository.cpp">
-      <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\OverlayLayer.cpp">
       <Filter>src\Visualize</Filter>
@@ -355,18 +316,6 @@
     <ClCompile Include="src\Layer.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\VectorSimpleLayer.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\VectorLayer.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RasterGrayScaleLayerProvider.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\VectorSimpleLayerProvider.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
     <ClCompile Include="src\SimpleSymbolLibrary.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
@@ -375,12 +324,6 @@
     </ClCompile>
     <ClCompile Include="src\Statistics.cpp">
       <Filter>src\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RasterRgbLayer.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RasterRgbLayerProvider.cpp">
-      <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="internal\VisualizeBufferManager.cpp">
       <Filter>internal</Filter>
@@ -394,18 +337,6 @@
     <ClCompile Include="src\ITGisObject.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterBinaryGrayScaleLayer.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RasterBinaryGrayScaleLayerProvider.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ObjectSampleDataSource.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ObjectSampleDataSourceProvider.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
     <ClCompile Include="src\MyGDALDataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
@@ -414,15 +345,6 @@
     </ClCompile>
     <ClCompile Include="src\MyGDALFileRasterDataset.cpp">
       <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DataSourceProvider.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\MemoryDataSourceProvider.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\LayerProvider.cpp">
-      <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\MemoryDataSource.cpp">
       <Filter>src\Entity</Filter>
@@ -471,6 +393,45 @@
     </ClCompile>
     <ClCompile Include="src\ilog.c">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DataSourceRepository.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GeoSurface.cpp">
+      <Filter>src\Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bi_list.c">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hashmap.c">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\linked_array.c">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sorted_list.c">
+      <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterRgbLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterGrayScaleLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RasterBinaryGrayScaleLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VectorLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\VectorSimpleLayerRender.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

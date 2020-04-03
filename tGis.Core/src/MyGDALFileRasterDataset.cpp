@@ -82,11 +82,34 @@ void MyGDALFileRasterDataset::Open()
 	}
 }
 
+void MyGDALFileRasterDataset::Attach(GDALDataset * dataset, bool autoClose, double noDataValue)
+{
+	const char* drName = dataset->GetDriverName();
+	if (memcmp("MEM", drName, 3) == 0)
+	{
+		throw std::exception("MyGDALFileRasterDataset中不可以附加内存数据集！");
+	}
+	else
+	{
+		MyGDALRasterDataset::Attach(dataset, autoClose, noDataValue);
+	}
+}
+
 void MyGDALFileRasterDataset::Attach(const char* file, GDALAccess eAccess, bool autoClose, double noDataValue)
 {
 	MyGDALDataset::Attach(file, eAccess, autoClose);
-	if(_dataset != nullptr)
-		MyGDALRasterDataset::Attach(_dataset, autoClose, noDataValue);
+	if (_dataset != nullptr)
+	{
+		try 
+		{
+			MyGDALRasterDataset::Attach(_dataset, autoClose, noDataValue);
+		}
+		catch (std::exception &e)
+		{
+			Detach();
+			throw e;
+		}
+	}	
 }
 
 void MyGDALFileRasterDataset::AttachHDF(const char* file, GDALAccess eAccess, const int subdataset, bool autoClose, double noDataValue)

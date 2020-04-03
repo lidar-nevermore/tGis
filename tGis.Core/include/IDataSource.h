@@ -9,22 +9,17 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
-struct IDataSourceProvider;
 
 struct TGIS_CORE_API IDataSource : public ITGisObject
 {
-	virtual const char* GetName() = 0;
-	virtual const char* GetCreationString() = 0;
+	friend class DataSource;
 
-	virtual IDataSourceProvider* GetProvider() = 0;
+	virtual const char* GetName() = 0;
 
 	virtual bool IsConnected() = 0;
 	virtual void Connect() = 0;
-	virtual void Connect(const char* creationString, IDataset** dtOut) = 0;
-	virtual void Connect(const char* creationString, IDataSource** dsOut) = 0;
 	virtual void Disconnect() = 0;
-	virtual void Disconnect(IDataset*) = 0;
-	virtual void Disconnect(IDataSource*) = 0;
+	virtual IDataSource* GetDataSource() = 0;
 
 	virtual size_t GetDatasetCount() = 0;
 	virtual IDataset* GetDataset(size_t) = 0;
@@ -34,6 +29,9 @@ struct TGIS_CORE_API IDataSource : public ITGisObject
 
 	virtual size_t GetDataSourceCount() = 0;
 	virtual IDataSource* GetDataSource(size_t) = 0;
+
+	virtual size_t GetConnectedDataSourceCount() = 0;
+	virtual IDataSource* GetConnectedDataSource(size_t) = 0;
 
 	IDataSource() {};
 	virtual ~IDataSource() {};

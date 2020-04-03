@@ -32,11 +32,9 @@ public:
 private:
 	static const char* const _type;
 
-protected:
-	MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
-
 public:
 	MyGDALFileRasterDataset();
+	MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	~MyGDALFileRasterDataset();
 
 public:
@@ -44,7 +42,9 @@ public:
 	using MyGDALRasterDataset::Detach;
 	using MyGDALRasterDataset::SetAutoClose;
 	using MyGDALRasterDataset::GetAutoClose;
-	using MyGDALRasterDataset::Attach;
+
+	//需要判断dataset是否是来自文件的
+	void Attach(GDALDataset* dataset, bool autoClose = false, double noDataValue = NAN);
 
 	void Attach(const char* file, GDALAccess eAccess, bool autoClose = true, double noDataValue = NAN);
 

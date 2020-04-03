@@ -53,6 +53,9 @@ MyGDALRasterDataset::~MyGDALRasterDataset()
 
 void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose, double noDataValue)
 {
+	if (dataset->GetRasterCount() == 0)
+		throw std::exception("不是有效的栅格数据集！");
+
 	_dataset = dataset;
 	_autoClose = autoClose;
 	_dataset->GetGeoTransform(_geoTransform);

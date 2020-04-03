@@ -125,6 +125,9 @@ GDALInitializer* MyGDALDataset::_GDALInit = new GDALInitializer();
 
 bool MyGDALDataset::GDALInit()
 {
+	//该方法始终会返回true
+	//尝试使用_GDALInit之前_GDALInit就会实例化
+	//_GDALInit实例化时会初始化GDAL
 	return _GDALInit != NULL;
 }
 
@@ -342,11 +345,6 @@ void MyGDALDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose
 const char * MyGDALDataset::GetName()
 {
 	return _name.c_str();
-}
-
-const char * MyGDALDataset::GetCreationString()
-{
-	return _path.c_str();
 }
 
 bool MyGDALDataset::IsReadOnly()

@@ -87,11 +87,26 @@ void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool aut
 {
 	MyGDALDataset::Attach(file, eAccess, autoClose);
 	if (_dataset != nullptr)
-		Attach(_dataset, autoClose);
+	{
+		try 
+		{
+			Attach(_dataset, autoClose);
+		}
+		catch (std::exception &e)
+		{
+			Detach();
+			throw e;
+		}
+	}
+		
 }
 
 void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)
 {
+	int layerCount = _dataset->GetLayerCount();
+	if(layerCount == 0)
+		throw std::exception("不是有效的矢量数据集！");
+
 	_dataset = dataset;
 	_autoClose = autoClose;
 	_spatialRef = nullptr;
@@ -100,7 +115,7 @@ void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)
 	_envelope.MaxX = 0.0;
 	_envelope.MinY = 0.0;
 	_envelope.MaxY = 0.0;
-	int layerCount = _dataset->GetLayerCount();
+	
 	for (int i = 0; i < layerCount; i++)
 	{
 		OGRLayer* layer = _dataset->GetLayer(i);

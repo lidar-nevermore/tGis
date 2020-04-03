@@ -26,6 +26,38 @@ struct IEventHandler
 	IEventHandler() {};
 	virtual ~IEventHandler() {};
 
+	static void* operator new(size_t size)
+	{
+		void* p = elr_mpl_alloc_multi(NULL, size);
+		if (p == NULL)
+		{
+			throw std::bad_alloc();
+		}
+
+		return p;
+	}
+
+	static void operator delete(void *p)
+	{
+		elr_mpl_free(p);
+	}
+
+	static void* operator new[](size_t size)
+	{
+		void* p = elr_mpl_alloc_multi(NULL, size);
+		if (p == NULL)
+		{
+			throw std::bad_alloc();
+		}
+
+		return p;
+	}
+
+	static void operator delete[](void *p)
+	{
+		elr_mpl_free(p);
+	}
+
 private:
 	IEventHandler(const IEventHandler &) = delete;
 	IEventHandler &operator=(const IEventHandler &) = delete;
@@ -58,22 +90,6 @@ public:
 			return true;
 
 		return false;
-	}
-
-	static void* operator new(size_t size)
-	{
-		void* p = elr_mpl_alloc_multi(NULL, size);
-		if (p == NULL)
-		{
-			throw std::bad_alloc();
-		}
-
-		return p;
-	}
-
-	static void operator delete(void *p)
-	{
-		elr_mpl_free(p);
 	}
 
 public:
@@ -134,23 +150,6 @@ public:
 		return false;
 	}
 
-
-	static void* operator new(size_t size)
-	{
-		void* p = elr_mpl_alloc_multi(NULL, size);
-		if (p == NULL)
-		{
-			throw std::bad_alloc();
-		}
-
-		return p;
-	}
-
-	static void operator delete(void *p)
-	{
-		elr_mpl_free(p);
-	}
-
 public:
 	void operator()(Args&... args)
 	{
@@ -205,23 +204,6 @@ public:
 			return true;
 
 		return false;
-	}
-
-
-	static void* operator new(size_t size)
-	{
-		void* p = elr_mpl_alloc_multi(NULL, size);
-		if (p == NULL)
-		{
-			throw std::bad_alloc();
-		}
-
-		return p;
-	}
-
-	static void operator delete(void *p)
-	{
-		elr_mpl_free(p);
 	}
 
 public:

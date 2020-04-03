@@ -21,7 +21,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_CORE_API MyGDALMemRasterDataset : public MyGDALRasterDataset
 {
-	friend class MemoryDataSourceProvider;
 public:
 	const char* GetType();
 	static const char* S_GetType();
@@ -32,7 +31,7 @@ public:
 private:
 	static const char* const _type;
 
-protected:
+public:
 	MyGDALMemRasterDataset(IDataSource* ds = nullptr, const char* name = nullptr);
 
 public:
@@ -43,7 +42,9 @@ public:
 	using MyGDALRasterDataset::Detach;
 	using MyGDALRasterDataset::SetAutoClose;
 	using MyGDALRasterDataset::GetAutoClose;
-	using MyGDALRasterDataset::Attach;
+	//需要判断dataset是否是存在于内存的
+	void Attach(GDALDataset* dataset, bool autoClose = false, double noDataValue = NAN);
+
 
 private:
 	CPL_DISALLOW_COPY_ASSIGN(MyGDALMemRasterDataset)
