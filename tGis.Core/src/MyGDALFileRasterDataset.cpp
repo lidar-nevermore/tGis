@@ -97,10 +97,10 @@ void MyGDALFileRasterDataset::Attach(const char* file, GDALAccess eAccess, bool 
 		{
 			MyGDALRasterDataset::Attach(_dataset, autoClose, noDataValue);
 		}
-		catch (std::exception &e)
+		catch(...)
 		{
 			Detach();
-			throw e;
+			throw;
 		}
 	}	
 }

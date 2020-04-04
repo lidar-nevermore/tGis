@@ -8,6 +8,7 @@
 #include "IMapWidget.h"
 #include "OverlayLayer.h"
 #include "IMap.h"
+#include "LayerRender.h"
 
 #include <vector>
 
@@ -50,8 +51,14 @@ public:
 	virtual void RepaintMap();
 	virtual void PresentMap();
 
+public:
+	inline static void SetMaxSize(int width, int height)
+	{
+		LayerRender::SetMaxSurfaceSize(width, height);
+	}
+
 protected:
-	void SetSurfaceSize(int surfW, int surfH)
+	inline void SetSurfaceSize(int surfW, int surfH)
 	{
 		_viewPort.SetSurfaceSize(surfW, surfH);
 	}

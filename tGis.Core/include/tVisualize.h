@@ -10,10 +10,3 @@
 #include "OverlayRect.h"
 
 
-BEGIN_NAME_SPACE(tGis, Core)
-
-TGIS_CORE_API void SetMaxSurfaceSize(int width, int height);
-
-
-END_NAME_SPACE(tGis, Core)
-

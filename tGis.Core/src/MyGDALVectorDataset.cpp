@@ -85,10 +85,10 @@ void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool aut
 		{
 			Attach(_dataset, autoClose);
 		}
-		catch (std::exception &e)
+		catch (...)
 		{
 			Detach();
-			throw e;
+			throw;
 		}
 	}
 		

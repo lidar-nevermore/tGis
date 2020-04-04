@@ -9,8 +9,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include "VisualizeBufferManager.h"
-
 BEGIN_NAME_SPACE(tGis, Core)
 
 
@@ -300,8 +298,9 @@ void RasterLayerRender::PaintByOuterResample(IGeoSurface *surf)
 	readingWidth = readingRight - readingLeft;
 	paintingWidth = paintingRight - paintingLeft;
 
-	unsigned char* surfBuffer = VisualizeBufferManager::INSTANCE().AllocSurfaceBuffer();
-	unsigned char* pixBuffer = VisualizeBufferManager::INSTANCE().AllocDatasetBuffer(_maxPixDataBytes);
+	LayerRenderBuffer rbuf;
+	unsigned char* surfBuffer = rbuf._acquiredSurfaceBuffer;
+	unsigned char* pixBuffer = rbuf._acquiredDatasetBuffer;
 
 	//RasterLayerRender::SetBufferAlpha(surfBuffer, paintingWidth, paintingHeight);
 
@@ -309,9 +308,6 @@ void RasterLayerRender::PaintByOuterResample(IGeoSurface *surf)
 		surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
 
 	surf->DrawImage(surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
-
-	VisualizeBufferManager::INSTANCE().FreeSurfaceBuffer(surfBuffer);
-	VisualizeBufferManager::INSTANCE().FreeDatasetBuffer(pixBuffer);
 }
 
 
@@ -427,8 +423,9 @@ void RasterLayerRender::PaintByIOResample(IGeoSurface * surf)
 	readingWidth = readingRight - readingLeft;
 	paintingWidth = paintingRight - paintingLeft;
 
-	unsigned char* surfBuffer = VisualizeBufferManager::INSTANCE().AllocSurfaceBuffer();
-	unsigned char* pixBuffer = VisualizeBufferManager::INSTANCE().AllocDatasetBuffer(_maxPixDataBytes);
+	LayerRenderBuffer rbuf;
+	unsigned char* surfBuffer = rbuf._acquiredSurfaceBuffer;
+	unsigned char* pixBuffer = rbuf._acquiredDatasetBuffer;
 
 	//RasterLayerRender::SetBufferAlpha(surfBuffer, paintingWidth, paintingHeight);
 
@@ -436,11 +433,7 @@ void RasterLayerRender::PaintByIOResample(IGeoSurface * surf)
 		surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
 
 	surf->DrawImage(surfBuffer, paintingLeft, paintingTop, paintingWidth, paintingHeight);
-
-	VisualizeBufferManager::INSTANCE().FreeSurfaceBuffer(surfBuffer);
-	VisualizeBufferManager::INSTANCE().FreeDatasetBuffer(pixBuffer);
 }
-
 
 void RasterLayerRender::SetBufferAlpha(unsigned char * buf, int width, int height)
 {

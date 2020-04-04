@@ -1,6 +1,5 @@
 #include "VectorSimpleLayerRender.h"
 #include "IGeoSurface.h"
-#include "VisualizeBufferManager.h"
 #include "MyGDALVectorDataset.h"
 
 #include "gdal.h"
@@ -48,8 +47,10 @@ void VectorSimpleLayerRender::Paint(IGeoSurface * surf)
 {
 	OGRFeature* feature = nullptr;
 	OGRGeometry* geometry = nullptr;
-	unsigned char* surfBuffer = VisualizeBufferManager::INSTANCE().AllocSurfaceBuffer();
-	unsigned char* pixBuffer = VisualizeBufferManager::INSTANCE().AllocDatasetBuffer(4);
+	LayerRenderBuffer rbuf;
+	unsigned char* surfBuffer = rbuf._acquiredSurfaceBuffer;
+	unsigned char* pixBuffer = rbuf._acquiredDatasetBuffer;
+
 	int* x = (int*)surfBuffer;
 	int* y = (int*)pixBuffer;
 	PrepareCT();
@@ -89,9 +90,6 @@ void VectorSimpleLayerRender::Paint(IGeoSurface * surf)
 			}
 		}
 	} while (feature != nullptr);
-
-	VisualizeBufferManager::INSTANCE().FreeSurfaceBuffer(surfBuffer);
-	VisualizeBufferManager::INSTANCE().FreeDatasetBuffer(pixBuffer);
 }
 
 

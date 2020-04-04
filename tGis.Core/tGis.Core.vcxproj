@@ -86,13 +86,10 @@
     <ClInclude Include="include\VectorSimpleLayerRender.h" />
     <ClInclude Include="internal\Plugin.h" />
     <ClInclude Include="internal\PluginManager.h" />
-    <ClInclude Include="internal\VisualizeBufferManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\tVisualize.cpp" />
     <ClCompile Include="internal\Plugin.cpp" />
     <ClCompile Include="internal\PluginManager.cpp" />
-    <ClCompile Include="internal\VisualizeBufferManager.cpp" />
     <ClCompile Include="src\bi_list.c" />
     <ClCompile Include="src\Dataset.cpp" />
     <ClCompile Include="src\DataSource.cpp" />

@@ -143,9 +143,6 @@
     <ClInclude Include="include\tVisualize.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="internal\VisualizeBufferManager.h">
-      <Filter>internal</Filter>
-    </ClInclude>
     <ClInclude Include="include\OverlayRect.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
@@ -324,12 +321,6 @@
     </ClCompile>
     <ClCompile Include="src\Statistics.cpp">
       <Filter>src\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="internal\VisualizeBufferManager.cpp">
-      <Filter>internal</Filter>
-    </ClCompile>
-    <ClCompile Include="include\tVisualize.cpp">
-      <Filter>src\Visualize</Filter>
     </ClCompile>
     <ClCompile Include="src\OverlayRect.cpp">
       <Filter>src\Visualize</Filter>

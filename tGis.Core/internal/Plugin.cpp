@@ -89,6 +89,13 @@ Plugin::Plugin(const char* cfg)
 		TGIS_LOG_FORMAT(LOG_ERR, "%s", result);
 		TGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
 	}
+	catch (...)
+	{
+		file.close();
+		const char* result = "unknown error!";
+		TGIS_LOG_FORMAT(LOG_ERR, "%s", result);
+		TGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
+	}
 }
 
 
