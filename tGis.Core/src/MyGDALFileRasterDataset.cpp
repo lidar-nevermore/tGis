@@ -29,13 +29,6 @@ bool MyGDALFileRasterDataset::IsTypeOf(const char * type)
 	return MyGDALRasterDataset::IsTypeOf(type);
 }
 
-bool MyGDALFileRasterDataset::IsTypeOf(ITGisObject * object)
-{
-	if (strcmp(object->GetType(), _type) == 0)
-		return true;
-	return MyGDALRasterDataset::IsTypeOf(object);
-}
-
 MyGDALFileRasterDataset::MyGDALFileRasterDataset()
 	:MyGDALRasterDataset(nullptr)
 {

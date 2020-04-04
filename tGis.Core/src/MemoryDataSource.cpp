@@ -23,6 +23,7 @@ MemoryDataSource::MemoryDataSource()
 	:DataSource()
 {
 	_name = "default";
+	Connect();
 }
 
 MemoryDataSource::~MemoryDataSource()
@@ -42,13 +43,6 @@ const char * MemoryDataSource::S_GetType()
 bool MemoryDataSource::IsTypeOf(const char * type)
 {
 	if (strcmp(type, _type) == 0)
-		return true;
-	return false;
-}
-
-bool MemoryDataSource::IsTypeOf(ITGisObject * object)
-{
-	if (strcmp(object->GetType(), _type) == 0)
 		return true;
 	return false;
 }

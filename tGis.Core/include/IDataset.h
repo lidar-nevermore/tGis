@@ -4,7 +4,7 @@
 #define __I_DATASET_H__
 
 #include "Helper.h"
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -13,7 +13,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataSource;
 
-struct TGIS_CORE_API IDataset : public ITGisObject
+struct TGIS_CORE_API IDataset : public ITypedObject
 {
 	friend class DataSource;
 

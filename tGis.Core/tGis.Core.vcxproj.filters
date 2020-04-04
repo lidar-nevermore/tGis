@@ -149,9 +149,6 @@
     <ClInclude Include="include\OverlayRect.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\ITGisObject.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="include\MyGDALDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
@@ -272,6 +269,9 @@
     <ClInclude Include="include\VectorSimpleLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="include\ITypedObject.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp">
@@ -333,9 +333,6 @@
     </ClCompile>
     <ClCompile Include="src\OverlayRect.cpp">
       <Filter>src\Visualize</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ITGisObject.cpp">
-      <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\MyGDALDataset.cpp">
       <Filter>src\Entity</Filter>
@@ -431,6 +428,9 @@
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="src\VectorSimpleLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ITypedObject.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>

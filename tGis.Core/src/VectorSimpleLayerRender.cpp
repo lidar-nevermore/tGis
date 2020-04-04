@@ -14,6 +14,22 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 const char* const VectorSimpleLayerRender::_type = "57D45D8B-E28E-4D5F-A588-1A55347A0C68";
 
+const char * VectorSimpleLayerRender::GetType()
+{
+	return _type;
+}
+
+const char * VectorSimpleLayerRender::S_GetType()
+{
+	return _type;
+}
+
+bool VectorSimpleLayerRender::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return VectorLayerRender::IsTypeOf(type);
+}
 
 VectorSimpleLayerRender::VectorSimpleLayerRender(ILayer* layer, int ogrLayerIndex, int geometryField, int labelField)
 	:VectorLayerRender(layer, ogrLayerIndex)
@@ -27,15 +43,6 @@ VectorSimpleLayerRender::~VectorSimpleLayerRender()
 {
 }
 
-const char * VectorSimpleLayerRender::GetType()
-{
-	return _type;
-}
-
-const char * VectorSimpleLayerRender::S_GetType()
-{
-	return _type;
-}
 
 void VectorSimpleLayerRender::Paint(IGeoSurface * surf)
 {

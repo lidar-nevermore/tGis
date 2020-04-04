@@ -4,13 +4,13 @@
 #define __I_DATASOURCE_H__
 
 #include "Helper.h"
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
 
-struct TGIS_CORE_API IDataSource : public ITGisObject
+struct TGIS_CORE_API IDataSource : public ITypedObject
 {
 	friend class DataSource;
 

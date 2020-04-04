@@ -1,6 +1,6 @@
 #include "VectorLayerRender.h"
 #include "MyGDALVectorDataset.h"
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 #include "IGeoSurface.h"
 #include "IMap.h"
 
@@ -8,6 +8,26 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+
+const char* const VectorLayerRender::_type = "F5F01BCE-1DAD-44E4-9777-1AA610351E10";
+
+
+const char * VectorLayerRender::GetType()
+{
+	return _type;
+}
+
+bool VectorLayerRender::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return false;
+}
+
+const char * VectorLayerRender::S_GetType()
+{
+	return _type;
+}
 
 VectorLayerRender::VectorLayerRender(ILayer* layer, int ogrLayerIndex)
 	:LayerRender(layer)
@@ -43,7 +63,7 @@ const OGREnvelope * VectorLayerRender::GetEnvelope()
 
 bool VectorLayerRender::CanTransformTo(const OGRSpatialReference * spatialRef)
 {
-	return ITGisObject::CanTransform(_ogrLayer->GetSpatialRef(), spatialRef);
+	return ITypedObject::CanTransform(_ogrLayer->GetSpatialRef(), spatialRef);
 }
 
 inline void VectorLayerRender::PrepareCT()

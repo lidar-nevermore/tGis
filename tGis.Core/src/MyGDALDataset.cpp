@@ -117,11 +117,19 @@ struct GDALInitializer
 			}//end of ext not null or empty
 		}//end of for
 	}//end of constructor
+
+	~GDALInitializer()
+	{
+		GDALDestroy();
+		OGRCleanupAll();
+	}
 };
 
 char* GDALInitializer::_excludeExt[] = { "xml", "json", "txt", "aoi", "pdf", "\0" };
 
-GDALInitializer* MyGDALDataset::_GDALInit = new GDALInitializer();
+GDALInitializer g_GDALInitializer;
+
+GDALInitializer* MyGDALDataset::_GDALInit = &g_GDALInitializer;
 
 bool MyGDALDataset::GDALInit()
 {

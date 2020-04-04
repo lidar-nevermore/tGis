@@ -44,12 +44,18 @@ bool DataSource::IsConnected()
 
 void DataSource::Connect()
 {
+	if (_connected)
+		return;
+
 	_vecConnectedDataSource.push_back(this);
 	DataSourceRepository::INSTANCE().AddConnectedDataSource(this);
 }
 
 void DataSource::Disconnect()
 {
+	if (_connected == false)
+		return;
+
 	DataSourceRepository::INSTANCE().RemoveConnectedDataSource(this);
 	//从父数据源中删除自己
 	if (this->_dataSource != nullptr)

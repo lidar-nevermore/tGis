@@ -19,19 +19,20 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_CORE_API RasterRgbLayerRender : public RasterLayerRender
 {
 public:
+	virtual const char* GetType();
+	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+
+private:
+	static const char* const _type;
+
+public:
 	RasterRgbLayerRender(ILayer* layer, int r, int g, int b);
 	~RasterRgbLayerRender();
 
 private:
 	RasterRgbLayerRender(const RasterRgbLayerRender &) = delete;
 	RasterRgbLayerRender &operator=(const RasterRgbLayerRender &) = delete;
-
-private:
-	static const char* const _type;
-
-public:
-	virtual const char* GetType();
-	static const char* S_GetType();
 
 public:
 	void SetMinMaxR(double min, double max);

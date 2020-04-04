@@ -1,4 +1,4 @@
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 
 extern "C"
 {
@@ -36,9 +36,9 @@ public:
 
 HeapPtrMapCtor _g_heap_ptr_map_ctor;
 
-void* ITGisObject::_heap_ptr_map = (void*)&(_g_heap_ptr_map_ctor._heap_ptr_map);
+void* ITypedObject::_heap_ptr_map = (void*)&(_g_heap_ptr_map_ctor._heap_ptr_map);
 
-ITGisObject::ITGisObject()
+ITypedObject::ITypedObject()
 {
 	void* p = (void*)this;
 	if (hashmap_exists((HASHMAP*)_heap_ptr_map, &p))
@@ -52,19 +52,19 @@ ITGisObject::ITGisObject()
 		_is_in_heap = false;
 }
 
-void* ITGisObject::operator new(size_t size)
+void* ITypedObject::operator new(size_t size)
 {
 	void* p = ::operator new(size);
 	hashmap_set((HASHMAP*)_heap_ptr_map, &p, nullptr);
 	return p;
 }
 
-void ITGisObject::operator delete(void *p)
+void ITypedObject::operator delete(void *p)
 {
 	return ::operator delete(p);
 }
 
-bool ITGisObject::CanTransform(const OGRSpatialReference * from, const OGRSpatialReference * to)
+bool ITypedObject::CanTransform(const OGRSpatialReference * from, const OGRSpatialReference * to)
 {
 	if (from == to)
 		return true;

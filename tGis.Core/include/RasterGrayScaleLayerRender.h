@@ -15,19 +15,20 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_CORE_API RasterGrayScaleLayerRender : public RasterLayerRender
 {
 public:
+	virtual const char* GetType();
+	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+
+private:
+	static const char* const _type;
+
+public:
 	RasterGrayScaleLayerRender(ILayer* layer, int band);
 	~RasterGrayScaleLayerRender();
 
 private:
 	RasterGrayScaleLayerRender(const RasterGrayScaleLayerRender &) = delete;
 	RasterGrayScaleLayerRender &operator=(const RasterGrayScaleLayerRender &) = delete;
-
-private:
-	static const char* const _type;
-
-public:
-	virtual const char* GetType();
-	static const char* S_GetType();
 
 public:
 	void SetMinMax(double min, double max);

@@ -5,7 +5,7 @@
 
 #include "Helper.h"
 #include "tGisCoreCfg.h"
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -15,7 +15,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataset;
 struct IGeoSurface;
 
-struct TGIS_CORE_API ILayerRender : public ITGisObject
+struct TGIS_CORE_API ILayerRender : public ITypedObject
 {
 	friend class Layer;
 

@@ -5,7 +5,7 @@
 
 #include "Helper.h"
 #include "tGisCoreCfg.h"
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -17,7 +17,7 @@ struct IGeoSurface;
 struct IMap;
 struct ILayerRender;
 
-struct TGIS_CORE_API ILayer : public ITGisObject
+struct TGIS_CORE_API ILayer : public ITypedObject
 {
 	friend class Map;
 

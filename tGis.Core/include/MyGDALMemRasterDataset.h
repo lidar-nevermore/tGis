@@ -25,8 +25,6 @@ public:
 	const char* GetType();
 	static const char* S_GetType();
 	virtual bool IsTypeOf(const char* type);
-	virtual bool IsTypeOf(ITGisObject* object);
-	virtual void Open();
 
 private:
 	static const char* const _type;
@@ -36,6 +34,9 @@ public:
 
 public:
 	~MyGDALMemRasterDataset();
+
+public:
+	virtual void Open();
 
 public:
 	using MyGDALRasterDataset::GetGDALDataset;

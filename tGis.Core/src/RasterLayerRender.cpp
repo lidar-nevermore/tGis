@@ -14,6 +14,27 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
+const char* const RasterLayerRender::_type = "3885018F-ED87-4620-8E49-D8BD7577350B";
+
+
+const char * RasterLayerRender::GetType()
+{
+	return _type;
+}
+
+bool RasterLayerRender::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return false;
+}
+
+const char * RasterLayerRender::S_GetType()
+{
+	return _type;
+}
+
+
 RasterLayerRender::RasterLayerRender(ILayer* layer)
 	:LayerRender(layer)
 {

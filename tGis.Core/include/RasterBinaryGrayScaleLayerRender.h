@@ -18,19 +18,20 @@ BEGIN_NAME_SPACE(tGis, Core)
 class TGIS_CORE_API RasterBinaryGrayScaleLayer : public RasterLayerRender
 {
 public:
+	virtual const char* GetType();
+	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+
+private:
+	static const char* const _type;
+
+public:
 	RasterBinaryGrayScaleLayer(ILayer* layer, int band);
 	~RasterBinaryGrayScaleLayer();
 
 private:
 	RasterBinaryGrayScaleLayer(const RasterBinaryGrayScaleLayer &) = delete;
 	RasterBinaryGrayScaleLayer &operator=(const RasterBinaryGrayScaleLayer &) = delete;
-
-private:
-	static const char* const _type;
-
-public:
-	virtual const char* GetType();
-	static const char* S_GetType();
 
 public:
 	void SetMinPivotMax(double min, double pivot, double max);

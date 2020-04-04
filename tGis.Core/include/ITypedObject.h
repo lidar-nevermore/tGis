@@ -19,22 +19,25 @@ BEGIN_NAME_SPACE(tGis, Core)
 //在堆里的对象是需要容器对象编码释放的，在栈里的对象则不需要；
 //第二，容器类编码释放被聚合对象的代码编译到了本库中，
 //而被聚合对象的创建在客户库中，客户库和本库可能使用了不同的堆，
-//在本库中delete客户库堆中的对象是不对的，要确保所有继承自ITGisObject
+//在本库中delete客户库堆中的对象是不对的，要确保所有继承自ITypedObject
 //的对象都是在本库的堆里创建的。
-struct TGIS_CORE_API ITGisObject
+struct TGIS_CORE_API ITypedObject
 {
-	ITGisObject();
-	virtual ~ITGisObject() {};
+	ITypedObject();
+	virtual ~ITypedObject() {};
 
 	static bool CanTransform(const OGRSpatialReference* from, const OGRSpatialReference* to);
 
-	//运行时类别识别
+	//用于判断数据源、数据集、图层、图层渲染器的具体类型
+	//不同具体类型上述对象上的操作不同
+	//另外在保存工作空间时记录具体类型，然后加载工作空间时可以创建具体对象
+
+	//需要用于区分具体类型的子类型才需要实现这几个接口
 	virtual const char* GetType() = 0;
 	virtual bool IsTypeOf(const char* type) = 0;
-	virtual bool IsTypeOf(ITGisObject* object) = 0;
 
 	//没有重载new[]和delete[]，
-	//也就是说如果这样申请的内存，本库内部是不负责释放的
+	//也就是说如果以数组方式申请的内存，本库内部是不负责释放的
 	static void* operator new(size_t size);
 	static void operator delete(void *p);
 
@@ -45,11 +48,11 @@ protected:
 	bool _is_in_heap;
 
 private:
-	ITGisObject(const ITGisObject &) = delete;
-	ITGisObject &operator=(const ITGisObject &) = delete;
+	ITypedObject(const ITypedObject &) = delete;
+	ITypedObject &operator=(const ITypedObject &) = delete;
 };
 
-typedef ITGisObject* ITGisObjectPtr;
+typedef ITypedObject* ITGisObjectPtr;
 
 END_NAME_SPACE(tGis, Core)
 

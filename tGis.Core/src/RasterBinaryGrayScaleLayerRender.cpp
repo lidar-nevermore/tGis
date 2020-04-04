@@ -13,6 +13,22 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 const char* const RasterBinaryGrayScaleLayer::_type = "7EB66993-6103-4426-AE75-FA7BC52C402B";
 
+const char * RasterBinaryGrayScaleLayer::GetType()
+{
+	return _type;
+}
+
+const char * RasterBinaryGrayScaleLayer::S_GetType()
+{
+	return _type;
+}
+
+bool RasterBinaryGrayScaleLayer::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return RasterLayerRender::IsTypeOf(type);
+}
 
 RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayer* layer, int bandIndex)
 	:RasterLayerRender(layer)
@@ -49,16 +65,6 @@ RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayer* layer, int bandIn
 
 RasterBinaryGrayScaleLayer::~RasterBinaryGrayScaleLayer()
 {
-}
-
-const char * RasterBinaryGrayScaleLayer::GetType()
-{
-	return _type;
-}
-
-const char * RasterBinaryGrayScaleLayer::S_GetType()
-{
-	return _type;
 }
 
 void RasterBinaryGrayScaleLayer::SetMinPivotMax(double min, double pivot, double max)

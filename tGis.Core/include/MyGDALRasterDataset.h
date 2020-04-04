@@ -24,7 +24,6 @@ public:
 	virtual const char* GetType();
 	static const char* S_GetType();
 	virtual bool IsTypeOf(const char* type);
-	virtual bool IsTypeOf(ITGisObject* object);
 
 private:
 	static const char* const _type;

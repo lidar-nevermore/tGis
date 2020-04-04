@@ -60,13 +60,6 @@ bool FileSystemDataSource::IsTypeOf(const char * type)
 	return false;
 }
 
-bool FileSystemDataSource::IsTypeOf(ITGisObject * object)
-{
-	if (strcmp(object->GetType(), _type) == 0)
-		return true;
-	return false;
-}
-
 void FileSystemDataSource::OnTraverseDir(void * usr, const char * dir, const char * name, unsigned int attrib)
 {
 	FileSystemDataSource* fsDataSrc = (FileSystemDataSource*)usr;

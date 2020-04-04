@@ -32,15 +32,20 @@ class VectorSimpleLayerProvider;
 class TGIS_CORE_API VectorSimpleLayerRender : public VectorLayerRender
 {
 public:
+	virtual const char* GetType();
+	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+
+private:
+	static const char* const _type;
+
+public:
 	VectorSimpleLayerRender(ILayer* layer, int ogrLayer,int geometryField = -1, int labelField = -1);
 	~VectorSimpleLayerRender();
 
 private:
 	VectorSimpleLayerRender(const VectorSimpleLayerRender &) = delete;
 	VectorSimpleLayerRender &operator=(const VectorSimpleLayerRender &) = delete;
-
-private:
-	static const char* const _type;
 
 private:
 	int _geometryField;
@@ -50,9 +55,6 @@ private:
 	SimpleFillSymbol _simpleFillSymbol;
 
 public:
-	virtual const char* GetType();
-	static const char* S_GetType();
-
 	virtual void Paint(IGeoSurface*);
 
 private:

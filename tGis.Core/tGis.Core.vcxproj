@@ -37,7 +37,7 @@
     <ClInclude Include="include\ISurface.h" />
     <ClInclude Include="include\ISymbol.h" />
     <ClInclude Include="include\ISymbolLibrary.h" />
-    <ClInclude Include="include\ITGisObject.h" />
+    <ClInclude Include="include\ITypedObject.h" />
     <ClInclude Include="include\ITool.h" />
     <ClInclude Include="include\IWidget.h" />
     <ClInclude Include="include\Layer.h" />
@@ -105,7 +105,7 @@
     <ClCompile Include="src\hashmap.c" />
     <ClCompile Include="src\Helper.cpp" />
     <ClCompile Include="src\ilog.c" />
-    <ClCompile Include="src\ITGisObject.cpp" />
+    <ClCompile Include="src\ITypedObject.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerRender.cpp" />
     <ClCompile Include="src\linked_array.c" />

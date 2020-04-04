@@ -13,6 +13,23 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 const char* const RasterGrayScaleLayerRender::_type = "FCD79E3D-084F-4CB6-8D84-3DB1875075EB";
 
+const char * RasterGrayScaleLayerRender::GetType()
+{
+	return _type;
+}
+
+const char * RasterGrayScaleLayerRender::S_GetType()
+{
+	return _type;
+}
+
+bool RasterGrayScaleLayerRender::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return RasterLayerRender::IsTypeOf(type);
+}
+
 
 RasterGrayScaleLayerRender::RasterGrayScaleLayerRender(ILayer* layer, int bandIndex)
 	:RasterLayerRender(layer)
@@ -75,16 +92,6 @@ void RasterGrayScaleLayerRender::GetNoDataValue(int * noDataLogic, double * noDa
 {
 	*noDataLogic = _noDataLogic;
 	*noDataValue = _noDataValue;
-}
-
-const char * RasterGrayScaleLayerRender::GetType()
-{
-	return _type;
-}
-
-const char * RasterGrayScaleLayerRender::S_GetType()
-{
-	return _type;
 }
 
 void RasterGrayScaleLayerRender::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)

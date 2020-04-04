@@ -13,6 +13,22 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 const char* const RasterRgbLayerRender::_type = "EFEB6F2A-7DD0-401D-9762-55F3F3E095D1";
 
+const char * RasterRgbLayerRender::GetType()
+{
+	return _type;
+}
+
+const char * RasterRgbLayerRender::S_GetType()
+{
+	return _type;
+}
+
+bool RasterRgbLayerRender::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return RasterLayerRender::IsTypeOf(type);
+}
 
 RasterRgbLayerRender::RasterRgbLayerRender(ILayer* layer, int r, int g, int b)
 	:RasterLayerRender(layer)
@@ -76,16 +92,6 @@ RasterRgbLayerRender::RasterRgbLayerRender(ILayer* layer, int r, int g, int b)
 
 RasterRgbLayerRender::~RasterRgbLayerRender()
 {
-}
-
-const char * RasterRgbLayerRender::GetType()
-{
-	return _type;
-}
-
-const char * RasterRgbLayerRender::S_GetType()
-{
-	return _type;
 }
 
 void RasterRgbLayerRender::SetMinMaxR(double min, double max)

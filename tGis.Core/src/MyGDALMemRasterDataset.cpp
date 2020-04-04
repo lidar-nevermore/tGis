@@ -24,16 +24,6 @@ bool MyGDALMemRasterDataset::IsTypeOf(const char * type)
 	return MyGDALRasterDataset::IsTypeOf(type);
 }
 
-bool MyGDALMemRasterDataset::IsTypeOf(ITGisObject * object)
-{
-	if (strcmp(object->GetType(), _type) == 0)
-		return true;
-	return MyGDALRasterDataset::IsTypeOf(object);
-}
-
-void MyGDALMemRasterDataset::Open()
-{
-}
 
 MyGDALMemRasterDataset::MyGDALMemRasterDataset(IDataSource* ds, const char* name)
 	:MyGDALRasterDataset(ds)
@@ -45,6 +35,10 @@ MyGDALMemRasterDataset::MyGDALMemRasterDataset(IDataSource* ds, const char* name
 
 
 MyGDALMemRasterDataset::~MyGDALMemRasterDataset()
+{
+}
+
+void MyGDALMemRasterDataset::Open()
 {
 }
 

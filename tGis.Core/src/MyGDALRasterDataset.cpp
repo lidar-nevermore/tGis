@@ -25,13 +25,6 @@ bool MyGDALRasterDataset::IsTypeOf(const char * type)
 	return false;
 }
 
-bool MyGDALRasterDataset::IsTypeOf(ITGisObject * object)
-{
-	if (strcmp(object->GetType(), _type) == 0)
-		return true;
-	return false;
-}
-
 const char * MyGDALRasterDataset::S_GetType()
 {
 	return _type;
@@ -48,7 +41,6 @@ MyGDALRasterDataset::MyGDALRasterDataset()
 
 MyGDALRasterDataset::~MyGDALRasterDataset()
 {
-	Detach();
 }
 
 void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose, double noDataValue)

@@ -24,13 +24,6 @@ bool MyGDALVectorDataset::IsTypeOf(const char * type)
 	return false;
 }
 
-bool MyGDALVectorDataset::IsTypeOf(ITGisObject * object)
-{
-	if (strcmp(object->GetType(), _type) == 0)
-		return true;
-	return false;
-}
-
 void MyGDALVectorDataset::Open()
 {
 	if (_dataset == nullptr)

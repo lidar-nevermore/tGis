@@ -5,7 +5,7 @@
 
 #include "Helper.h"
 #include "Event.h"
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 #include <vector>
 #include <string>
 

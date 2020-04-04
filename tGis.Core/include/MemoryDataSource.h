@@ -23,20 +23,19 @@ private:
 public:
 	static MemoryDataSource& INSTANCE();
 
+public:
+	virtual const char* GetType();
+	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+
+private:
+	static const char* const _type;
+
 protected:
 	MemoryDataSource();
 
 public:
 	~MemoryDataSource();
-
-private:
-	static const char* const _type;
-
-public:
-	virtual const char* GetType();
-	static const char* S_GetType();
-	virtual bool IsTypeOf(const char* type);
-	virtual bool IsTypeOf(ITGisObject* object);
 };
 
 END_NAME_SPACE(tGis, Core)

@@ -1,5 +1,6 @@
 #include "LayerRender.h"
 #include "IDataset.h"
+#include "ILayer.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -8,6 +9,7 @@ LayerRender::LayerRender(ILayer* layer)
 	_opacity = 1.0;
 	_alpha = 255;
 	_layer = layer;
+	_layer->SetRender(this);
 }
 
 LayerRender::~LayerRender()

@@ -1,5 +1,5 @@
 #include "Map.h"
-#include "ITGisObject.h"
+#include "ITypedObject.h"
 #include "IDataset.h"
 #include "ILayerRender.h"
 

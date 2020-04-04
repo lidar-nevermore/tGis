@@ -27,6 +27,14 @@ public:
 	~VectorLayerRender();
 
 public:
+	virtual const char* GetType();
+	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+
+private:
+	static const char* const _type;
+
+public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual bool CanTransformTo(const OGRSpatialReference*);
 
