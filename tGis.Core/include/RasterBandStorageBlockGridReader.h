@@ -4,7 +4,7 @@
 #define __RASTERBANDSTORAGEBLOCKGRIDREADER_H__
 
 #include "Helper.h"
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 #include "gdal.h"
 #include "gdal_priv.h"
 #include <cassert>

@@ -1,4 +1,4 @@
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 #include "IDataset.h"
 #include "IDataSource.h"
 #include "ILayer.h"

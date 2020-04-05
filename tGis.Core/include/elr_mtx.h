@@ -1,7 +1,7 @@
 #ifndef __ELR_MTX_H__
 #define __ELR_MTX_H__
 
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 
 #ifdef __cplusplus
 extern "C" {

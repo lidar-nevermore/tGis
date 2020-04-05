@@ -4,7 +4,7 @@
 #define __TOOLKIT_H__
 
 #include "Helper.h"
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 
 #include <vector>
 #include <map>

@@ -5,13 +5,16 @@
 #include <string.h>
 #include <stdint.h>
 
-typedef struct _HASHMAP_ENTRY
+#include "tGis_CoreCfg.h"
+
+
+typedef struct TGIS_CORE_API _HASHMAP_ENTRY
 {
 	void* key;
 	void* val;
 }HASHMAP_ENTRY;
 
-typedef struct _HASH_NODE
+typedef struct TGIS_CORE_API _HASH_NODE
 {
 	struct _HASH_NODE* next;
 	unsigned char    data[1];
@@ -19,14 +22,14 @@ typedef struct _HASH_NODE
 
 typedef HASH_NODE* HASH_NODE_PTR;
 
-typedef struct _HASHMAP_ITER
+typedef struct TGIS_CORE_API _HASHMAP_ITER
 {
 	size_t array_index;
 	size_t block_index;
 	HASH_NODE_PTR  val_node;
 }HASHMAP_ITER;
 
-typedef struct _HASHMAP
+typedef struct TGIS_CORE_API _HASHMAP
 {
 	size_t size;
 	size_t capacity;
@@ -47,7 +50,7 @@ typedef struct _HASHMAP
 
 
 
-void hashmap_init(HASHMAP* hashmap,
+TGIS_CORE_API void hashmap_init(HASHMAP* hashmap,
 	size_t capacity,
 	size_t key_bytes,
 	size_t val_bytes,
@@ -59,21 +62,21 @@ void hashmap_init(HASHMAP* hashmap,
 	void(*assign_val)(void * a, const void * b)	
 	);
 
-int hashmap_exists(HASHMAP* hashmap, const void* key);
+TGIS_CORE_API int hashmap_exists(HASHMAP* hashmap, const void* key);
 
-void* hashmap_set(HASHMAP* hashmap, const void* key, const void* val);
+TGIS_CORE_API void* hashmap_set(HASHMAP* hashmap, const void* key, const void* val);
 
-void* hashmap_get(HASHMAP* hashmap, const void* key, void* val);
+TGIS_CORE_API void* hashmap_get(HASHMAP* hashmap, const void* key, void* val);
 
-void  hashmap_del(HASHMAP* hashmap, const void* key);
+TGIS_CORE_API void  hashmap_del(HASHMAP* hashmap, const void* key);
 
-void  hashmap_first(HASHMAP* hashmap, HASHMAP_ITER* iter);
+TGIS_CORE_API void  hashmap_first(HASHMAP* hashmap, HASHMAP_ITER* iter);
 
-HASHMAP_ENTRY hashmap_at(HASHMAP* hashmap, HASHMAP_ITER* iter);
+TGIS_CORE_API HASHMAP_ENTRY hashmap_at(HASHMAP* hashmap, HASHMAP_ITER* iter);
 
-void  hashmap_next(HASHMAP* hashmap, HASHMAP_ITER* iter);
+TGIS_CORE_API void  hashmap_next(HASHMAP* hashmap, HASHMAP_ITER* iter);
 
-void hashmap_release(HASHMAP* hashmap);
+TGIS_CORE_API void hashmap_release(HASHMAP* hashmap);
 
 
 // Equal functions

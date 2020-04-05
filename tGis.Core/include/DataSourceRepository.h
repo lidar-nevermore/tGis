@@ -4,7 +4,7 @@
 #define __DATASOURCEREPOSITORY_H__
 
 #include "Helper.h"
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 #include "Event.h"
 
 #include <vector>

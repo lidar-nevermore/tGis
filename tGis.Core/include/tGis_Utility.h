@@ -1,8 +1,16 @@
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 
-#include "elr_mpl.h"
 #include "tinyxml2.h"
+
+extern "C"
+{
+#include "elr_mpl.h"
 #include "ilog.h"
+#include "hashmap.h"
+#include "bi_list.h"
+#include "sorted_list.h"
+#include "linked_array.h"
+}
 
 #include "MyGDALRasterDataset.h"
 #include "RasterBandSeqBlockReader.h"
@@ -11,7 +19,4 @@
 #include "Statistics.h"
 #include "RasterWriter.h"
 
-#include "ITool.h"
-#include "Tool.h"
-#include "ToolKit.h"
 #include "Progress.h"

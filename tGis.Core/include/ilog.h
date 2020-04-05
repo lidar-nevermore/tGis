@@ -2,7 +2,7 @@
 #ifndef __ILOG_H__
 #define __ILOG_H__
 
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 
 #include <stdarg.h>
 

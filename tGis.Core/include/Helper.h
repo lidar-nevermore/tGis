@@ -3,7 +3,7 @@
 #ifndef __HELPER_H__
 #define __HELPER_H__
 
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 
 #include <math.h>
 #include <float.h>

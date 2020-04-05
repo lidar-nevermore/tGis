@@ -4,7 +4,7 @@
 #define __I_MAP_H__
 
 #include "Helper.h"
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 #include "ILayer.h"
 #include "Event.h"
 

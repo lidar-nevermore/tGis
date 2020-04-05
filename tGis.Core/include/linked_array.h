@@ -4,7 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef  struct _LA_NODE
+#include "tGis_CoreCfg.h"
+
+
+typedef  struct TGIS_CORE_API _LA_NODE
 {
     struct _LA_NODE *next;
     struct _LA_NODE *prev;
@@ -12,7 +15,7 @@ typedef  struct _LA_NODE
 }LA_NODE;
 
 
-typedef  struct _LINKED_ARRAY
+typedef  struct TGIS_CORE_API _LINKED_ARRAY
 {
 	LA_NODE *head;
 	LA_NODE *tail;
@@ -53,7 +56,7 @@ typedef  struct _LINKED_ARRAY
 }LINKED_ARRAY;
 
 
-void linked_array_init(LINKED_ARRAY *arr,
+TGIS_CORE_API void linked_array_init(LINKED_ARRAY *arr,
 	size_t data_bytes,
 	size_t node_capacity,
 	void*(*alloc_mem)(size_t size),
@@ -62,33 +65,33 @@ void linked_array_init(LINKED_ARRAY *arr,
 	);
 
 
-void linked_array_release(LINKED_ARRAY *arr);
+TGIS_CORE_API void linked_array_release(LINKED_ARRAY *arr);
 
 
-void linked_array_expand(LINKED_ARRAY *arr, size_t capacity);
+TGIS_CORE_API void linked_array_expand(LINKED_ARRAY *arr, size_t capacity);
 
 
-void* linked_array_set(LINKED_ARRAY *arr, size_t idx, const void * data);
+TGIS_CORE_API void* linked_array_set(LINKED_ARRAY *arr, size_t idx, const void * data);
 
 
-void* linked_array_get(LINKED_ARRAY *arr, size_t idx, void * data);
+TGIS_CORE_API void* linked_array_get(LINKED_ARRAY *arr, size_t idx, void * data);
 
 
-void* linked_array_at(LINKED_ARRAY *arr, size_t idx);
+TGIS_CORE_API void* linked_array_at(LINKED_ARRAY *arr, size_t idx);
 
 
-void* linked_array_enqueue(LINKED_ARRAY *arr, const void * data);
+TGIS_CORE_API void* linked_array_enqueue(LINKED_ARRAY *arr, const void * data);
 
 
-void* linked_array_dequeue(LINKED_ARRAY *arr, void * data);
+TGIS_CORE_API void* linked_array_dequeue(LINKED_ARRAY *arr, void * data);
 
 
-void* linked_array_push(LINKED_ARRAY *arr, const void * data);
+TGIS_CORE_API void* linked_array_push(LINKED_ARRAY *arr, const void * data);
 
 
-void* linked_array_pop(LINKED_ARRAY *arr, void * data);
+TGIS_CORE_API void* linked_array_pop(LINKED_ARRAY *arr, void * data);
 
 
-void* linked_array_peek(LINKED_ARRAY *arr, void * data);
+TGIS_CORE_API void* linked_array_peek(LINKED_ARRAY *arr, void * data);
 
 #endif

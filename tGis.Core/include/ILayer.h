@@ -4,7 +4,7 @@
 #define __I_LAYER_H__
 
 #include "Helper.h"
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 #include "ITypedObject.h"
 
 class OGREnvelope;

@@ -4,15 +4,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "tGis_CoreCfg.h"
+
 #define SK_MAX_LEVEL 10
 
-typedef struct _SK_LINK
+typedef struct TGIS_CORE_API _SK_LINK
 {
 	struct _SK_NODE* next;
 	struct _SK_NODE* prev;
 }SK_LINK;
 
-typedef struct _SK_NODE
+typedef struct TGIS_CORE_API _SK_NODE
 {
 	char* data;
 	/*最大的level索引，其值为最大level减去1*/
@@ -21,7 +23,7 @@ typedef struct _SK_NODE
 }SK_NODE;
 
 
-typedef  struct _ST_LIST
+typedef  struct TGIS_CORE_API _ST_LIST
 {
 	/*占位的，始终为NULL，只是为了让_ST_LIST可以强转成_SK_NODE*/
 	char* data;
@@ -41,7 +43,7 @@ typedef  struct _ST_LIST
 }ST_LIST;
 
 
-void sorted_list_init(ST_LIST* list,
+TGIS_CORE_API void sorted_list_init(ST_LIST* list,
 	size_t key_bytes,
 	size_t val_bytes,
 	void*(*alloc_mem)(size_t size),
@@ -51,11 +53,11 @@ void sorted_list_init(ST_LIST* list,
     void(*assign_val)(void * a, const void * b)
 );
 
-void* sorted_list_add(ST_LIST* list, const void* key, const void* val);
+TGIS_CORE_API void* sorted_list_add(ST_LIST* list, const void* key, const void* val);
 
-void* sorted_list_get(ST_LIST* list, const void* key, void* val);
+TGIS_CORE_API void* sorted_list_get(ST_LIST* list, const void* key, void* val);
 
-void* sorted_list_del(ST_LIST* list, void* iter);
+TGIS_CORE_API void* sorted_list_del(ST_LIST* list, void* iter);
 
 inline void * sorted_list_first(ST_LIST * list)
 {
@@ -84,6 +86,6 @@ inline void * sorted_list_next(ST_LIST * list, void * iter)
 	return node->link[0].next;
 }
 
-void  sorted_list_release(ST_LIST* list);
+TGIS_CORE_API void  sorted_list_release(ST_LIST* list);
 
 #endif

@@ -4,7 +4,7 @@
 #define __I_TGISOBJECT_H__
 
 #include "Helper.h"
-#include "tGisCoreCfg.h"
+#include "tGis_CoreCfg.h"
 #include "elr_mpl.h"
 
 

@@ -53,12 +53,6 @@
     <ClInclude Include="include\RasterBandStorageBlockGridReader.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\tEntity.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tOrganizer.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
     <ClInclude Include="include\IMapTool.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
@@ -131,17 +125,8 @@
     <ClInclude Include="include\SymbolLibraryRepository.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\tSymbol.h">
-      <Filter>include\Symbol</Filter>
-    </ClInclude>
     <ClInclude Include="include\Statistics.h">
       <Filter>include\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tUtility.h">
-      <Filter>include\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tVisualize.h">
-      <Filter>include\Visualize</Filter>
     </ClInclude>
     <ClInclude Include="include\OverlayRect.h">
       <Filter>include\Visualize</Filter>
@@ -167,17 +152,8 @@
     <ClInclude Include="include\Event.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\ITool.h">
-      <Filter>include\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ToolKit.h">
-      <Filter>include\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="include\ToolKitRepository.h">
       <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Tool.h">
-      <Filter>include\Utility</Filter>
     </ClInclude>
     <ClInclude Include="include\EventBase.h">
       <Filter>include</Filter>
@@ -199,12 +175,6 @@
     </ClInclude>
     <ClInclude Include="internal\PluginManager.h">
       <Filter>internal</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tGisCore.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\tGisCoreCfg.h">
-      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="include\tinyxml2.h">
       <Filter>include\Utility</Filter>
@@ -268,6 +238,36 @@
     </ClInclude>
     <ClInclude Include="include\ITypedObject.h">
       <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ITool.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Tool.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ToolKit.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis_Entity.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis_Organizer.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis_Symbol.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis_Utility.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis_Visualize.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis_Core.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\tGis_CoreCfg.h">
+      <Filter>include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -346,12 +346,6 @@
     <ClCompile Include="src\ToolKitRepository.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\ToolKit.cpp">
-      <Filter>src\Utility</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tool.cpp">
-      <Filter>src\Utility</Filter>
-    </ClCompile>
     <ClCompile Include="src\EventBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -423,6 +417,12 @@
     </ClCompile>
     <ClCompile Include="src\ITypedObject.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Tool.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToolKit.cpp">
+      <Filter>src\Organizer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

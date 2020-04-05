@@ -64,7 +64,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef  struct _BI_NODE
+#include "tGis_CoreCfg.h"
+
+typedef  struct TGIS_CORE_API _BI_NODE
 {
     struct _BI_NODE *next;
     struct _BI_NODE *prev;
@@ -72,7 +74,7 @@ typedef  struct _BI_NODE
 }BI_NODE;
 
 
-typedef  struct _BI_LIST
+typedef  struct TGIS_CORE_API _BI_LIST
 {
 	BI_NODE *head;
 	BI_NODE *tail;
@@ -89,21 +91,21 @@ typedef  struct _BI_LIST
 #ifndef BI_LIST_DATA_DEMO
 #define BI_LIST_DATA_DEMO  1
 
-typedef struct _DEMO_POINT_T
+typedef struct TGIS_CORE_API _DEMO_POINT_T
 {
 	int x;
 	int y;
 }DEMO_POINT_T;
 
 /*提供所需的赋值函数*/
-void demo_assign(void * a, const void * b);
+TGIS_CORE_API void demo_assign(void * a, const void * b);
 
 /*提供所需的判断相等函数*/
-int demo_is_equal(const void * a, const void * b);
+TGIS_CORE_API int demo_is_equal(const void * a, const void * b);
 
-void* demo_alloc_mem(size_t size);
+TGIS_CORE_API void* demo_alloc_mem(size_t size);
 
-void demo_free_mem(void* mem);
+TGIS_CORE_API void demo_free_mem(void* mem);
 
 #endif // !BI_LIST_DATA_DEMO
 
@@ -113,7 +115,7 @@ void demo_free_mem(void* mem);
  *初始化链表，定义一个链表后必须初始化，
  *警告！一个链表只允许调用一次
  **/
-void bi_list_init(BI_LIST *list,
+TGIS_CORE_API void bi_list_init(BI_LIST *list,
 	size_t data_bytes,
 	void*(*alloc_mem)(size_t size),
 	void(*free_mem)(void* mem),
@@ -122,28 +124,28 @@ void bi_list_init(BI_LIST *list,
 	);
 
 /*释放链表所占用的资源，在链表使用结束后必须调用*/
-void bi_list_release(BI_LIST *list);
+TGIS_CORE_API void bi_list_release(BI_LIST *list);
 
 /*在链表头添加元素*/
-void* bi_list_insert_head(BI_LIST *list, const void * data);
+TGIS_CORE_API void* bi_list_insert_head(BI_LIST *list, const void * data);
 
 /*在链表尾添加元素*/
-void* bi_list_insert_tail(BI_LIST *list, const void * data);
+TGIS_CORE_API void* bi_list_insert_tail(BI_LIST *list, const void * data);
 
 /*在迭代器之前插入元素*/
-void bi_list_insert_before(BI_LIST *list, void* pos, const void *data);
+TGIS_CORE_API void bi_list_insert_before(BI_LIST *list, void* pos, const void *data);
 
 /*在迭代器之后插入元素*/
-void bi_list_insert_after(BI_LIST *list, void* pos, const void *data);
+TGIS_CORE_API void bi_list_insert_after(BI_LIST *list, void* pos, const void *data);
 
 /*删除链表头部元素到data中,如果删除的元素不再需要传入NULL即可*/
-void bi_list_delete_head(BI_LIST *list, void * data);
+TGIS_CORE_API void bi_list_delete_head(BI_LIST *list, void * data);
 
 /*删除链表尾部元素到data中，如果删除的元素不再需要传入NULL即可*/
-void bi_list_delete_tail(BI_LIST *list, void * data);
+TGIS_CORE_API void bi_list_delete_tail(BI_LIST *list, void * data);
 
 /*删除迭代器处的位置，并返回下一个元素的迭代器*/
-void* bi_list_delete_at(BI_LIST * list, void * pos);
+TGIS_CORE_API void* bi_list_delete_at(BI_LIST * list, void * pos);
 
 /*获取链表头部的元素，返回链表头部元素的指针*/
 inline void*  bi_list_get_head(BI_LIST *list, void * data)
@@ -226,9 +228,9 @@ inline void * bi_list_prev_pos(BI_LIST * list, void * pos)
 }
 
 /*查找某元素是否在链表中，如果在，则返回其指针；否则返回NULL*/
-BI_NODE* bi_list_find(BI_LIST *list, const void *data);
+TGIS_CORE_API BI_NODE* bi_list_find(BI_LIST *list, const void *data);
 
 /*返回链表中第index个位置处的元素的指针，*index值从1开始，index<= list->size*/
-void *  bi_list_at_index(BI_LIST *list, unsigned index);
+TGIS_CORE_API void *  bi_list_at_index(BI_LIST *list, unsigned index);
 
 #endif

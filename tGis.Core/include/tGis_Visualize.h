@@ -1,5 +1,5 @@
-#include "tGisCoreCfg.h"
-#include "tEntity.h"
+#include "tGis_CoreCfg.h"
+#include "tGis_Entity.h"
 #include "ISurface.h"
 #include "IGeoSurface.h"
 #include "IOverlayLayer.h"
