@@ -39,6 +39,7 @@ IMPLEMENT_DYNAMIC(MFCMapWidget, CWnd)
 
 MFCMapWidget::MFCMapWidget()
 {
+	_repaint = false;
 	_mouseDownX = -1;
 	_mouseDownY = -1;
 	SetMap(&_thisMap);
@@ -90,13 +91,31 @@ BOOL MFCMapWidget::RegisterWndClass()
     return TRUE;  
 }
 
+void MFCMapWidget::RepaintMap()
+{
+	_repaint = true;
+}
+
+void MFCMapWidget::PresentMap()
+{
+
+}
+
 
 
 // MFCMapWidget 消息处理程序
 
 void MFCMapWidget::OnPaint()
 {
-	PresentMap();
+	if (_repaint == true)
+	{
+		_repaint = false;
+		MapWidget::RepaintMap();
+	}
+	else
+	{
+		MapWidget::PresentMap();
+	}
 }
 
 

@@ -25,6 +25,13 @@ public:
 public:
 	BOOL RegisterWndClass();
 
+private:
+	bool _repaint;
+
+public:
+	virtual void RepaintMap();
+	virtual void PresentMap();
+
 protected:
 	Map _thisMap;
 	GdiGeoSurface _thisGeoSurface;
