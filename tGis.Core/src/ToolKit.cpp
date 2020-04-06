@@ -1,37 +1,58 @@
 #include "ToolKit.h"
+#include <vector>
+#include <map>
+
+using namespace std;
 
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class ToolKitImpl
+{
+public:
+	ToolKitImpl(ToolKit* owner)
+	{
+		_owner = owner;
+	}
+
+	ToolKit* _owner;
+
+	string _name;
+	vector<ToolKit*> _vecToolKit;
+	map<string, ToolKit*> _mapToolKit;
+	vector<ITool*> _vecTool;
+};
 
 ToolKit::ToolKit(const char* name)
 {
-	_name = name;
+	_impl_ = new ToolKitImpl(this);
+	_impl_->_name = name;
 }
 
 
 ToolKit::~ToolKit()
 {
+	delete _impl_;
 }
 
 const char * ToolKit::GetName()
 {
-	return _name.c_str();
+	return _impl_->_name.c_str();
 }
 
 void ToolKit::AddTool(ITool * tool)
 {
-	_vecTool.push_back(tool);
+	_impl_->_vecTool.push_back(tool);
 }
 
 size_t ToolKit::GetToolCount()
 {
-	return _vecTool.size();
+	return _impl_->_vecTool.size();
 }
 
 ITool * ToolKit::GetTool(size_t pos)
 {
-	return _vecTool.at(pos);
+	return _impl_->_vecTool.at(pos);
 }
 
 void ToolKit::AddToolKit(ToolKit * kit)
@@ -39,8 +60,8 @@ void ToolKit::AddToolKit(ToolKit * kit)
 	ToolKit* toFillKit = GetToolKit(kit->GetName());
 	if (toFillKit == NULL)
 	{
-		_vecToolKit.push_back(kit);
-		_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
+		_impl_->_vecToolKit.push_back(kit);
+		_impl_->_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
 	}
 	else
 	{
@@ -60,19 +81,19 @@ void ToolKit::AddToolKit(ToolKit * kit)
 
 size_t ToolKit::GetToolKitCount()
 {
-	return _vecToolKit.size();
+	return _impl_->_vecToolKit.size();
 }
 
 ToolKit * ToolKit::GetToolKit(size_t pos)
 {
-	return _vecToolKit.at(pos);
+	return _impl_->_vecToolKit.at(pos);
 }
 
 ToolKit * ToolKit::GetToolKit(const char * name)
 {
-	map<string, ToolKit*>::iterator pos = _mapToolKit.find(name);
+	map<string, ToolKit*>::iterator pos = _impl_->_mapToolKit.find(name);
 
-	if (pos != _mapToolKit.end())
+	if (pos != _impl_->_mapToolKit.end())
 		return (*pos).second;
 	return nullptr;
 }

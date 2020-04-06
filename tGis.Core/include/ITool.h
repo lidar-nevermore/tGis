@@ -4,7 +4,6 @@
 #define __I_TOOL_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 

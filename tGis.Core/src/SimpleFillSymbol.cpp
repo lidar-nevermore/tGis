@@ -32,7 +32,7 @@ const ISymbolLibrary * SimpleFillSymbol::GetSymbolLibrary()
 	return &SimpleSymbolLibrary::INSTANCE;
 }
 
-const int SimpleFillSymbol::GetIdentifier()
+const int SimpleFillSymbol::GetId()
 {
 	return IdentifierBegin + _type;
 }

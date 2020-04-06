@@ -9,8 +9,22 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class MapWidgetImpl
+{
+public:
+	MapWidgetImpl(MapWidget* owner)
+	{
+		_owner = owner;
+	}
+
+	MapWidget* _owner;
+
+	vector<IMapTool*> _vecMapTool;
+};
+
 MapWidget::MapWidget()
 {
+	_impl_ = new MapWidgetImpl(this);
 	_gridVisible = false;
 	_backgroundR = 255;
 	_backgroundG = 255;
@@ -22,14 +36,15 @@ MapWidget::MapWidget()
 
 MapWidget::~MapWidget()
 {
-	vector<IMapTool*>::iterator it = _vecMapTool.begin(); 
-	while(it != _vecMapTool.end())
+	vector<IMapTool*>::iterator it = _impl_->_vecMapTool.begin();
+	while(it != _impl_->_vecMapTool.end())
 	{
 		IMapTool* tool = *it;
 		tool->SetMapWidget(nullptr);
-		it = _vecMapTool.erase(it);
+		it = _impl_->_vecMapTool.erase(it);
 		MapToolRemovedEvent(this, tool);
 	}
+	delete _impl_;
 }
 
 void MapWidget::SetMap(IMap *map)
@@ -78,7 +93,7 @@ void MapWidget::LayerCleared(IMapPtr)
 bool MapWidget::AddMapTool(IMapTool * tool)
 {
 	bool canAdd = true;
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
+	for (vector<IMapTool*>::iterator it = _impl_->_vecMapTool.begin(); it != _impl_->_vecMapTool.end(); ++it)
 	{
 		if ((*it) == tool) 
 		{
@@ -90,7 +105,7 @@ bool MapWidget::AddMapTool(IMapTool * tool)
 	if (canAdd)
 	{
 		tool->SetMapWidget(this);
-		_vecMapTool.push_back(tool);
+		_impl_->_vecMapTool.push_back(tool);
 		MapToolAddedEvent(this, std::forward<IMapTool*>(tool));
 	}
 
@@ -99,12 +114,12 @@ bool MapWidget::AddMapTool(IMapTool * tool)
 
 bool MapWidget::RemoveMapTool(IMapTool * tool)
 {
-	for (vector<IMapTool*>::iterator it = _vecMapTool.begin(); it != _vecMapTool.end(); ++it)
+	for (vector<IMapTool*>::iterator it = _impl_->_vecMapTool.begin(); it != _impl_->_vecMapTool.end(); ++it)
 	{
 		if (*it == tool)
 		{
 			tool->SetMapWidget(nullptr);
-			_vecMapTool.erase(it);
+			_impl_->_vecMapTool.erase(it);
 			MapToolRemovedEvent(this, std::forward<IMapTool*>(tool));
 			return true;
 		}

@@ -145,11 +145,6 @@ size_t MyGDALDataset::GetSupportedRasterFormatCount()
 	return _GDALInit->_SupportedRasterFormatExt.size();
 }
 
-const vector<string>& MyGDALDataset::GetSupportedRasterFormatExt(size_t pos)
-{
-	return _GDALInit->_SupportedRasterFormatExt.at(pos);
-}
-
 const char * MyGDALDataset::GetSupportedRasterFormatName(size_t pos)
 {
 	return _GDALInit->_SupportedRasterFormatName.at(pos).c_str();
@@ -225,11 +220,6 @@ size_t MyGDALDataset::GetSupportedVectorFormatCount()
 	return _GDALInit->_SupportedVectorFormatExt.size();
 }
 
-const vector<string>& MyGDALDataset::GetSupportedVectorFormatExt(size_t pos)
-{
-	return _GDALInit->_SupportedVectorFormatExt.at(pos);
-}
-
 const char * MyGDALDataset::GetSupportedVectorFormatName(size_t pos)
 {
 	return _GDALInit->_SupportedVectorFormatName.at(pos).c_str();
@@ -300,23 +290,57 @@ bool MyGDALDataset::IsSupportedVectorFormatFirstExt(const char * ext)
 	return false;
 }
 
-MyGDALDataset::MyGDALDataset(IDataSource * ds)
+class MyGDALDatasetImpl
+{
+public:
+	MyGDALDatasetImpl(MyGDALDataset* owner)
+	{
+		_owner = owner;
+	}
+
+	MyGDALDataset* _owner;
+	string _path;
+	string _name;
+};
+
+MyGDALDataset::MyGDALDataset(DataSource * ds)
 	:Dataset(ds)
 {
+	_impl_ = new MyGDALDatasetImpl(this);
 	_dataset = nullptr;
 	_spatialRef = nullptr;
 }
 
-MyGDALDataset::MyGDALDataset()
-	: Dataset(nullptr)
+MyGDALDataset::MyGDALDataset(DataSource * ds, const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+	:Dataset(ds)
 {
-	_dataset = nullptr;
-	_spatialRef = nullptr;
+	_impl_ = new MyGDALDatasetImpl(this);
+	if (delayOpen)
+	{
+		_eAccess = eAccess;
+		_impl_->_path = path;
+		size_t pos = _impl_->_path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+		if (pos == _impl_->_path.npos)
+		{
+			_impl_->_name = _impl_->_path;
+		}
+		else
+		{
+			_impl_->_name = _impl_->_path.substr(pos + 1);
+		}
+		_dataset = nullptr;
+		_autoClose = autoClose;
+	}
+	else
+	{
+		Attach(path, eAccess, autoClose);
+	}
 }
 
 MyGDALDataset::~MyGDALDataset()
 {
 	Detach();
+	delete _impl_;
 }
 
 GDALDataset * MyGDALDataset::GetGDALDataset()
@@ -324,18 +348,30 @@ GDALDataset * MyGDALDataset::GetGDALDataset()
 	return _dataset;
 }
 
+void MyGDALDataset::Attach()
+{
+	if (_dataset == nullptr)
+	{
+		Attach(_impl_->_path.c_str(), _eAccess, _autoClose);
+	}
+}
+
 void MyGDALDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
 {
 	_eAccess = eAccess;
-	_path = file;
-	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
-	if (pos == _path.npos)
+	if (_impl_->_path.empty())
 	{
-		_name = _path;
-	}
-	else
-	{
-		_name = _path.substr(pos + 1);
+		//进入这里，表示MyGDALDataset单独使用，也就是没有结合框架使用
+		_impl_->_path = file;
+		size_t pos = _impl_->_path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
+		if (pos == _impl_->_path.npos)
+		{
+			_impl_->_name = _impl_->_path;
+		}
+		else
+		{
+			_impl_->_name = _impl_->_path.substr(pos + 1);
+		}
 	}
 	GDALDataset *dataset = (GDALDataset*)GDALOpenEx(file, _eAccess, nullptr, nullptr, nullptr);//(GDALDataset*)GDALOpen(file, eAccess);
 	if (dataset == nullptr && _eAccess == GA_Update)
@@ -352,7 +388,7 @@ void MyGDALDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose
 
 const char * MyGDALDataset::GetName()
 {
-	return _name.c_str();
+	return _impl_->_name.c_str();
 }
 
 bool MyGDALDataset::IsReadOnly()
@@ -363,20 +399,6 @@ bool MyGDALDataset::IsReadOnly()
 bool MyGDALDataset::IsOpened()
 {
 	return _dataset != nullptr;
-}
-
-void MyGDALDataset::Close()
-{
-	if (_autoClose && _dataset != nullptr)
-	{
-		Dataset::Close();
-	}
-	Detach();
-}
-
-IDataSource * MyGDALDataset::GetDataSource()
-{
-	return _dataSource;
 }
 
 const OGRSpatialReference * MyGDALDataset::GetSpatialReference()

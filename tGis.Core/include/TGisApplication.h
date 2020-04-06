@@ -5,7 +5,6 @@
 
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 #include "tGis_Entity.h"
 #include "tGis_Visualize.h"
 #include "Event.h"

@@ -5,16 +5,11 @@
 
 #include "Helper.h"
 
-#include "IDataset.h"
 #include "MyGDALRasterDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
-#include <string>
-
-using namespace std;
-
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -30,22 +25,20 @@ private:
 	static const char* const _type;
 
 public:
-	MyGDALMemRasterDataset(IDataSource* ds = nullptr, const char* name = nullptr);
+	MyGDALMemRasterDataset(DataSource* ds, 
+		MyGDALRasterDataset* raster, 
+		int left, int top, int width, int height, 
+		int *bandIndexs, int bandCount, 
+		const char* name);
 
 public:
 	~MyGDALMemRasterDataset();
-
-public:
-	virtual void Open();
 
 public:
 	using MyGDALRasterDataset::GetGDALDataset;
 	using MyGDALRasterDataset::Detach;
 	using MyGDALRasterDataset::SetAutoClose;
 	using MyGDALRasterDataset::GetAutoClose;
-	//需要判断dataset是否是存在于内存的
-	void Attach(GDALDataset* dataset, bool autoClose = false, double noDataValue = NAN);
-
 
 private:
 	CPL_DISALLOW_COPY_ASSIGN(MyGDALMemRasterDataset)

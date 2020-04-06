@@ -22,18 +22,14 @@ private:
 	SimpleSymbolLibrary &operator=(const SimpleSymbolLibrary &) = delete;
 
 public:
-	const char* GetType() const;
 	const char* GetName() const;
 	int GetSymbolCount() const;
-	ISymbol* GetSymbol(int) const;
-	ISymbol* GetSymbol(int, int*) const;
-	void ReclaimSymbol(ISymbol*) const;
-
-	void Release();
+	ISymbol* GetSymbol(int id) const;
+	ISymbol* GetSymbol(int id, int* nextId) const;
+	void RevertSymbol(ISymbol*) const;
 
 private:
 	static const char* const _name;
-	static const char* const _type;
 };
 
 

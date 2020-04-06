@@ -7,11 +7,6 @@
 #include "DataSource.h"
 
 #include "Helper.h"
-#include <vector>
-#include <map>
-#include <string>
-
-using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 

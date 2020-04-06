@@ -36,7 +36,7 @@ const ISymbolLibrary * SimpleMarkerSymbol::GetSymbolLibrary()
 	return &SimpleSymbolLibrary::INSTANCE;;
 }
 
-const int SimpleMarkerSymbol::GetIdentifier()
+const int SimpleMarkerSymbol::GetId()
 {
 	return IdentifierBegin + _type;
 }

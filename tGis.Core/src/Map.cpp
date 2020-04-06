@@ -5,10 +5,31 @@
 
 #include "ogr_spatialref.h"
 
+#include <assert.h>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+
 BEGIN_NAME_SPACE(tGis, Core)
+
+class MapImpl
+{
+public:
+	MapImpl(Map* owner)
+	{
+		_owner = owner;
+	}
+
+	Map* _owner;
+	vector<ILayer*> _vecLayer;
+	string _name;
+};
 
 Map::Map()
 {
+	_impl_ = new MapImpl(this);
 	_spatialRef = nullptr;
 }
 
@@ -21,16 +42,17 @@ Map::~Map()
 	{
 		_spatialRef->Dereference();
 	}
+	delete _impl_;
 }
 
 const char * Map::GetName()
 {
-	return _name.c_str();
+	return _impl_->_name.c_str();
 }
 
 void Map::SetName(const char * name)
 {
-	_name = name;
+	_impl_->_name = name;
 }
 
 const OGREnvelope * Map::GetEnvelope()
@@ -45,36 +67,18 @@ const OGRSpatialReference * Map::GetSpatialReference()
 
 size_t Map::GetLayerCount()
 {
-	return _vecLayer.size();
+	return _impl_->_vecLayer.size();
 }
 
 ILayer * Map::GetLayer(size_t pos)
 {
-	return _vecLayer.at(pos);
+	return _impl_->_vecLayer.at(pos);
 }
 
-size_t Map::GetLayerIndex(ILayer * layer)
+bool Map::AddLayer(ILayer *layer)
 {
-	size_t i = 0;
-	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
-	{
-		if (*it == layer)
-		{
-			break;
-		}
-		i++;
-	}
-
-	return i;
-}
-
-size_t Map::AddLayer(ILayer *layer, bool* added)
-{
-	if (added != nullptr)
-		*added = false;
-
 	bool canAdd = false;
-	size_t layerCount = _vecLayer.size();
+	size_t layerCount = _impl_->_vecLayer.size();
 	const OGRSpatialReference* clayerSpatialRef = layer->GetDataset()->GetSpatialReference();
 	OGRSpatialReference* layerSpatialRef = nullptr;
 	if(clayerSpatialRef != nullptr)
@@ -95,36 +99,34 @@ size_t Map::AddLayer(ILayer *layer, bool* added)
 
 	if (canAdd)
 	{
-		_vecLayer.push_back(layer);
+		_impl_->_vecLayer.push_back(layer);
 		layer->SetMap(this);
 		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
-		if (added != nullptr)
-			*added = true;
 	}
 
-	return canAdd ? layerCount : layerCount + 1;
+	return canAdd;
 }
 
 ILayer* Map::RemoveLayer(size_t pos)
 {
-	vector<ILayer*>::iterator it = _vecLayer.begin() + pos;
+	vector<ILayer*>::iterator it = _impl_->_vecLayer.begin() + pos;
 	ILayer* layer = *it;
 	layer->SetMap(nullptr);
-	_vecLayer.erase(it);
-	MergeEnvelope();
+	_impl_->_vecLayer.erase(it);
+	UpdateEnvelope();
 	LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 	return layer;
 }
 
 void Map::RemoveLayer(ILayer * layer)
 {
-	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
+	for (vector<ILayer*>::iterator it = _impl_->_vecLayer.begin(); it != _impl_->_vecLayer.end(); ++it)
 	{
 		if (*it == layer)
 		{
 			layer->SetMap(nullptr);
-			_vecLayer.erase(it);
-			MergeEnvelope();
+			_impl_->_vecLayer.erase(it);
+			UpdateEnvelope();
 			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 			break;
 		}
@@ -133,14 +135,14 @@ void Map::RemoveLayer(ILayer * layer)
 
 void Map::RemoveLayer(IDataset * dt)
 {
-	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); )
+	for (vector<ILayer*>::iterator it = _impl_->_vecLayer.begin(); it != _impl_->_vecLayer.end(); )
 	{
 		ILayer* layer = *it;
 
 		if (layer->GetDataset() == dt)
 		{
 			layer->SetMap(nullptr);
-			it = _vecLayer.erase(it);
+			it = _impl_->_vecLayer.erase(it);
 			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 		}
 		else
@@ -148,14 +150,14 @@ void Map::RemoveLayer(IDataset * dt)
 			it++;
 		}
 	}
-	MergeEnvelope();
+	UpdateEnvelope();
 }
 
 bool Map::InsertLayer(size_t pos, ILayer * layer)
 {
 	bool canAdd = false;
 	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetDataset()->GetSpatialReference());
-	if (_vecLayer.size() == 0)
+	if (_impl_->_vecLayer.size() == 0)
 	{
 		_spatialRef = layerSpatialRef;
 		if (_spatialRef != nullptr)
@@ -171,7 +173,7 @@ bool Map::InsertLayer(size_t pos, ILayer * layer)
 
 	if (canAdd)
 	{
-		_vecLayer.insert(_vecLayer.begin() + pos, layer);
+		_impl_->_vecLayer.insert(_impl_->_vecLayer.begin() + pos, layer);
 		layer->SetMap(this);
 		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
 	}
@@ -181,53 +183,42 @@ bool Map::InsertLayer(size_t pos, ILayer * layer)
 
 void Map::MoveLayer(size_t from, size_t to)
 {
-	if (from < to)
-	{
-		for (size_t i = from; i < to; i++)
-		{
-			ILayer* temp = _vecLayer[i];
-			_vecLayer[i] = _vecLayer[i + 1];
-			_vecLayer[i + 1] = temp;
-		}
-	}
-	else
-	{
-		for (size_t i = from; i > to; i--)
-		{
-			ILayer* temp = _vecLayer[i];
-			_vecLayer[i] = _vecLayer[i - 1];
-			_vecLayer[i - 1] = temp;
-		}
-	}
+	assert(from >= 0 && from < _impl_->_vecLayer.size());
+	assert(to >= 0 && to < _impl_->_vecLayer.size());
+
+	ILayer* fromLayer = _impl_->_vecLayer[from];
+	ILayer* toLayer = _impl_->_vecLayer[to];
+	_impl_->_vecLayer[from] = toLayer;
+	_impl_->_vecLayer[to] = fromLayer;
 }
 
 void Map::ClearLayers()
 {
-	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); it++)
+	for (vector<ILayer*>::iterator it = _impl_->_vecLayer.begin(); it != _impl_->_vecLayer.end(); it++)
 	{
 		ILayer* layer = *it;
 		if (layer->_is_in_heap)
 			delete layer;
 	}
-	_vecLayer.clear();
+	_impl_->_vecLayer.clear();
 	LayerClearedEvent(std::forward<IMapPtr>(this));
 }
 
 void Map::Paint(IGeoSurface * surf)
 {
-	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
+	for (vector<ILayer*>::reverse_iterator it = _impl_->_vecLayer.rbegin(); it != _impl_->_vecLayer.rend(); ++it)
 	{
 		(*it)->Paint(surf);
 	}
 }
 
-void Map::MergeEnvelope()
+void Map::UpdateEnvelope()
 {
 	_envelope.MinX = 0.0;
 	_envelope.MaxX = 0.0;
 	_envelope.MinY = 0.0;
 	_envelope.MaxY = 0.0;
-	for (vector<ILayer*>::iterator it = _vecLayer.begin(); it != _vecLayer.end(); ++it)
+	for (vector<ILayer*>::iterator it = _impl_->_vecLayer.begin(); it != _impl_->_vecLayer.end(); ++it)
 	{
 		MergeEnvelope((*it)->GetDataset()->GetSpatialReference(), (*it)->GetEnvelope());
 	}

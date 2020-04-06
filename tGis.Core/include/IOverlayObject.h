@@ -4,14 +4,16 @@
 #define __I_OVERLAYOBJECT_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
+#include "IInclusionObject.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IGeoSurface;
 
-struct TGIS_CORE_API IOverlayObject
+struct TGIS_CORE_API IOverlayObject : public IInclusionObject
 {
+	friend class OverlayLayer;
+
 	virtual bool GetVisible() = 0;
 	virtual void SetVisible(bool) = 0;
 

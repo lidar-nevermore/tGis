@@ -4,7 +4,6 @@
 #define __I_WIDGET_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 #include "Event.h"
 
 

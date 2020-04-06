@@ -4,17 +4,11 @@
 #define __TOOLKITREPOSITORY_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
-
-#include <vector>
-#include <map>
-#include <string>
-
-using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 class ToolKit;
+class ToolKitRepositoryImpl;
 
 class TGIS_CORE_API ToolKitRepository
 {
@@ -39,8 +33,7 @@ public:
 	ToolKit* GetToolKit(const char* name);
 	
 private:
-	vector<ToolKit*> _vecToolKit;
-	map<string, ToolKit*> _mapToolKit;
+	ToolKitRepositoryImpl* _impl_;
 };
 
 END_NAME_SPACE(tGis, Core)

@@ -1,13 +1,14 @@
 #include "Dataset.h"
 #include "DataSource.h"
+#include "DataSourceRepository.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-Dataset::Dataset(IDataSource * ds)
+Dataset::Dataset(DataSource * ds)
 {
-	_dataSource = ds;
-	if (_dataSource != nullptr)
-		((DataSource*)_dataSource)->_vecDataset.push_back(this);
+	_parent = ds;
+	if (_parent != nullptr)
+		_parent->AddDataset(this);
 }
 
 
@@ -17,14 +18,23 @@ Dataset::~Dataset()
 
 void Dataset::Open()
 {
-	if(_dataSource != nullptr)
-	    ((DataSource*)_dataSource)->AddOpenedDataset(this);
+	if(_open)
+		return;
+
+	DataSourceRepository::INSTANCE().AddOpenedDataset(this);
 }
 
 void Dataset::Close()
 {
-	if (_dataSource != nullptr)
-	    ((DataSource*)_dataSource)->RemoveOpenedDataset(this);
+	if (_open == false)
+		return;
+
+	DataSourceRepository::INSTANCE().RemoveOpenedDataset(this);
+}
+
+IDataSource * Dataset::GetParent()
+{
+	return _parent;
 }
 
 

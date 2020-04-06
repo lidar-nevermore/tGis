@@ -1,40 +1,100 @@
 #include "DataSource.h"
 #include "DataSourceRepository.h"
+#include "IDataset.h"
+
+#include <map>
+#include <string>
+
+using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
+
+struct str_ptr_less
+{
+	bool operator () (const string* a, const string* b) const
+	{
+		return a->compare(b->c_str()) < 0;
+	}
+};
+
+struct c_str_ptr_less
+{
+	bool operator () (const char* a, const char* b) const
+	{
+		return std::strcmp(a,b) < 0;
+	}
+};
+
+
+class DataSourceImpl
+{
+public:
+	DataSourceImpl(DataSource* owner)
+	{
+		_owner = owner;
+	}
+
+	DataSource* _owner;
+
+	string _name;
+
+	map<const char*, IDataSource*, c_str_ptr_less> _mapDataSource;
+
+	map<const char*, IDataset*, c_str_ptr_less> _mapDataset;
+};
 
 
 DataSource::DataSource()
 {
-	_dataSource = nullptr;
+	_impl_ = new DataSourceImpl(this);
+	_parent = nullptr;
 }
 
 DataSource::~DataSource()
 {
 	Disconnect();
+	delete _impl_;
 }
 
 
-void DataSource::AddOpenedDataset(IDataset * dt)
+void DataSource::SetName(const char * name)
 {
-	_vecOpenedDataset.push_back(dt);
+	_impl_->_name = name;
 }
 
-void DataSource::RemoveOpenedDataset(IDataset * dt)
+void DataSource::AddDataset(IDataset * dt)
 {
-	for (vector<IDataset*>::iterator it = _vecOpenedDataset.begin(); it != _vecOpenedDataset.end(); it++)
-	{
-		if (dt == *it)
-		{
-			_vecOpenedDataset.erase(it);
-			break;
-		}
-	}
+	_impl_->_mapDataset[dt->GetName()] = dt;
+}
+
+void DataSource::RemoveDataset(IDataset * dt)
+{
+	_impl_->_mapDataset.erase(dt->GetName());
+}
+
+void DataSource::RemoveDataset(const char * name)
+{
+	_impl_->_mapDataset.erase(name);
+}
+
+void DataSource::AddDataSource(IDataSource *ds)
+{
+	_impl_->_mapDataSource[ds->GetName()] = ds;
+}
+
+void DataSource::RemoveDataSource(IDataSource *ds)
+{
+	_impl_->_mapDataSource.erase(ds->GetName());
+}
+
+void DataSource::RemoveDataSource(const char * name)
+{
+	_impl_->_mapDataSource.erase(name);
 }
 
 const char * DataSource::GetName()
 {
-	return _name.c_str();
+	return _impl_->_name.c_str();
 }
 
 bool DataSource::IsConnected()
@@ -47,7 +107,6 @@ void DataSource::Connect()
 	if (_connected)
 		return;
 
-	_vecConnectedDataSource.push_back(this);
 	DataSourceRepository::INSTANCE().AddConnectedDataSource(this);
 }
 
@@ -57,86 +116,40 @@ void DataSource::Disconnect()
 		return;
 
 	DataSourceRepository::INSTANCE().RemoveConnectedDataSource(this);
-	//从父数据源中删除自己
-	if (this->_dataSource != nullptr)
-	{
-		DataSource* parent = (DataSource*)this->_dataSource;
-		for (vector<IDataSource*>::iterator it = parent->_vecConnectedDataSource.begin(); it != parent->_vecConnectedDataSource.end(); it++)
-		{
-			if (this == *it)
-			{
-				parent->_vecConnectedDataSource.erase(it);
-				break;
-			}
-		}
-	}
-	//关闭已经打开的子数据源和子数据集
-	for (vector<IDataSource*>::iterator it = _vecConnectedDataSource.begin(); it != _vecConnectedDataSource.end(); it++)
-		(*it)->Disconnect();
-	for (vector<IDataset*>::iterator it = _vecOpenedDataset.begin(); it != _vecOpenedDataset.end(); it++)
-		(*it)->Close();
-	_vecConnectedDataSource.clear();
-	_vecOpenedDataset.clear();
 
 	//释放子数据源和子数据集占据的内存
-	for (vector<IDataset*>::iterator it = _vecDataset.begin(); it != _vecDataset.end(); it++)
+	for (auto it = _impl_->_mapDataset.begin(); it != _impl_->_mapDataset.end(); it++)
 	{
-		IDataset* dt = (IDataset*)(*it);
+		IDataset* dt = (*it).second;
+		dt->Close();
 		if(dt->_is_in_heap)
 			delete dt;
 	}
+	_impl_->_mapDataset.clear();
 		
-	for (vector<IDataSource*>::iterator it = _vecDataSource.begin(); it != _vecDataSource.end(); it++)
+	for (auto it = _impl_->_mapDataSource.begin(); it != _impl_->_mapDataSource.end(); it++)
 	{
-		IDataSource* ds = (IDataSource*)(*it);
+		IDataSource* ds = (*it).second;
+		ds->Disconnect();
 		if (ds->_is_in_heap)
 			delete ds;
 	}
+	_impl_->_mapDataSource.clear();
 }
 
-IDataSource * DataSource::GetDataSource()
+IDataSource * DataSource::GetParent()
 {
-	return _dataSource;
+	return _parent;
 }
 
 size_t DataSource::GetDatasetCount()
 {
-	return _vecDataset.size();
-}
-
-IDataset * DataSource::GetDataset(size_t pos)
-{
-	return _vecDataset.at(pos);
+	return _impl_->_mapDataset.size();
 }
 
 size_t DataSource::GetDataSourceCount()
 {
-	return _vecDataSource.size();
-}
-
-IDataSource * DataSource::GetDataSource(size_t pos)
-{
-	return _vecDataSource.at(pos);
-}
-
-size_t DataSource::GetOpenedDatasetCount()
-{
-	return _vecOpenedDataset.size();
-}
-
-IDataset * DataSource::GetOpenedDataset(size_t pos)
-{
-	return _vecOpenedDataset.at(pos);
-}
-
-size_t DataSource::GetConnectedDataSourceCount()
-{
-	return _vecConnectedDataSource.size();
-}
-
-IDataSource * DataSource::GetConnectedDataSource(size_t pos)
-{
-	return _vecConnectedDataSource.at(pos);
+	return _impl_->_mapDataSource.size();
 }
 
 

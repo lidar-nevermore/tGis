@@ -30,7 +30,7 @@ const ISymbolLibrary * SimpleLineSymbol::GetSymbolLibrary()
 	return &SimpleSymbolLibrary::INSTANCE;;
 }
 
-const int SimpleLineSymbol::GetIdentifier()
+const int SimpleLineSymbol::GetId()
 {
 	return IdentifierBegin + _type;
 }

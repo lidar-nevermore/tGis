@@ -34,45 +34,13 @@ MyGDALFileRasterDataset::MyGDALFileRasterDataset()
 {
 }
 
-MyGDALFileRasterDataset::MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess, bool delayOpen, bool autoClose)
-	:MyGDALRasterDataset(ds)
+MyGDALFileRasterDataset::MyGDALFileRasterDataset(FileSystemDataSource* ds, const char* path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+	:MyGDALRasterDataset((DataSource*)ds,path,eAccess,delayOpen,autoClose)
 {
-	_eAccess = eAccess;
-	_path = path;
-	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
-	if (pos == _path.npos)
-	{
-		_name = _path;
-	}
-	else
-	{
-		_name = _path.substr(pos + 1);
-	}
-	if (delayOpen)
-	{
-		_dataset = nullptr;
-		_autoClose = true;
-	}
-	else
-	{
-		Attach(path, eAccess, autoClose);
-	}
 }
 
 MyGDALFileRasterDataset::~MyGDALFileRasterDataset()
 {
-}
-
-void MyGDALFileRasterDataset::Open()
-{
-	if (_dataset == nullptr)
-	{
-		Attach(_path.c_str(), _eAccess);
-	}
-	if (_dataset != nullptr)
-	{
-		MyGDALRasterDataset::Open();
-	}
 }
 
 void MyGDALFileRasterDataset::Attach(GDALDataset * dataset, bool autoClose, double noDataValue)

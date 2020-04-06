@@ -13,7 +13,7 @@ MemoryDataSource & MemoryDataSource::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new MemoryDataSource();
-		static unique_ptr<MemoryDataSource> shit(_instance);
+		static std::unique_ptr<MemoryDataSource> shit(_instance);
 	}
 
 	return *_instance;
@@ -22,7 +22,7 @@ MemoryDataSource & MemoryDataSource::INSTANCE()
 MemoryDataSource::MemoryDataSource()
 	:DataSource()
 {
-	_name = "default";
+	SetName("default");
 	Connect();
 }
 

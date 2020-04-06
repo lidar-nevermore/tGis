@@ -4,12 +4,7 @@
 #define __RASTERLAYERRENDER_H__
 
 #include "Helper.h"
-
 #include "LayerRender.h"
-
-#include <string>
-
-using namespace std;
 
 class GDALRasterBand;
 
@@ -20,10 +15,6 @@ class MyGDALRasterDataset;
 
 class TGIS_CORE_API RasterLayerRender : public LayerRender
 {
-public:
-	RasterLayerRender(ILayer* layer);
-	virtual ~RasterLayerRender();
-
 public:
 	virtual const char* GetType();
 	static const char* S_GetType();
@@ -36,6 +27,10 @@ public:
 	static const int EQUAL = 1;
 	static const int LT = 2;
 	static const int GT = 4;
+
+public:
+	RasterLayerRender(ILayer* layer);
+	virtual ~RasterLayerRender();
 
 protected:
 	void InitialMinMax(GDALRasterBand* band, int dataType, double *min, double *max, double* range);

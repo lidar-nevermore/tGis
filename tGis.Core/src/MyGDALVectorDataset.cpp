@@ -24,18 +24,6 @@ bool MyGDALVectorDataset::IsTypeOf(const char * type)
 	return false;
 }
 
-void MyGDALVectorDataset::Open()
-{
-	if (_dataset == nullptr)
-	{
-		Attach(_path.c_str(), _eAccess);
-	}
-	if (_dataset != nullptr)
-	{
-		MyGDALDataset::Open();
-	}
-}
-
 const char * MyGDALVectorDataset::S_GetType()
 {
 	return _type;
@@ -46,34 +34,58 @@ MyGDALVectorDataset::MyGDALVectorDataset()
 {
 }
 
-MyGDALVectorDataset::MyGDALVectorDataset(IDataSource* ds, const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
-	:MyGDALDataset(ds)
+MyGDALVectorDataset::MyGDALVectorDataset(FileSystemDataSource* ds, const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+	:MyGDALDataset((DataSource*)ds, path, eAccess, delayOpen, autoClose)
 {
-	_eAccess = eAccess;
-	_path = path;
-	size_t pos = _path.find_last_of(TGIS_PATH_SEPARATOR_CHAR);
-	if (pos == _path.npos)
+	if (_dataset != nullptr)
 	{
-		_name = _path;
+		try
+		{
+			Attach(_dataset, _autoClose);
+		}
+		catch (...)
+		{
+			Detach();
+			throw;
+		}
 	}
-	else
+	if (_dataset != nullptr)
 	{
-		_name = _path.substr(pos+1);
-	}
-	if (delayOpen)
-	{
-		_dataset = nullptr;
-		_autoClose = true;
-	}
-	else
-	{
-		MyGDALDataset::Attach(path, eAccess, autoClose);
+		Dataset::Open();
 	}
 }
 
 
 MyGDALVectorDataset::~MyGDALVectorDataset()
 {
+}
+
+
+void MyGDALVectorDataset::Open()
+{
+	MyGDALDataset::Attach();
+	if (_dataset != nullptr)
+	{
+		try
+		{
+			Attach(_dataset, _autoClose);
+		}
+		catch (...)
+		{
+			Detach();
+			throw;
+		}
+	}
+	if (_dataset != nullptr)
+	{
+		Dataset::Open();
+	}
+}
+
+void MyGDALVectorDataset::Close()
+{
+	Dataset::Close();
+	Detach();
 }
 
 void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool autoClose)
@@ -90,8 +102,7 @@ void MyGDALVectorDataset::Attach(const char * file, GDALAccess eAccess, bool aut
 			Detach();
 			throw;
 		}
-	}
-		
+	}	
 }
 
 void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)
@@ -109,6 +120,7 @@ void MyGDALVectorDataset::Attach(GDALDataset * dataset, bool autoClose)
 	_envelope.MinY = 0.0;
 	_envelope.MaxY = 0.0;
 	
+	//TODO: 如果矢量数据集的不同图层有不同的投影 这里就是错的
 	for (int i = 0; i < layerCount; i++)
 	{
 		OGRLayer* layer = _dataset->GetLayer(i);

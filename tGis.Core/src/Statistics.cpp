@@ -3,15 +3,15 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-void Statistics::InitRecursive(double x, bool cMean, bool cVar)
+Statistics::Statistics(bool calcMean, bool calcVar)
 {
-	min = x;
-	max = x;
-	mean = x;
-	sum = x;
-	count = 1;
-	calcmean = cMean;
-	calcvar = cVar;
+	min = DBL_MAX;
+	max = 0 - DBL_MAX;
+	mean = 0;
+	sum = 0;
+	count = 0;
+	calcmean = calcMean;
+	calcvar = calcVar;
 	sumvar = 0.0;
 	meanvar = 0.0;
 	stddev = 0.0;
@@ -30,12 +30,22 @@ void Statistics::Recursive(double x)
 	}
 	sum += x;
 
-	if(calcmean)
-		mean = sum / count;
+	double preMean = mean;
+	if (calcmean || calcvar)
+	{
+		if (count == 0)
+		{
+			mean = sum;
+			preMean = mean;
+		}
+		else
+		{
+			mean = sum / count;
+		}
+	}		
 
 	if (calcvar)
 	{
-		double preMean = mean;
 		sumvar = (x - preMean)*(x - mean);
 		meanvar = sumvar / count;
 		stddev = sqrt(meanvar);

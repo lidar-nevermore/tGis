@@ -2,6 +2,10 @@
 #include "ToolKit.h"
 #include <memory>
 #include <stdarg.h>
+#include <vector>
+#include <map>
+
+using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -19,13 +23,29 @@ ToolKitRepository & ToolKitRepository::INSTANCE()
 	return *_instance;
 }
 
+class ToolKitRepositoryImpl
+{
+public:
+	ToolKitRepositoryImpl(ToolKitRepository* owner)
+	{
+		_owner = owner;
+	}
+
+	ToolKitRepository* _owner;
+
+	vector<ToolKit*> _vecToolKit;
+	map<string, ToolKit*> _mapToolKit;
+};
+
 ToolKitRepository::ToolKitRepository()
 {
+	_impl_ = new ToolKitRepositoryImpl(this);
 }
 
 
 ToolKitRepository::~ToolKitRepository()
 {
+	delete _impl_;
 }
 
 void ToolKitRepository::AddToolKit(ToolKit * kit)
@@ -33,8 +53,8 @@ void ToolKitRepository::AddToolKit(ToolKit * kit)
 	ToolKit* toFillKit = GetToolKit(kit->GetName());
 	if (toFillKit == NULL)
 	{
-		_vecToolKit.push_back(kit);
-		_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
+		_impl_->_vecToolKit.push_back(kit);
+		_impl_->_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
 	}
 	else
 	{
@@ -97,19 +117,19 @@ void ToolKitRepository::AddToolKit(int count, ...)
 
 size_t ToolKitRepository::GetToolKitCount()
 {
-	return _vecToolKit.size();
+	return _impl_->_vecToolKit.size();
 }
 
 ToolKit * ToolKitRepository::GetToolKit(size_t pos)
 {
-	return _vecToolKit.at(pos);
+	return _impl_->_vecToolKit.at(pos);
 }
 
 ToolKit * ToolKitRepository::GetToolKit(const char * name)
 {
-	map<string, ToolKit*>::iterator pos = _mapToolKit.find(name);
+	map<string, ToolKit*>::iterator pos = _impl_->_mapToolKit.find(name);
 
-	if (pos != _mapToolKit.end())
+	if (pos != _impl_->_mapToolKit.end())
 		return (*pos).second;
 	return nullptr;
 }

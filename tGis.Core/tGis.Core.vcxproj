@@ -26,6 +26,7 @@
     <ClInclude Include="include\IDataset.h" />
     <ClInclude Include="include\IDataSource.h" />
     <ClInclude Include="include\IGeoSurface.h" />
+    <ClInclude Include="include\IInclusionObject.h" />
     <ClInclude Include="include\ILayer.h" />
     <ClInclude Include="include\ILayerRender.h" />
     <ClInclude Include="include\ilog.h" />
@@ -101,8 +102,9 @@
     <ClCompile Include="src\GeoViewPort.cpp" />
     <ClCompile Include="src\hashmap.c" />
     <ClCompile Include="src\Helper.cpp" />
+    <ClCompile Include="src\IInclusionObject.cpp" />
+    <ClCompile Include="src\ILayerRender.cpp" />
     <ClCompile Include="src\ilog.c" />
-    <ClCompile Include="src\ITypedObject.cpp" />
     <ClCompile Include="src\Layer.cpp" />
     <ClCompile Include="src\LayerRender.cpp" />
     <ClCompile Include="src\linked_array.c" />

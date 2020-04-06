@@ -1,30 +1,29 @@
 #include "Layer.h"
 #include "IDataset.h"
 
+#include <string>
+
+using namespace std;
+
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const Layer::_type = "00FBBC87-473A-4484-9C13-EAD0A565F7D7";
 
-
-const char * Layer::GetType()
+class LayerImpl
 {
-	return _type;
-}
+public:
+	LayerImpl(Layer* owner)
+	{
+		_owner = owner;
+	}
 
-bool Layer::IsTypeOf(const char * type)
-{
-	if (strcmp(type, _type) == 0)
-		return true;
-	return false;
-}
+	Layer* _owner;
+	string _name;
+};
 
-const char * Layer::S_GetType()
-{
-	return _type;
-}
 
 Layer::Layer(IDataset* dt)
 {
+	_impl_ = new LayerImpl(this);
 	_visible = true;
 	_map = nullptr;
 	_render = nullptr;
@@ -35,6 +34,18 @@ Layer::~Layer()
 {
 	if (_render != nullptr && _render->_is_in_heap)
 		delete _render;
+
+	delete _impl_;
+}
+
+const char * Layer::GetName()
+{
+	return _impl_->_name.c_str();
+}
+
+void Layer::SetName(const char * name)
+{
+	_impl_->_name = name;
 }
 
 END_NAME_SPACE(tGis, Core)

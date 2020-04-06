@@ -8,16 +8,13 @@
 #include "ILayer.h"
 #include "ILayerRender.h"
 
-#include <string>
-
-using namespace std;
-
 class OGREnvelope;
 class OGRSpatialReference;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
+class LayerImpl;
 
 class TGIS_CORE_API Layer : public ILayer
 {
@@ -27,23 +24,9 @@ public:
 	virtual ~Layer();
 
 public:
-	virtual const char* GetType();
-	static const char* S_GetType();
-	virtual bool IsTypeOf(const char* type);
+	virtual const char* GetName();
 
-private:
-	static const char* const _type;
-
-public:
-	virtual const char* GetName()
-	{
-		return _name.c_str();
-	}
-
-	virtual void SetName(const char* name)
-	{
-		_name = name;
-	}
+	virtual void SetName(const char* name);
 
 	virtual const OGREnvelope* GetEnvelope()
 	{
@@ -98,11 +81,13 @@ public:
 
 
 protected:
-	string _name;
 	bool _visible;
 	IMap* _map;
 	ILayerRender* _render;
 	IDataset* _dataset;
+
+private:
+	LayerImpl* _impl_;
 };
 
 END_NAME_SPACE(tGis, Core)

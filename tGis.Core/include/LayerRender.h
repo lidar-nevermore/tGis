@@ -8,11 +8,6 @@
 #include "ILayerRender.h"
 
 #include "elr_mtx.h"
-#include <cstdlib>
-#include <cassert>
-#include <string>
-
-using namespace std;
 
 class OGREnvelope;
 class OGRSpatialReference;

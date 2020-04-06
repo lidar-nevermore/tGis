@@ -8,10 +8,6 @@
 
 #include "RasterLayerRender.h"
 
-#include <string>
-
-using namespace std;
-
 class GDALRasterBand;
 
 BEGIN_NAME_SPACE(tGis, Core)

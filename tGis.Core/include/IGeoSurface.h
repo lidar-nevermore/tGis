@@ -4,7 +4,6 @@
 #define __I_GEOSURFACE_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 
 #include "ISurface.h"
 #include "GeoViewPort.h"

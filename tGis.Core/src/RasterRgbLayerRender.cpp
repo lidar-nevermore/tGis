@@ -4,10 +4,7 @@
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
-#include <algorithm>
-#include <cmath>
 
-using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 

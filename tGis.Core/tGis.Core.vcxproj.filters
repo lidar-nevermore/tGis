@@ -269,6 +269,9 @@
     <ClInclude Include="include\tGis_CoreCfg.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\IInclusionObject.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp">
@@ -415,14 +418,17 @@
     <ClCompile Include="src\VectorSimpleLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\ITypedObject.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="src\Tool.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="src\ToolKit.cpp">
       <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\IInclusionObject.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ILayerRender.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

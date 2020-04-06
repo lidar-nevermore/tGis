@@ -14,6 +14,8 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class OverlayLayerImpl;
+
 class TGIS_CORE_API OverlayLayer : public IOverlayLayer
 {
 public:
@@ -30,8 +32,7 @@ public:
 	void Paint(IGeoSurface*);
 
 private:
-	vector<IOverlayObject*> _vecOverlayObject;
-	bool _visible;
+	OverlayLayerImpl* _impl_;
 };
 
 

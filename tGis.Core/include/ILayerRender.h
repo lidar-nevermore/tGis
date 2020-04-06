@@ -4,8 +4,8 @@
 #define __I_LAYERRENDER_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 #include "ITypedObject.h"
+#include "IInclusionObject.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -15,7 +15,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 struct IDataset;
 struct IGeoSurface;
 
-struct TGIS_CORE_API ILayerRender : public ITypedObject
+struct TGIS_CORE_API ILayerRender : public ITypedObject, public IInclusionObject
 {
 	friend class Layer;
 
@@ -26,6 +26,8 @@ struct TGIS_CORE_API ILayerRender : public ITypedObject
 	virtual float GetOpacity() = 0;
 	virtual void SetOpacity(float) = 0;
 	virtual void Paint(IGeoSurface*) = 0;
+
+	static bool CanTransform(const OGRSpatialReference * from, const OGRSpatialReference * to);
 
 	ILayerRender() {};
 	virtual ~ILayerRender() {};

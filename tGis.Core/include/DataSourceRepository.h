@@ -4,17 +4,12 @@
 #define __DATASOURCEREPOSITORY_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 #include "Event.h"
 
-#include <vector>
-#include <map>
-#include <string>
-
-using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class DataSourceRepositoryImpl;
 struct IDataSource;
 struct IDataset;
 
@@ -55,16 +50,14 @@ public:
 	IDataSource* GetConnectedDataSource(size_t);
 
 protected:
-	//该集合中存放所有打开的数据集，包括子Provider打开的数据集
-	vector<IDataset*> _vecOpenedDataset;
-
 	void AddOpenedDataset(IDataset*);
 	void RemoveOpenedDataset(IDataset*);
 
-	vector<IDataSource*> _vecConnectedDataSource;
-
 	void AddConnectedDataSource(IDataSource*);
 	void RemoveConnectedDataSource(IDataSource*);
+
+private:
+	DataSourceRepositoryImpl* _impl_;
 };
 
 END_NAME_SPACE(tGis, Core)

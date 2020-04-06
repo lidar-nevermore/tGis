@@ -11,10 +11,6 @@
 #include "SimpleLineSymbol.h"
 #include "SimpleFillSymbol.h"
 
-#include <string>
-
-using namespace std;
-
 class OGRFeature;
 class OGRPoint;
 class OGRLineString;

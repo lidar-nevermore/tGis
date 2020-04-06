@@ -5,17 +5,11 @@
 
 #include "Helper.h"
 
-#include "IDataset.h"
 #include "MyGDALDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
-#include <string>
-
-using namespace std;
-
-
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -27,15 +21,18 @@ public:
 	const char* GetType();
 	static const char* S_GetType();
 	virtual bool IsTypeOf(const char* type);
-	virtual void Open();
 
 private:
 	static const char* const _type;
 
 public:
-	MyGDALVectorDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
+	MyGDALVectorDataset(FileSystemDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	MyGDALVectorDataset();
 	virtual ~MyGDALVectorDataset();
+
+public:
+	virtual void Open();
+	virtual void Close();
 
 public:
 	using MyGDALDataset::GetGDALDataset;

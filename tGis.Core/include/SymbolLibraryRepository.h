@@ -6,15 +6,11 @@
 #include "Helper.h"
 #include "tGis_CoreCfg.h"
 
-#include <vector>
-#include <map>
-#include <string>
-
-using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISymbolLibrary;
+class SymbolLibraryRepositoryImpl;
 
 class TGIS_CORE_API SymbolLibraryRepository
 {
@@ -34,11 +30,10 @@ public:
 	size_t GetSymbolLibraryCount();
 	ISymbolLibrary* GetSymbolLibrary(size_t);
 	void AddSymbolLibrary(ISymbolLibrary*);
-	ISymbolLibrary* GetSymbolLibrary(const char* symbolLibraryType);
+	ISymbolLibrary* GetSymbolLibrary(const char* symLibName);
 
 private:
-	vector<ISymbolLibrary*> _vecSymbolLibrary;
-	map<string, ISymbolLibrary*> _mapSymbolLibrary;
+	SymbolLibraryRepositoryImpl* _impl_;
 };
 
 

@@ -12,10 +12,6 @@
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
 
-#include <string>
-
-using namespace std;
-
 BEGIN_NAME_SPACE(tGis, Core)
 
 class MyGDALVectorDataset;

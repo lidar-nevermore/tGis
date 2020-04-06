@@ -4,7 +4,6 @@
 #define __I_MAP_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 #include "ILayer.h"
 #include "Event.h"
 
@@ -26,10 +25,12 @@ struct TGIS_CORE_API IMap
 	virtual const OGREnvelope* GetEnvelope() = 0;
 	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 
+	//图层在Map中是有序的，最上层的序号为0，从上至下依次递增
+	//绘制时上层覆盖下层，也就是序号为0的层显示在最上面
+	//Map对象不支持多线程访问，
 	virtual size_t GetLayerCount() = 0;
 	virtual ILayer* GetLayer(size_t) = 0;
-	virtual size_t GetLayerIndex(ILayer*) = 0;
-	virtual size_t AddLayer(ILayer*,bool* added = nullptr) = 0;
+	virtual bool AddLayer(ILayer*) = 0;
 	virtual bool InsertLayer(size_t, ILayer*) = 0;
 	virtual ILayer* RemoveLayer(size_t) = 0;
 	virtual void RemoveLayer(ILayer*) = 0;

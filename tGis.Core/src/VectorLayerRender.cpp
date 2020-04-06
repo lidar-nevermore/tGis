@@ -63,7 +63,7 @@ const OGREnvelope * VectorLayerRender::GetEnvelope()
 
 bool VectorLayerRender::CanTransformTo(const OGRSpatialReference * spatialRef)
 {
-	return ITypedObject::CanTransform(_ogrLayer->GetSpatialRef(), spatialRef);
+	return ILayerRender::CanTransform(_ogrLayer->GetSpatialRef(), spatialRef);
 }
 
 inline void VectorLayerRender::PrepareCT()

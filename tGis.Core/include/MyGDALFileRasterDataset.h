@@ -5,23 +5,21 @@
 
 #include "Helper.h"
 
-#include "IDataset.h"
 #include "MyGDALRasterDataset.h"
 
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
-#include <string>
-
-using namespace std;
-
 
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class FileSystemDataSource;
+
 class TGIS_CORE_API MyGDALFileRasterDataset : public MyGDALRasterDataset
 {
 	friend class FileSystemDataSource;
+
 public:
 	const char* GetType();
 	static const char* S_GetType();
@@ -32,11 +30,8 @@ private:
 
 public:
 	MyGDALFileRasterDataset();
-	MyGDALFileRasterDataset(IDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
+	MyGDALFileRasterDataset(FileSystemDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	~MyGDALFileRasterDataset();
-
-public:
-	virtual void Open();
 
 public:
 	using MyGDALRasterDataset::GetGDALDataset;

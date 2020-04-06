@@ -4,7 +4,6 @@
 #define __I_MAPWIDGET_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
 #include "Event.h"
 #include "IWidget.h"
 #include "GeoViewPort.h"

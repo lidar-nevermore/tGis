@@ -31,7 +31,7 @@ public:
 
 	const ISymbolLibrary* GetSymbolLibrary();
 
-	const int GetIdentifier();
+	const int GetId();
 
 	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
 

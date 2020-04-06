@@ -1,11 +1,4 @@
-
 #include "MyGDALRasterDataset.h"
-#include <algorithm>
-#include <string>
-#include <vector>
-
-
-using namespace std;
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -30,13 +23,35 @@ const char * MyGDALRasterDataset::S_GetType()
 	return _type;
 }
 
-MyGDALRasterDataset::MyGDALRasterDataset(IDataSource * ds)
+MyGDALRasterDataset::MyGDALRasterDataset()
+	:MyGDALDataset(nullptr)
+{
+}
+
+MyGDALRasterDataset::MyGDALRasterDataset(DataSource * ds)
 	:MyGDALDataset(ds)
 {
 }
 
-MyGDALRasterDataset::MyGDALRasterDataset()
+MyGDALRasterDataset::MyGDALRasterDataset(DataSource * ds, const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+	:MyGDALDataset(ds,path,eAccess,delayOpen,autoClose)
 {
+	if (_dataset != nullptr)
+	{
+		try
+		{
+			MyGDALRasterDataset::Attach(_dataset, _autoClose);
+		}
+		catch (...)
+		{
+			Detach();
+			throw;
+		}
+	}
+	if (_dataset != nullptr)
+	{
+		Dataset::Open();
+	}
 }
 
 MyGDALRasterDataset::~MyGDALRasterDataset()
@@ -95,14 +110,36 @@ void MyGDALRasterDataset::Detach()
 	MyGDALDataset::Detach();
 }
 
+void MyGDALRasterDataset::Open()
+{
+	MyGDALDataset::Attach();
+	if (_dataset != nullptr)
+	{
+		try
+		{
+			MyGDALRasterDataset::Attach(_dataset, _autoClose);
+		}
+		catch (...)
+		{
+			Detach();
+			throw;
+		}
+	}
+	if (_dataset != nullptr)
+	{
+		Dataset::Open();
+	}
+}
+
 void MyGDALRasterDataset::Close()
 {
+	Dataset::Close();
 	if (_spatialRef != nullptr)
 	{
 		OSRDestroySpatialReference(_spatialRef);
 		_spatialRef = nullptr;
 	}
-	MyGDALDataset::Close();
+	MyGDALDataset::Detach();
 }
 
 const double* MyGDALRasterDataset::GetGeoTransform()

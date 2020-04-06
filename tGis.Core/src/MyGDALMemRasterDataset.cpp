@@ -1,7 +1,6 @@
 #include "MyGDALMemRasterDataset.h"
 
 
-
 BEGIN_NAME_SPACE(tGis, Core)
 
 const char* const MyGDALMemRasterDataset::_type = "A251D25A-292C-4B7C-A5F1-616A585A5C13";
@@ -25,34 +24,23 @@ bool MyGDALMemRasterDataset::IsTypeOf(const char * type)
 }
 
 
-MyGDALMemRasterDataset::MyGDALMemRasterDataset(IDataSource* ds, const char* name)
-	:MyGDALRasterDataset(ds)
+//调用MyGDALRasterDataset的构造函数时delayOpen必须传入true
+//为得是避免在子类中将name当作文件存储路径打开
+MyGDALMemRasterDataset::MyGDALMemRasterDataset(DataSource* ds,
+	MyGDALRasterDataset* raster,
+	int left, int top, int width, int height,
+	int *bandIndexs, int bandCount,
+	const char* name)
+	:MyGDALRasterDataset(ds,name,GA_Update,true,true)
 {
-	if(name != nullptr)
-		_name = name;
-	_name.append(".mem");
-}
+	//TODO: 从raster中指定区域创建内存数据集并为_dataset赋值
 
+	
+	Dataset::Open();
+}
 
 MyGDALMemRasterDataset::~MyGDALMemRasterDataset()
 {
-}
-
-void MyGDALMemRasterDataset::Open()
-{
-}
-
-void MyGDALMemRasterDataset::Attach(GDALDataset * dataset, bool autoClose, double noDataValue)
-{
-	const char* drName = dataset->GetDriverName();
-	if (memcmp("MEM", drName, 3) == 0)
-	{
-		MyGDALRasterDataset::Attach(dataset, autoClose, noDataValue);
-	}
-	else
-	{
-		throw std::exception("MyGDALMemRasterDataset中不可以附加非内存数据集！！");
-	}
 }
 
 END_NAME_SPACE(tGis, Core)

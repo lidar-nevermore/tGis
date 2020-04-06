@@ -4,8 +4,7 @@
 #define __I_LAYER_H__
 
 #include "Helper.h"
-#include "tGis_CoreCfg.h"
-#include "ITypedObject.h"
+#include "IInclusionObject.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -17,7 +16,7 @@ struct IGeoSurface;
 struct IMap;
 struct ILayerRender;
 
-struct TGIS_CORE_API ILayer : public ITypedObject
+struct TGIS_CORE_API ILayer : public IInclusionObject
 {
 	friend class Map;
 

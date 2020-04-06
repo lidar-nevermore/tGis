@@ -4,24 +4,24 @@
 #define __MAP_H__
 
 #include "Helper.h"
-
 #include "IMap.h"
-
-
-#include <string>
-#include <vector>
 
 #include "gdal.h"
 
-using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
+
+class MapImpl;
 
 class TGIS_CORE_API Map : public IMap
 {
 public:
 	Map();
 	virtual ~Map();
+
+private:
+	Map(const Map &) = delete;
+	Map &operator=(const Map &) = delete;
 
 public:
 	virtual const char* GetName();
@@ -31,8 +31,7 @@ public:
 
 	virtual size_t GetLayerCount();
 	virtual ILayer* GetLayer(size_t);
-	virtual size_t GetLayerIndex(ILayer*);
-	virtual size_t AddLayer(ILayer*, bool* added = nullptr);
+	virtual bool AddLayer(ILayer*);
 	virtual ILayer* RemoveLayer(size_t);
 	virtual void RemoveLayer(ILayer*);
 	virtual void RemoveLayer(IDataset*);
@@ -42,18 +41,15 @@ public:
 	virtual void Paint(IGeoSurface*);
 
 protected:
-	vector<ILayer*> _vecLayer;
-	string _name;
 	OGREnvelope _envelope;
 	OGRSpatialReference* _spatialRef;
 
 protected:
-	void MergeEnvelope();
+	void UpdateEnvelope();
 	void MergeEnvelope(const OGRSpatialReference* spatialRef,const OGREnvelope *envelope);
 
 private:
-	Map(const Map &) = delete;
-	Map &operator=(const Map &) = delete;
+	MapImpl* _impl_;
 };
 
 END_NAME_SPACE(tGis, Core)

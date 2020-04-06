@@ -9,9 +9,8 @@
 
 #include "gdal.h"
 
-using namespace std;
-
 BEGIN_NAME_SPACE(tGis, Core)
+
 class TGIS_CORE_API GeoSurface : public IGeoSurface
 {
 	friend class MapWidget;
