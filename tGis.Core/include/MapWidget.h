@@ -63,8 +63,10 @@ protected:
 	void LayerRemoved(IMapPtr, ILayerPtr);
 	void LayerCleared(IMapPtr);
 
-protected:
+private:
 	IMap* _map;
+
+protected:
 	//具体的MapWidget实现提供具体的GeoSurface,
 	//然后给该基类中_geoSurface指针赋值
 	GeoSurface* _geoSurface;

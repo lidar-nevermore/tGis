@@ -36,7 +36,13 @@ Map::Map()
 
 Map::~Map()
 {
-	ClearLayers();
+	for (vector<ILayer*>::iterator it = _impl_->_vecLayer.begin(); it != _impl_->_vecLayer.end(); it++)
+	{
+		ILayer* layer = *it;
+		if (layer->_is_in_heap)
+			delete layer;
+	}
+	_impl_->_vecLayer.clear();
 
 	if (_spatialRef != nullptr)
 	{

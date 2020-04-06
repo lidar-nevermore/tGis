@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Core", "tGis.Core\tGis.Core.vcxproj", "{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Perceptron.Win", "tGis.WinGui\Perceptron.Win.vcxproj", "{E1587BA3-DF60-4BE2-85ED-0D94AA05BA2D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Win", "tGis.Win\tGis.Win.vcxproj", "{C354AAB3-F108-45A8-B110-3F7862B8CE34}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,12 +21,14 @@ Global
 		{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}.Release|x64.ActiveCfg = Release|x64
 		{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}.Release|x64.Build.0 = Release|x64
 		{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}.Release|x86.ActiveCfg = Release|x64
-		{E1587BA3-DF60-4BE2-85ED-0D94AA05BA2D}.Debug|x64.ActiveCfg = Debug|x64
-		{E1587BA3-DF60-4BE2-85ED-0D94AA05BA2D}.Debug|x64.Build.0 = Debug|x64
-		{E1587BA3-DF60-4BE2-85ED-0D94AA05BA2D}.Debug|x86.ActiveCfg = Debug|x64
-		{E1587BA3-DF60-4BE2-85ED-0D94AA05BA2D}.Release|x64.ActiveCfg = Release|x64
-		{E1587BA3-DF60-4BE2-85ED-0D94AA05BA2D}.Release|x64.Build.0 = Release|x64
-		{E1587BA3-DF60-4BE2-85ED-0D94AA05BA2D}.Release|x86.ActiveCfg = Release|x64
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Debug|x64.ActiveCfg = Debug|x64
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Debug|x64.Build.0 = Debug|x64
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Debug|x86.ActiveCfg = Debug|Win32
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Debug|x86.Build.0 = Debug|Win32
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Release|x64.ActiveCfg = Release|x64
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Release|x64.Build.0 = Release|x64
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Release|x86.ActiveCfg = Release|Win32
+		{C354AAB3-F108-45A8-B110-3F7862B8CE34}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

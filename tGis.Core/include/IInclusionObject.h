@@ -31,7 +31,9 @@ struct TGIS_CORE_API IInclusionObject
 	//没有重载new[]和delete[]，
 	//也就是说如果以数组方式申请的内存，本库内部是不负责释放的
 	static void* operator new(size_t size);
+	static void* operator new(size_t size, std::nothrow_t& nothrow_value) throw();
 	static void operator delete(void *p);
+	static void operator delete(void *p, std::nothrow_t& nothrow_value) throw();
 
 private:
 	static void* _heap_ptr_map;

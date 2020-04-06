@@ -37,12 +37,24 @@ struct IEventHandler
 		return p;
 	}
 
+	static void* operator new(size_t size, std::nothrow_t& nothrow_value) throw()
+	{
+		void* p = elr_mpl_alloc_multi(NULL, size);
+
+		return p;
+	}
+
 	static void operator delete(void *p)
 	{
 		elr_mpl_free(p);
 	}
 
-	static void* operator new[](size_t size)
+	static void operator delete(void *p, std::nothrow_t& nothrow_value) throw()
+	{
+		elr_mpl_free(p);
+	}
+
+	static void* operator new[](size_t size, ...)
 	{
 		void* p = elr_mpl_alloc_multi(NULL, size);
 		if (p == NULL)
