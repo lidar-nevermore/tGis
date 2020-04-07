@@ -35,9 +35,6 @@ struct TGIS_CORE_API IInclusionObject
 	static void operator delete(void *p);
 	static void operator delete(void *p, std::nothrow_t& nothrow_value) throw();
 
-private:
-	static void* _heap_ptr_map;
-
 protected:
 	bool _is_in_heap;
 };

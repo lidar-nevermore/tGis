@@ -2,39 +2,33 @@
 
 extern "C"
 {
-#include "hashmap.h"
+#include "bi_list.h"
 }
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class HeapPtrMapCtor
+class HeapPtrsCtor
 {
 public:
-	HASHMAP _heap_ptr_map;
+	BI_LIST _heap_ptrs;
 
-	HeapPtrMapCtor()
+	HeapPtrsCtor()
 	{
-		hashmap_init(&_heap_ptr_map,
-			1000,
-			sizeof(void*),
-			0,
+		bi_list_init(&_heap_ptrs,
+			2*sizeof(void*),
 			malloc,
 			free,
-			_ptr_hash,
-			_ptr_equals,
 			nullptr,
 			nullptr);
 	}
 
-	~HeapPtrMapCtor()
+	~HeapPtrsCtor()
 	{
-		hashmap_release(&_heap_ptr_map);
+		bi_list_release(&_heap_ptrs);
 	}
 };
 
-HeapPtrMapCtor _g_heap_ptr_map_ctor;
-
-void* IInclusionObject::_heap_ptr_map = (void*)&(_g_heap_ptr_map_ctor._heap_ptr_map);
+HeapPtrsCtor _g_heap_ptrs_ctor;
 
 //TODO:
 //这里有bug
@@ -44,28 +38,36 @@ void* IInclusionObject::_heap_ptr_map = (void*)&(_g_heap_ptr_map_ctor._heap_ptr_
 IInclusionObject::IInclusionObject()
 {
 	void* p = (void*)this;
-	if (hashmap_exists((HASHMAP*)_heap_ptr_map, &p))
+	_is_in_heap = false;
+	void* pos = bi_list_head_pos(&_g_heap_ptrs_ctor._heap_ptrs);
+	while (pos != nullptr)
 	{
-		//判断完毕就没必要在_heap_ptr_map中存储指针了
-		//可以节省内存
-		hashmap_del((HASHMAP*)_heap_ptr_map, &p);
-		_is_in_heap = true;
+		void** p_range = (void**)bi_list_at_pos(&_g_heap_ptrs_ctor._heap_ptrs, pos, nullptr);
+		if ((p >= p_range[0] && p <= p_range[1])
+			|| (p >= p_range[1] && p <= p_range[0]))
+		{
+			_is_in_heap = true;
+			bi_list_delete_at(&_g_heap_ptrs_ctor._heap_ptrs, pos);
+			break;
+		}
+
+		pos = bi_list_next_pos(&_g_heap_ptrs_ctor._heap_ptrs, pos);
 	}
-	else
-		_is_in_heap = false;
 }
 
 void * IInclusionObject::operator new(size_t size)
 {
 	void* p = ::operator new(size);
-	hashmap_set((HASHMAP*)_heap_ptr_map, &p, nullptr);
+	void* p_range[2] = { p,(char*)p + size };
+	bi_list_insert_head(&_g_heap_ptrs_ctor._heap_ptrs, p_range);
 	return p;
 }
 
 void * IInclusionObject::operator new(size_t size, std::nothrow_t & nothrow_value) throw()
 {
 	void* p = ::operator new(size, nothrow_value);
-	hashmap_set((HASHMAP*)_heap_ptr_map, &p, nullptr);
+	void* p_range[2] = { p,(char*)p + size };
+	bi_list_insert_head(&_g_heap_ptrs_ctor._heap_ptrs, p_range);
 	return p;
 }
 

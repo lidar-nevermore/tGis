@@ -1,6 +1,6 @@
 /*
 * The earliest release time: 2009-12-26
-* Last modification time: 2018-11-28
+* Last modification time: 2020-03-09
 *
 * This file and the accompanying files of this project may be freely used provided the following
 * conditions are met:
