@@ -1,4 +1,5 @@
 #include "tGis_CoreCfg.h"
+#include "tGis_Core.h"
 
 #include "tinyxml2.h"
 
@@ -12,7 +13,6 @@ extern "C"
 #include "linked_array.h"
 }
 
-#include "MyGDALRasterDataset.h"
 #include "RasterBandSeqBlockReader.h"
 #include "RasterBandSeqPixelReader.h"
 #include "RasterBandStorageBlockGridReader.h"

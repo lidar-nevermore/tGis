@@ -1,8 +1,8 @@
 #include "tGis_CoreCfg.h"
-#include "tEntity.h"
-#include "tVisualize.h"
+#include "tGis_Entity.h"
 
 #include "TGisApplication.h"
+
 #include "ITool.h"
 #include "Tool.h"
 #include "ToolKit.h"

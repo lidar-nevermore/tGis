@@ -1,12 +1,21 @@
 #include "tGis_CoreCfg.h"
 #include "tGis_Entity.h"
+
 #include "ISurface.h"
 #include "IGeoSurface.h"
-#include "IOverlayLayer.h"
+#include "GeoSurface.h"
+
+#include "IWidget.h"
 #include "IMapWidget.h"
-#include "IMapTool.h"
 #include "MapWidget.h"
-#include "MapTool.h"
+
+#include "IOverlayLayer.h"
+#include "OverlayLayer.h"
+#include "IOverlayObject.h"
 #include "OverlayRect.h"
+
+#include "IMapTool.h"
+#include "MapTool.h"
+
 
 

@@ -18,7 +18,7 @@ Dataset::~Dataset()
 
 void Dataset::Open()
 {
-	if(_open)
+	if(_opened)
 		return;
 
 	DataSourceRepository::INSTANCE().AddOpenedDataset(this);
@@ -26,7 +26,7 @@ void Dataset::Open()
 
 void Dataset::Close()
 {
-	if (_open == false)
+	if (_opened == false)
 		return;
 
 	DataSourceRepository::INSTANCE().RemoveOpenedDataset(this);
