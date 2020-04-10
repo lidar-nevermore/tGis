@@ -227,11 +227,11 @@ void RasterRgbLayerRender::OuterResample(unsigned char * pixBuffer, int readingL
 			if (lutPos < 0) lutPos = 0;
 			else if (lutPos > 255) lutPos = 255;
 
-			itSurfBuf[2] = _rLut[lutPos];
+			itSurfBuf[0] = _rLut[lutPos];
 			if (_gBandIndex == _rBandIndex)
-				itSurfBuf[1] = itSurfBuf[2];
+				itSurfBuf[1] = itSurfBuf[0];
 			if (_bBandIndex == _rBandIndex)
-				itSurfBuf[0] = itSurfBuf[2];
+				itSurfBuf[2] = itSurfBuf[0];
 			itSurfBuf[3] = _alpha;
 
 			if (RasterLayerRender::IsNoDataValue(_rNoDataLogic, _rNoDataValue, pixValue))
@@ -270,7 +270,7 @@ void RasterRgbLayerRender::OuterResample(unsigned char * pixBuffer, int readingL
 
 				itSurfBuf[1] = _gLut[lutPos];
 				if (_bBandIndex == _gBandIndex)
-					itSurfBuf[0] = itSurfBuf[1];
+					itSurfBuf[2] = itSurfBuf[1];
 
 				if (RasterLayerRender::IsNoDataValue(_gNoDataLogic, _gNoDataValue, pixValue))
 					itSurfBuf[3] = 0;
@@ -307,7 +307,7 @@ void RasterRgbLayerRender::OuterResample(unsigned char * pixBuffer, int readingL
 				if (lutPos < 0) lutPos = 0;
 				else if (lutPos > 255) lutPos = 255;
 
-				itSurfBuf[0] = _bLut[lutPos];
+				itSurfBuf[2] = _bLut[lutPos];
 
 				if (RasterLayerRender::IsNoDataValue(_bNoDataLogic, _bNoDataValue, pixValue))
 					itSurfBuf[3] = 0;
@@ -337,11 +337,11 @@ void RasterRgbLayerRender::IOResample(unsigned char * pixBuffer, int readingLeft
 			if (lutPos < 0) lutPos = 0;
 			else if (lutPos > 255) lutPos = 255;
 
-			itSurfBuf[2] = _rLut[lutPos];
+			itSurfBuf[0] = _rLut[lutPos];
 			if (_gBandIndex == _rBandIndex)
-				itSurfBuf[1] = itSurfBuf[2];
+				itSurfBuf[1] = itSurfBuf[0];
 			if (_bBandIndex == _rBandIndex)
-				itSurfBuf[0] = itSurfBuf[2];
+				itSurfBuf[2] = itSurfBuf[0];
 			itSurfBuf[3] = _alpha;
 
 			if (RasterLayerRender::IsNoDataValue(_rNoDataLogic, _rNoDataValue, pixValue))
@@ -370,7 +370,7 @@ void RasterRgbLayerRender::IOResample(unsigned char * pixBuffer, int readingLeft
 
 				itSurfBuf[1] = _gLut[lutPos];
 				if (_bBandIndex == _gBandIndex)
-					itSurfBuf[0] = itSurfBuf[1];
+					itSurfBuf[2] = itSurfBuf[1];
 
 				if (RasterLayerRender::IsNoDataValue(_gNoDataLogic, _gNoDataValue, pixValue))
 					itSurfBuf[3] = 0;
@@ -397,7 +397,7 @@ void RasterRgbLayerRender::IOResample(unsigned char * pixBuffer, int readingLeft
 				if (lutPos < 0) lutPos = 0;
 				else if (lutPos > 255) lutPos = 255;
 
-				itSurfBuf[0] = _bLut[lutPos];
+				itSurfBuf[2] = _bLut[lutPos];
 
 				if (RasterLayerRender::IsNoDataValue(_bNoDataLogic, _bNoDataValue, pixValue))
 					itSurfBuf[3] = 0;

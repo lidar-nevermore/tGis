@@ -174,15 +174,15 @@ void RasterBinaryGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int re
 
 			if (onLeft)
 			{
-				itSurfBuf[0] = _leftBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _leftRChannel ? _lut[lutPos] : 0;
 				itSurfBuf[1] = _leftGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = _leftRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _leftBChannel ? _lut[lutPos] : 0;
 			}
 			else
 			{
-				itSurfBuf[0] = _rightBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _rightRChannel ? _lut[lutPos] : 0;
 				itSurfBuf[1] = _rightGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = _rightRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _rightBChannel ? _lut[lutPos] : 0;
 			}
 
 			itSurfBuf[3] = _alpha;
@@ -226,15 +226,15 @@ void RasterBinaryGrayScaleLayer::IOResample(unsigned char * pixBuffer, int readi
 
 			if (onLeft)
 			{
-				itSurfBuf[0] = _leftBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _leftRChannel ? _lut[lutPos] : 0;
 				itSurfBuf[1] = _leftGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = _leftRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _leftBChannel ? _lut[lutPos] : 0;
 			}
 			else
 			{
-				itSurfBuf[0] = _rightBChannel ? _lut[lutPos] : 0;
+				itSurfBuf[0] = _rightRChannel ? _lut[lutPos] : 0;
 				itSurfBuf[1] = _rightGChannel ? _lut[lutPos] : 0;
-				itSurfBuf[2] = _rightRChannel ? _lut[lutPos] : 0;
+				itSurfBuf[2] = _rightBChannel ? _lut[lutPos] : 0;
 			}
 
 			itSurfBuf[3] = _alpha;
