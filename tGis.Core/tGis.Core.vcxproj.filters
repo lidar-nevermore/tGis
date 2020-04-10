@@ -272,6 +272,12 @@
     <ClInclude Include="include\IInclusionObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="internal\glad.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="internal\khrplatform.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp">
@@ -429,6 +435,9 @@
     </ClCompile>
     <ClCompile Include="src\ILayerRender.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="internal\glad.c">
+      <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

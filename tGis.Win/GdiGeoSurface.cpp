@@ -5,6 +5,7 @@
 
 #pragma comment(lib,"Gdiplus.lib")  
 
+BEGIN_NAME_SPACE(tGis, wGui)
 
 //该类主要用来在程序启动时自动执行GdiplusStartup，程序结束时执行GdiplusShutdown  
 //使得GDI+可以正常工作，也可以不定义该类，而在自己的代码中自行调用GdiplusStartup和GdiplusShutdown  
@@ -139,14 +140,22 @@ void GdiGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
 
 void GdiGeoSurface::BeginPaint(IWidget * w, bool isCache)
 {
+	GeoSurface::BeginPaint(w, isCache);
+
 	MFCMapWidget* cw = (MFCMapWidget*)w;
 	if (isCache == false)
 	{
+		if (_bitmap == NULL)
+			return;
+
+		//全新绘制时，作为缓存的_bitmap尺寸等于surface尺寸
+
 		int surfWidth;
 		int surfHeight;
 		_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
-		FillRect(0, 0, surfWidth, surfHeight,
-			cw->_backgroundR, cw->_backgroundG, cw->_backgroundB, 255, 1);
+		Gdiplus::Graphics gps(_bitmap);
+		Gdiplus::SolidBrush brush(Gdiplus::Color(255, cw->_backgroundR, cw->_backgroundG, cw->_backgroundB));
+		gps.FillRectangle(&brush, 0, 0, surfWidth, surfHeight);
 	}
 	else
 	{
@@ -164,49 +173,30 @@ void GdiGeoSurface::EndPaint(IWidget * w, bool isCache)
 		Present(w, 0, 0);
 }
 
-void GdiGeoSurface::DrawPolyline(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
-{
-}
-
-void GdiGeoSurface::DrawPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
-{
-}
-
-void GdiGeoSurface::FillPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
-{
-}
-
-void GdiGeoSurface::DrawEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
-{
-}
-
-void GdiGeoSurface::FillEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
-{
-}
-
-void GdiGeoSurface::DrawRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt)
-{
-}
-
-void GdiGeoSurface::FillRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft)
-{
-	if (_bitmap == NULL)
-		return;
-
-	Gdiplus::Graphics gps(_bitmap);
-	Gdiplus::SolidBrush brush(Gdiplus::Color(a, r, g, b));
-	gps.FillRectangle(&brush, surfX, surfY, width, height);
-}
-
-void GdiGeoSurface::DrawImage(const unsigned char * buf, int surfX, int surfY, int width, int height)
+void GdiGeoSurface::DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY)
 {
 	if (_bitmap == NULL)
 		return;
 
 	Gdiplus::Bitmap bitmap(width, height, width * 4, PixelFormat32bppARGB, (BYTE*)buf);
-	CLSID encoderClsid;
-	GetEncoderClsid(L"image/bmp", &encoderClsid);
+	//CLSID encoderClsid;
+	//GetEncoderClsid(L"image/bmp", &encoderClsid);
 	//bitmap.Save(L"E:\\fu.bmp",&encoderClsid, nullptr);
 	Gdiplus::Graphics gps(_bitmap);
 	gps.DrawImage(&bitmap, surfX, surfY);
 }
+
+void GdiGeoSurface::DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY, int surfW, int surfH)
+{
+	if (_bitmap == NULL)
+		return;
+
+	Gdiplus::Bitmap bitmap(width, height, width * 4, PixelFormat32bppARGB, (BYTE*)buf);
+	//CLSID encoderClsid;
+	//GetEncoderClsid(L"image/bmp", &encoderClsid);
+	//bitmap.Save(L"E:\\fu.bmp",&encoderClsid, nullptr);
+	Gdiplus::Graphics gps(_bitmap);
+	gps.DrawImage(&bitmap, surfX, surfY, surfW, surfH);
+}
+
+END_NAME_SPACE(tGis, wGui)

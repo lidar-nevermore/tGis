@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.Win", "tGis.Win\tGis.W
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.wxGui", "tGis.wxGui\tGis.wxGui.vcxproj", "{1A5B7857-3C00-44B1-8374-66F9B2717F1B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tGis.wxApp", "tGis.wxApp\tGis.wxApp.vcxproj", "{C02F3F61-0B1A-4450-A16D-C93FD579BB33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -27,6 +29,10 @@ Global
 		{1A5B7857-3C00-44B1-8374-66F9B2717F1B}.Debug|x64.Build.0 = Debug|x64
 		{1A5B7857-3C00-44B1-8374-66F9B2717F1B}.Release|x64.ActiveCfg = Release|x64
 		{1A5B7857-3C00-44B1-8374-66F9B2717F1B}.Release|x64.Build.0 = Release|x64
+		{C02F3F61-0B1A-4450-A16D-C93FD579BB33}.Debug|x64.ActiveCfg = Debug|x64
+		{C02F3F61-0B1A-4450-A16D-C93FD579BB33}.Debug|x64.Build.0 = Debug|x64
+		{C02F3F61-0B1A-4450-A16D-C93FD579BB33}.Release|x64.ActiveCfg = Release|x64
+		{C02F3F61-0B1A-4450-A16D-C93FD579BB33}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -39,7 +39,7 @@ const int SimpleFillSymbol::GetId()
 
 void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)
 {
-	surf->FillPolygon(count, x, y, _r, _g, _b, _a, _type);
+	//TODO: 调用OpenGL绘制填充面
 }
 
 void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)

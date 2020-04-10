@@ -140,8 +140,11 @@ void SimpleMarkerSymbol::DrawRect(ISurface * surf, int count, int * x, int * y, 
 		bool draw = (prex != x[i] || prey != y[i]);
 		prex = x[i];
 		prey = y[i];
-		if(draw)
-			surf->DrawRect(x[i] + _xOffset, y[i] + _yOffset, _width, _height, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
+		if (draw)
+		{
+			//TODO: 调用OpenGL绘制
+			;
+		}
 	}
 }
 
@@ -149,7 +152,8 @@ void SimpleMarkerSymbol::DrawEllipse(ISurface * surf, int count, int * x, int * 
 {
 	for (int i = 0; i < count; i++)
 	{
-		surf->DrawEllipse(x[i] + _xOffset, y[i] + _yOffset, _width, _height, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
+		//TODO: 调用OpenGL绘制
+		;
 	}
 }
 
@@ -161,7 +165,10 @@ void SimpleMarkerSymbol::DrawTriangle(ISurface * surf, int count, int * x, int *
 		int tx[3] = { x[i] + _xOffset,x[i] + _xOffset + hw,x[i] + _xOffset + _width };
 		int ty[3] = { y[i] + _yOffset + _height,y[i] + _yOffset,y[i] + _yOffset + _height };
 
-		surf->DrawPolygon(3, tx, ty, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
+		{
+			//TODO: 调用OpenGL绘制
+			;
+		}
 	}
 }
 
@@ -169,7 +176,8 @@ void SimpleMarkerSymbol::DrawFillRect(ISurface * surf, int count, int * x, int *
 {
 	for (int i = 0; i < count; i++)
 	{
-		surf->FillRect(x[i] + _xOffset, y[i] + _yOffset, _width, _height, _r, _g, _b, _a, SimpleFillSymbol::Solid);
+		//TODO: 调用OpenGL绘制
+		;
 	}
 }
 
@@ -177,7 +185,8 @@ void SimpleMarkerSymbol::DrawFillEllipse(ISurface * surf, int count, int * x, in
 {
 	for (int i = 0; i < count; i++)
 	{
-		surf->FillEllipse(x[i] + _xOffset, y[i] + _yOffset, _width, _height, _r, _g, _b, _a, SimpleFillSymbol::Solid);
+		//TODO: 调用OpenGL绘制
+		;
 	}
 }
 
@@ -189,7 +198,10 @@ void SimpleMarkerSymbol::DrawFillTriangle(ISurface * surf, int count, int * x, i
 		int tx[3] = { x[i] + _xOffset,x[i] + _xOffset + hw,x[i] + _xOffset + _width };
 		int ty[3] = { y[i] + _yOffset + _height,y[i] + _yOffset,y[i] + _yOffset + _height };
 
-		surf->FillPolygon(3, tx, ty, _r, _g, _b, _a, SimpleFillSymbol::Solid);
+		{
+			//TODO: 调用OpenGL绘制
+			;
+		}
 	}
 }
 
@@ -205,8 +217,10 @@ void SimpleMarkerSymbol::DrawCross(ISurface * surf, int count, int * x, int * y,
 		int l2x[2] = { x[i] + _xOffset + hw,x[i] + _xOffset + hw };
 		int l2y[2] = { y[i] + _yOffset,y[i] + _yOffset + _height };
 
-		surf->DrawPolyline(2, l1x, l1y, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
-		surf->DrawPolyline(2, l2x, l2y, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
+		{
+			//TODO: 调用OpenGL绘制
+			;
+		}
 	}
 }
 
@@ -222,9 +236,10 @@ void SimpleMarkerSymbol::DrawEllipseCross(ISurface * surf, int count, int * x, i
 		int l2x[2] = { x[i] + _xOffset + hw,x[i] + _xOffset + hw };
 		int l2y[2] = { y[i] + _yOffset,y[i] + _yOffset + _height };
 
-		surf->DrawPolyline(2, l1x, l1y, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
-		surf->DrawPolyline(2, l2x, l2y, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
-		surf->DrawEllipse(x[i] + _xOffset, y[i] + _yOffset, _width, _height, _r, _g, _b, _a, _lineWidth, SimpleLineSymbol::Solid);
+		{
+			//TODO: 调用OpenGL绘制
+			;
+		}
 	}
 }
 

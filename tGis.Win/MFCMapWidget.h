@@ -9,6 +9,8 @@ using namespace tGis::Core;
 
 class RasterLayer;
 
+BEGIN_NAME_SPACE(tGis, wGui)
+
 #define MAP_WIDGET_CLASS _T("MFCMapWidget")
 // MFCMapWidget
 
@@ -58,5 +60,7 @@ public:
 	virtual void Client2Screen(int cliX, int cliY, int * scrX, int * scrY) override;
 	virtual void Screen2Client(int scrX, int scrY, int * cliX, int * cliY) override;
 };
+
+END_NAME_SPACE(tGis, wGui)
 
 

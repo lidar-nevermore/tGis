@@ -51,6 +51,7 @@ void MapWidget::SetMap(IMap *map)
 {
 	if (map == nullptr && _map != nullptr)
 	{
+		_viewPort.SetSpatialReference(map->GetSpatialReference());
 		map->LayerAddedEvent.Remove(this, &MapWidget::LayerAdded);
 		map->LayerClearedEvent.Remove(this, &MapWidget::LayerCleared);
 		map->LayerRemovedEvent.Remove(this, &MapWidget::LayerRemoved);
@@ -58,6 +59,7 @@ void MapWidget::SetMap(IMap *map)
 	_map = map;
 	if (_map != nullptr)
 	{
+		_viewPort.SetSpatialReference(nullptr);
 		map->LayerAddedEvent.Add(this, &MapWidget::LayerAdded);
 		map->LayerClearedEvent.Add(this, &MapWidget::LayerCleared);
 		map->LayerRemovedEvent.Add(this, &MapWidget::LayerRemoved);
@@ -68,7 +70,7 @@ void MapWidget::LayerAdded(IMapPtr map, ILayerPtr layer)
 {
 	if (map->GetLayerCount() == 1)
 	{
-		_viewPort.SetSpatialReference(layer->GetDataset()->GetSpatialReference());
+		_viewPort.SetSpatialReference(map->GetSpatialReference());
 	}
 	const OGREnvelope* envelope = layer->GetEnvelope();
 	_viewPort.IncludeEnvelope(envelope);
@@ -156,12 +158,10 @@ void MapWidget::RepaintMap()
 {
 	IMap* map = this->GetMap();
 
-	if (map == nullptr)
-		return;
-
 	_geoSurface->SetViewPort(&_viewPort);
 	_geoSurface->BeginPaint(this,false);
-	map->Paint(_geoSurface);
+	if(map != nullptr)
+		map->Paint(_geoSurface);
 	_geoSurface->EndPaint(this,false);
 }
 

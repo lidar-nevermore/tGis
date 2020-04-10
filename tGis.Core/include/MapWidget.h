@@ -59,9 +59,9 @@ protected:
 		_viewPort.SetSurfaceSize(surfW, surfH);
 	}
 
-	void LayerAdded(IMapPtr, ILayerPtr);
-	void LayerRemoved(IMapPtr, ILayerPtr);
-	void LayerCleared(IMapPtr);
+	virtual void LayerAdded(IMapPtr, ILayerPtr);
+	virtual void LayerRemoved(IMapPtr, ILayerPtr);
+	virtual void LayerCleared(IMapPtr);
 
 private:
 	IMap* _map;

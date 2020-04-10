@@ -85,10 +85,13 @@
     <ClInclude Include="include\RasterLayerRender.h" />
     <ClInclude Include="include\VectorLayerRender.h" />
     <ClInclude Include="include\VectorSimpleLayerRender.h" />
+    <ClInclude Include="internal\glad.h" />
+    <ClInclude Include="internal\khrplatform.h" />
     <ClInclude Include="internal\Plugin.h" />
     <ClInclude Include="internal\PluginManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="internal\glad.c" />
     <ClCompile Include="internal\Plugin.cpp" />
     <ClCompile Include="internal\PluginManager.cpp" />
     <ClCompile Include="src\bi_list.c" />

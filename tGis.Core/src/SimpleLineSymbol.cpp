@@ -37,7 +37,7 @@ const int SimpleLineSymbol::GetId()
 
 void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)
 {
-	surf->DrawPolyline(count, x, y, _r, _g, _b, _a, _width, _type);
+	//TODO: 调用OpenGL绘制线
 }
 
 void SimpleLineSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)

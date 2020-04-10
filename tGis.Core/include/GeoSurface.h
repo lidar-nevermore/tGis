@@ -24,6 +24,8 @@ public:
 		return &_viewPort;
 	}
 
+	virtual void BeginPaint(IWidget* w, bool isCache);
+
 protected:
 	virtual void SetViewPort(GeoViewPort* viewPort)
 	{

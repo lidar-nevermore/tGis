@@ -18,6 +18,8 @@ struct TGIS_CORE_API ISymbol
 	virtual const int GetId() = 0;
 
 	//count表示x,y,z数组的尺寸
+	//如果是点数据，可以一次为多个点绘制多个Marker符号
+    //如果是线和面数据，一次只能绘制一条线和一个面绘制
 	virtual void Paint(ISurface* surf, int count, int* x, int* y, int* z, void* c) = 0;
 
 	virtual ~ISymbol() {};

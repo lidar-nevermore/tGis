@@ -24,16 +24,9 @@ struct TGIS_CORE_API ISurface
 	//如果使用OpenGL或者DirectX渲染引擎，自带双缓冲，在这里将一屏内容显示出来
 	virtual void EndPaint(IWidget* w, bool isCache) = 0;
 
-	//count表示surfX,surfY数组的尺寸 lw 线宽  lt 线型 ft 填充型
-	virtual void DrawPolyline(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;
-	virtual void DrawPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;
-	virtual void FillPolygon(int count, int* surfX, int* surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft) = 0;
-	virtual void DrawEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;
-	virtual void FillEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft) = 0;
-	virtual void DrawRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) = 0;
-	virtual void FillRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft) = 0;
-	
-	virtual void DrawImage(const unsigned char* buf, int surfX, int surfY, int width, int height) = 0;
+	//buf 四通道RGBA紧蹙格式图像 行的长度单字节对齐的 (某些GL头文件可能不支持BGRA)
+	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY) = 0;
+	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY, int surfW, int surfH) = 0;
 
 protected:
 	ISurface() {};

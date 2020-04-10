@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef __TGIS_CORE_CFG_H__
 #define __TGIS_CORE_CFG_H__
 

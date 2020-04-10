@@ -5,6 +5,8 @@
 #pragma once
 #include "MFCMapWidget.h"
 
+using namespace tGis::wGui;
+
 class CMainFrame : public CFrameWnd
 {
 	

@@ -14,22 +14,15 @@ class TGIS_CORE_API SimpleFillSymbol : public TSymbol<char>
 {
 public:
 	static const int IdentifierBegin = 200;
-	static const int IdentifierEnd = 214;
+	static const int IdentifierEnd = 207;
 	static const int NoFill = 0;
 	static const int Solid = 1;
-	static const int Dense1 = 2;
-	static const int Dense2 = 3;
-	static const int Dense3 = 4;
-	static const int Dense4 = 5;
-	static const int Dense5 = 6;
-	static const int Dense6 = 7;
-	static const int Dense7 = 8;
-	static const int Horizontal = 9;
-	static const int Vertical = 10;
-	static const int ForwardDiagonal = 11;
-	static const int BackwardDiagonal = 12;
-	static const int Cross = 13;
-	static const int DiagonalCross = 14;
+	static const int Horizontal = 2;
+	static const int Vertical = 3;
+	static const int ForwardDiagonal = 4;
+	static const int BackwardDiagonal = 5;
+	static const int Cross = 6;
+	static const int DiagonalCross = 7;
 
 public:
 	SimpleFillSymbol();

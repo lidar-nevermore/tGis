@@ -33,6 +33,8 @@ inline double round(double val, int places = 0) {
 	return !_isnan(x) ? x : t;
 }
 
+BEGIN_NAME_SPACE(tGis, wGui)
+
 // MFCMapWidget
 
 IMPLEMENT_DYNAMIC(MFCMapWidget, CWnd)
@@ -247,3 +249,5 @@ void MFCMapWidget::Client2Screen(int cliX, int cliY, int * scrX, int * scrY)
 void MFCMapWidget::Screen2Client(int scrX, int scrY, int * cliX, int * cliY)
 {
 }
+
+END_NAME_SPACE(tGis, wGui)

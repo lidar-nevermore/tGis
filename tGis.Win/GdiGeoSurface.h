@@ -6,6 +6,8 @@
 
 using namespace tGis::Core;
 
+BEGIN_NAME_SPACE(tGis, wGui)
+
 class GdiGeoSurface : public GeoSurface
 {
 	friend class MFCMapWidget;
@@ -31,20 +33,8 @@ public:
 
 	virtual void EndPaint(IWidget * w, bool isCache) override;
 
-	virtual void DrawPolyline(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) override;
-
-	virtual void DrawPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) override;
-
-	virtual void FillPolygon(int count, int * surfX, int * surfY, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft) override;
-
-	virtual void DrawEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) override;
-
-	virtual void FillEllipse(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft) override;
-
-	virtual void DrawRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int lw, int lt) override;
-
-	virtual void FillRect(int surfX, int surfY, int width, int height, unsigned char r, unsigned char g, unsigned char b, unsigned char a, int ft) override;
-
-	virtual void DrawImage(const unsigned char * buf, int surfX, int surfY, int width, int height) override;
+	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY);
+	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY, int surfW, int surfH);
 };
 
+END_NAME_SPACE(tGis, wGui)
