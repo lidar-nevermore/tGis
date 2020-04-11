@@ -35,15 +35,36 @@ void wxGLGeoSurface::BeginPaint(IWidget * w, bool isCache)
 	int surfHeight;
 	_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
 	glViewport(0, 0, surfWidth, surfHeight);
-	float red = _mapWidget->_backgroundR / 255.0;
-	float green = _mapWidget->_backgroundG / 255.0;
-	float blue = _mapWidget->_backgroundB / 255.0;
-	glClearColor(red, green, blue, 1.0f);
+	glClearColor(_mapWidget->_br, _mapWidget->_bg, _mapWidget->_bb, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glEnable(GL_BLEND);
 }
 
 void wxGLGeoSurface::EndPaint(IWidget * w, bool isCache)
 {
+	//if (isCache == false)
+	//{
+	//	glFinish();
+	//	//´´½¨Í¼Æ¬»º³å
+	//}
+
+	wxGLMapWidget* widget = (wxGLMapWidget*)w;
+	IOverlayLayer* overlayLayer = widget->GetOverlayLayer();
+	overlayLayer->Paint((IGeoSurface*)this);
+
+	//if (widget->_gridVisible)
+	//{
+	//	int wW, wH;
+	//	widget->GetClientSize(&wW, &wH);
+	//	for (int x = 25; x < wW; x += 25)
+	//	{
+	//		painter.drawLine(x, 0, x, wH);
+	//	}
+	//	for (int y = 25; y < wH; y += 25)
+	//	{
+	//		painter.drawLine(0, y, wW, y);
+	//	}
+	//}
 	glFlush();
 }
 
@@ -82,6 +103,7 @@ void wxGLGeoSurface::DrawImage(const unsigned char* buf, int width, int height, 
 	glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 
 	glEnable(GL_TEXTURE_2D);    //ÆôÓÃ2DÎÆÀíÓ³Éä
+	glColor4f(_mapWidget->_br, _mapWidget->_bg, _mapWidget->_bb, 1.0f);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(left, bottom, 0.0f);

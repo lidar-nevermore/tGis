@@ -28,8 +28,24 @@ public:
 
 	virtual ~wxGLMapWidget();
 
+public:
+	virtual void SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B);
+	virtual void RepaintMap();
+	virtual void PresentMap();
+
+	// 通过 MapWidget 继承
+	virtual void Client2Screen(int cliX, int cliY, int * scrX, int * scrY) override;
+	virtual void Screen2Client(int scrX, int scrY, int * cliX, int * cliY) override;
+
+public:
+	Event<wxGLMapWidget*, wxMouseEvent*> MouseEvent;
+	Event<wxGLMapWidget*, wxMouseEvent*> WheelEvent;
+
 private:
 	bool _repaint;
+	GLfloat _br;
+	GLfloat _bg;
+	GLfloat _bb;
 
 protected:
 	wxGLGeoSurface _thisGeoSurface;
@@ -39,17 +55,11 @@ protected:
 	void LayerRemoved(IMapPtr, ILayerPtr) override;
 	void LayerCleared(IMapPtr) override;
 
-public:
-	virtual void RepaintMap();
-	virtual void PresentMap();
-
-	// 通过 MapWidget 继承
-	virtual void Client2Screen(int cliX, int cliY, int * scrX, int * scrY) override;
-	virtual void Screen2Client(int scrX, int scrY, int * cliX, int * cliY) override;
-
 private:
 	void OnPaint(wxPaintEvent& event);
 	void OnSize(wxSizeEvent& event);
+	void OnMouseEvent(wxMouseEvent& event);
+	void OnWheelEvent(wxMouseEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

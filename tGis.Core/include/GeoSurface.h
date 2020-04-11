@@ -19,9 +19,14 @@ protected:
 	virtual ~GeoSurface();
 
 public:
-	virtual const GeoViewPort* GetViewPort() const
+	virtual inline const GeoViewPort* GetViewPort() const
 	{
 		return &_viewPort;
+	}
+
+	virtual inline void GetSurfaceSize(int* surfW, int* surfH) const
+	{
+		_viewPort.GetSurfaceSize(surfW, surfH);
 	}
 
 	virtual void BeginPaint(IWidget* w, bool isCache);

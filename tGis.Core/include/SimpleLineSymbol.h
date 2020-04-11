@@ -14,13 +14,14 @@ class TGIS_CORE_API SimpleLineSymbol : public TSymbol<char>
 {
 public:
 	static const int IdentifierBegin = 100;
-	static const int IdentifierEnd = 104;
+	static const int IdentifierEnd = 105;
 
 	static const int Solid = 0;
 	static const int Dash = 1;
 	static const int Dot = 2;
 	static const int DashDot = 3;
 	static const int DashDotDot = 4;
+	static const int DashDotDotDot = 5;
 
 public:
 	SimpleLineSymbol();

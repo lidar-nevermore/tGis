@@ -10,6 +10,8 @@ MainFrame::MainFrame()
 	_mapWidget = new wxGLMapWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize, wxNO_BORDER);
 	_mapWidget->SetMap(&_map);
+	_mapWidget->AddMapTool(&_mapPanTool);
+	_mapWidget->AddMapTool(&_mapZoomTool);	
 
 	_mgr.AddPane(_mapWidget, wxAuiPaneInfo().
 		Name(wxT("map")).Caption(wxT("map")).

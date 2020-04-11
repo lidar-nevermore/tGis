@@ -4,7 +4,7 @@
 #include "wx/aui/aui.h"
 
 #include "tGis_Core.h"
-#include "wxGLMapWidget.h"
+#include "tGis_wxGui.h"
 
 using namespace tGis::Gui;
 
@@ -21,6 +21,9 @@ private:
     wxAuiManager    _mgr;
 	wxGLMapWidget *_mapWidget;
 	Map _map;
+	MapPanTool _mapPanTool;
+	MapZoomTool _mapZoomTool;
+	RectZoomTool _rectZoomTool;
 
 private:
 	void OnExit(wxCommandEvent& WXUNUSED(event));

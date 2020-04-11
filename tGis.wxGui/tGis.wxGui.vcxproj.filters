@@ -22,12 +22,28 @@
     <ClInclude Include="include\wxGLMapWidget.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\RectZoomTool.h" />
+    <ClInclude Include="include\DrawRectTool.h" />
+    <ClInclude Include="include\MapPanTool.h" />
+    <ClInclude Include="include\MapZoomTool.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\wxGLGeoSurface.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="src\wxGLMapWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RectZoomTool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DrawRectTool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapPanTool.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MapZoomTool.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

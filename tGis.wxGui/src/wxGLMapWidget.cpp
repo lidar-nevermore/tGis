@@ -4,11 +4,6 @@
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
-wxBEGIN_EVENT_TABLE(wxGLMapWidget, wxGLCanvas)
-    EVT_PAINT(wxGLMapWidget::OnPaint)
-	EVT_SIZE(wxGLMapWidget::OnSize)
-wxEND_EVENT_TABLE()
-
 wxGLMapWidget::wxGLMapWidget(wxWindow *parent,
 	wxWindowID id,
 	const wxPoint& pos,
@@ -21,6 +16,9 @@ wxGLMapWidget::wxGLMapWidget(wxWindow *parent,
 {
 	_repaint = false;
 	_geoSurface = &_thisGeoSurface;
+	_br = _backgroundR / 255.0f;
+	_bg = _backgroundG / 255.0f;
+	_bb = _backgroundB / 255.0f;
 }
 
 wxGLMapWidget::~wxGLMapWidget()
@@ -45,13 +43,25 @@ void wxGLMapWidget::LayerCleared(IMapPtr map)
 	Refresh();
 }
 
+void wxGLMapWidget::SetBackgroundColor(unsigned char R, unsigned char G, unsigned char B)
+{
+	_backgroundR = R;
+	_backgroundG = G;
+	_backgroundB = B;
+	_br = _backgroundR / 255.0f;
+	_bg = _backgroundG / 255.0f;
+	_bb = _backgroundB / 255.0f;
+}
+
 void wxGLMapWidget::RepaintMap()
 {
 	_repaint = true;
+	Refresh();
 }
 
 void wxGLMapWidget::PresentMap()
 {
+	Refresh();
 }
 
 void wxGLMapWidget::Client2Screen(int cliX, int cliY, int * scrX, int * scrY)
@@ -87,5 +97,22 @@ void wxGLMapWidget::OnSize(wxSizeEvent & event)
 	SetSurfaceSize(sz.x, sz.y);
 	RepaintMap();
 }
+
+void wxGLMapWidget::OnMouseEvent(wxMouseEvent & event)
+{
+	MouseEvent(this, &event);
+}
+
+void wxGLMapWidget::OnWheelEvent(wxMouseEvent & event)
+{
+	WheelEvent(this, &event);
+}
+
+wxBEGIN_EVENT_TABLE(wxGLMapWidget, wxGLCanvas)
+    EVT_PAINT(wxGLMapWidget::OnPaint)
+	EVT_SIZE(wxGLMapWidget::OnSize)
+	EVT_MOUSE_EVENTS(wxGLMapWidget::OnMouseEvent)
+	EVT_MOUSEWHEEL(wxGLMapWidget::OnWheelEvent)
+wxEND_EVENT_TABLE()
 
 END_NAME_SPACE(tGis, Gui)
