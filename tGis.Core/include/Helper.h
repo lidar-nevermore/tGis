@@ -5,6 +5,11 @@
 
 #include "tGis_CoreCfg.h"
 
+#define TGIS_DECLARE_NO_COPY_CLASS(classname)      \
+    private:                                    \
+        classname(const classname&) = delete; \
+        classname& operator=(const classname&) = delete
+
 #include <math.h>
 #include <float.h>
 #include <string>
@@ -18,6 +23,11 @@
   #include <direct.h>
   #include <stdlib.h>
   #include <io.h>
+
+#ifndef _WINDOWS_
+#define _WINDOWS_
+#endif
+
   
   #define _tgis_max max
   

@@ -76,17 +76,15 @@ void wxGLMapWidget::OnPaint(wxPaintEvent & event)
 {
 	wxPaintDC dc(this);
 
-	//if (_repaint == true)
-	//{
-	//	_repaint = false;
-	//	MapWidget::RepaintMap();
-	//}
-	//else
-	//{
-	//	MapWidget::PresentMap();
-	//}
-
-	MapWidget::RepaintMap();
+	if (_repaint == true)
+	{
+		_repaint = false;
+		MapWidget::RepaintMap();
+	}
+	else
+	{
+		MapWidget::PresentMap();
+	}
 
 	SwapBuffers();
 }

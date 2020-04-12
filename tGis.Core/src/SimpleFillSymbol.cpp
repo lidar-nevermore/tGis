@@ -29,7 +29,7 @@ SimpleFillSymbol::~SimpleFillSymbol()
 
 const ISymbolLibrary * SimpleFillSymbol::GetSymbolLibrary()
 {
-	return &SimpleSymbolLibrary::INSTANCE;
+	return &SimpleSymbolLibrary::INSTANCE();
 }
 
 const int SimpleFillSymbol::GetId()

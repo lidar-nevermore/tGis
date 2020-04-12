@@ -14,6 +14,8 @@ class FileSystemDataSourceImpl;
 
 class TGIS_CORE_API FileSystemDataSource : public DataSource
 {
+	TGIS_DECLARE_NO_COPY_CLASS(FileSystemDataSource);
+
 public:
 	FileSystemDataSource(const char* path);
 	virtual ~FileSystemDataSource();

@@ -60,7 +60,7 @@ SimpleLineSymbol::~SimpleLineSymbol()
 
 const ISymbolLibrary * SimpleLineSymbol::GetSymbolLibrary()
 {
-	return &SimpleSymbolLibrary::INSTANCE;;
+	return &SimpleSymbolLibrary::INSTANCE();
 }
 
 const int SimpleLineSymbol::GetId()

@@ -16,14 +16,14 @@ BEGIN_NAME_SPACE(tGis, Core)
 template struct TGIS_CORE_API IEventHandler<const char*, const char*, const char*, const char*>;
 template class TGIS_CORE_API Event<const char*, const char*, const char*, const char*>;
 
-#define TGIS_LOG_FORMAT(level, format, ...) print_log(TGisApplication::INSTANCE().GetLogger(), level, format, ##__VA_ARGS__)
+#define TGIS_LOG_FORMAT(level, format, ...) print_log(TGisApplication::INSTANCE()->GetLogger(), level, format, ##__VA_ARGS__)
 
 class TGIS_CORE_API TGisApplication
 {
 private:
 	static TGisApplication* _instance;
 public:
-	static TGisApplication& INSTANCE();
+	static TGisApplication* INSTANCE();
 	static Event<const char*, const char*, const char*, const char*> LoadPluginEvent;
 
 protected:

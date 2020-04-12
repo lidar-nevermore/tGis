@@ -3,10 +3,15 @@
   <ItemGroup>
     <Filter Include="include">
       <UniqueIdentifier>{2ffaa55e-2d39-473c-a32f-ace81ec4125e}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="xpm">
+      <UniqueIdentifier>{fd54462f-86bf-4002-8841-fb22c7f72651}</UniqueIdentifier>
+      <Extensions>xpm</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -22,10 +27,30 @@
     <ClInclude Include="include\wxGLMapWidget.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\RectZoomTool.h" />
-    <ClInclude Include="include\DrawRectTool.h" />
-    <ClInclude Include="include\MapPanTool.h" />
-    <ClInclude Include="include\MapZoomTool.h" />
+    <ClInclude Include="include\DrawRectTool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MapPanTool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MapZoomTool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RectZoomTool.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wxDataSourceWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wxLayerWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wxToolWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\wxTGisApplication.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\wxGLGeoSurface.cpp">
@@ -46,5 +71,46 @@
     <ClCompile Include="src\MapZoomTool.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\wxToolWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wxLayerWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wxDataSourceWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wxTGisApplication.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="xpm\dataset_open.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\disk.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\folder.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\folder_open.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\mem.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\raster.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\raster_open.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\vector.xpm">
+      <Filter>xpm</Filter>
+    </None>
+    <None Include="xpm\vector_open.xpm">
+      <Filter>xpm</Filter>
+    </None>
   </ItemGroup>
 </Project>

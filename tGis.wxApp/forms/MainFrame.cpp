@@ -18,7 +18,7 @@ MainFrame::MainFrame()
 		Center().Layer(0).Position(0).
 		CloseButton(false).MaximizeButton(true));
 
-	wxPanel* pDataSource = new wxPanel(this, wxID_ANY,
+	wxDataSourceWidget* pDataSource = new wxDataSourceWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize);
 
 	_mgr.AddPane(pDataSource, wxAuiPaneInfo().

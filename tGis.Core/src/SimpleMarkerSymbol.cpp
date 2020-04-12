@@ -33,7 +33,7 @@ SimpleMarkerSymbol::~SimpleMarkerSymbol()
 
 const ISymbolLibrary * SimpleMarkerSymbol::GetSymbolLibrary()
 {
-	return &SimpleSymbolLibrary::INSTANCE;;
+	return &SimpleSymbolLibrary::INSTANCE();
 }
 
 const int SimpleMarkerSymbol::GetId()

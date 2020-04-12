@@ -19,6 +19,8 @@ class MyGDALDatasetImpl;
 
 class TGIS_CORE_API MyGDALDataset : public Dataset
 {
+	TGIS_DECLARE_NO_COPY_CLASS(MyGDALDataset);
+
 public:
 	virtual const char* GetName();
 

@@ -13,6 +13,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_CORE_API MemoryDataSource : public DataSource
 {
+	TGIS_DECLARE_NO_COPY_CLASS(MemoryDataSource);
 private:
 	static MemoryDataSource* _instance;
 public:

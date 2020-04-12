@@ -12,9 +12,9 @@ TGisApplication* TGisApplication::_instance = nullptr;
 
 Event<const char*, const char*, const char*, const char*> TGisApplication::LoadPluginEvent;
 
-TGisApplication & TGisApplication::INSTANCE()
+TGisApplication* TGisApplication::INSTANCE()
 {
-	return *_instance;
+	return _instance;
 }
 
 TGisApplication::TGisApplication()

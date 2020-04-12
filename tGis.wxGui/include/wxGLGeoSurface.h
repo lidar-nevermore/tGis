@@ -22,6 +22,11 @@ public:
 protected:
 	wxGLMapWidget* _mapWidget;
 	wxGLContext _glContext;
+	void* _mapBuffer;
+	int _bufWidth;
+	int _bufHeight;
+	int _mapWidth;
+	int _mapHeight;
 
 public:
 	// Í¨¹ý GeoSurface ¼Ì³Ð

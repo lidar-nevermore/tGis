@@ -10,20 +10,62 @@ wxGLGeoSurface::wxGLGeoSurface(wxGLMapWidget* mapWidget)
 {
 	_mapWidget = mapWidget;
 	_glContext.SetCurrent(*_mapWidget);
-	//TODO: 设置OpenGL参数
+	_mapBuffer = nullptr;
+	_bufWidth = 0;
+	_bufHeight = 0;
 }
 
 
 wxGLGeoSurface::~wxGLGeoSurface()
 {
+	if (_mapBuffer != nullptr)
+		free(_mapBuffer);
 }
 
 void wxGLGeoSurface::Present(IWidget * w, int wX, int wY)
 {
+	Present(w, wX, wY, _mapWidth, _mapHeight);
 }
 
 void wxGLGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
 {
+	wxSize sz = _mapWidget->GetClientSize();
+	//目标范围的NDC坐标
+	float left = (2.0f*wX) / sz.x - 1.0;
+	float right = (2.0f*(wX + wW)) / sz.x - 1.0;
+	float bottom = 1.0 - (2.0f*wY) / sz.y;
+	float top = 1.0 - (2.0f*(wY + wH)) / sz.y;
+
+	GLuint tex;
+	glGenTextures(1, &tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
+
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _mapWidth, _mapHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, _mapBuffer);  //载入纹理：																										
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	//正射投影
+	glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
+
+	glEnable(GL_TEXTURE_2D);    //启用2D纹理映射
+	glColor4f(_mapWidget->_br, _mapWidget->_bg, _mapWidget->_bb, 1.0f);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex3f(left, bottom, 0.0f);
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex3f(right, bottom, 0.0f);
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex3f(right, top, 0.0f);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex3f(left, top, 0.0f);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
 }
 
 void wxGLGeoSurface::BeginPaint(IWidget * w, bool isCache)
@@ -42,11 +84,28 @@ void wxGLGeoSurface::BeginPaint(IWidget * w, bool isCache)
 
 void wxGLGeoSurface::EndPaint(IWidget * w, bool isCache)
 {
-	//if (isCache == false)
-	//{
-	//	glFinish();
-	//	//创建图片缓冲
-	//}
+	int surfWidth;
+	int surfHeight;
+	_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
+
+	if (isCache == false && surfHeight > 0 && surfWidth > 0)
+	{
+		glFinish();
+
+		if (surfWidth > _bufWidth || surfHeight > _bufHeight)
+		{
+			if (_mapBuffer != nullptr)
+				free(_mapBuffer);
+			_mapBuffer = malloc(surfWidth*surfHeight*4);
+			_bufWidth = surfWidth;
+			_bufHeight = surfHeight;
+		}
+		_mapWidth = surfWidth;
+		_mapHeight = surfHeight;
+		//创建图片缓冲
+		glReadBuffer(GL_BACK);
+		glReadPixels(0, 0, _mapWidth, _mapHeight, GL_RGBA, GL_UNSIGNED_BYTE, _mapBuffer);
+	}
 
 	wxGLMapWidget* widget = (wxGLMapWidget*)w;
 	IOverlayLayer* overlayLayer = widget->GetOverlayLayer();

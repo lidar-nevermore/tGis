@@ -4,11 +4,24 @@
 #include "SimpleFillSymbol.h"
 #include "SymbolLibraryRepository.h"
 
+#include <memory>
+
 BEGIN_NAME_SPACE(tGis, Core)
 
 const char* const SimpleSymbolLibrary::_name = "SimpleSymbolLibrary";
 
-SimpleSymbolLibrary SimpleSymbolLibrary::INSTANCE;
+SimpleSymbolLibrary* SimpleSymbolLibrary::_instance = nullptr;
+
+SimpleSymbolLibrary & SimpleSymbolLibrary::INSTANCE()
+{
+	if (_instance == nullptr)
+	{
+		_instance = new SimpleSymbolLibrary();
+		static std::unique_ptr<SimpleSymbolLibrary> shit(_instance);
+	}
+
+	return *_instance;
+}
 
 SimpleSymbolLibrary::SimpleSymbolLibrary()
 {

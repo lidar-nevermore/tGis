@@ -12,14 +12,19 @@ struct ISymbol;
 
 class TGIS_CORE_API SimpleSymbolLibrary : public ISymbolLibrary
 {
+private:
+	static SimpleSymbolLibrary* _instance;
+
 public:
-	static SimpleSymbolLibrary INSTANCE;
+	static SimpleSymbolLibrary& INSTANCE();
 
 private:
 	SimpleSymbolLibrary();
-	~SimpleSymbolLibrary();
 	SimpleSymbolLibrary(const SimpleSymbolLibrary &) = delete;
 	SimpleSymbolLibrary &operator=(const SimpleSymbolLibrary &) = delete;
+
+public:
+	~SimpleSymbolLibrary();
 
 public:
 	const char* GetName() const;
