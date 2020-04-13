@@ -1,4 +1,5 @@
 #include "MyGDALDataset.h"
+#include "DataSource.h"
 
 #include <algorithm>
 #include <string>
@@ -303,8 +304,8 @@ public:
 	string _name;
 };
 
-MyGDALDataset::MyGDALDataset(DataSource * ds)
-	:Dataset(ds)
+MyGDALDataset::MyGDALDataset()
+	:Dataset(nullptr)
 {
 	_impl_ = new MyGDALDatasetImpl(this);
 	_dataset = nullptr;
@@ -335,6 +336,8 @@ MyGDALDataset::MyGDALDataset(DataSource * ds, const char * path, GDALAccess eAcc
 	{
 		Attach(path, eAccess, autoClose);
 	}
+	if (ds != nullptr)
+		ds->AddDataset(this);
 }
 
 MyGDALDataset::~MyGDALDataset()

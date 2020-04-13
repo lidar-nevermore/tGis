@@ -22,7 +22,7 @@ MemoryDataSource & MemoryDataSource::INSTANCE()
 MemoryDataSource::MemoryDataSource()
 	:DataSource()
 {
-	SetName("default");
+	SetName("Memory");
 	Connect();
 }
 

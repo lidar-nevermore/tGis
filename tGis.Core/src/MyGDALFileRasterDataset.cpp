@@ -30,7 +30,7 @@ bool MyGDALFileRasterDataset::IsTypeOf(const char * type)
 }
 
 MyGDALFileRasterDataset::MyGDALFileRasterDataset()
-	:MyGDALRasterDataset(nullptr)
+	:MyGDALRasterDataset()
 {
 }
 

@@ -7,8 +7,6 @@ BEGIN_NAME_SPACE(tGis, Core)
 Dataset::Dataset(DataSource * ds)
 {
 	_parent = ds;
-	if (_parent != nullptr)
-		_parent->AddDataset(this);
 }
 
 

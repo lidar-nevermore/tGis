@@ -20,6 +20,8 @@
 
 #include "tGis_wxGuiCfg.h"
 
+using namespace tGis::Core;
+
 BEGIN_NAME_SPACE(tGis, Gui)
 
 class TGIS_GUI_API wxDataSourceWidget : public wxPanel
@@ -28,9 +30,26 @@ public:
 	wxDataSourceWidget(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
 	~wxDataSourceWidget();
 
+public:
+	IDataSource* GetSelDataSource() { return _selDs; }
+	IDataset* GetSelDataset() { return _selDt; }
+
 protected:
 	wxToolBar* _toolBar;
 	wxTreeCtrl* _treeCtrl;
+private:
+	IDataSource* _selDs;
+	IDataset* _selDt;
+
+private:
+	static void OnEachDataSource(IDataSource* ds, void* ud);
+	static void OnEachDataset(IDataset* dt, void* ud);
+	void AddDataSourceNode(wxTreeItemId &parent, IDataSource* ds);
+	void AddDataSourceSubNode(wxTreeItemId &parent, IDataSource* ds);
+
+private:
+	void OnNodeActivated(wxTreeEvent& event);
+	void OnNodeSelChanged(wxTreeEvent& event);
 
 };
 

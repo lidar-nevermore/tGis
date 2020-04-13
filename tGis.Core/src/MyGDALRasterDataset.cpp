@@ -24,12 +24,7 @@ const char * MyGDALRasterDataset::S_GetType()
 }
 
 MyGDALRasterDataset::MyGDALRasterDataset()
-	:MyGDALDataset(nullptr)
-{
-}
-
-MyGDALRasterDataset::MyGDALRasterDataset(DataSource * ds)
-	:MyGDALDataset(ds)
+	:MyGDALDataset()
 {
 }
 

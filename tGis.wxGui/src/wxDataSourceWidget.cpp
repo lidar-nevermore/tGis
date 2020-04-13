@@ -46,8 +46,22 @@ private:
 	bool _autoDelete;
 };
 
-wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+const int dataset_open_img = 0;
+const int mem_img = 1;
+const int disk_img = 2;
+const int folder_img = 3;
+const int folder_open_img = 4;
+const int raster_img = 5;
+const int raster_open_img = 6;
+const int vector_img = 7;
+const int vector_open_img = 8;
+
+wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) 
+	: wxPanel( parent, id, pos, size, style, name )
 {
+	_selDs = nullptr;
+	_selDt = nullptr;
+
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
 
@@ -63,7 +77,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 	this->SetSizer( bSizer1 );
 	this->Layout();
 	
-	wxImageList* imglist = new wxImageList(16, 16, true, 9);
+	wxImageList* imglist = new wxImageList(16, 16, true, 25);
 	imglist->Add(wxBitmap(xpm::dataset_open));
 	imglist->Add(wxBitmap(xpm::mem));
 	imglist->Add(wxBitmap(xpm::disk));
@@ -77,11 +91,9 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 	_treeCtrl->AssignImageList(imglist);
 
 	wxTreeItemId root = _treeCtrl->AddRoot(wxT("DataSource"), 0);
-	_treeCtrl->AppendItem(root, wxT("Opened Dataset"), 0);
-	dsTreeItemData* mdsData = new dsTreeItemData();
-	mdsData->_ds = &MemoryDataSource::INSTANCE();
-	_treeCtrl->AppendItem(root, wxT("Memory"), 1, 1, mdsData);
-	wxTreeItemId fileSystemId = _treeCtrl->AppendItem(root, wxT("FileSystem"), 2);
+	_treeCtrl->AppendItem(root, wxT("Opened Dataset"), dataset_open_img);
+	AddDataSourceNode(root, &MemoryDataSource::INSTANCE());
+	wxTreeItemId fileSystemId = _treeCtrl->AppendItem(root, wxT("FileSystem"), disk_img);
 
 
 #ifdef _WINDOWS_
@@ -92,18 +104,96 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 		if (wxDir::Exists(disk))
 		{
 			FileSystemDataSource* fds = new FileSystemDataSource(disk);
-			dsTreeItemData* fdsData = new dsTreeItemData(true);
-			fdsData->_ds = fds;
-			_treeCtrl->AppendItem(fileSystemId, disk, 3, 3, fdsData);
+			AddDataSourceNode(fileSystemId, fds);
 		}
 	}
 
 #endif // _WINDOWS_
+	_treeCtrl->Expand(fileSystemId);
 
+	Bind(wxEVT_TREE_ITEM_ACTIVATED, &wxDataSourceWidget::OnNodeActivated, this);
+	Bind(wxEVT_TREE_SEL_CHANGED, &wxDataSourceWidget::OnNodeSelChanged, this);
 }
 
 wxDataSourceWidget::~wxDataSourceWidget()
 {
+	Unbind(wxEVT_TREE_ITEM_ACTIVATED, &wxDataSourceWidget::OnNodeActivated, this);
+	Unbind(wxEVT_TREE_SEL_CHANGED, &wxDataSourceWidget::OnNodeSelChanged, this);
+}
+
+void wxDataSourceWidget::AddDataSourceNode(wxTreeItemId &parent, IDataSource * ds)
+{
+	dsTreeItemData* mdsData = new dsTreeItemData();
+	mdsData->_ds = ds;
+	wxString label = ds->GetName();
+	if(ds->IsTypeOf(MemoryDataSource::S_GetType()))
+		_treeCtrl->AppendItem(parent, label, mem_img, mem_img, mdsData);
+	else //if (ds->IsTypeOf(FileSystemDataSource::S_GetType()))
+		_treeCtrl->AppendItem(parent, label, folder_img, folder_img, mdsData);
+}
+
+void wxDataSourceWidget::OnEachDataSource(IDataSource* ds, void* ud)
+{
+	wxDataSourceWidget* pDsWidget = (wxDataSourceWidget*)((void**)ud)[0];
+	wxTreeItemId* parentItemId = (wxTreeItemId*)((void**)ud)[1];
+	pDsWidget->AddDataSourceNode(*parentItemId, ds);
+}
+
+void wxDataSourceWidget::OnEachDataset(IDataset* dt, void* ud)
+{
+	wxDataSourceWidget* pDsWidget = (wxDataSourceWidget*)((void**)ud)[0];
+	wxTreeItemId* parentItemId = (wxTreeItemId*)((void**)ud)[1];
+	dsTreeItemData* mdsData = new dsTreeItemData();
+	mdsData->_dt = dt;
+	wxString label = wxString::From8BitData(dt->GetName());
+	if(dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		pDsWidget->_treeCtrl->AppendItem(*parentItemId, label, raster_img, raster_img, mdsData);
+	else //if (dt->IsTypeOf(MyGDALVectorDataset::S_GetType()))
+		pDsWidget->_treeCtrl->AppendItem(*parentItemId, label, vector_img, vector_img, mdsData);
+}
+
+void wxDataSourceWidget::AddDataSourceSubNode(wxTreeItemId &parent, IDataSource * ds)
+{
+	void* ud[2] = { this, &parent };
+	ds->ForEachDataSource(wxDataSourceWidget::OnEachDataSource, (void*)ud);
+	ds->ForEachDataset(wxDataSourceWidget::OnEachDataset, (void*)ud);
+}
+
+void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
+{
+	wxTreeItemId selId = event.GetItem();
+	dsTreeItemData* selData = (dsTreeItemData*)_treeCtrl->GetItemData(selId);
+	if (selData != nullptr)
+	{
+		if (selData->_ds != nullptr && selData->_ds->IsConnected() == false)
+		{
+			selData->_ds->Connect();
+			if (selData->_ds->IsConnected())
+			{
+				AddDataSourceSubNode(selId, selData->_ds);
+				//TODO: 当前只有文件系统类型数据源
+				_treeCtrl->SetItemImage(selId, folder_open_img);
+				_treeCtrl->SetItemImage(selId, folder_open_img, wxTreeItemIcon_Selected);
+				_treeCtrl->Expand(selId);
+			}
+		}
+	}
+}
+
+void wxDataSourceWidget::OnNodeSelChanged(wxTreeEvent & event)
+{
+	wxTreeItemId selId = event.GetItem();
+	dsTreeItemData* selData = (dsTreeItemData*)_treeCtrl->GetItemData(selId);
+	if (selData != nullptr)
+	{
+		_selDs = selData->_ds;
+		_selDt = selData->_dt;
+	}
+	else
+	{
+		_selDs = nullptr;
+		_selDt = nullptr;
+	}
 }
 
 END_NAME_SPACE(tGis, Gui)

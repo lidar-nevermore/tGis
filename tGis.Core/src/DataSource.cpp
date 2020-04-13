@@ -147,9 +147,27 @@ size_t DataSource::GetDatasetCount()
 	return _impl_->_mapDataset.size();
 }
 
+void DataSource::ForEachDataset(void(*pfunc)(IDataset *, void *), void* ud)
+{
+	for (auto it = _impl_->_mapDataset.begin(); it != _impl_->_mapDataset.end(); it++)
+	{
+		IDataset* dt = (*it).second;
+		pfunc(dt, ud);
+	}
+}
+
 size_t DataSource::GetDataSourceCount()
 {
 	return _impl_->_mapDataSource.size();
+}
+
+void DataSource::ForEachDataSource(void(*pfunc)(IDataSource *, void *), void* ud)
+{
+	for (auto it = _impl_->_mapDataSource.begin(); it != _impl_->_mapDataSource.end(); it++)
+	{
+		IDataSource* ds = (*it).second;
+		pfunc(ds, ud);
+	}
 }
 
 

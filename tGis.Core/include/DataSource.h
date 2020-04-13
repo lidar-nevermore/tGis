@@ -13,8 +13,8 @@ class DataSourceImpl;
 
 class TGIS_CORE_API DataSource : public IDataSource
 {
-	friend class Dataset;
-public:
+	friend class MyGDALDataset;
+protected:
 	DataSource();
 
 public:
@@ -33,8 +33,11 @@ public:
 	virtual void Refresh() {};
 
 	virtual size_t GetDatasetCount();
+	virtual void ForEachDataset(void(*pfunc)(IDataset*, void*), void* ud = nullptr);
 
 	virtual size_t GetDataSourceCount();
+	virtual void ForEachDataSource(void(*pfunc)(IDataSource*, void*), void* ud = nullptr);
+
 
 protected:
 	bool _connected;

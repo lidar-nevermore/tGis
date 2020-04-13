@@ -31,7 +31,7 @@ public:
 	virtual const OGREnvelope* GetEnvelope();
 
 protected:
-	MyGDALDataset(DataSource* ds);
+	MyGDALDataset();
 	MyGDALDataset(DataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 
 public:

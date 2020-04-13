@@ -30,7 +30,7 @@ const char * MyGDALVectorDataset::S_GetType()
 }
 
 MyGDALVectorDataset::MyGDALVectorDataset()
-	:MyGDALDataset(nullptr)
+	:MyGDALDataset()
 {
 }
 
