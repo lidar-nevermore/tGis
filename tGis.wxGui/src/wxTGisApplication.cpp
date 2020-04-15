@@ -3,9 +3,8 @@
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
-wxTGisApplication::wxTGisApplication(wxFrame* mainFrame)
+wxTGisApplication::wxTGisApplication()
 {
-	_mainFrame = mainFrame;
 }
 
 

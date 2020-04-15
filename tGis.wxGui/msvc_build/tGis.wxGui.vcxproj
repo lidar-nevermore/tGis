@@ -55,7 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;wxMSVC_VERSION_AUTO;WXUSINGDLL;_USRDLL;TGIS_GUI_EXPORTS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\include;$(ProjectDir)\internal;$(ProjectDir)\xpm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\..\include;$(ProjectDir)\..\internal</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -73,7 +73,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;wxMSVC_VERSION_AUTO;WXUSINGDLL;_USRDLL;TGIS_GUI_EXPORTS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\include;$(ProjectDir)\internal;$(ProjectDir)\xpm</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\..\include;$(ProjectDir)\..\internal</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -85,41 +85,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="include\DrawRectTool.h" />
-    <ClInclude Include="include\MapPanTool.h" />
-    <ClInclude Include="include\MapZoomTool.h" />
-    <ClInclude Include="include\RectZoomTool.h" />
-    <ClInclude Include="include\tGis_wxGui.h" />
-    <ClInclude Include="include\tGis_wxGuiCfg.h" />
-    <ClInclude Include="include\wxDataSourceWidget.h" />
-    <ClInclude Include="include\wxGLGeoSurface.h" />
-    <ClInclude Include="include\wxGLMapWidget.h" />
-    <ClInclude Include="include\wxLayerWidget.h" />
-    <ClInclude Include="include\wxTGisApplication.h" />
-    <ClInclude Include="include\wxToolWidget.h" />
+    <ClInclude Include="..\include\DrawRectTool.h" />
+    <ClInclude Include="..\include\MapPanTool.h" />
+    <ClInclude Include="..\include\MapZoomTool.h" />
+    <ClInclude Include="..\include\RectZoomTool.h" />
+    <ClInclude Include="..\include\tGis_wxGui.h" />
+    <ClInclude Include="..\include\tGis_wxGuiCfg.h" />
+    <ClInclude Include="..\include\wxDataSourceWidget.h" />
+    <ClInclude Include="..\include\wxGLGeoSurface.h" />
+    <ClInclude Include="..\include\wxGLMapWidget.h" />
+    <ClInclude Include="..\include\wxLayerWidget.h" />
+    <ClInclude Include="..\include\wxTGisApplication.h" />
+    <ClInclude Include="..\include\wxToolWidget.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\DrawRectTool.cpp" />
-    <ClCompile Include="src\MapPanTool.cpp" />
-    <ClCompile Include="src\MapZoomTool.cpp" />
-    <ClCompile Include="src\RectZoomTool.cpp" />
-    <ClCompile Include="src\wxDataSourceWidget.cpp" />
-    <ClCompile Include="src\wxGLGeoSurface.cpp" />
-    <ClCompile Include="src\wxGLMapWidget.cpp" />
-    <ClCompile Include="src\wxLayerWidget.cpp" />
-    <ClCompile Include="src\wxTGisApplication.cpp" />
-    <ClCompile Include="src\wxToolWidget.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="xpm\dataset_open.xpm" />
-    <None Include="xpm\disk.xpm" />
-    <None Include="xpm\folder.xpm" />
-    <None Include="xpm\folder_open.xpm" />
-    <None Include="xpm\mem.xpm" />
-    <None Include="xpm\raster.xpm" />
-    <None Include="xpm\raster_open.xpm" />
-    <None Include="xpm\vector.xpm" />
-    <None Include="xpm\vector_open.xpm" />
+    <ClCompile Include="..\src\DrawRectTool.cpp" />
+    <ClCompile Include="..\src\MapPanTool.cpp" />
+    <ClCompile Include="..\src\MapZoomTool.cpp" />
+    <ClCompile Include="..\src\RectZoomTool.cpp" />
+    <ClCompile Include="..\src\wxDataSourceWidget.cpp" />
+    <ClCompile Include="..\src\wxGLGeoSurface.cpp" />
+    <ClCompile Include="..\src\wxGLMapWidget.cpp" />
+    <ClCompile Include="..\src\wxLayerWidget.cpp" />
+    <ClCompile Include="..\src\wxTGisApplication.cpp" />
+    <ClCompile Include="..\src\wxToolWidget.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

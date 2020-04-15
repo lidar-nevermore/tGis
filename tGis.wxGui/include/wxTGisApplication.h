@@ -13,15 +13,12 @@ BEGIN_NAME_SPACE(tGis, Gui)
 
 class TGIS_GUI_API wxTGisApplication : public TGisApplication
 {
-public:
-	wxTGisApplication(wxFrame* mainFrame);
+protected:
+	wxTGisApplication();
 	virtual ~wxTGisApplication();
 
 public:
-	wxWindow* GetMainFrame() { return _mainFrame; }
-
-private:
-	wxWindow* _mainFrame;
+	virtual wxFrame* GetMainFrame() = 0;
 };
 
 END_NAME_SPACE(tGis, Gui)

@@ -12,5 +12,4 @@
   #define TGIS_GUI_API TGIS_SYMBOL_IMPORT
 #endif
 
-
 #endif

@@ -5,6 +5,8 @@
 MainFrame::MainFrame()
     : MainFrameBase(NULL,wxID_ANY,wxT("tGis Desktop"))
 {
+	wxIcon icon(wxString(TGisApplication::INSTANCE()->GetExeDir()) + wxString("/icon.png"), wxBITMAP_TYPE_PNG);
+	SetIcon(icon);
     _mgr.SetManagedWindow(this);
 
 	_mapWidget = new wxGLMapWidget(this, wxID_ANY,
@@ -57,7 +59,7 @@ MainFrame::MainFrame()
     _mgr.Update();
 
 	SetPosition(wxPoint(100, 100));
-	SetSize(wxSize(900, 700));
+	SetSize(wxSize(1080, 700));
 }
 
 

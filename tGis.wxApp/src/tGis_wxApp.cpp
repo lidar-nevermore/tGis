@@ -7,13 +7,18 @@ IMPLEMENT_APP(tGisWxApp)
 
 bool tGisWxApp::OnInit()
 {
+	wxInitAllImageHandlers();
 	MapWidget::SetMaxSize(1920, 1280);
-
-	MainFrame * mainWnd = new MainFrame();
-	SetTopWindow(mainWnd);
-	mainWnd->Show(true);
+	_mainFrame  = new MainFrame();
+	SetTopWindow(_mainFrame);
+	_mainFrame->Show(true);
 
 	return true;
+}
+
+wxFrame * tGisWxApp::GetMainFrame()
+{
+	return _mainFrame;
 }
 
 END_NAME_SPACE(tGis, App)

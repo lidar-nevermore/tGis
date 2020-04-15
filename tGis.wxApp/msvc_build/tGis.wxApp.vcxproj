@@ -11,18 +11,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="forms\MainFrame.h" />
-    <ClInclude Include="forms\MainFrameBase.h" />
-    <ClInclude Include="include\tGis_wxApp.h" />
-    <ClInclude Include="include\tGis_wxAppCfg.h" />
+    <ClInclude Include="..\forms\MainFrame.h" />
+    <ClInclude Include="..\forms\MainFrameBase.h" />
+    <ClInclude Include="..\include\tGis_wxApp.h" />
+    <ClInclude Include="..\include\tGis_wxAppCfg.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="forms\MainFrame.cpp" />
-    <ClCompile Include="forms\MainFrameBase.cpp" />
-    <ClCompile Include="src\tGis_wxApp.cpp" />
+    <ClCompile Include="..\forms\MainFrame.cpp" />
+    <ClCompile Include="..\forms\MainFrameBase.cpp" />
+    <ClCompile Include="..\src\tGis_wxApp.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="forms\MainFrame.fbp" />
+    <None Include="..\forms\MainFrame.fbp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="tGis.wxApp.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C02F3F61-0B1A-4450-A16D-C93FD579BB33}</ProjectGuid>
@@ -62,7 +69,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(SolutionDir)\tGis.wxGui\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\include;$(ProjectDir)\internal;$(ProjectDir)\forms</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(SolutionDir)\tGis.wxGui\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\..\include;$(ProjectDir)\..\forms</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;_DEBUG;_WINDOWS;wxMSVC_VERSION_AUTO;WXUSINGDLL;_USRDLL;TGIS_APP_EXPORTS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -78,7 +85,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(SolutionDir)\tGis.wxGui\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\include;$(ProjectDir)\internal;$(ProjectDir)\forms</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(SolutionDir)\tGis.Core\include;$(SolutionDir)\tGis.wxGui\include;$(WXDIR)\include;$(WXDIR)\include\msvc;$(ProjectDir)\..\include;$(ProjectDir)\..\forms</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_UNICODE;NDEBUG;_WINDOWS;wxMSVC_VERSION_AUTO;WXUSINGDLL;_USRDLL;TGIS_APP_EXPORTS;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <Link>

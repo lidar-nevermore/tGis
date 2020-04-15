@@ -9,10 +9,10 @@
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
+#include <wx/string.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
-#include <wx/string.h>
 #include <wx/menu.h>
 #include <wx/gdicmn.h>
 #include <wx/font.h>
@@ -24,7 +24,6 @@
 
 ///////////////////////////////////////////////////////////////////////////
 
-#define wxID_OPEN_FILE 1000
 
 ///////////////////////////////////////////////////////////////////////////////
 /// Class MainFrameBase
@@ -36,18 +35,21 @@ class MainFrameBase : public wxFrame
 	protected:
 		wxMenuBar* _menuBar;
 		wxMenu* _menuProject;
-		wxMenu* _menuTest;
+		wxMenu* _menuDataSource;
+		wxMenu* _menuMap;
+		wxMenu* _menuDisplay;
+		wxMenu* _menuSettings;
 		wxToolBar* _toolBar;
-		wxToolBarToolBase* _toolTest;
 		wxStatusBar* _statusBar;
 
 		// Virtual event handlers, overide them in your derived class
-		virtual void _toolTestOnToolClicked( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnNewProject( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnAddToMap( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:
 
-		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tGis"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		MainFrameBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxT("tGis"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 686,541 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~MainFrameBase();
 

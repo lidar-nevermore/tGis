@@ -44,399 +44,399 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\RasterBandSeqBlockReader.h">
+    <ClInclude Include="..\include\RasterBandSeqBlockReader.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterBandSeqPixelReader.h">
+    <ClInclude Include="..\include\RasterBandSeqPixelReader.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterBandStorageBlockGridReader.h">
+    <ClInclude Include="..\include\RasterBandStorageBlockGridReader.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\IMapTool.h">
+    <ClInclude Include="..\include\IMapTool.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\IMapWidget.h">
+    <ClInclude Include="..\include\IMapWidget.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\MapTool.h">
+    <ClInclude Include="..\include\MapTool.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\MapWidget.h">
+    <ClInclude Include="..\include\MapWidget.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\FileSystemDataSource.h">
+    <ClInclude Include="..\include\FileSystemDataSource.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\IDataset.h">
+    <ClInclude Include="..\include\IDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\IDataSource.h">
+    <ClInclude Include="..\include\IDataSource.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\ILayer.h">
+    <ClInclude Include="..\include\ILayer.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\IMap.h">
+    <ClInclude Include="..\include\IMap.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\Map.h">
+    <ClInclude Include="..\include\Map.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\MyGDALRasterDataset.h">
+    <ClInclude Include="..\include\MyGDALRasterDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\Helper.h">
+    <ClInclude Include="..\include\Helper.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\IOverlayLayer.h">
+    <ClInclude Include="..\include\IOverlayLayer.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\IOverlayObject.h">
+    <ClInclude Include="..\include\IOverlayObject.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\OverlayLayer.h">
+    <ClInclude Include="..\include\OverlayLayer.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\ISymbol.h">
+    <ClInclude Include="..\include\ISymbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\SimpleFillSymbol.h">
+    <ClInclude Include="..\include\SimpleFillSymbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\SimpleLineSymbol.h">
+    <ClInclude Include="..\include\SimpleLineSymbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\SimpleMarkerSymbol.h">
+    <ClInclude Include="..\include\SimpleMarkerSymbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\MyGDALVectorDataset.h">
+    <ClInclude Include="..\include\MyGDALVectorDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\Layer.h">
+    <ClInclude Include="..\include\Layer.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\ISymbolLibrary.h">
+    <ClInclude Include="..\include\ISymbolLibrary.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\SimpleSymbolLibrary.h">
+    <ClInclude Include="..\include\SimpleSymbolLibrary.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\SymbolLibraryRepository.h">
+    <ClInclude Include="..\include\SymbolLibraryRepository.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\Statistics.h">
+    <ClInclude Include="..\include\Statistics.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\OverlayRect.h">
+    <ClInclude Include="..\include\OverlayRect.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\MyGDALDataset.h">
+    <ClInclude Include="..\include\MyGDALDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\MyGDALFileRasterDataset.h">
+    <ClInclude Include="..\include\MyGDALFileRasterDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\MyGDALMemRasterDataset.h">
+    <ClInclude Include="..\include\MyGDALMemRasterDataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\MemoryDataSource.h">
+    <ClInclude Include="..\include\MemoryDataSource.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\DataSource.h">
+    <ClInclude Include="..\include\DataSource.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\Dataset.h">
+    <ClInclude Include="..\include\Dataset.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\Event.h">
+    <ClInclude Include="..\include\Event.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\ToolKitRepository.h">
+    <ClInclude Include="..\include\ToolKitRepository.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\EventBase.h">
+    <ClInclude Include="..\include\EventBase.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\TGisApplication.h">
+    <ClInclude Include="..\include\TGisApplication.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterWriter.h">
+    <ClInclude Include="..\include\RasterWriter.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\GeoViewPort.h">
+    <ClInclude Include="..\include\GeoViewPort.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\IWidget.h">
+    <ClInclude Include="..\include\IWidget.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="internal\Plugin.h">
+    <ClInclude Include="..\internal\Plugin.h">
       <Filter>internal</Filter>
     </ClInclude>
-    <ClInclude Include="internal\PluginManager.h">
+    <ClInclude Include="..\internal\PluginManager.h">
       <Filter>internal</Filter>
     </ClInclude>
-    <ClInclude Include="include\tinyxml2.h">
+    <ClInclude Include="..\include\tinyxml2.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\elr_mtx.h">
+    <ClInclude Include="..\include\elr_mtx.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\ilog.h">
+    <ClInclude Include="..\include\ilog.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\Progress.h">
+    <ClInclude Include="..\include\Progress.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\DataSourceRepository.h">
+    <ClInclude Include="..\include\DataSourceRepository.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\ILayerRender.h">
+    <ClInclude Include="..\include\ILayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\LayerRender.h">
+    <ClInclude Include="..\include\LayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\IGeoSurface.h">
+    <ClInclude Include="..\include\IGeoSurface.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\ISurface.h">
+    <ClInclude Include="..\include\ISurface.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\GeoSurface.h">
+    <ClInclude Include="..\include\GeoSurface.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\bi_list.h">
+    <ClInclude Include="..\include\bi_list.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\hashmap.h">
+    <ClInclude Include="..\include\hashmap.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\linked_array.h">
+    <ClInclude Include="..\include\linked_array.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\sorted_list.h">
+    <ClInclude Include="..\include\sorted_list.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterLayerRender.h">
+    <ClInclude Include="..\include\RasterLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterRgbLayerRender.h">
+    <ClInclude Include="..\include\RasterRgbLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterGrayScaleLayerRender.h">
+    <ClInclude Include="..\include\RasterGrayScaleLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\RasterBinaryGrayScaleLayerRender.h">
+    <ClInclude Include="..\include\RasterBinaryGrayScaleLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\VectorLayerRender.h">
+    <ClInclude Include="..\include\VectorLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\VectorSimpleLayerRender.h">
+    <ClInclude Include="..\include\VectorSimpleLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\ITypedObject.h">
+    <ClInclude Include="..\include\ITypedObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\ITool.h">
+    <ClInclude Include="..\include\ITool.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\Tool.h">
+    <ClInclude Include="..\include\Tool.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\ToolKit.h">
+    <ClInclude Include="..\include\ToolKit.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_Entity.h">
+    <ClInclude Include="..\include\tGis_Entity.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_Organizer.h">
+    <ClInclude Include="..\include\tGis_Organizer.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_Symbol.h">
+    <ClInclude Include="..\include\tGis_Symbol.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_Utility.h">
+    <ClInclude Include="..\include\tGis_Utility.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_Visualize.h">
+    <ClInclude Include="..\include\tGis_Visualize.h">
       <Filter>include\Visualize</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_Core.h">
+    <ClInclude Include="..\include\tGis_Core.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_CoreCfg.h">
+    <ClInclude Include="..\include\tGis_CoreCfg.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\IInclusionObject.h">
+    <ClInclude Include="..\include\IInclusionObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="internal\glad.h">
+    <ClInclude Include="..\internal\glad.h">
       <Filter>internal</Filter>
     </ClInclude>
-    <ClInclude Include="internal\khrplatform.h">
+    <ClInclude Include="..\internal\khrplatform.h">
       <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\RasterBandStorageBlockGridReader.cpp">
+    <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterBandSeqPixelReader.cpp">
+    <ClCompile Include="..\src\RasterBandSeqPixelReader.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterBandSeqBlockReader.cpp">
+    <ClCompile Include="..\src\RasterBandSeqBlockReader.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\MapTool.cpp">
+    <ClCompile Include="..\src\MapTool.cpp">
       <Filter>src\Visualize</Filter>
     </ClCompile>
-    <ClCompile Include="src\MapWidget.cpp">
+    <ClCompile Include="..\src\MapWidget.cpp">
       <Filter>src\Visualize</Filter>
     </ClCompile>
-    <ClCompile Include="src\FileSystemDataSource.cpp">
+    <ClCompile Include="..\src\FileSystemDataSource.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\Map.cpp">
+    <ClCompile Include="..\src\Map.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyGDALRasterDataset.cpp">
+    <ClCompile Include="..\src\MyGDALRasterDataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\OverlayLayer.cpp">
+    <ClCompile Include="..\src\OverlayLayer.cpp">
       <Filter>src\Visualize</Filter>
     </ClCompile>
-    <ClCompile Include="src\SimpleFillSymbol.cpp">
+    <ClCompile Include="..\src\SimpleFillSymbol.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
-    <ClCompile Include="src\SimpleLineSymbol.cpp">
+    <ClCompile Include="..\src\SimpleLineSymbol.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
-    <ClCompile Include="src\SimpleMarkerSymbol.cpp">
+    <ClCompile Include="..\src\SimpleMarkerSymbol.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyGDALVectorDataset.cpp">
+    <ClCompile Include="..\src\MyGDALVectorDataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\Layer.cpp">
+    <ClCompile Include="..\src\Layer.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\SimpleSymbolLibrary.cpp">
+    <ClCompile Include="..\src\SimpleSymbolLibrary.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
-    <ClCompile Include="src\SymbolLibraryRepository.cpp">
+    <ClCompile Include="..\src\SymbolLibraryRepository.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
-    <ClCompile Include="src\Statistics.cpp">
+    <ClCompile Include="..\src\Statistics.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\OverlayRect.cpp">
+    <ClCompile Include="..\src\OverlayRect.cpp">
       <Filter>src\Visualize</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyGDALDataset.cpp">
+    <ClCompile Include="..\src\MyGDALDataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyGDALMemRasterDataset.cpp">
+    <ClCompile Include="..\src\MyGDALMemRasterDataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\MyGDALFileRasterDataset.cpp">
+    <ClCompile Include="..\src\MyGDALFileRasterDataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\MemoryDataSource.cpp">
+    <ClCompile Include="..\src\MemoryDataSource.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\DataSource.cpp">
+    <ClCompile Include="..\src\DataSource.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\Dataset.cpp">
+    <ClCompile Include="..\src\Dataset.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\ToolKitRepository.cpp">
+    <ClCompile Include="..\src\ToolKitRepository.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\EventBase.cpp">
+    <ClCompile Include="..\src\EventBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\TGisApplication.cpp">
+    <ClCompile Include="..\src\TGisApplication.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterWriter.cpp">
+    <ClCompile Include="..\src\RasterWriter.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\Helper.cpp">
+    <ClCompile Include="..\src\Helper.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="src\GeoViewPort.cpp">
+    <ClCompile Include="..\src\GeoViewPort.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="internal\Plugin.cpp">
+    <ClCompile Include="..\internal\Plugin.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="internal\PluginManager.cpp">
+    <ClCompile Include="..\internal\PluginManager.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="src\tinyxml2.cpp">
+    <ClCompile Include="..\src\tinyxml2.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\elr_mtx.c">
+    <ClCompile Include="..\src\elr_mtx.c">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\ilog.c">
+    <ClCompile Include="..\src\ilog.c">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\DataSourceRepository.cpp">
+    <ClCompile Include="..\src\DataSourceRepository.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\LayerRender.cpp">
+    <ClCompile Include="..\src\LayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\GeoSurface.cpp">
+    <ClCompile Include="..\src\GeoSurface.cpp">
       <Filter>src\Visualize</Filter>
     </ClCompile>
-    <ClCompile Include="src\bi_list.c">
+    <ClCompile Include="..\src\bi_list.c">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\hashmap.c">
+    <ClCompile Include="..\src\hashmap.c">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\linked_array.c">
+    <ClCompile Include="..\src\linked_array.c">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\sorted_list.c">
+    <ClCompile Include="..\src\sorted_list.c">
       <Filter>src\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterLayerRender.cpp">
+    <ClCompile Include="..\src\RasterLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterRgbLayerRender.cpp">
+    <ClCompile Include="..\src\RasterRgbLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterGrayScaleLayerRender.cpp">
+    <ClCompile Include="..\src\RasterGrayScaleLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\RasterBinaryGrayScaleLayerRender.cpp">
+    <ClCompile Include="..\src\RasterBinaryGrayScaleLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\VectorLayerRender.cpp">
+    <ClCompile Include="..\src\VectorLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\VectorSimpleLayerRender.cpp">
+    <ClCompile Include="..\src\VectorSimpleLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tool.cpp">
+    <ClCompile Include="..\src\Tool.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\ToolKit.cpp">
+    <ClCompile Include="..\src\ToolKit.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
-    <ClCompile Include="src\IInclusionObject.cpp">
+    <ClCompile Include="..\src\IInclusionObject.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="src\ILayerRender.cpp">
+    <ClCompile Include="..\src\ILayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="internal\glad.c">
+    <ClCompile Include="..\internal\glad.c">
       <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>

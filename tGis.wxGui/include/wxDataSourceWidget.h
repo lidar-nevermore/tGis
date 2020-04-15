@@ -36,15 +36,29 @@ public:
 
 protected:
 	wxToolBar* _toolBar;
+	wxToolBarToolBase* _toolConnDs;
+	wxToolBarToolBase* _toolDsInfo;
+	wxToolBarToolBase* _toolRefreshDs;
+	wxToolBarToolBase* _toolDisConnDs;
+	wxToolBarToolBase* _toolDtInfo;
+	wxToolBarToolBase* _toolSaveDtAs;
+	wxToolBarToolBase* _toolCloseDt;
 	wxTreeCtrl* _treeCtrl;
+	wxImageList* _imgList;
+
 private:
 	IDataSource* _selDs;
 	IDataset* _selDt;
 
 private:
+	wxTreeItemId _openedDtItemId;
+	wxTreeItemId _memDsItemId;
+	wxTreeItemId _fileSysItemId;
+
+private:
 	static void OnEachDataSource(IDataSource* ds, void* ud);
 	static void OnEachDataset(IDataset* dt, void* ud);
-	void AddDataSourceNode(wxTreeItemId &parent, IDataSource* ds);
+	wxTreeItemId AddDataSourceNode(wxTreeItemId &parent, IDataSource* ds);
 	void AddDataSourceSubNode(wxTreeItemId &parent, IDataSource* ds);
 
 private:

@@ -18,32 +18,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tGis_wxApp.h">
+    <ClInclude Include="..\include\tGis_wxApp.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\tGis_wxAppCfg.h">
+    <ClInclude Include="..\include\tGis_wxAppCfg.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="forms\MainFrame.h">
+    <ClInclude Include="resource.h">
+      <Filter>res</Filter>
+    </ClInclude>
+    <ClInclude Include="..\forms\MainFrame.h">
       <Filter>forms</Filter>
     </ClInclude>
-    <ClInclude Include="forms\MainFrameBase.h">
+    <ClInclude Include="..\forms\MainFrameBase.h">
       <Filter>forms</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\tGis_wxApp.cpp">
+    <ClCompile Include="..\src\tGis_wxApp.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="forms\MainFrame.cpp">
+    <ClCompile Include="..\forms\MainFrame.cpp">
       <Filter>forms</Filter>
     </ClCompile>
-    <ClCompile Include="forms\MainFrameBase.cpp">
+    <ClCompile Include="..\forms\MainFrameBase.cpp">
       <Filter>forms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="forms\MainFrame.fbp">
+    <ResourceCompile Include="tGis.wxApp.rc">
+      <Filter>res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico">
+      <Filter>res</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\forms\MainFrame.fbp">
       <Filter>forms</Filter>
     </None>
   </ItemGroup>
