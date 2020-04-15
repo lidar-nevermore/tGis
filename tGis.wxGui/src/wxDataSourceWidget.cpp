@@ -96,7 +96,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 
 	wxTreeItemId root = _treeCtrl->AddRoot(wxT("DataSource"), 0);
 	_openedDtItemId = _treeCtrl->AppendItem(root, wxT("Opened Dataset"), dataset_open_img);
-	_memDsItemId = AddDataSourceNode(root, &MemoryDataSource::INSTANCE());
+	_memDsItemId = AddDataSourceNode(root, &MemoryDataSource::INSTANCE(), false);
 	_fileSysItemId = _treeCtrl->AppendItem(root, wxT("FileSystem"), disk_img);
 
 
@@ -108,7 +108,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 		if (wxDir::Exists(disk))
 		{
 			FileSystemDataSource* fds = new FileSystemDataSource(disk);
-			AddDataSourceNode(_fileSysItemId, fds);
+			AddDataSourceNode(_fileSysItemId, fds, true);
 		}
 	}
 
@@ -126,9 +126,9 @@ wxDataSourceWidget::~wxDataSourceWidget()
 	//delete _imgList;
 }
 
-wxTreeItemId wxDataSourceWidget::AddDataSourceNode(wxTreeItemId &parent, IDataSource * ds)
+wxTreeItemId wxDataSourceWidget::AddDataSourceNode(wxTreeItemId &parent, IDataSource * ds, bool autoDelete)
 {
-	dsTreeItemData* mdsData = new dsTreeItemData();
+	dsTreeItemData* mdsData = new dsTreeItemData(autoDelete);
 	mdsData->_ds = ds;
 	wxString label = ds->GetName();
 	if(ds->IsTypeOf(MemoryDataSource::S_GetType()))
@@ -141,7 +141,7 @@ void wxDataSourceWidget::OnEachDataSource(IDataSource* ds, void* ud)
 {
 	wxDataSourceWidget* pDsWidget = (wxDataSourceWidget*)((void**)ud)[0];
 	wxTreeItemId* parentItemId = (wxTreeItemId*)((void**)ud)[1];
-	pDsWidget->AddDataSourceNode(*parentItemId, ds);
+	pDsWidget->AddDataSourceNode(*parentItemId, ds, false);
 }
 
 void wxDataSourceWidget::OnEachDataset(IDataset* dt, void* ud)

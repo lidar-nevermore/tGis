@@ -1,12 +1,27 @@
 #include "MainFrame.h"
 #include <wx/artprov.h>
 
+#include "tGis_wxAppCfg.h"
 
 MainFrame::MainFrame()
     : MainFrameBase(NULL,wxID_ANY,wxT("tGis Desktop"))
 {
-	wxIcon icon(wxString(TGisApplication::INSTANCE()->GetExeDir()) + wxString("/icon.png"), wxBITMAP_TYPE_PNG);
+	wxIcon icon(wxString(TGisApplication::INSTANCE()->GetExeDir()) + wxString("/wxApp_res/icon.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(icon);
+
+	_toolPan = _toolBar->AddTool(wxID_ANY, wxT("Pan"), _TOOL_PNG("MapTool","Pan"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolZoomFree = _toolBar->AddTool(wxID_ANY, wxT("Zoom Free"), _TOOL_PNG("MapTool", "ZoomFree"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolZoomIn = _toolBar->AddTool(wxID_ANY, wxT("Zoom In"), _TOOL_PNG("MapTool", "ZoomIn"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolZoomOut = _toolBar->AddTool(wxID_ANY, wxT("Zoom In"), _TOOL_PNG("MapTool", "ZoomOut"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolZoomRect = _toolBar->AddTool(wxID_ANY, wxT("Zoom In"), _TOOL_PNG("MapTool", "ZoomRect"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolEntire = _toolBar->AddTool(wxID_ANY, wxT("Entire Map"), _TOOL_PNG("MapTool", "Entire"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolZoomLayer = _toolBar->AddTool(wxID_ANY, wxT("Zoom to layer"), _TOOL_PNG("MapTool", "ZoomLayer"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolZoomOriginal = _toolBar->AddTool(wxID_ANY, wxT("Zoom Original"), _TOOL_PNG("MapTool", "ZoomOriginal"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolGrid = _toolBar->AddTool(wxID_ANY, wxT("Show Grid"), _TOOL_PNG("MapTool", "Grid"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolMapSpatialRef = _toolBar->AddTool(wxID_ANY, wxT("Map SpatialRefrence"), _TOOL_PNG("MapTool", "MapSpatialRef"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+
+	_toolBar->Realize();
+
     _mgr.SetManagedWindow(this);
 
 	_mapWidget = new wxGLMapWidget(this, wxID_ANY,
@@ -38,21 +53,22 @@ MainFrame::MainFrame()
 		MinSize(wxSize(270, 150)).
 		CloseButton(false).MaximizeButton(false));
 
-	wxPanel* pTool = new wxPanel(this, wxID_ANY,
+	_toolWidget = new wxPanel(this, wxID_ANY,
 		wxPoint(0, 0), wxSize(270, 350));
 
-	_mgr.AddPane(pTool, wxAuiPaneInfo().
+	_mgr.AddPane(_toolWidget, wxAuiPaneInfo().
 		Name(wxT("Tool")).Caption(wxT("Tool")).
 		Right().Layer(0).Position(0).
 		MinSize(wxSize(270, 100)).
 		CloseButton(false).MaximizeButton(false));
 
-	wxPanel* pEagleEye = new wxPanel(this, wxID_ANY,
+	_eagleEyeWidget = new wxPanel(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize);
 
-	_mgr.AddPane(pEagleEye, wxAuiPaneInfo().
+	_mgr.AddPane(_eagleEyeWidget, wxAuiPaneInfo().
 		Name(wxT("EagleEye")).Caption(wxT("EagleEye")).
 		Right().Layer(0).Position(1).
+		MaxSize(5000,355).
 		MinSize(wxSize(270, 270)).
 		CloseButton(false).MaximizeButton(false));
 
@@ -60,12 +76,22 @@ MainFrame::MainFrame()
 
 	SetPosition(wxPoint(100, 100));
 	SetSize(wxSize(1080, 700));
+
+	wxAuiPaneInfo pane = _mgr.GetPane(_eagleEyeWidget);
+	pane.dock_proportion = 20;
+	_mgr.GetPane(_eagleEyeWidget).SafeSet(pane);
+	_mgr.Update();
 }
 
 
 MainFrame::~MainFrame()
 {
 	_mgr.UnInit();
+}
+
+void MainFrame::OnSize(wxSizeEvent & event)
+{
+
 }
 
 void MainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
@@ -89,4 +115,5 @@ void MainFrame::_toolTestOnToolClicked(wxCommandEvent & event)
 
 BEGIN_EVENT_TABLE(MainFrame, MainFrameBase)
     EVT_MENU(wxID_EXIT, MainFrame::OnExit)
+	EVT_SIZE(MainFrame::OnSize)
 END_EVENT_TABLE()
