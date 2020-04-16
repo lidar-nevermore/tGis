@@ -75,7 +75,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 
 	bSizer1->Add( _toolBar, 0, wxEXPAND, 5 );
 
-	_treeCtrl = new wxTreeCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT /*| wxNO_BORDER*/);
+	_treeCtrl = new wxTreeCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT );
 	bSizer1->Add( _treeCtrl, 1, wxALL|wxEXPAND, 5 );
 
 	this->SetSizer( bSizer1 );
@@ -148,13 +148,7 @@ void wxDataSourceWidget::OnEachDataset(IDataset* dt, void* ud)
 {
 	wxDataSourceWidget* pDsWidget = (wxDataSourceWidget*)((void**)ud)[0];
 	wxTreeItemId* parentItemId = (wxTreeItemId*)((void**)ud)[1];
-	dsTreeItemData* mdsData = new dsTreeItemData();
-	mdsData->_dt = dt;
-	wxString label = wxString::From8BitData(dt->GetName());
-	if(dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
-		pDsWidget->_treeCtrl->AppendItem(*parentItemId, label, raster_img, raster_img, mdsData);
-	else //if (dt->IsTypeOf(MyGDALVectorDataset::S_GetType()))
-		pDsWidget->_treeCtrl->AppendItem(*parentItemId, label, vector_img, vector_img, mdsData);
+	pDsWidget->AddDatasetNode(*parentItemId, dt);
 }
 
 void wxDataSourceWidget::AddDataSourceSubNode(wxTreeItemId &parent, IDataSource * ds)
@@ -162,6 +156,27 @@ void wxDataSourceWidget::AddDataSourceSubNode(wxTreeItemId &parent, IDataSource 
 	void* ud[2] = { this, &parent };
 	ds->ForEachDataSource(wxDataSourceWidget::OnEachDataSource, (void*)ud);
 	ds->ForEachDataset(wxDataSourceWidget::OnEachDataset, (void*)ud);
+}
+
+void wxDataSourceWidget::AddDatasetNode(wxTreeItemId & parent, IDataset * dt)
+{
+	dsTreeItemData* mdsData = new dsTreeItemData();
+	mdsData->_dt = dt;
+	wxString label = dt->GetName();
+	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+	{
+		if(dt->IsOpened())
+			_treeCtrl->AppendItem(parent, label, raster_open_img, raster_open_img, mdsData);
+		else
+			_treeCtrl->AppendItem(parent, label, raster_img, raster_img, mdsData);
+	}
+	else //if (dt->IsTypeOf(MyGDALVectorDataset::S_GetType()))
+	{
+		if (dt->IsOpened())
+			_treeCtrl->AppendItem(parent, label, vector_open_img, vector_open_img, mdsData);
+		else
+			_treeCtrl->AppendItem(parent, label, vector_img, vector_img, mdsData);
+	}
 }
 
 void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
@@ -172,24 +187,23 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 	{
 		if (selData->_ds != nullptr)
 		{
-			if (selData->_ds->IsConnected() == false)
+			selData->_ds->Connect();
+			if (selData->_ds->IsConnected())
 			{
-				selData->_ds->Connect();
-				if (selData->_ds->IsConnected())
-				{
-					AddDataSourceSubNode(selId, selData->_ds);
-					//TODO: 当前只有文件系统类型数据源
-					_treeCtrl->SetItemImage(selId, folder_open_img);
-					_treeCtrl->SetItemImage(selId, folder_open_img, wxTreeItemIcon_Selected);
-					_treeCtrl->Expand(selId);
-				}
+				AddDataSourceSubNode(selId, selData->_ds);
+				//TODO: 当前只有文件系统类型数据源
+				_treeCtrl->SetItemImage(selId, folder_open_img);
+				_treeCtrl->SetItemImage(selId, folder_open_img, wxTreeItemIcon_Selected);
+				_treeCtrl->Expand(selId);
 			}
+			AfterDataSourceActivatedEvent(selData->_ds);
 		}
-		else if (selData->_dt != nullptr && selData->_dt->IsOpened() == false)
+		else if (selData->_dt != nullptr)
 		{
 			selData->_dt->Open();
 			if (selData->_dt->IsOpened())
 			{
+				AddDatasetNode(_openedDtItemId, selData->_dt);
 				if (selData->_dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 				{
 					_treeCtrl->SetItemImage(selId, raster_open_img);
@@ -201,6 +215,8 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 					_treeCtrl->SetItemImage(selId, vector_open_img, wxTreeItemIcon_Selected);
 				}
 			}
+
+			AfterDatasetActivatedEvent(selData->_dt);
 		}
 	}
 }

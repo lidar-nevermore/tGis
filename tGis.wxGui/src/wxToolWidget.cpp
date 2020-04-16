@@ -1,13 +1,6 @@
-///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
-// http://www.wxformbuilder.org/
-//
-// PLEASE DO *NOT* EDIT THIS FILE!
-///////////////////////////////////////////////////////////////////////////
-
 #include "wxToolWidget.h"
 
-///////////////////////////////////////////////////////////////////////////
+BEGIN_NAME_SPACE(tGis, Gui)
 
 wxToolWidget::wxToolWidget( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
@@ -34,3 +27,6 @@ wxToolWidget::wxToolWidget( wxWindow* parent, wxWindowID id, const wxPoint& pos,
 wxToolWidget::~wxToolWidget()
 {
 }
+
+END_NAME_SPACE(tGis, Gui)
+

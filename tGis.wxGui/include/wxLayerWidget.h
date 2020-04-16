@@ -1,11 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
-// http://www.wxformbuilder.org/
-//
-// PLEASE DO *NOT* EDIT THIS FILE!
-///////////////////////////////////////////////////////////////////////////
-
 #pragma once
+
+#ifndef __WX_LAYERWIDGET_H__
+#define __WX_LAYERWIDGET_H__
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -22,26 +18,50 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 
-///////////////////////////////////////////////////////////////////////////
+#include "tGis_wxGuiCfg.h"
 
+using namespace tGis::Core;
 
-///////////////////////////////////////////////////////////////////////////////
-/// Class wxLayerWidget
-///////////////////////////////////////////////////////////////////////////////
-class wxLayerWidget : public wxPanel
+BEGIN_NAME_SPACE(tGis, Gui)
+
+class TGIS_GUI_API wxLayerWidget : public wxPanel
 {
-	private:
+public:
+	wxLayerWidget(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
+	~wxLayerWidget();
 
-	protected:
-		wxToolBar* _toolBar;
-		wxToolBarToolBase* m_tool1;
-		wxToolBarToolBase* m_tool2;
-		wxTreeCtrl* _treeCtrl;
+protected:
+	wxToolBar* _toolBar;
+	wxToolBarToolBase* _toolLayerVisible;
+	wxToolBarToolBase* _toolLayerAttrib;
+	wxToolBarToolBase* _toolLayerUp;
+	wxToolBarToolBase* _toolLayerDown;
+	wxToolBarToolBase* _toolLayerTop;
+	wxToolBarToolBase* _toolLayerBottom;
+	wxToolBarToolBase* _toolRemoveLayer;
+	wxToolBarToolBase* _toolRemoveAllLayers;
 
-	public:
+	wxTreeCtrl* _treeCtrl;
+	wxImageList* _imgList;
 
-		wxLayerWidget( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-		~wxLayerWidget();
+public:
+	void SetMap(IMap* map);
+
+private:
+	IMap* _map;
+
+private:
+	virtual void LayerAdded(IMapPtr, ILayerPtr);
+	virtual void LayerRemoved(IMapPtr, ILayerPtr);
+	virtual void LayerCleared(IMapPtr);
+
+private:
+	void AddLayerNode(ILayer* layer);
+	void RemoveLayerNode(ILayer* layer);
+	void ClearLayerNode();
 
 };
 
+END_NAME_SPACE(tGis, Gui)
+
+#endif

@@ -227,9 +227,6 @@
     <ClInclude Include="..\include\RasterGrayScaleLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RasterBinaryGrayScaleLayerRender.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\VectorLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
@@ -277,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="..\internal\khrplatform.h">
       <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RasterColorRampLayerRender.h">
+      <Filter>include\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -415,9 +415,6 @@
     <ClCompile Include="..\src\RasterGrayScaleLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RasterBinaryGrayScaleLayerRender.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\VectorLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
@@ -438,6 +435,9 @@
     </ClCompile>
     <ClCompile Include="..\internal\glad.c">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RasterColorRampLayerRender.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

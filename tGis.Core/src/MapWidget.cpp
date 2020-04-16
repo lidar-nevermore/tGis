@@ -49,12 +49,15 @@ MapWidget::~MapWidget()
 
 void MapWidget::SetMap(IMap *map)
 {
+	if (_map == map)
+		return;
+
 	if (map == nullptr && _map != nullptr)
 	{
 		_viewPort.SetSpatialReference(map->GetSpatialReference());
-		map->LayerAddedEvent.Remove(this, &MapWidget::LayerAdded);
-		map->LayerClearedEvent.Remove(this, &MapWidget::LayerCleared);
-		map->LayerRemovedEvent.Remove(this, &MapWidget::LayerRemoved);
+		_map->LayerAddedEvent.Remove(this, &MapWidget::LayerAdded);
+		_map->LayerClearedEvent.Remove(this, &MapWidget::LayerCleared);
+		_map->LayerRemovedEvent.Remove(this, &MapWidget::LayerRemoved);
 	}
 	_map = map;
 	if (_map != nullptr)

@@ -34,6 +34,10 @@ public:
 	IDataSource* GetSelDataSource() { return _selDs; }
 	IDataset* GetSelDataset() { return _selDt; }
 
+public:
+	Event<IDataset*> AfterDatasetActivatedEvent;
+	Event<IDataSource*> AfterDataSourceActivatedEvent;
+
 protected:
 	wxToolBar* _toolBar;
 	wxToolBarToolBase* _toolConnDs;
@@ -60,6 +64,7 @@ private:
 	static void OnEachDataset(IDataset* dt, void* ud);
 	wxTreeItemId AddDataSourceNode(wxTreeItemId &parent, IDataSource* ds, bool autoDelete);
 	void AddDataSourceSubNode(wxTreeItemId &parent, IDataSource* ds);
+	void AddDatasetNode(wxTreeItemId &parent, IDataset* dt);
 
 private:
 	void OnNodeActivated(wxTreeEvent& event);

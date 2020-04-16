@@ -28,6 +28,7 @@ Layer::Layer(IDataset* dt)
 	_map = nullptr;
 	_render = nullptr;
 	_dataset = dt;
+	_impl_->_name = dt->GetName();
 }
 
 Layer::~Layer()

@@ -56,7 +56,7 @@
     <ClInclude Include="..\include\OverlayLayer.h" />
     <ClInclude Include="..\include\OverlayRect.h" />
     <ClInclude Include="..\include\Progress.h" />
-    <ClInclude Include="..\include\RasterBinaryGrayScaleLayerRender.h" />
+    <ClInclude Include="..\include\RasterColorRampLayerRender.h" />
     <ClInclude Include="..\include\RasterRgbLayerRender.h" />
     <ClInclude Include="..\include\RasterWriter.h" />
     <ClInclude Include="..\include\SimpleFillSymbol.h" />
@@ -125,7 +125,7 @@
     <ClCompile Include="..\src\RasterBandSeqBlockReader.cpp" />
     <ClCompile Include="..\src\RasterBandSeqPixelReader.cpp" />
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp" />
-    <ClCompile Include="..\src\RasterBinaryGrayScaleLayerRender.cpp" />
+    <ClCompile Include="..\src\RasterColorRampLayerRender.cpp" />
     <ClCompile Include="..\src\RasterGrayScaleLayerRender.cpp" />
     <ClCompile Include="..\src\RasterLayerRender.cpp" />
     <ClCompile Include="..\src\RasterRgbLayerRender.cpp" />

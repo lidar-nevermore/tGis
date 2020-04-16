@@ -1,4 +1,4 @@
-#include "RasterBinaryGrayScaleLayerRender.h"
+#include "RasterColorRampLayerRender.h"
 #include "MyGDALRasterDataset.h"
 
 #include "gdal.h"
@@ -8,26 +8,26 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const RasterBinaryGrayScaleLayer::_type = "7EB66993-6103-4426-AE75-FA7BC52C402B";
+const char* const RasterColorRampLayerRender::_type = "7EB66993-6103-4426-AE75-FA7BC52C402B";
 
-const char * RasterBinaryGrayScaleLayer::GetType()
+const char * RasterColorRampLayerRender::GetType()
 {
 	return _type;
 }
 
-const char * RasterBinaryGrayScaleLayer::S_GetType()
+const char * RasterColorRampLayerRender::S_GetType()
 {
 	return _type;
 }
 
-bool RasterBinaryGrayScaleLayer::IsTypeOf(const char * type)
+bool RasterColorRampLayerRender::IsTypeOf(const char * type)
 {
 	if (strcmp(type, _type) == 0)
 		return true;
 	return RasterLayerRender::IsTypeOf(type);
 }
 
-RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayer* layer, int bandIndex)
+RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer* layer, int bandIndex)
 	:RasterLayerRender(layer)
 {
 	_leftRChannel = true;
@@ -38,8 +38,8 @@ RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayer* layer, int bandIn
 	_rightBChannel = true;
 	_noDataLogic = 0;
 	_noDataValue = 0.0;
-	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterBinaryGrayScaleLayer::OuterResample;
-	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterBinaryGrayScaleLayer::IOResample;
+	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterColorRampLayerRender::OuterResample;
+	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterColorRampLayerRender::IOResample;
 
 	GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(bandIndex);
 	GDALDataType dataType = band->GetRasterDataType();
@@ -60,11 +60,11 @@ RasterBinaryGrayScaleLayer::RasterBinaryGrayScaleLayer(ILayer* layer, int bandIn
 }
 
 
-RasterBinaryGrayScaleLayer::~RasterBinaryGrayScaleLayer()
+RasterColorRampLayerRender::~RasterColorRampLayerRender()
 {
 }
 
-void RasterBinaryGrayScaleLayer::SetMinPivotMax(double min, double pivot, double max)
+void RasterColorRampLayerRender::SetMinPivotMax(double min, double pivot, double max)
 {
 	_min = min;
 	_max = max;
@@ -73,64 +73,64 @@ void RasterBinaryGrayScaleLayer::SetMinPivotMax(double min, double pivot, double
 	_rightRange = _max - _pivot;
 }
 
-void RasterBinaryGrayScaleLayer::GetMinPivotMax(double * min, double * pivot, double * max)
+void RasterColorRampLayerRender::GetMinPivotMax(double * min, double * pivot, double * max)
 {
 	*min = _min;
 	*max = _max;
 	*pivot = _pivot;
 }
 
-unsigned char * RasterBinaryGrayScaleLayer::GetLut()
+unsigned char * RasterColorRampLayerRender::GetLut()
 {
 	return _lut;
 }
 
-int RasterBinaryGrayScaleLayer::GetBand()
+int RasterColorRampLayerRender::GetBand()
 {
 	return _bandIndex;
 }
 
-void RasterBinaryGrayScaleLayer::SetLeftChannel(bool r, bool g, bool b)
+void RasterColorRampLayerRender::SetLeftChannel(bool r, bool g, bool b)
 {
 	_leftRChannel = r;
 	_leftGChannel = g;
 	_leftBChannel = b;
 }
 
-void RasterBinaryGrayScaleLayer::GetLeftChannel(bool * r, bool * g, bool * b)
+void RasterColorRampLayerRender::GetLeftChannel(bool * r, bool * g, bool * b)
 {
 	*r = _leftRChannel;
 	*g = _leftGChannel;
 	*b = _leftBChannel;
 }
 
-void RasterBinaryGrayScaleLayer::SetRightChannel(bool r, bool g, bool b)
+void RasterColorRampLayerRender::SetRightChannel(bool r, bool g, bool b)
 {
 	_rightRChannel = r;
 	_rightGChannel = g;
 	_rightBChannel = b;
 }
 
-void RasterBinaryGrayScaleLayer::GetRightChannel(bool * r, bool * g, bool * b)
+void RasterColorRampLayerRender::GetRightChannel(bool * r, bool * g, bool * b)
 {
 	*r = _rightRChannel;
 	*g = _rightGChannel;
 	*b = _rightBChannel;
 }
 
-void RasterBinaryGrayScaleLayer::SetNoDataValue(int noDataLogic, double noDataValue)
+void RasterColorRampLayerRender::SetNoDataValue(int noDataLogic, double noDataValue)
 {
 	_noDataLogic = noDataLogic;
 	_noDataValue = noDataValue;
 }
 
-void RasterBinaryGrayScaleLayer::GetNoDataValue(int * noDataLogic, double * noDataValue)
+void RasterColorRampLayerRender::GetNoDataValue(int * noDataLogic, double * noDataValue)
 {
 	*noDataLogic = _noDataLogic;
 	*noDataValue = _noDataValue;
 }
 
-void RasterBinaryGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
+void RasterColorRampLayerRender::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
 {
 	GDALRasterIOExtraArg arg;
 	INIT_RASTERIO_EXTRA_ARG(arg);
@@ -194,7 +194,7 @@ void RasterBinaryGrayScaleLayer::OuterResample(unsigned char * pixBuffer, int re
 	}
 }
 
-void RasterBinaryGrayScaleLayer::IOResample(unsigned char * pixBuffer, int readingLeft, int readingTop, int readingRight, int readingBottom, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
+void RasterColorRampLayerRender::IOResample(unsigned char * pixBuffer, int readingLeft, int readingTop, int readingRight, int readingBottom, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
 {
 	GDALRasterIOExtraArg arg;
 	INIT_RASTERIO_EXTRA_ARG(arg);

@@ -37,14 +37,20 @@ private:
 	MapZoomTool _mapZoomTool;
 	RectZoomTool _rectZoomTool;
 
-	wxPanel* _toolWidget;
+	wxDataSourceWidget* _dataSourceWidget;
+
+	wxLayerWidget* _layerWidget;
+
+	wxToolWidget* _toolWidget;
 
 	wxPanel* _eagleEyeWidget;
 
 private:
+	void OnDatasetOpen(IDataset* dt);
+
+private:
 	void OnSize(wxSizeEvent& event);
 	void OnExit(wxCommandEvent& WXUNUSED(event));
-	void _toolTestOnToolClicked(wxCommandEvent& event);
 
 	DECLARE_EVENT_TABLE();
 };

@@ -1,11 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
-// http://www.wxformbuilder.org/
-//
-// PLEASE DO *NOT* EDIT THIS FILE!
-///////////////////////////////////////////////////////////////////////////
-
 #pragma once
+
+#ifndef __WX_TOOLWIDGET_H__
+#define __WX_TOOLWIDGET_H__
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -22,26 +18,29 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 
-///////////////////////////////////////////////////////////////////////////
+#include "tGis_wxGuiCfg.h"
 
+using namespace tGis::Core;
 
-///////////////////////////////////////////////////////////////////////////////
-/// Class wxToolWidget
-///////////////////////////////////////////////////////////////////////////////
-class wxToolWidget : public wxPanel
+BEGIN_NAME_SPACE(tGis, Gui)
+
+class TGIS_GUI_API wxToolWidget : public wxPanel
 {
-	private:
+private:
 
-	protected:
-		wxToolBar* _toolBar;
-		wxToolBarToolBase* m_tool1;
-		wxToolBarToolBase* m_tool2;
-		wxTreeCtrl* _treeCtrl;
+protected:
+	wxToolBar* _toolBar;
+	wxToolBarToolBase* m_tool1;
+	wxToolBarToolBase* m_tool2;
+	wxTreeCtrl* _treeCtrl;
 
-	public:
+public:
 
-		wxToolWidget( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,300 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-		~wxToolWidget();
+	wxToolWidget(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
+	~wxToolWidget();
 
 };
 
+END_NAME_SPACE(tGis, Gui)
+
+#endif

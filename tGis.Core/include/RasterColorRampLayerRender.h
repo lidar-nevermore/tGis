@@ -15,7 +15,7 @@ class GDALRasterBand;
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGIS_CORE_API RasterBinaryGrayScaleLayer : public RasterLayerRender
+class TGIS_CORE_API RasterColorRampLayerRender : public RasterLayerRender
 {
 public:
 	virtual const char* GetType();
@@ -26,12 +26,12 @@ private:
 	static const char* const _type;
 
 public:
-	RasterBinaryGrayScaleLayer(ILayer* layer, int band);
-	~RasterBinaryGrayScaleLayer();
+	RasterColorRampLayerRender(ILayer* layer, int band);
+	~RasterColorRampLayerRender();
 
 private:
-	RasterBinaryGrayScaleLayer(const RasterBinaryGrayScaleLayer &) = delete;
-	RasterBinaryGrayScaleLayer &operator=(const RasterBinaryGrayScaleLayer &) = delete;
+	RasterColorRampLayerRender(const RasterColorRampLayerRender &) = delete;
+	RasterColorRampLayerRender &operator=(const RasterColorRampLayerRender &) = delete;
 
 public:
 	void SetMinPivotMax(double min, double pivot, double max);

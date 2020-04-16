@@ -35,25 +35,28 @@ MainFrame::MainFrame()
 		Center().Layer(0).Position(0).
 		CloseButton(false).MaximizeButton(true));
 
-	wxDataSourceWidget* pDataSource = new wxDataSourceWidget(this, wxID_ANY,
+	_dataSourceWidget = new wxDataSourceWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize);
 
-	_mgr.AddPane(pDataSource, wxAuiPaneInfo().
+	_dataSourceWidget->AfterDatasetActivatedEvent.Add<MainFrame>(this, &MainFrame::OnDatasetOpen);
+
+	_mgr.AddPane(_dataSourceWidget, wxAuiPaneInfo().
 		Name(wxT("DataSource")).Caption(wxT("DataSource")).
 		Left().Layer(0).Position(0).
 		MinSize(wxSize(270, 150)).
 		CloseButton(false).MaximizeButton(false));
 
-	wxPanel* pLayer = new wxPanel(this, wxID_ANY,
+	_layerWidget = new wxLayerWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize);
+	_layerWidget->SetMap(&_map);
 
-	_mgr.AddPane(pLayer, wxAuiPaneInfo().
+	_mgr.AddPane(_layerWidget, wxAuiPaneInfo().
 		Name(wxT("Layer")).Caption(wxT("Layer")).
 		Left().Layer(0).Position(1).
 		MinSize(wxSize(270, 150)).
 		CloseButton(false).MaximizeButton(false));
 
-	_toolWidget = new wxPanel(this, wxID_ANY,
+	_toolWidget = new wxToolWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxSize(270, 350));
 
 	_mgr.AddPane(_toolWidget, wxAuiPaneInfo().
@@ -89,6 +92,22 @@ MainFrame::~MainFrame()
 	_mgr.UnInit();
 }
 
+void MainFrame::OnDatasetOpen(IDataset * dt)
+{
+	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+	{
+		MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dt;
+		Layer* layer = new Layer(dataset);
+		int bandCount = dataset->GetGDALDataset()->GetRasterCount();
+		ILayerRender* layerRender = nullptr;
+		if (bandCount < 3)
+			layerRender = new RasterGrayScaleLayerRender(layer, 1);
+		else
+			layerRender = new RasterRgbLayerRender(layer, 1, 2, 3);
+		_map.AddLayer(layer);
+	}
+}
+
 void MainFrame::OnSize(wxSizeEvent & event)
 {
 
@@ -98,20 +117,6 @@ void MainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 {
 	Close(true);
 }
-
-void MainFrame::_toolTestOnToolClicked(wxCommandEvent & event)
-{
-	MyGDALFileRasterDataset* _dataset = new MyGDALFileRasterDataset(nullptr, "E:\\SegTest\\seg_result_sub.tif", GA_ReadOnly, false);
-	Layer* layer = new Layer(_dataset);
-	int bandCount = ((MyGDALFileRasterDataset*)_dataset)->GetGDALDataset()->GetRasterCount();
-	ILayerRender* layerRender = nullptr;
-	if (bandCount < 3)
-		layerRender = new RasterGrayScaleLayerRender(layer, 1);
-	else
-		layerRender = new RasterRgbLayerRender(layer, 1, 2, 3);
-	_map.AddLayer(layer);
-}
-
 
 BEGIN_EVENT_TABLE(MainFrame, MainFrameBase)
     EVT_MENU(wxID_EXIT, MainFrame::OnExit)
