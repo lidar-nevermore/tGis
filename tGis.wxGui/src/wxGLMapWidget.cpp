@@ -25,15 +25,15 @@ wxGLMapWidget::~wxGLMapWidget()
 {
 }
 
-void wxGLMapWidget::LayerAdded(IMapPtr map, ILayerPtr layer)
+void wxGLMapWidget::LayerAdded(IMapPtr map, ILayerPtr layer, size_t pos)
 {
-	MapWidget::LayerAdded(map, layer);
+	MapWidget::LayerAdded(map, layer, pos);
 	Refresh();
 }
 
-void wxGLMapWidget::LayerRemoved(IMapPtr map, ILayerPtr layer)
+void wxGLMapWidget::LayerRemoved(IMapPtr map, ILayerPtr layer, size_t pos)
 {
-	MapWidget::LayerRemoved(map, layer);
+	MapWidget::LayerRemoved(map, layer, pos);
 	Refresh();
 }
 

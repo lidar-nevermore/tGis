@@ -51,8 +51,8 @@ protected:
 	wxGLGeoSurface _thisGeoSurface;
 
 protected:
-	void LayerAdded(IMapPtr, ILayerPtr) override;
-	void LayerRemoved(IMapPtr, ILayerPtr) override;
+	void LayerAdded(IMapPtr, ILayerPtr, size_t) override;
+	void LayerRemoved(IMapPtr, ILayerPtr, size_t) override;
 	void LayerCleared(IMapPtr) override;
 
 private:

@@ -69,7 +69,7 @@ void MapWidget::SetMap(IMap *map)
 	}	
 }
 
-void MapWidget::LayerAdded(IMapPtr map, ILayerPtr layer)
+void MapWidget::LayerAdded(IMapPtr map, ILayerPtr layer, size_t)
 {
 	if (map->GetLayerCount() == 1)
 	{
@@ -80,7 +80,7 @@ void MapWidget::LayerAdded(IMapPtr map, ILayerPtr layer)
 	RepaintMap();
 }
 
-void MapWidget::LayerRemoved(IMapPtr map, ILayerPtr layer)
+void MapWidget::LayerRemoved(IMapPtr map, ILayerPtr layer, size_t)
 {
 	if (map->GetLayerCount() == 0)
 	{

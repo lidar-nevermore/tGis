@@ -187,8 +187,9 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 	{
 		if (selData->_ds != nullptr)
 		{
+			bool isConnected = selData->_ds->IsConnected();
 			selData->_ds->Connect();
-			if (selData->_ds->IsConnected())
+			if (isConnected == false && selData->_ds->IsConnected())
 			{
 				AddDataSourceSubNode(selId, selData->_ds);
 				//TODO: 当前只有文件系统类型数据源
@@ -200,8 +201,9 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 		}
 		else if (selData->_dt != nullptr)
 		{
+			bool isOpen = selData->_dt->IsOpened();
 			selData->_dt->Open();
-			if (selData->_dt->IsOpened())
+			if (isOpen == false && selData->_dt->IsOpened())
 			{
 				AddDatasetNode(_openedDtItemId, selData->_dt);
 				if (selData->_dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))

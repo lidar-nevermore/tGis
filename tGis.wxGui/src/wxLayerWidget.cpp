@@ -12,6 +12,18 @@ wxBITMAP_TYPE_PNG )
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
+class wxLayerWidgetImpl
+{
+public:
+	wxLayerWidgetImpl(wxLayerWidget* owner)
+	{
+		_owner = owner;
+	}
+
+	wxLayerWidget* _owner;
+	vector<wxTreeItemId> _vecLayerNode;
+};
+
 class layerTreeItemData : public wxTreeItemData
 {
 public:
@@ -36,7 +48,9 @@ const int vector_unique = 8;
 
 wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
+	_impl_ = new wxLayerWidgetImpl(this);
 	_map = nullptr;
+	_selLayer = nullptr;
 
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
@@ -76,13 +90,24 @@ wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& po
 	_treeCtrl->AssignImageList(_imgList);
 
 	_treeCtrl->AddRoot(wxT("Layer"), 0);
+
+	Bind(wxEVT_TREE_SEL_CHANGED, &wxLayerWidget::OnNodeSelChanged, this);
+
+	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
+	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolRemoveLayer_Clicked, this, _toolRemoveLayer->GetId());
+
 }
 
 wxLayerWidget::~wxLayerWidget()
 {
+	Unbind(wxEVT_TREE_SEL_CHANGED, &wxLayerWidget::OnNodeSelChanged, this);
+
+	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
+	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolRemoveLayer_Clicked, this, _toolRemoveLayer->GetId());
+
 }
 
-void wxLayerWidget::SetMap(IMap * map)
+void wxLayerWidget::SetMap(IMap * map, IMapWidget* mapWidget)
 {
 	if (map == nullptr && _map != nullptr)
 	{
@@ -94,11 +119,12 @@ void wxLayerWidget::SetMap(IMap * map)
 		_map->LayerRemovedEvent.Remove(this, &wxLayerWidget::LayerRemoved);
 	}
 	_map = map;
+	_mapWidget = mapWidget;
 	if (_map != nullptr)
 	{
 		size_t layerCount = _map->GetLayerCount();
 		for (size_t i = 0; i < layerCount; i++)
-			AddLayerNode(_map->GetLayer(i));
+			AddLayerNode(_map->GetLayer(i), i);
 
 		_map->LayerAddedEvent.Add(this, &wxLayerWidget::LayerAdded);
 		_map->LayerClearedEvent.Add(this, &wxLayerWidget::LayerCleared);
@@ -106,60 +132,91 @@ void wxLayerWidget::SetMap(IMap * map)
 	}
 }
 
-void wxLayerWidget::LayerAdded(IMapPtr, ILayerPtr layer)
+void wxLayerWidget::LayerAdded(IMapPtr, ILayerPtr layer, size_t pos)
 {
-	AddLayerNode(layer);
+	AddLayerNode(layer, pos);
 }
 
-void wxLayerWidget::LayerRemoved(IMapPtr, ILayerPtr layer)
+void wxLayerWidget::LayerRemoved(IMapPtr, ILayerPtr layer, size_t pos)
 {
-	RemoveLayerNode(layer);
+	RemoveLayerNode(layer, pos);
 }
 
 void wxLayerWidget::LayerCleared(IMapPtr)
 {
 	wxTreeItemId root = _treeCtrl->GetRootItem();
 	_treeCtrl->DeleteChildren(root);
+	_impl_->_vecLayerNode.clear();
 }
 
-inline void wxLayerWidget::AddLayerNode(ILayer * layer)
+inline void wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 {
 	layerTreeItemData* layerData = new layerTreeItemData();
 	layerData->_layer = layer;
 	wxString label = layer->GetName();
 	ILayerRender* render = layer->GetRender();
 	wxTreeItemId root = _treeCtrl->GetRootItem();
+	wxTreeItemId inserted;
 	if (render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
-		_treeCtrl->AppendItem(root, label, raster_rgb, raster_rgb, layerData);
+		inserted = _treeCtrl->InsertItem(root, pos, label, raster_rgb, raster_rgb, layerData);
 	else if (render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
-		_treeCtrl->AppendItem(root, label, raster_color_ramp, raster_color_ramp, layerData);
+		inserted = _treeCtrl->InsertItem(root, pos, label, raster_color_ramp, raster_color_ramp, layerData);
 	else if (render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
-		_treeCtrl->AppendItem(root, label, raster_grayscale, raster_grayscale, layerData);
+		inserted = _treeCtrl->InsertItem(root, pos, label, raster_grayscale, raster_grayscale, layerData);
 	else //if (render->IsTypeOf(VectorSimpleLayerRender::S_GetType()))
-		_treeCtrl->AppendItem(root, label, vector_simple, vector_simple, layerData);
+		inserted = _treeCtrl->InsertItem(root, pos, label, vector_simple, vector_simple, layerData);
+
+	_impl_->_vecLayerNode.insert(_impl_->_vecLayerNode.begin() + pos, inserted);
 }
 
-inline void wxLayerWidget::RemoveLayerNode(ILayer * layer)
+inline void wxLayerWidget::RemoveLayerNode(ILayer * layer, size_t pos)
 {
-	wxTreeItemId root = _treeCtrl->GetRootItem();
-	wxTreeItemIdValue layerCookie;
-	wxTreeItemId layerNodeId = _treeCtrl->GetFirstChild(root, layerCookie);
-	while (layerNodeId.IsOk())
+	wxTreeItemId layerNodeId = _impl_->_vecLayerNode[pos];
+	_treeCtrl->Delete(layerNodeId);
+	_impl_->_vecLayerNode.erase(_impl_->_vecLayerNode.begin() + pos);
+
+	//wxTreeItemId root = _treeCtrl->GetRootItem();
+	//wxTreeItemIdValue layerCookie;
+	//wxTreeItemId layerNodeId = _treeCtrl->GetFirstChild(root, layerCookie);
+	//while (layerNodeId.IsOk())
+	//{
+	//	layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
+	//	if (layerData->_layer == layer)
+	//	{
+	//		_treeCtrl->Delete(layerNodeId);
+	//		break;
+	//	}
+	//	layerNodeId = _treeCtrl->GetNextChild(root, layerCookie);
+	//}
+}
+
+
+void wxLayerWidget::OnNodeSelChanged(wxTreeEvent & event)
+{
+	_selId = event.GetItem();
+	_selLayer = nullptr;
+	if (_selId.IsOk())
 	{
-		layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
-		if (layerData->_layer == layer)
-		{
-			_treeCtrl->Delete(layerNodeId);
-			break;
-		}
-		layerNodeId = _treeCtrl->GetNextChild(root, layerCookie);
+		layerTreeItemData* selData = (layerTreeItemData*)_treeCtrl->GetItemData(_selId);
+		_selLayer = selData->_layer;
 	}
 }
 
-void wxLayerWidget::ClearLayerNode()
+void wxLayerWidget::_toolLayerVisible_Clicked(wxCommandEvent & event)
 {
-	wxTreeItemId root = _treeCtrl->GetRootItem();
-	_treeCtrl->DeleteChildren(root);
+	if (_selLayer != nullptr)
+	{
+		_selLayer->SetVisible(!_selLayer->GetVisible());
+		_mapWidget->RepaintMap();
+	}
+}
+
+void wxLayerWidget::_toolRemoveLayer_Clicked(wxCommandEvent & event)
+{
+	if (_selLayer != nullptr)
+	{
+		_map->RemoveLayer(_selLayer);
+	}
 }
 
 END_NAME_SPACE(tGis, Gui)

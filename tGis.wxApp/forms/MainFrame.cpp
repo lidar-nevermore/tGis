@@ -48,7 +48,7 @@ MainFrame::MainFrame()
 
 	_layerWidget = new wxLayerWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize);
-	_layerWidget->SetMap(&_map);
+	_layerWidget->SetMap(&_map, _mapWidget);
 
 	_mgr.AddPane(_layerWidget, wxAuiPaneInfo().
 		Name(wxT("Layer")).Caption(wxT("Layer")).

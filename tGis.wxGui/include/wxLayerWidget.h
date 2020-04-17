@@ -24,6 +24,8 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
+class wxLayerWidgetImpl;
+
 class TGIS_GUI_API wxLayerWidget : public wxPanel
 {
 public:
@@ -45,21 +47,27 @@ protected:
 	wxImageList* _imgList;
 
 public:
-	void SetMap(IMap* map);
+	void SetMap(IMap* map, IMapWidget* mapWidget);
 
 private:
 	IMap* _map;
-
+	IMapWidget* _mapWidget;
+	wxTreeItemId _selId;
+	ILayer* _selLayer;
+	wxLayerWidgetImpl* _impl_;
 private:
-	virtual void LayerAdded(IMapPtr, ILayerPtr);
-	virtual void LayerRemoved(IMapPtr, ILayerPtr);
+	virtual void LayerAdded(IMapPtr, ILayerPtr, size_t);
+	virtual void LayerRemoved(IMapPtr, ILayerPtr, size_t);
 	virtual void LayerCleared(IMapPtr);
 
 private:
-	void AddLayerNode(ILayer* layer);
-	void RemoveLayerNode(ILayer* layer);
-	void ClearLayerNode();
+	void AddLayerNode(ILayer* layer, size_t pos);
+	void RemoveLayerNode(ILayer* layer, size_t pos);
 
+private:
+	void OnNodeSelChanged(wxTreeEvent& event);
+	void _toolLayerVisible_Clicked(wxCommandEvent& event);
+	void _toolRemoveLayer_Clicked(wxCommandEvent& event);
 };
 
 END_NAME_SPACE(tGis, Gui)

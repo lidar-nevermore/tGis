@@ -105,9 +105,9 @@ bool Map::AddLayer(ILayer *layer)
 
 	if (canAdd)
 	{
-		_impl_->_vecLayer.push_back(layer);
+		_impl_->_vecLayer.insert(_impl_->_vecLayer.begin(), layer);
 		layer->SetMap(this);
-		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
+		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), 0);
 	}
 
 	return canAdd;
@@ -120,7 +120,7 @@ ILayer* Map::RemoveLayer(size_t pos)
 	layer->SetMap(nullptr);
 	_impl_->_vecLayer.erase(it);
 	UpdateEnvelope();
-	LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
+	LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
 	return layer;
 }
 
@@ -131,9 +131,10 @@ void Map::RemoveLayer(ILayer * layer)
 		if (*it == layer)
 		{
 			layer->SetMap(nullptr);
+			size_t pos = it - _impl_->_vecLayer.begin();
 			_impl_->_vecLayer.erase(it);
 			UpdateEnvelope();
-			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
+			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
 			break;
 		}
 	}	
@@ -148,8 +149,9 @@ void Map::RemoveLayer(IDataset * dt)
 		if (layer->GetDataset() == dt)
 		{
 			layer->SetMap(nullptr);
+			size_t pos = it - _impl_->_vecLayer.begin();
 			it = _impl_->_vecLayer.erase(it);
-			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
+			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
 		}
 		else
 		{
@@ -181,7 +183,7 @@ bool Map::InsertLayer(size_t pos, ILayer * layer)
 	{
 		_impl_->_vecLayer.insert(_impl_->_vecLayer.begin() + pos, layer);
 		layer->SetMap(this);
-		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer));
+		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
 	}
 
 	return canAdd;
