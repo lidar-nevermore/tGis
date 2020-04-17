@@ -56,7 +56,7 @@ wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& po
 	bSizer1 = new wxBoxSizer( wxVERTICAL );
 
 	_toolBar = new wxToolBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_HORIZONTAL );
-	_toolLayerVisible = _toolBar->AddTool( wxID_ANY, wxEmptyString, _TOOL_PNG("LayerVisible"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL );
+	_toolLayerVisible = _toolBar->AddTool( wxID_ANY, wxEmptyString, _TOOL_PNG("LayerVisible"), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL );
 	_toolLayerAttrib = _toolBar->AddTool( wxID_ANY, wxEmptyString, _TOOL_PNG("LayerAttribute"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL );
 	_toolLayerUp = _toolBar->AddTool(wxID_ANY, wxEmptyString, _TOOL_PNG("LayerUp"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
 	_toolLayerDown = _toolBar->AddTool(wxID_ANY, wxEmptyString, _TOOL_PNG("LayerDown"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
@@ -91,6 +91,16 @@ wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& po
 
 	_treeCtrl->AddRoot(wxT("Layer"), 0);
 
+	_toolBar->EnableTool(_toolLayerVisible->GetId(), false);
+	_toolBar->EnableTool(_toolLayerAttrib->GetId(), false);
+	_toolBar->EnableTool(_toolLayerUp->GetId(), false);
+	_toolBar->EnableTool(_toolLayerDown->GetId(), false);
+	_toolBar->EnableTool(_toolLayerTop->GetId(), false);
+	_toolBar->EnableTool(_toolLayerBottom->GetId(), false);
+	_toolBar->EnableTool(_toolRemoveLayer->GetId(), false);
+
+	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Add(this, &wxLayerWidget::OnDatasetClose);
+
 	Bind(wxEVT_TREE_SEL_CHANGED, &wxLayerWidget::OnNodeSelChanged, this);
 
 	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
@@ -105,11 +115,17 @@ wxLayerWidget::~wxLayerWidget()
 	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
 	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolRemoveLayer_Clicked, this, _toolRemoveLayer->GetId());
 
+	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Remove(this, &wxLayerWidget::OnDatasetClose);
+
+	delete _impl_;
 }
 
 void wxLayerWidget::SetMap(IMap * map, IMapWidget* mapWidget)
 {
-	if (map == nullptr && _map != nullptr)
+	if (_map == map)
+		return;
+
+	if (_map != nullptr)
 	{
 		wxTreeItemId root = _treeCtrl->GetRootItem();
 		_treeCtrl->DeleteChildren(root);
@@ -154,6 +170,10 @@ inline void wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 	layerTreeItemData* layerData = new layerTreeItemData();
 	layerData->_layer = layer;
 	wxString label = layer->GetName();
+	if (layer->GetVisible())
+		label = wxT("[v]") + label;
+	else
+		label = wxT("[x]") + label;
 	ILayerRender* render = layer->GetRender();
 	wxTreeItemId root = _treeCtrl->GetRootItem();
 	wxTreeItemId inserted;
@@ -172,8 +192,23 @@ inline void wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 inline void wxLayerWidget::RemoveLayerNode(ILayer * layer, size_t pos)
 {
 	wxTreeItemId layerNodeId = _impl_->_vecLayerNode[pos];
-	_treeCtrl->Delete(layerNodeId);
 	_impl_->_vecLayerNode.erase(_impl_->_vecLayerNode.begin() + pos);
+	_treeCtrl->Delete(layerNodeId);	
+}
+
+void wxLayerWidget::RemoveLayerNode(IDataset * dt)
+{
+	for (auto it = _impl_->_vecLayerNode.begin(); it != _impl_->_vecLayerNode.end(); it++)
+	{
+		wxTreeItemId layerNodeId = *it;
+		layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
+		if (layerData->_layer->GetDataset() == dt)
+		{
+			_impl_->_vecLayerNode.erase(it);
+			_treeCtrl->Delete(layerNodeId);
+			break;
+		}
+	}
 
 	//wxTreeItemId root = _treeCtrl->GetRootItem();
 	//wxTreeItemIdValue layerCookie;
@@ -181,7 +216,7 @@ inline void wxLayerWidget::RemoveLayerNode(ILayer * layer, size_t pos)
 	//while (layerNodeId.IsOk())
 	//{
 	//	layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
-	//	if (layerData->_layer == layer)
+	//	if (layerData->_layer->GetDataset() == dt)
 	//	{
 	//		_treeCtrl->Delete(layerNodeId);
 	//		break;
@@ -190,15 +225,39 @@ inline void wxLayerWidget::RemoveLayerNode(ILayer * layer, size_t pos)
 	//}
 }
 
+void wxLayerWidget::OnDatasetClose(IDataset * dt)
+{
+	if(_map != nullptr)
+		_map->RemoveLayer(dt);
+}
 
 void wxLayerWidget::OnNodeSelChanged(wxTreeEvent & event)
 {
 	_selId = event.GetItem();
 	_selLayer = nullptr;
 	if (_selId.IsOk())
-	{
+	{		
 		layerTreeItemData* selData = (layerTreeItemData*)_treeCtrl->GetItemData(_selId);
 		_selLayer = selData->_layer;
+		_toolBar->EnableTool(_toolLayerVisible->GetId(), true);
+		_toolBar->EnableTool(_toolLayerAttrib->GetId(), true);
+		_toolBar->EnableTool(_toolLayerUp->GetId(), true);
+		_toolBar->EnableTool(_toolLayerDown->GetId(), true);
+		_toolBar->EnableTool(_toolLayerTop->GetId(), true);
+		_toolBar->EnableTool(_toolLayerBottom->GetId(), true);
+		_toolBar->EnableTool(_toolRemoveLayer->GetId(), true);
+
+		_toolBar->ToggleTool(_toolLayerVisible->GetId(), _selLayer->GetVisible());
+	}
+	else
+	{
+		_toolBar->EnableTool(_toolLayerVisible->GetId(), false);
+		_toolBar->EnableTool(_toolLayerAttrib->GetId(), false);
+		_toolBar->EnableTool(_toolLayerUp->GetId(), false);
+		_toolBar->EnableTool(_toolLayerDown->GetId(), false);
+		_toolBar->EnableTool(_toolLayerTop->GetId(), false);
+		_toolBar->EnableTool(_toolLayerBottom->GetId(), false);
+		_toolBar->EnableTool(_toolRemoveLayer->GetId(), false);
 	}
 }
 
@@ -207,13 +266,19 @@ void wxLayerWidget::_toolLayerVisible_Clicked(wxCommandEvent & event)
 	if (_selLayer != nullptr)
 	{
 		_selLayer->SetVisible(!_selLayer->GetVisible());
+		wxString label = _selLayer->GetName();
+		if (_selLayer->GetVisible())
+			label = wxT("[v]") + label;
+		else
+			label = wxT("[x]") + label;
+		_treeCtrl->SetItemText(_selId, label);
 		_mapWidget->RepaintMap();
 	}
 }
 
 void wxLayerWidget::_toolRemoveLayer_Clicked(wxCommandEvent & event)
 {
-	if (_selLayer != nullptr)
+	if (_selLayer != nullptr && _map != nullptr)
 	{
 		_map->RemoveLayer(_selLayer);
 	}

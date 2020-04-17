@@ -121,6 +121,8 @@ ILayer* Map::RemoveLayer(size_t pos)
 	_impl_->_vecLayer.erase(it);
 	UpdateEnvelope();
 	LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
+	if (layer->_is_in_heap)
+		delete layer;
 	return layer;
 }
 
@@ -135,6 +137,8 @@ void Map::RemoveLayer(ILayer * layer)
 			_impl_->_vecLayer.erase(it);
 			UpdateEnvelope();
 			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
+			if (layer->_is_in_heap)
+				delete layer;
 			break;
 		}
 	}	
@@ -152,6 +156,8 @@ void Map::RemoveLayer(IDataset * dt)
 			size_t pos = it - _impl_->_vecLayer.begin();
 			it = _impl_->_vecLayer.erase(it);
 			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
+			if (layer->_is_in_heap)
+				delete layer;
 		}
 		else
 		{

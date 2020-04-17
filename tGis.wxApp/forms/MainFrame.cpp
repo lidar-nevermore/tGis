@@ -89,6 +89,8 @@ MainFrame::MainFrame()
 
 MainFrame::~MainFrame()
 {
+	_mapWidget->SetMap(nullptr);
+	_layerWidget->SetMap(nullptr, nullptr);
 	_mgr.UnInit();
 }
 

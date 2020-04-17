@@ -115,15 +115,32 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 #endif // _WINDOWS_
 	_treeCtrl->Expand(_fileSysItemId);
 
+	_toolBar->EnableTool(_toolDsInfo->GetId(), false);
+	_toolBar->EnableTool(_toolRefreshDs->GetId(), false);
+	_toolBar->EnableTool(_toolDisConnDs->GetId(), false);
+	_toolBar->EnableTool(_toolDtInfo->GetId(), false);
+	_toolBar->EnableTool(_toolSaveDtAs->GetId(), false);
+	_toolBar->EnableTool(_toolCloseDt->GetId(), false);
+
+	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Add(this, &wxDataSourceWidget::RemoveOpenedDatasetNode);
+	
 	Bind(wxEVT_TREE_ITEM_ACTIVATED, &wxDataSourceWidget::OnNodeActivated, this);
 	Bind(wxEVT_TREE_SEL_CHANGED, &wxDataSourceWidget::OnNodeSelChanged, this);
+	
+	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolCloseDt_Clicked, this, _toolCloseDt->GetId());
+
 }
 
 wxDataSourceWidget::~wxDataSourceWidget()
 {
 	Unbind(wxEVT_TREE_ITEM_ACTIVATED, &wxDataSourceWidget::OnNodeActivated, this);
 	Unbind(wxEVT_TREE_SEL_CHANGED, &wxDataSourceWidget::OnNodeSelChanged, this);
+
+	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolCloseDt_Clicked, this, _toolCloseDt->GetId());
+
 	//delete _imgList;
+
+	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Remove(this, &wxDataSourceWidget::RemoveOpenedDatasetNode);
 }
 
 wxTreeItemId wxDataSourceWidget::AddDataSourceNode(wxTreeItemId &parent, IDataSource * ds, bool autoDelete)
@@ -179,6 +196,22 @@ void wxDataSourceWidget::AddDatasetNode(wxTreeItemId & parent, IDataset * dt)
 	}
 }
 
+void wxDataSourceWidget::RemoveOpenedDatasetNode(IDataset * dt)
+{
+	wxTreeItemIdValue dsCookie;
+	wxTreeItemId dsNodeId = _treeCtrl->GetFirstChild(_openedDtItemId, dsCookie);
+	while (dsNodeId.IsOk())
+	{
+		dsTreeItemData* dsData = (dsTreeItemData*)_treeCtrl->GetItemData(dsNodeId);
+		if (dsData->_dt == dt)
+		{
+			_treeCtrl->Delete(dsNodeId);
+			break;
+		}
+		dsNodeId = _treeCtrl->GetNextChild(_openedDtItemId, dsCookie);
+	}
+}
+
 void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 {
 	wxTreeItemId selId = event.GetItem();
@@ -195,8 +228,10 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 				//TODO: 当前只有文件系统类型数据源
 				_treeCtrl->SetItemImage(selId, folder_open_img);
 				_treeCtrl->SetItemImage(selId, folder_open_img, wxTreeItemIcon_Selected);
+				
 				_treeCtrl->Expand(selId);
 			}
+
 			AfterDataSourceActivatedEvent(selData->_ds);
 		}
 		else if (selData->_dt != nullptr)
@@ -221,22 +256,68 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 			AfterDatasetActivatedEvent(selData->_dt);
 		}
 	}
+
+	if (_treeCtrl->IsSelected(selId))
+		OnNodeSelChanged(event);
 }
 
 void wxDataSourceWidget::OnNodeSelChanged(wxTreeEvent & event)
 {
-	wxTreeItemId selId = event.GetItem();
-	dsTreeItemData* selData = (dsTreeItemData*)_treeCtrl->GetItemData(selId);
+	_selDs = nullptr;
+	_selDt = nullptr;
+
+	_toolBar->EnableTool(_toolDsInfo->GetId(), false);
+	_toolBar->EnableTool(_toolRefreshDs->GetId(), false);
+	_toolBar->EnableTool(_toolDisConnDs->GetId(), false);
+	_toolBar->EnableTool(_toolDtInfo->GetId(), false);
+	_toolBar->EnableTool(_toolSaveDtAs->GetId(), false);
+	_toolBar->EnableTool(_toolCloseDt->GetId(), false);
+
+	_selId = event.GetItem();
+
+	if (_selId.IsOk() == false)
+		return;
+	
+	dsTreeItemData* selData = (dsTreeItemData*)_treeCtrl->GetItemData(_selId);
 	if (selData != nullptr)
 	{
 		_selDs = selData->_ds;
 		_selDt = selData->_dt;
+		if (_selDs != nullptr)
+		{
+			if (_selDs->IsConnected())
+			{
+				_toolBar->EnableTool(_toolDsInfo->GetId(), true);
+				_toolBar->EnableTool(_toolRefreshDs->GetId(), true);
+				_toolBar->EnableTool(_toolDisConnDs->GetId(), true);
+			}
+		}
+		else
+		{
+			if (_selDt->IsOpened())
+			{
+				_toolBar->EnableTool(_toolDtInfo->GetId(), true);
+				_toolBar->EnableTool(_toolSaveDtAs->GetId(), true);
+				_toolBar->EnableTool(_toolCloseDt->GetId(), true);
+			}
+		}
+	}
+}
+
+void wxDataSourceWidget::_toolCloseDt_Clicked(wxCommandEvent & event)
+{	
+	if (_selDt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+	{
+		_treeCtrl->SetItemImage(_selId, raster_img);
+		_treeCtrl->SetItemImage(_selId, raster_img, wxTreeItemIcon_Selected);
 	}
 	else
 	{
-		_selDs = nullptr;
-		_selDt = nullptr;
+		_treeCtrl->SetItemImage(_selId, vector_img);
+		_treeCtrl->SetItemImage(_selId, vector_img, wxTreeItemIcon_Selected);
 	}
+
+	_selDt->Close();
 }
 
 END_NAME_SPACE(tGis, Gui)

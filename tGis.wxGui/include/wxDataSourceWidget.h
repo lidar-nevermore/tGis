@@ -51,6 +51,7 @@ protected:
 	wxImageList* _imgList;
 
 private:
+	wxTreeItemId _selId;
 	IDataSource* _selDs;
 	IDataset* _selDt;
 
@@ -65,10 +66,12 @@ private:
 	wxTreeItemId AddDataSourceNode(wxTreeItemId &parent, IDataSource* ds, bool autoDelete);
 	void AddDataSourceSubNode(wxTreeItemId &parent, IDataSource* ds);
 	void AddDatasetNode(wxTreeItemId &parent, IDataset* dt);
+	void RemoveOpenedDatasetNode(IDataset* dt);
 
 private:
 	void OnNodeActivated(wxTreeEvent& event);
 	void OnNodeSelChanged(wxTreeEvent& event);
+	void _toolCloseDt_Clicked(wxCommandEvent& event);
 
 };
 

@@ -63,6 +63,8 @@ private:
 private:
 	void AddLayerNode(ILayer* layer, size_t pos);
 	void RemoveLayerNode(ILayer* layer, size_t pos);
+	void RemoveLayerNode(IDataset* dt);
+	void OnDatasetClose(IDataset* dt);
 
 private:
 	void OnNodeSelChanged(wxTreeEvent& event);
