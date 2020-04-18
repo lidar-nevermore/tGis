@@ -4,11 +4,17 @@
 #define __GEOVIEWPORT_H__
 
 #include "Helper.h"
+#include "Event.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
 
 BEGIN_NAME_SPACE(tGis, Core)
+
+class GeoViewPort;
+
+template struct TGIS_CORE_API IEventHandler<GeoViewPort*>;
+template class TGIS_CORE_API Event<GeoViewPort*>;
 
 class TGIS_CORE_API GeoViewPort
 {
@@ -18,6 +24,9 @@ public:
 	~GeoViewPort();
 	GeoViewPort(const GeoViewPort &);
 	GeoViewPort &operator=(const GeoViewPort &);
+
+public:
+	Event<GeoViewPort*> ChangedEvent;
 
 public:
 	void GetSurfaceSize(int* surfW, int* surfH) const;

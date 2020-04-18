@@ -173,6 +173,8 @@ void GeoViewPort::UpdateViewPort()
 	_spatialTop = _spatialCenterY + halfH;
 	_spatialRight = _spatialCenterX + halfW;
 	_spatialBottom = _spatialCenterY - halfH;
+	
+	ChangedEvent(this);
 }
 
 void GeoViewPort::Surface2Spatial(int surfX, int surfY, double * spatialX, double * spatialY) const

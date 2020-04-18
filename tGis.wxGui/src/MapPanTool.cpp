@@ -40,7 +40,7 @@ void MapPanTool::MouseAll(wxGLMapWidget * s, wxMouseEvent * e)
 		MouseDown(s, e);
 	else if (e->Dragging())
 		MouseMove(s, e);
-	else if (e->LeftUp())
+	else if (e->LeftUp() || e->Leaving())
 		MouseUp(s, e);
 }
 

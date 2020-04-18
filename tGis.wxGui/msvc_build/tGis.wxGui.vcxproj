@@ -92,6 +92,7 @@
     <ClInclude Include="..\include\tGis_wxGui.h" />
     <ClInclude Include="..\include\tGis_wxGuiCfg.h" />
     <ClInclude Include="..\include\wxDataSourceWidget.h" />
+    <ClInclude Include="..\include\wxGLEagleEyeWidget.h" />
     <ClInclude Include="..\include\wxGLGeoSurface.h" />
     <ClInclude Include="..\include\wxGLMapWidget.h" />
     <ClInclude Include="..\include\wxLayerWidget.h" />
@@ -104,6 +105,7 @@
     <ClCompile Include="..\src\MapZoomTool.cpp" />
     <ClCompile Include="..\src\RectZoomTool.cpp" />
     <ClCompile Include="..\src\wxDataSourceWidget.cpp" />
+    <ClCompile Include="..\src\wxGLEagleEyeWidget.cpp" />
     <ClCompile Include="..\src\wxGLGeoSurface.cpp" />
     <ClCompile Include="..\src\wxGLMapWidget.cpp" />
     <ClCompile Include="..\src\wxLayerWidget.cpp" />

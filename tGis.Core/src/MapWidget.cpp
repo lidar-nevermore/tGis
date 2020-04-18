@@ -44,6 +44,7 @@ MapWidget::~MapWidget()
 		it = _impl_->_vecMapTool.erase(it);
 		MapToolRemovedEvent(this, tool);
 	}
+	MapWidget::SetMap(nullptr);
 	delete _impl_;
 }
 
@@ -63,9 +64,9 @@ void MapWidget::SetMap(IMap *map)
 	if (_map != nullptr)
 	{
 		_viewPort.SetSpatialReference(map->GetSpatialReference());
-		map->LayerAddedEvent.Add(this, &MapWidget::LayerAdded);
-		map->LayerClearedEvent.Add(this, &MapWidget::LayerCleared);
-		map->LayerRemovedEvent.Add(this, &MapWidget::LayerRemoved);
+		_map->LayerAddedEvent.Add(this, &MapWidget::LayerAdded);
+		_map->LayerClearedEvent.Add(this, &MapWidget::LayerCleared);
+		_map->LayerRemovedEvent.Add(this, &MapWidget::LayerRemoved);
 	}	
 }
 
@@ -75,9 +76,6 @@ void MapWidget::LayerAdded(IMapPtr map, ILayerPtr layer, size_t)
 	{
 		_viewPort.SetSpatialReference(map->GetSpatialReference());
 	}
-	const OGREnvelope* envelope = layer->GetEnvelope();
-	_viewPort.IncludeEnvelope(envelope);
-	RepaintMap();
 }
 
 void MapWidget::LayerRemoved(IMapPtr map, ILayerPtr layer, size_t)

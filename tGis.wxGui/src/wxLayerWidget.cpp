@@ -129,6 +129,8 @@ wxLayerWidget::~wxLayerWidget()
 
 	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Remove(this, &wxLayerWidget::OnDatasetClose);
 
+	wxLayerWidget::SetMap(nullptr, nullptr);
+
 	delete _impl_;
 }
 

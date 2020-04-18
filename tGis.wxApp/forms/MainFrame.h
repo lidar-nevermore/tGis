@@ -31,7 +31,7 @@ private:
 
 	wxToolWidget* _toolWidget;
 
-	wxPanel* _eagleEyeWidget;
+	wxGLEagleEyeWidget* _eagleEyeWidget;
 
 private:
 	wxAuiManager    _mgr;

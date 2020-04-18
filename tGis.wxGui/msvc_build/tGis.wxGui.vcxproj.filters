@@ -47,6 +47,9 @@
     <ClInclude Include="..\include\wxTGisApplication.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxGLEagleEyeWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -77,6 +80,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\src\wxTGisApplication.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGLEagleEyeWidget.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

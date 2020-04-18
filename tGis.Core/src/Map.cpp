@@ -217,6 +217,8 @@ void Map::MoveLayer(size_t from, size_t to)
 	ILayer* toLayer = _impl_->_vecLayer[to];
 	_impl_->_vecLayer[from] = toLayer;
 	_impl_->_vecLayer[to] = fromLayer;
+
+	LayerMovedEvent(this, toLayer, from, fromLayer, to);
 }
 
 void Map::ClearLayers()

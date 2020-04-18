@@ -11,12 +11,16 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct IDataset;
 struct IGeoSurface;
+struct IMap;
 
 template struct TGIS_CORE_API IEventHandler<IMap*>;
 template class TGIS_CORE_API Event<IMap*>;
 
 template struct TGIS_CORE_API IEventHandler<IMap*, ILayer*, size_t>;
 template class TGIS_CORE_API Event<IMap*, ILayer*, size_t>;
+
+template struct TGIS_CORE_API IEventHandler<IMap*, ILayer*, size_t, ILayer*, size_t>;
+template class TGIS_CORE_API Event<IMap*, ILayer*, size_t, ILayer*, size_t>;
 
 struct TGIS_CORE_API IMap
 {
@@ -44,6 +48,7 @@ struct TGIS_CORE_API IMap
 
 	Event<IMap*, ILayer*, size_t> LayerAddedEvent;
 	Event<IMap*, ILayer*, size_t> LayerRemovedEvent;
+	Event<IMap*, ILayer*, size_t, ILayer*, size_t> LayerMovedEvent;
 	Event<IMap*> LayerClearedEvent;
 
 	IMap() {};

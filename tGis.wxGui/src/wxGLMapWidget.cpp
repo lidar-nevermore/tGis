@@ -28,6 +28,9 @@ wxGLMapWidget::~wxGLMapWidget()
 void wxGLMapWidget::LayerAdded(IMapPtr map, ILayerPtr layer, size_t pos)
 {
 	MapWidget::LayerAdded(map, layer, pos);
+	const OGREnvelope* envelope = layer->GetEnvelope();
+	_viewPort.IncludeEnvelope(envelope);
+	RepaintMap();
 	Refresh();
 }
 
@@ -66,10 +69,16 @@ void wxGLMapWidget::PresentMap()
 
 void wxGLMapWidget::Client2Screen(int cliX, int cliY, int * scrX, int * scrY)
 {
+	*scrX = cliX;
+	*scrY = cliY;
+	ClientToScreen(scrX, scrY);
 }
 
 void wxGLMapWidget::Screen2Client(int scrX, int scrY, int * cliX, int * cliY)
 {
+	*cliX = scrX;
+	*cliY = scrY;
+	ScreenToClient(cliX, cliY);
 }
 
 void wxGLMapWidget::OnPaint(wxPaintEvent & event)

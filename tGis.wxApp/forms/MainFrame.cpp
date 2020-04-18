@@ -72,8 +72,10 @@ MainFrame::MainFrame()
 		MinSize(wxSize(270, 100)).
 		CloseButton(false).MaximizeButton(false));
 
-	_eagleEyeWidget = new wxPanel(this, wxID_ANY,
+	_eagleEyeWidget = new wxGLEagleEyeWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize);
+
+	_eagleEyeWidget->SetMapWidget(_mapWidget);
 
 	_mgr.AddPane(_eagleEyeWidget, wxAuiPaneInfo().
 		Name(wxT("EagleEye")).Caption(wxT("EagleEye")).
@@ -119,6 +121,7 @@ MainFrame::~MainFrame()
 	Unbind(wxEVT_TOOL, &MainFrame::_toolGrid_Clicked, this, _toolGrid->GetId());
 	Unbind(wxEVT_TOOL, &MainFrame::_toolMapSpatialRef_Clicked, this, _toolMapSpatialRef->GetId());
 
+	_eagleEyeWidget->SetMapWidget(nullptr);
 	_mapWidget->SetMap(nullptr);
 	_layerWidget->SetMap(nullptr, nullptr);
 	_mgr.UnInit();

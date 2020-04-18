@@ -5,6 +5,7 @@
 
 #include "wxGLGeoSurface.h"
 #include "wxGLMapWidget.h"
+#include "wxGLEagleEyeWidget.h"
 
 #include "DrawRectTool.h"
 #include "MapPanTool.h"
