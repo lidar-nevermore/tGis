@@ -24,8 +24,7 @@ class TGIS_CORE_API MyGDALDataset : public Dataset
 public:
 	virtual const char* GetName();
 
-	virtual bool IsReadOnly();
-	virtual bool IsOpened();
+	virtual bool IsReadOnly();	
 
 	virtual const OGRSpatialReference* GetSpatialReference();
 	virtual const OGREnvelope* GetEnvelope();

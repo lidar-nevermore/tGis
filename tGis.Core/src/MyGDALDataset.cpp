@@ -399,11 +399,6 @@ bool MyGDALDataset::IsReadOnly()
 	return _eAccess == GA_ReadOnly;;
 }
 
-bool MyGDALDataset::IsOpened()
-{
-	return _dataset != nullptr;
-}
-
 const OGRSpatialReference * MyGDALDataset::GetSpatialReference()
 {
 	return _spatialRef;

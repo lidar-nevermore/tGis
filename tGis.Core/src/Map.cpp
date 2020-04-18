@@ -81,6 +81,19 @@ ILayer * Map::GetLayer(size_t pos)
 	return _impl_->_vecLayer.at(pos);
 }
 
+size_t Map::GetLayerPos(ILayer * layer)
+{
+	size_t i = 0;
+	for (vector<ILayer*>::iterator it = _impl_->_vecLayer.begin(); it != _impl_->_vecLayer.end(); ++it)
+	{
+		if (*it == layer)
+			return i;
+		i++;
+	}
+
+	return i;
+}
+
 bool Map::AddLayer(ILayer *layer)
 {
 	bool canAdd = false;

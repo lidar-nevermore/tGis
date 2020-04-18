@@ -65,7 +65,8 @@ private:
 	static void OnEachDataset(IDataset* dt, void* ud);
 	wxTreeItemId AddDataSourceNode(wxTreeItemId &parent, IDataSource* ds, bool autoDelete);
 	void AddDataSourceSubNode(wxTreeItemId &parent, IDataSource* ds);
-	void AddDatasetNode(wxTreeItemId &parent, IDataset* dt);
+	wxTreeItemId AddDatasetNode(wxTreeItemId &parent, IDataset* dt, wxTreeItemId* itemId = nullptr);
+	void UpdateDatasetNode(wxTreeItemId itemId, IDataset* dt);
 	void RemoveOpenedDatasetNode(IDataset* dt);
 
 private:

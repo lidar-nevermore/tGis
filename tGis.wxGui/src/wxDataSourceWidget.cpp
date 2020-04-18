@@ -38,7 +38,8 @@ public:
 
 	IDataSource* _ds;
 	IDataset* _dt;
-
+	wxTreeItemId _openedItemId;
+	wxTreeItemId _itemId;
 private:
 	bool _autoDelete;
 };
@@ -148,10 +149,16 @@ wxTreeItemId wxDataSourceWidget::AddDataSourceNode(wxTreeItemId &parent, IDataSo
 	dsTreeItemData* mdsData = new dsTreeItemData(autoDelete);
 	mdsData->_ds = ds;
 	wxString label = ds->GetName();
+	wxTreeItemId itemId;
+	//TODO: 更多数据源类型支持
 	if(ds->IsTypeOf(MemoryDataSource::S_GetType()))
-		return _treeCtrl->AppendItem(parent, label, mem_img, mem_img, mdsData);
+		itemId = _treeCtrl->AppendItem(parent, label, mem_img, mem_img, mdsData);
 	else //if (ds->IsTypeOf(FileSystemDataSource::S_GetType()))
-		return _treeCtrl->AppendItem(parent, label, folder_img, folder_img, mdsData);
+		itemId = _treeCtrl->AppendItem(parent, label, folder_img, folder_img, mdsData);
+    
+	mdsData->_itemId = itemId;
+
+	return itemId;
 }
 
 void wxDataSourceWidget::OnEachDataSource(IDataSource* ds, void* ud)
@@ -175,24 +182,67 @@ void wxDataSourceWidget::AddDataSourceSubNode(wxTreeItemId &parent, IDataSource 
 	ds->ForEachDataset(wxDataSourceWidget::OnEachDataset, (void*)ud);
 }
 
-void wxDataSourceWidget::AddDatasetNode(wxTreeItemId & parent, IDataset * dt)
+wxTreeItemId wxDataSourceWidget::AddDatasetNode(wxTreeItemId & parent, IDataset * dt, wxTreeItemId* itemId_)
 {
 	dsTreeItemData* mdsData = new dsTreeItemData();
 	mdsData->_dt = dt;
 	wxString label = dt->GetName();
+	wxTreeItemId itemId;
+	//TODO: 更多数据集类型支持
 	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 	{
 		if(dt->IsOpened())
-			_treeCtrl->AppendItem(parent, label, raster_open_img, raster_open_img, mdsData);
+			itemId = _treeCtrl->AppendItem(parent, label, raster_open_img, raster_open_img, mdsData);
 		else
-			_treeCtrl->AppendItem(parent, label, raster_img, raster_img, mdsData);
+			itemId = _treeCtrl->AppendItem(parent, label, raster_img, raster_img, mdsData);
 	}
 	else //if (dt->IsTypeOf(MyGDALVectorDataset::S_GetType()))
 	{
 		if (dt->IsOpened())
-			_treeCtrl->AppendItem(parent, label, vector_open_img, vector_open_img, mdsData);
+			itemId = _treeCtrl->AppendItem(parent, label, vector_open_img, vector_open_img, mdsData);
 		else
-			_treeCtrl->AppendItem(parent, label, vector_img, vector_img, mdsData);
+			itemId = _treeCtrl->AppendItem(parent, label, vector_img, vector_img, mdsData);
+	}
+
+	if (itemId_ != nullptr)
+	{
+		mdsData->_openedItemId = itemId;
+		mdsData->_itemId = *itemId_;
+	}
+	else
+		mdsData->_itemId = itemId;
+
+	return itemId;
+}
+
+void wxDataSourceWidget::UpdateDatasetNode(wxTreeItemId itemId, IDataset * dt)
+{
+	//TODO: 更多数据集类型支持
+	if (dt->IsOpened())
+	{
+		if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		{
+			_treeCtrl->SetItemImage(itemId, raster_open_img);
+			_treeCtrl->SetItemImage(itemId, raster_open_img, wxTreeItemIcon_Selected);
+		}
+		else
+		{
+			_treeCtrl->SetItemImage(itemId, vector_open_img);
+			_treeCtrl->SetItemImage(itemId, vector_open_img, wxTreeItemIcon_Selected);
+		}
+	}
+	else
+	{
+		if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		{
+			_treeCtrl->SetItemImage(itemId, raster_img);
+			_treeCtrl->SetItemImage(itemId, raster_img, wxTreeItemIcon_Selected);
+		}
+		else
+		{
+			_treeCtrl->SetItemImage(itemId, vector_img);
+			_treeCtrl->SetItemImage(itemId, vector_img, wxTreeItemIcon_Selected);
+		}
 	}
 }
 
@@ -205,6 +255,13 @@ void wxDataSourceWidget::RemoveOpenedDatasetNode(IDataset * dt)
 		dsTreeItemData* dsData = (dsTreeItemData*)_treeCtrl->GetItemData(dsNodeId);
 		if (dsData->_dt == dt)
 		{
+			UpdateDatasetNode(dsData->_itemId, dsData->_dt);			
+			//if (dsData->_itemId == _selId)
+			{
+				_toolBar->EnableTool(_toolDtInfo->GetId(), false);
+				_toolBar->EnableTool(_toolSaveDtAs->GetId(), false);
+				_toolBar->EnableTool(_toolCloseDt->GetId(), false);
+			}
 			_treeCtrl->Delete(dsNodeId);
 			break;
 		}
@@ -225,6 +282,7 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 			if (isConnected == false && selData->_ds->IsConnected())
 			{
 				AddDataSourceSubNode(selId, selData->_ds);
+
 				//TODO: 当前只有文件系统类型数据源
 				_treeCtrl->SetItemImage(selId, folder_open_img);
 				_treeCtrl->SetItemImage(selId, folder_open_img, wxTreeItemIcon_Selected);
@@ -240,17 +298,8 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 			selData->_dt->Open();
 			if (isOpen == false && selData->_dt->IsOpened())
 			{
-				AddDatasetNode(_openedDtItemId, selData->_dt);
-				if (selData->_dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
-				{
-					_treeCtrl->SetItemImage(selId, raster_open_img);
-					_treeCtrl->SetItemImage(selId, raster_open_img, wxTreeItemIcon_Selected);
-				}
-				else
-				{
-					_treeCtrl->SetItemImage(selId, vector_open_img);
-					_treeCtrl->SetItemImage(selId, vector_open_img, wxTreeItemIcon_Selected);
-				}
+				AddDatasetNode(_openedDtItemId, selData->_dt, &selId);
+				UpdateDatasetNode(selId, selData->_dt);
 			}
 
 			AfterDatasetActivatedEvent(selData->_dt);
@@ -305,18 +354,7 @@ void wxDataSourceWidget::OnNodeSelChanged(wxTreeEvent & event)
 }
 
 void wxDataSourceWidget::_toolCloseDt_Clicked(wxCommandEvent & event)
-{	
-	if (_selDt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
-	{
-		_treeCtrl->SetItemImage(_selId, raster_img);
-		_treeCtrl->SetItemImage(_selId, raster_img, wxTreeItemIcon_Selected);
-	}
-	else
-	{
-		_treeCtrl->SetItemImage(_selId, vector_img);
-		_treeCtrl->SetItemImage(_selId, vector_img, wxTreeItemIcon_Selected);
-	}
-
+{
 	_selDt->Close();
 }
 

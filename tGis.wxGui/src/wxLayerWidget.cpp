@@ -103,8 +103,14 @@ wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& po
 
 	Bind(wxEVT_TREE_SEL_CHANGED, &wxLayerWidget::OnNodeSelChanged, this);
 
-	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
-	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolRemoveLayer_Clicked, this, _toolRemoveLayer->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolRemoveLayer_Clicked, this, _toolRemoveLayer->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolRemoveAllLayers_Clicked, this, _toolRemoveAllLayers->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerAttrib_Clicked, this, _toolLayerAttrib->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerUp_Clicked, this, _toolLayerUp->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerDown_Clicked, this, _toolLayerDown->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerTop_Clicked, this, _toolLayerTop->GetId());
+	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerBottom_Clicked, this, _toolLayerBottom->GetId());
 
 }
 
@@ -112,8 +118,14 @@ wxLayerWidget::~wxLayerWidget()
 {
 	Unbind(wxEVT_TREE_SEL_CHANGED, &wxLayerWidget::OnNodeSelChanged, this);
 
-	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
-	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxLayerWidget::_toolRemoveLayer_Clicked, this, _toolRemoveLayer->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerVisible_Clicked, this, _toolLayerVisible->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolRemoveLayer_Clicked, this, _toolRemoveLayer->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolRemoveAllLayers_Clicked, this, _toolRemoveAllLayers->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerAttrib_Clicked, this, _toolLayerAttrib->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerUp_Clicked, this, _toolLayerUp->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerDown_Clicked, this, _toolLayerDown->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerTop_Clicked, this, _toolLayerTop->GetId());
+	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerBottom_Clicked, this, _toolLayerBottom->GetId());
 
 	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Remove(this, &wxLayerWidget::OnDatasetClose);
 
@@ -151,11 +163,13 @@ void wxLayerWidget::SetMap(IMap * map, IMapWidget* mapWidget)
 void wxLayerWidget::LayerAdded(IMapPtr, ILayerPtr layer, size_t pos)
 {
 	AddLayerNode(layer, pos);
+	UpdateLayerTool();
 }
 
 void wxLayerWidget::LayerRemoved(IMapPtr, ILayerPtr layer, size_t pos)
 {
 	RemoveLayerNode(layer, pos);
+	UpdateLayerTool();
 }
 
 void wxLayerWidget::LayerCleared(IMapPtr)
@@ -165,7 +179,7 @@ void wxLayerWidget::LayerCleared(IMapPtr)
 	_impl_->_vecLayerNode.clear();
 }
 
-inline void wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
+inline wxTreeItemId wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 {
 	layerTreeItemData* layerData = new layerTreeItemData();
 	layerData->_layer = layer;
@@ -187,6 +201,8 @@ inline void wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 		inserted = _treeCtrl->InsertItem(root, pos, label, vector_simple, vector_simple, layerData);
 
 	_impl_->_vecLayerNode.insert(_impl_->_vecLayerNode.begin() + pos, inserted);
+
+	return inserted;
 }
 
 inline void wxLayerWidget::RemoveLayerNode(ILayer * layer, size_t pos)
@@ -231,20 +247,36 @@ void wxLayerWidget::OnDatasetClose(IDataset * dt)
 		_map->RemoveLayer(dt);
 }
 
+size_t wxLayerWidget::UpdateLayerTool()
+{
+	size_t selLayerPos = _map->GetLayerCount();
+	if (_selLayer != nullptr)
+	{
+		size_t maxLayerPos = selLayerPos - 1;
+		size_t selLayerPos = _map->GetLayerPos(_selLayer);
+
+		_toolBar->EnableTool(_toolLayerUp->GetId(), selLayerPos > 0);
+		_toolBar->EnableTool(_toolLayerDown->GetId(), selLayerPos < maxLayerPos);
+		_toolBar->EnableTool(_toolLayerTop->GetId(), selLayerPos > 0);
+		_toolBar->EnableTool(_toolLayerBottom->GetId(), selLayerPos < maxLayerPos);
+	}
+
+	return selLayerPos;
+}
+
 void wxLayerWidget::OnNodeSelChanged(wxTreeEvent & event)
 {
 	_selId = event.GetItem();
 	_selLayer = nullptr;
+	size_t selLayerPos = 0;
 	if (_selId.IsOk())
 	{		
 		layerTreeItemData* selData = (layerTreeItemData*)_treeCtrl->GetItemData(_selId);
 		_selLayer = selData->_layer;
+		selLayerPos = UpdateLayerTool();
+		
 		_toolBar->EnableTool(_toolLayerVisible->GetId(), true);
 		_toolBar->EnableTool(_toolLayerAttrib->GetId(), true);
-		_toolBar->EnableTool(_toolLayerUp->GetId(), true);
-		_toolBar->EnableTool(_toolLayerDown->GetId(), true);
-		_toolBar->EnableTool(_toolLayerTop->GetId(), true);
-		_toolBar->EnableTool(_toolLayerBottom->GetId(), true);
 		_toolBar->EnableTool(_toolRemoveLayer->GetId(), true);
 
 		_toolBar->ToggleTool(_toolLayerVisible->GetId(), _selLayer->GetVisible());
@@ -259,6 +291,8 @@ void wxLayerWidget::OnNodeSelChanged(wxTreeEvent & event)
 		_toolBar->EnableTool(_toolLayerBottom->GetId(), false);
 		_toolBar->EnableTool(_toolRemoveLayer->GetId(), false);
 	}
+
+	LayerSelChangedEvent(_map, _selLayer, selLayerPos);
 }
 
 void wxLayerWidget::_toolLayerVisible_Clicked(wxCommandEvent & event)
@@ -282,6 +316,59 @@ void wxLayerWidget::_toolRemoveLayer_Clicked(wxCommandEvent & event)
 	{
 		_map->RemoveLayer(_selLayer);
 	}
+}
+
+void wxLayerWidget::_toolRemoveAllLayers_Clicked(wxCommandEvent & event)
+{
+	if (_map != nullptr)
+	{
+		_map->ClearLayers();
+	}
+}
+
+void wxLayerWidget::_toolLayerAttrib_Clicked(wxCommandEvent & event)
+{
+}
+
+void wxLayerWidget::_toolLayerUp_Clicked(wxCommandEvent & event)
+{
+	size_t selLayerPos = _map->GetLayerPos(_selLayer);
+	_map->MoveLayer(selLayerPos, selLayerPos - 1);
+	_mapWidget->RepaintMap();
+	wxTreeItemId itemId = AddLayerNode(_selLayer, selLayerPos - 1);
+	RemoveLayerNode(_selLayer, selLayerPos+1);
+	_treeCtrl->SelectItem(itemId);
+}
+
+void wxLayerWidget::_toolLayerDown_Clicked(wxCommandEvent & event)
+{
+	size_t selLayerPos = _map->GetLayerPos(_selLayer);
+	_map->MoveLayer(selLayerPos, selLayerPos + 1);
+	_mapWidget->RepaintMap();
+	wxTreeItemId itemId = AddLayerNode(_selLayer, selLayerPos + 2);
+	RemoveLayerNode(_selLayer, selLayerPos);
+	_treeCtrl->SelectItem(itemId);
+}
+
+void wxLayerWidget::_toolLayerTop_Clicked(wxCommandEvent & event)
+{
+	size_t selLayerPos = _map->GetLayerPos(_selLayer);
+	_map->MoveLayer(selLayerPos, 0);
+	_mapWidget->RepaintMap();
+	wxTreeItemId itemId = AddLayerNode(_selLayer, 0);
+	RemoveLayerNode(_selLayer, selLayerPos + 1);
+	_treeCtrl->SelectItem(itemId);
+}
+
+void wxLayerWidget::_toolLayerBottom_Clicked(wxCommandEvent & event)
+{
+	size_t selLayerPos = _map->GetLayerPos(_selLayer);
+	size_t layerCount = _map->GetLayerCount();
+	_map->MoveLayer(selLayerPos, layerCount - 1);
+	_mapWidget->RepaintMap();
+	wxTreeItemId itemId = AddLayerNode(_selLayer, layerCount);
+	RemoveLayerNode(_selLayer, selLayerPos);
+	_treeCtrl->SelectItem(itemId);
 }
 
 END_NAME_SPACE(tGis, Gui)

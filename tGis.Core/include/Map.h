@@ -31,6 +31,7 @@ public:
 
 	virtual size_t GetLayerCount();
 	virtual ILayer* GetLayer(size_t);
+	virtual size_t GetLayerPos(ILayer*);
 	virtual bool AddLayer(ILayer*);
 	virtual ILayer* RemoveLayer(size_t);
 	virtual void RemoveLayer(ILayer*);

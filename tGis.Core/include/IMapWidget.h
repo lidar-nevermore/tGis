@@ -40,8 +40,6 @@ struct TGIS_CORE_API IMapWidget : public IWidget
 	virtual void RepaintMap() = 0;
 	virtual void PresentMap() = 0;
 
-	Event<IMapWidget*, int, int> LoadedEvent;
-	Event<IMapWidget*, int, int> SizeChangedEvent;
 	Event<IMapWidget*, IMapTool*> MapToolChangedEvent;
 	Event<IMapWidget*, IMapTool*> MapToolAddedEvent;
 	Event<IMapWidget*, IMapTool*> MapToolRemovedEvent;

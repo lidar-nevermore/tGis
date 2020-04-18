@@ -24,6 +24,11 @@ void Dataset::Open()
 	DataSourceRepository::INSTANCE().AddOpenedDataset(this);
 }
 
+bool Dataset::IsOpened()
+{
+	return _opened;
+}
+
 void Dataset::Close()
 {
 	if (_opened == false)

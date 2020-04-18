@@ -30,6 +30,8 @@ struct TGIS_CORE_API IMap
 	//Map对象不支持多线程访问，
 	virtual size_t GetLayerCount() = 0;
 	virtual ILayer* GetLayer(size_t) = 0;
+	//返回值大于等于GetLayerCount表示不存在
+	virtual size_t GetLayerPos(ILayer*) = 0;
 	virtual bool AddLayer(ILayer*) = 0;
 	virtual bool InsertLayer(size_t, ILayer*) = 0;
 	virtual ILayer* RemoveLayer(size_t) = 0;
