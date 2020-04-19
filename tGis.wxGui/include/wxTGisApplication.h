@@ -11,6 +11,8 @@ using namespace tGis::Core;
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
+class wxGLMapWidget;
+
 class TGIS_GUI_API wxTGisApplication : public TGisApplication
 {
 protected:
@@ -19,6 +21,7 @@ protected:
 
 public:
 	virtual wxFrame* GetMainFrame() = 0;
+	virtual wxGLMapWidget* GetCurMapWidget() = 0;
 };
 
 END_NAME_SPACE(tGis, Gui)

@@ -29,6 +29,7 @@ public:
 	virtual void SetMapWidget(IMapWidget* mapWidget);
 
 protected:
+	void LayerVisibleChanged(IMapPtr, ILayerPtr);
 	void LayerAdded(IMapPtr, ILayerPtr, size_t) override;
 	virtual void LayerMoved(IMapPtr, ILayerPtr, size_t, ILayerPtr, size_t);
 

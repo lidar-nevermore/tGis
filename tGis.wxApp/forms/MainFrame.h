@@ -13,6 +13,7 @@ using namespace tGis::Gui;
 
 class MainFrame : public MainFrameBase
 {
+	friend class tGisWxApp;
 public:
 	MainFrame();
     ~MainFrame();

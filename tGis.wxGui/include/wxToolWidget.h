@@ -17,6 +17,7 @@
 #include <wx/treectrl.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
+#include <wx/srchctrl.h>
 
 #include "tGis_wxGuiCfg.h"
 
@@ -26,18 +27,19 @@ BEGIN_NAME_SPACE(tGis, Gui)
 
 class TGIS_GUI_API wxToolWidget : public wxPanel
 {
-private:
+public:
+	wxToolWidget(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
+	~wxToolWidget();
 
 protected:
 	wxToolBar* _toolBar;
-	wxToolBarToolBase* m_tool1;
-	wxToolBarToolBase* m_tool2;
+	wxToolBarToolBase* _toolAddTool;
+	wxToolBarToolBase* _toolRemoveTool;
+	wxSearchCtrl* _srchCtrl;
+	wxToolBarToolBase* _toolSrch;
+	//wxToolBarToolBase* _toolEndFind;
 	wxTreeCtrl* _treeCtrl;
 
-public:
-
-	wxToolWidget(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 300), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
-	~wxToolWidget();
 
 };
 

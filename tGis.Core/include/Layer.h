@@ -7,6 +7,7 @@
 
 #include "ILayer.h"
 #include "ILayerRender.h"
+#include "IMap.h"
 
 class OGREnvelope;
 class OGRSpatialReference;
@@ -67,7 +68,10 @@ public:
 
 	virtual void SetVisible(bool visible)
 	{
+		bool _fireEvent = _visible != visible;
 		_visible = visible;
+		if (_fireEvent && _map != nullptr)
+			_map->LayerVisibleChangedEvent(_map, this);
 	}
 
 	virtual void Paint(IGeoSurface* surf)

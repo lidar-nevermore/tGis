@@ -9,10 +9,10 @@ MainFrame::MainFrame()
 	wxIcon icon(wxString(TGisApplication::INSTANCE()->GetExeDir()) + wxString("/wxApp_res/icon.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(icon);
 
-	_toolPan = _toolBar->AddTool(wxID_ANY, wxT("Pan"), _TOOL_PNG("MapTool","Pan"), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL);
-	_toolZoomFree = _toolBar->AddTool(wxID_ANY, wxT("Zoom Free"), _TOOL_PNG("MapTool", "ZoomFree"), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL);
 	_toolZoomIn = _toolBar->AddTool(wxID_ANY, wxT("Zoom In"), _TOOL_PNG("MapTool", "ZoomIn"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
 	_toolZoomOut = _toolBar->AddTool(wxID_ANY, wxT("Zoom In"), _TOOL_PNG("MapTool", "ZoomOut"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolPan = _toolBar->AddTool(wxID_ANY, wxT("Pan"), _TOOL_PNG("MapTool","Pan"), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL);
+	_toolZoomFree = _toolBar->AddTool(wxID_ANY, wxT("Zoom Free"), _TOOL_PNG("MapTool", "ZoomFree"), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL);
 	_toolZoomRect = _toolBar->AddTool(wxID_ANY, wxT("Zoom In"), _TOOL_PNG("MapTool", "ZoomRect"), wxNullBitmap, wxITEM_CHECK, wxEmptyString, wxEmptyString, NULL);
 	_toolEntire = _toolBar->AddTool(wxID_ANY, wxT("Entire Map"), _TOOL_PNG("MapTool", "Entire"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
 	_toolZoomLayer = _toolBar->AddTool(wxID_ANY, wxT("Zoom to layer"), _TOOL_PNG("MapTool", "ZoomLayer"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);

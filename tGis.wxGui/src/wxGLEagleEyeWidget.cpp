@@ -38,8 +38,11 @@ void wxGLEagleEyeWidget::SetMapWidget(IMapWidget * mapWidget)
 		viewPort->ChangedEvent.Remove(this, &wxGLEagleEyeWidget::OnViewPortChanged);
 		IMapPtr map = GetMap();
 		MapWidget::SetMap(nullptr);
-		if(map != nullptr)
+		if (map != nullptr)
+		{
 			map->LayerMovedEvent.Remove(this, &wxGLEagleEyeWidget::LayerMoved);
+			map->LayerVisibleChangedEvent.Remove(this, &wxGLEagleEyeWidget::LayerVisibleChanged);
+		}
 	}
 
 	_relMapWidget = mapWidget;
@@ -51,8 +54,17 @@ void wxGLEagleEyeWidget::SetMapWidget(IMapWidget * mapWidget)
 		IMapPtr map = _relMapWidget->GetMap();
 		MapWidget::SetMap(map);
 		if (map != nullptr)
+		{
 			map->LayerMovedEvent.Add(this, &wxGLEagleEyeWidget::LayerMoved);
+			map->LayerVisibleChangedEvent.Add(this, &wxGLEagleEyeWidget::LayerVisibleChanged);
+		}
 	}
+}
+
+void wxGLEagleEyeWidget::LayerVisibleChanged(IMapPtr, ILayerPtr)
+{
+	RepaintMap();
+	Refresh();
 }
 
 void wxGLEagleEyeWidget::LayerAdded(IMapPtr map, ILayerPtr layer, size_t pos)

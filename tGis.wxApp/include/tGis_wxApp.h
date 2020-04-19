@@ -12,22 +12,21 @@
 using namespace tGis::Core;
 using namespace tGis::Gui;
 
-BEGIN_NAME_SPACE(tGis, App)
+class MainFrame;
 
 class tGisWxApp : public wxApp, public wxTGisApplication
 {
 public:
 	virtual bool OnInit();
 
-	// Í¨¹ý wxTGisApplication ¼Ì³Ð
 	virtual wxFrame * GetMainFrame() override;
+	virtual wxGLMapWidget * GetCurMapWidget() override;
 
 private:
-	wxFrame* _mainFrame;
+	MainFrame* _mainFrame;
+	wxGLMapWidget* _mapWidget;
 };
 
 DECLARE_APP(tGisWxApp)
-
-END_NAME_SPACE(tGis, App)
 
 #endif
