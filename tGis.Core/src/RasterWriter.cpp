@@ -6,17 +6,32 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-struct MyGDALProgressArg
+struct WriteMemoryBlockPrgArg
 {
-	Progress* progress;
+	WriteMemoryBlockPrgArg()
+	{
+		stepInfo = nullptr;
+		maxValue = 100;
+		totalValue = 0;
+	}
+	char* stepInfo;
+	int maxValue;
+	int totalValue;
+	double stepRatio;
 	ProgressEvent* progressEvent;
 };
 
-int CPL_STDCALL MyGDALProgressFunc(double dfComplete, const char *pszMessage, void *pProgressArg)
+int CPL_STDCALL WriteMemoryBlockPrgFunc(double dfComplete, const char *pszMessage, void *pProgressArg)
 {
-	MyGDALProgressArg* arg = (MyGDALProgressArg*)pProgressArg;
-	arg->progress->Value += int(100 * dfComplete);
-	arg->progressEvent->Raise(*(arg->progress));
+	WriteMemoryBlockPrgArg* arg = (WriteMemoryBlockPrgArg*)pProgressArg;
+	int stepValue = int(arg->maxValue * dfComplete);
+	arg->totalValue += int(arg->stepRatio*stepValue);
+	Progress prg(arg->totalValue,
+		stepValue,
+		arg->maxValue,
+		pszMessage,
+		arg->stepInfo);
+	arg->progressEvent->Raise(prg);
 	return CE_None;
 }
 
@@ -74,22 +89,33 @@ TGIS_CORE_API void WriteMemoryBlock(
 	}
 	outRaster->SetGeoTransform(geoTransform);
 
-	Progress prog(0, 100 * count);
-	MyGDALProgressArg proga;
-	proga.progress = &prog;
-	proga.progressEvent = progressEvent;
+	WriteMemoryBlockPrgArg prga;
+	prga.progressEvent = progressEvent;
+	prga.stepRatio = 1.0 / count;
 
 	GDALRasterIOExtraArg rasterIoArg;
 	INIT_RASTERIO_EXTRA_ARG(rasterIoArg);
-	rasterIoArg.pfnProgress = MyGDALProgressFunc;
+	rasterIoArg.pfnProgress = WriteMemoryBlockPrgFunc;
+	rasterIoArg.pProgressData = &prga;
 	GDALRasterIOExtraArg *pRasterIoArg = progressEvent == nullptr ? nullptr : &rasterIoArg;
-
+	char stepInfoBuf[1000];
 	for (int i = 1; i <= count; i++)
 	{
+		sprintf(stepInfoBuf, "正在写入第%d通道，共%d通道", i, count);
+		prga.stepInfo = stepInfoBuf;
 		GDALRasterBand* outBand = outRaster->GetRasterBand(i);
 		outBand->SetNoDataValue(noDataValue);
 		outBand->RasterIO(GF_Write, 0, 0, w, h, mem[i - 1], w, h, dt, 0, 0, pRasterIoArg);
 		outBand->FlushCache();
+		if (progressEvent != nullptr)
+		{
+			Progress prg(i==count?prga.maxValue:prga.totalValue,
+				prga.maxValue,
+				prga.maxValue,
+				nullptr,
+				stepInfoBuf);
+			progressEvent->Raise(prg);
+		}
 	}
 
 	outRaster->FlushCache();

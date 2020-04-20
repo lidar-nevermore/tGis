@@ -11,30 +11,33 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct TGIS_CORE_API Progress
 {
-	Progress()
-		:Value(0)
-		, Max(100)
-		, Message(nullptr)
-	{
-	}
-
-	Progress(int value, int max = 100, char* msg = nullptr)
-		:Value(value)
-		, Max(max)
+	Progress(int totalValue, 
+		int stepValue, 
+		int maxValue = 100, 
+		const char* msg = nullptr,
+		const char* stepInfo = nullptr)
+		:TotalValue(totalValue)
+		, StepValue(stepValue)
+		, MaxValue(maxValue)
 		, Message(msg)
+		, StepInfo(stepInfo)
 	{
 	}
 
-	int Value;
-	const int Max;
-	char* Message;
+	const int TotalValue;
+	const int StepValue;
+	const int MaxValue;
+	const char* Message;
+	const char* StepInfo;
+
+	TGIS_DECLARE_NO_COPY_CLASS(Progress);
 };
 
-typedef IEventHandler<Progress> ProgressEventHandler;
-typedef Event<Progress> ProgressEvent;
+typedef IEventHandler<const Progress&> ProgressEventHandler;
+typedef Event<const Progress&> ProgressEvent;
 
-template struct TGIS_CORE_API IEventHandler<Progress>;
-template class TGIS_CORE_API Event<Progress>;
+template struct TGIS_CORE_API IEventHandler<const Progress&>;
+template class TGIS_CORE_API Event<const Progress&>;
 
 END_NAME_SPACE(tGis, Core)
 

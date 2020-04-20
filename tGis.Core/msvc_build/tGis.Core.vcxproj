@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\bi_list.h" />
+    <ClInclude Include="..\include\BuildPyramids.h" />
     <ClInclude Include="..\include\Dataset.h" />
     <ClInclude Include="..\include\DataSource.h" />
     <ClInclude Include="..\include\DataSourceRepository.h" />
@@ -95,6 +96,7 @@
     <ClCompile Include="..\internal\Plugin.cpp" />
     <ClCompile Include="..\internal\PluginManager.cpp" />
     <ClCompile Include="..\src\bi_list.c" />
+    <ClCompile Include="..\src\BuildPyramids.cpp" />
     <ClCompile Include="..\src\Dataset.cpp" />
     <ClCompile Include="..\src\DataSource.cpp" />
     <ClCompile Include="..\src\DataSourceRepository.cpp" />

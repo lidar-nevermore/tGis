@@ -1,5 +1,6 @@
 #include "MainFrame.h"
 #include <wx/artprov.h>
+#include <wx/progdlg.h>
 
 #include "tGis_wxAppCfg.h"
 
@@ -132,6 +133,22 @@ void MainFrame::OnDatasetOpen(IDataset * dt)
 	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 	{
 		MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dt;
+		if (NeedBuildPyramids(dataset->GetGDALDataset()))
+		{
+			wxProgressDialog* prgDlg = new wxProgressDialog(wxT("建立图像金字塔..."), wxT("建立图像金字塔..."), 100, this, wxPD_AUTO_HIDE|wxPD_APP_MODAL);
+			ProgressEvent pyrPrgEvent;
+			FunctorEventHandler<const Progress&> handler(
+				[prgDlg](const Progress& prg)->void
+			{
+				prgDlg->Update(prg.StepValue, prg.Message);
+			});
+			pyrPrgEvent.Add(&handler);
+
+			BuildPyramids(dataset->GetGDALDataset(), &pyrPrgEvent);
+
+			delete prgDlg;
+		}
+
 		Layer* layer = new Layer(dataset);
 		int bandCount = dataset->GetGDALDataset()->GetRasterCount();
 		ILayerRender* layerRender = nullptr;

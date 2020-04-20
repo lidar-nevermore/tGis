@@ -278,6 +278,9 @@
     <ClInclude Include="..\include\RasterColorRampLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\BuildPyramids.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -438,6 +441,9 @@
     </ClCompile>
     <ClCompile Include="..\src\RasterColorRampLayerRender.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\BuildPyramids.cpp">
+      <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

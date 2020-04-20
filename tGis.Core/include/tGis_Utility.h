@@ -16,7 +16,10 @@ extern "C"
 #include "RasterBandSeqBlockReader.h"
 #include "RasterBandSeqPixelReader.h"
 #include "RasterBandStorageBlockGridReader.h"
-#include "Statistics.h"
-#include "RasterWriter.h"
 
 #include "Progress.h"
+
+#include "Statistics.h"
+#include "RasterWriter.h"
+#include "BuildPyramids.h"
+
