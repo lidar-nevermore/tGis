@@ -109,7 +109,7 @@ bool MapWidget::AddMapTool(IMapTool * tool)
 	{
 		tool->SetMapWidget(this);
 		_impl_->_vecMapTool.push_back(tool);
-		MapToolAddedEvent(this, std::forward<IMapTool*>(tool));
+		MapToolAddedEvent(this, tool);
 	}
 
 	return canAdd;
@@ -123,7 +123,7 @@ bool MapWidget::RemoveMapTool(IMapTool * tool)
 		{
 			tool->SetMapWidget(nullptr);
 			_impl_->_vecMapTool.erase(it);
-			MapToolRemovedEvent(this, std::forward<IMapTool*>(tool));
+			MapToolRemovedEvent(this, tool);
 			return true;
 		}
 	}

@@ -120,7 +120,7 @@ bool Map::AddLayer(ILayer *layer)
 	{
 		_impl_->_vecLayer.insert(_impl_->_vecLayer.begin(), layer);
 		layer->SetMap(this);
-		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), 0);
+		LayerAddedEvent(this, layer, 0);
 	}
 
 	return canAdd;
@@ -133,7 +133,7 @@ ILayer* Map::RemoveLayer(size_t pos)
 	layer->SetMap(nullptr);
 	_impl_->_vecLayer.erase(it);
 	UpdateEnvelope();
-	LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
+	LayerRemovedEvent(this, layer, pos);
 	if (layer->_is_in_heap)
 		delete layer;
 	return layer;
@@ -149,7 +149,7 @@ void Map::RemoveLayer(ILayer * layer)
 			size_t pos = it - _impl_->_vecLayer.begin();
 			_impl_->_vecLayer.erase(it);
 			UpdateEnvelope();
-			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
+			LayerRemovedEvent(this, layer, pos);
 			if (layer->_is_in_heap)
 				delete layer;
 			break;
@@ -168,7 +168,7 @@ void Map::RemoveLayer(IDataset * dt)
 			layer->SetMap(nullptr);
 			size_t pos = it - _impl_->_vecLayer.begin();
 			it = _impl_->_vecLayer.erase(it);
-			LayerRemovedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
+			LayerRemovedEvent(this, layer, pos);
 			if (layer->_is_in_heap)
 				delete layer;
 		}
@@ -202,7 +202,7 @@ bool Map::InsertLayer(size_t pos, ILayer * layer)
 	{
 		_impl_->_vecLayer.insert(_impl_->_vecLayer.begin() + pos, layer);
 		layer->SetMap(this);
-		LayerAddedEvent(std::forward<IMapPtr>(this), std::forward<ILayerPtr>(layer), pos);
+		LayerAddedEvent(this, layer, pos);
 	}
 
 	return canAdd;
@@ -230,7 +230,7 @@ void Map::ClearLayers()
 			delete layer;
 	}
 	_impl_->_vecLayer.clear();
-	LayerClearedEvent(std::forward<IMapPtr>(this));
+	LayerClearedEvent(this);
 }
 
 void Map::Paint(IGeoSurface * surf)
