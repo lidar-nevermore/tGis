@@ -24,7 +24,7 @@ private:
 	static const char* const _type;
 
 public:
-	static const int EQUAL = 1;
+	static const int EQ = 1;
 	static const int LT = 2;
 	static const int GT = 4;
 

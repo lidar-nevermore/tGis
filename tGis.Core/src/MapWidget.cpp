@@ -160,10 +160,10 @@ void MapWidget::RepaintMap()
 	IMap* map = this->GetMap();
 
 	_geoSurface->SetViewPort(&_viewPort);
-	_geoSurface->BeginPaint(this,false);
+	_geoSurface->BeginPaint(false);
 	if(map != nullptr)
 		map->Paint(_geoSurface);
-	_geoSurface->EndPaint(this,false);
+	_geoSurface->EndPaint(false);
 }
 
 void MapWidget::PresentMap()
@@ -186,9 +186,9 @@ void MapWidget::PresentMap()
 	int surfPresentWidth = (int)_tgis_round(surfPresentRight - surfPresentLeft, 0);
 	int surfPresentHeight = (int)_tgis_round(surfPresentBottom - surfPresentTop, 0);
 
-	_geoSurface->BeginPaint(this,true);
-	_geoSurface->Present(this, (int)surfPresentLeft, (int)surfPresentTop, surfPresentWidth, surfPresentHeight);
-	_geoSurface->EndPaint(this,true);
+	_geoSurface->BeginPaint(true);
+	_geoSurface->Present((int)surfPresentLeft, (int)surfPresentTop, surfPresentWidth, surfPresentHeight);
+	_geoSurface->EndPaint(true);
 }
 
 

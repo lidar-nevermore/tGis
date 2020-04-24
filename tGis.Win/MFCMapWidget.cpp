@@ -46,7 +46,7 @@ MFCMapWidget::MFCMapWidget()
 	_mouseDownY = -1;
 	SetMap(&_thisMap);
 	_geoSurface = &_thisGeoSurface;
-
+	_thisGeoSurface._mapWidget = this;
 	RegisterWndClass();
 }
 

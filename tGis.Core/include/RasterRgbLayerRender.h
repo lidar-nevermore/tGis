@@ -23,6 +23,7 @@ private:
 	static const char* const _type;
 
 public:
+	RasterRgbLayerRender(ILayer* layer);
 	RasterRgbLayerRender(ILayer* layer, int r, int g, int b);
 	~RasterRgbLayerRender();
 
@@ -41,9 +42,14 @@ public:
 	unsigned char* GetLutR();
 	unsigned char* GetLutG();
 	unsigned char* GetLutB();
+
 	int GetBandR();
 	int GetBandG();
 	int GetBandB();
+
+	void SetBandR(int rBand);
+	void SetBandG(int gBand);
+	void SetBandB(int bBand);
 
 	void SetNoDataValueR(int noDataLogic, double noDataValue);
 	void GetNoDataValueR(int* noDataLogic, double* noDataValue);

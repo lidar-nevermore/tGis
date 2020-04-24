@@ -9,6 +9,9 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="internal">
+      <UniqueIdentifier>{35090428-712b-4f1b-af89-a4bedb01bb6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\tGis_wxGui.h">
@@ -50,6 +53,27 @@
     <ClInclude Include="..\include\wxGLEagleEyeWidget.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxLayerPropertyDialog.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxLayerRenderPanel.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\RgbLayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\ILayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\GrayScaleLayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\GrayScaleLayerRenderCtrlBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -85,5 +109,31 @@
     <ClCompile Include="..\src\wxGLEagleEyeWidget.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\wxLayerPropertyDialog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxLayerRenderPanel.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\GrayScaleLayerRenderCtrl.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\internal\RgbLayerRanderCtrl.fbp">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp">
+      <Filter>internal</Filter>
+    </None>
   </ItemGroup>
 </Project>

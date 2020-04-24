@@ -89,7 +89,7 @@ void wxGLEagleEyeWidget::LayerMoved(IMapPtr, ILayerPtr, size_t, ILayerPtr, size_
 void wxGLEagleEyeWidget::OnViewPortChanged(GeoViewPort * geoViewPort)
 {
 	int surfW, surfH;
-	_geoSurface->GetSurfaceSize(&surfW, &surfH);
+	_geoSurface->GetSize(&surfW, &surfH);
 
 	if (surfW == 0 || surfH == 0)
 		return;

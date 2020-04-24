@@ -107,25 +107,22 @@ void GdiGeoSurface::SetViewPort(GeoViewPort* viewPort)
 	}
 }
 
-void GdiGeoSurface::Present(IWidget * w, int wX, int wY)
+void GdiGeoSurface::Present(int wX, int wY)
 {
-	MFCMapWidget* cw = (MFCMapWidget*)w;
-
 	if (_bitmap == NULL)
 		return;
 
-	Gdiplus::Graphics gps(cw->GetSafeHwnd());
+	Gdiplus::Graphics gps(_mapWidget->GetSafeHwnd());
 	gps.DrawImage(_bitmap, wX, wY);
 }
 
-void GdiGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
+void GdiGeoSurface::Present(int wX, int wY, int wW, int wH)
 {
-	MFCMapWidget* cw = (MFCMapWidget*)w;
 	if (_bitmap == NULL)
 		return;
 
 	CRect rect;
-	cw->GetClientRect(&rect);
+	_mapWidget->GetClientRect(&rect);
 	Gdiplus::Bitmap buf(rect.Width(), rect.Height(), PixelFormat24bppRGB);
 	Gdiplus::Graphics gps(&buf);
 	Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 255, 255));
@@ -134,15 +131,14 @@ void GdiGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
 	//Gdiplus::Rect rc(wX, wY, wW, wH);
 	//gps.DrawImage(_bitmap, rc, surfX, surfY, surfW, surfH, Gdiplus::Unit::UnitPixel);
 
-	Gdiplus::Graphics gw(cw->GetSafeHwnd());
+	Gdiplus::Graphics gw(_mapWidget->GetSafeHwnd());
 	gw.DrawImage(&buf, 0, 0);
 }
 
-void GdiGeoSurface::BeginPaint(IWidget * w, bool isCache)
+void GdiGeoSurface::BeginPaint(bool isCache)
 {
-	GeoSurface::BeginPaint(w, isCache);
+	GeoSurface::BeginPaint(isCache);
 
-	MFCMapWidget* cw = (MFCMapWidget*)w;
 	if (isCache == false)
 	{
 		if (_bitmap == NULL)
@@ -154,23 +150,23 @@ void GdiGeoSurface::BeginPaint(IWidget * w, bool isCache)
 		int surfHeight;
 		_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
 		Gdiplus::Graphics gps(_bitmap);
-		Gdiplus::SolidBrush brush(Gdiplus::Color(255, cw->_backgroundR, cw->_backgroundG, cw->_backgroundB));
+		Gdiplus::SolidBrush brush(Gdiplus::Color(255, _mapWidget->_backgroundR, _mapWidget->_backgroundG, _mapWidget->_backgroundB));
 		gps.FillRectangle(&brush, 0, 0, surfWidth, surfHeight);
 	}
 	else
 	{
 		//CRect rect;
-		//cw->GetClientRect(&rect);
-		//Gdiplus::Graphics gps(cw->GetSafeHwnd());
+		//_mapWidget->GetClientRect(&rect);
+		//Gdiplus::Graphics gps(_mapWidget->GetSafeHwnd());
 		//Gdiplus::SolidBrush brush(Gdiplus::Color(255, 255, 255, 255));
 		//gps.FillRectangle(&brush, 0, 0, rect.Width(), rect.Height());
 	}
 }
 
-void GdiGeoSurface::EndPaint(IWidget * w, bool isCache)
+void GdiGeoSurface::EndPaint(bool isCache)
 {
 	if (isCache == false)
-		Present(w, 0, 0);
+		Present(0, 0);
 }
 
 void GdiGeoSurface::DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY)

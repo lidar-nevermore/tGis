@@ -22,12 +22,12 @@ wxGLGeoSurface::~wxGLGeoSurface()
 		free(_mapBuffer);
 }
 
-void wxGLGeoSurface::Present(IWidget * w, int wX, int wY)
+void wxGLGeoSurface::Present(int wX, int wY)
 {
-	Present(w, wX, wY, _mapWidth, _mapHeight);
+	Present(wX, wY, _mapWidth, _mapHeight);
 }
 
-void wxGLGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
+void wxGLGeoSurface::Present(int wX, int wY, int wW, int wH)
 {
 	wxSize sz = _mapWidget->GetClientSize();
 	//目标范围的NDC坐标
@@ -46,7 +46,7 @@ void wxGLGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _mapWidth, _mapHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, _mapBuffer);  //载入纹理：																										
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _mapWidth, _mapHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, _mapBuffer);  //载入纹理：																										
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -68,10 +68,10 @@ void wxGLGeoSurface::Present(IWidget * w, int wX, int wY, int wW, int wH)
 	glDisable(GL_TEXTURE_2D);
 }
 
-void wxGLGeoSurface::BeginPaint(IWidget * w, bool isCache)
+void wxGLGeoSurface::BeginPaint(bool isCache)
 {
 	_glContext.SetCurrent(*_mapWidget);
-	GeoSurface::BeginPaint(w, isCache);
+	GeoSurface::BeginPaint(isCache);
 	//TODO: 设置OpenGL参数
 	int surfWidth;
 	int surfHeight;
@@ -80,9 +80,10 @@ void wxGLGeoSurface::BeginPaint(IWidget * w, bool isCache)
 	glClearColor(_mapWidget->_br, _mapWidget->_bg, _mapWidget->_bb, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
-void wxGLGeoSurface::EndPaint(IWidget * w, bool isCache)
+void wxGLGeoSurface::EndPaint(bool isCache)
 {
 	int surfWidth;
 	int surfHeight;
@@ -107,8 +108,7 @@ void wxGLGeoSurface::EndPaint(IWidget * w, bool isCache)
 		glReadPixels(0, 0, _mapWidth, _mapHeight, GL_RGBA, GL_UNSIGNED_BYTE, _mapBuffer);
 	}
 
-	wxGLMapWidget* widget = (wxGLMapWidget*)w;
-	IOverlayLayer* overlayLayer = widget->GetOverlayLayer();
+	IOverlayLayer* overlayLayer = _mapWidget->GetOverlayLayer();
 	overlayLayer->Paint((IGeoSurface*)this);
 
 	//if (widget->_gridVisible)

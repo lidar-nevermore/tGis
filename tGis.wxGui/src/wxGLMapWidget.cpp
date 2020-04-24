@@ -4,6 +4,8 @@
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
+const int wxGLAttribList[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, 0 };
+
 wxGLMapWidget::wxGLMapWidget(wxWindow *parent,
 	wxWindowID id,
 	const wxPoint& pos,
@@ -11,7 +13,7 @@ wxGLMapWidget::wxGLMapWidget(wxWindow *parent,
 	long style,
 	const wxString& name,
 	const wxPalette& palette)
-	:wxGLCanvas(parent,id,nullptr,pos,size,style,name, palette)
+	:wxGLCanvas(parent, id, wxGLAttribList, pos, size, style, name, palette)
 	, _thisGeoSurface(this)
 {
 	_repaint = false;

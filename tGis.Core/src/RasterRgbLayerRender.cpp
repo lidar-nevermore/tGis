@@ -27,63 +27,29 @@ bool RasterRgbLayerRender::IsTypeOf(const char * type)
 	return RasterLayerRender::IsTypeOf(type);
 }
 
-RasterRgbLayerRender::RasterRgbLayerRender(ILayer* layer, int r, int g, int b)
-	:RasterLayerRender(layer)
+RasterRgbLayerRender::RasterRgbLayerRender(ILayer * layer)
+	: RasterLayerRender(layer)
 {
 	_rNoDataLogic = 0;
 	_rNoDataValue = 0;
+	_rDataBytes = 0;
 	_gNoDataLogic = 0;
 	_gNoDataValue = 0;
+	_gDataBytes = 0;
 	_bNoDataLogic = 0;
 	_bNoDataValue = 0;
+	_bDataBytes = 0;
+	
 	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterRgbLayerRender::OuterResample;
 	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterRgbLayerRender::IOResample;
+}
 
-	GDALRasterBand* rBand = _raster->GetGDALDataset()->GetRasterBand(r);
-	GDALDataType rDataType = rBand->GetRasterDataType();
-	if (rDataType > 7 || rDataType == 0)
-	{
-		throw std::exception("不支持复数和未定义的像素格式");
-	}
-
-	GDALRasterBand* gBand = _raster->GetGDALDataset()->GetRasterBand(g);
-	GDALDataType gDataType = gBand->GetRasterDataType();
-	if (gDataType > 7 || gDataType == 0)
-	{
-		throw std::exception("不支持复数和未定义的像素格式");
-	}
-
-
-	GDALRasterBand* bBand = _raster->GetGDALDataset()->GetRasterBand(b);
-	GDALDataType bDataType = bBand->GetRasterDataType();
-	if (bDataType > 7 || bDataType == 0)
-	{
-		throw std::exception("不支持复数和未定义的像素格式");
-	}
-
-	_rBand = rBand;
-	_rDataType = rDataType;
-	_rBandIndex = r;
-	_rDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_rDataType);
-
-	_gBand = gBand;
-	_gDataType = gDataType;
-	_gBandIndex = g;
-	_gDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_gDataType);
-
-	_bBand = bBand;
-	_bDataType = bDataType;
-	_bBandIndex = b;
-	_bDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_bDataType);
-
-	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
-
-	RasterLayerRender::RestLutToLinear(_rLut);
-	RasterLayerRender::RestLutToLinear(_gLut);
-	RasterLayerRender::RestLutToLinear(_bLut);
-	RasterLayerRender::InitialMinMax(_rBand, _rDataType, &_rMin, &_rMax, &_rRange);
-	RasterLayerRender::InitialMinMax(_gBand, _gDataType, &_gMin, &_gMax, &_gRange);
-	RasterLayerRender::InitialMinMax(_bBand, _bDataType, &_bMin, &_bMax, &_bRange);
+RasterRgbLayerRender::RasterRgbLayerRender(ILayer* layer, int r, int g, int b)
+	:RasterRgbLayerRender(layer)
+{
+	SetBandR(r);
+	SetBandG(g);
+	SetBandB(b);
 }
 
 
@@ -158,6 +124,66 @@ int RasterRgbLayerRender::GetBandG()
 int RasterRgbLayerRender::GetBandB()
 {
 	return _bBandIndex;
+}
+
+void RasterRgbLayerRender::SetBandR(int r)
+{
+	GDALRasterBand* rBand = _raster->GetGDALDataset()->GetRasterBand(r);
+	GDALDataType rDataType = rBand->GetRasterDataType();
+	if (rDataType > 7 || rDataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+
+	_rBand = rBand;
+	_rDataType = rDataType;
+	_rBandIndex = r;
+	_rDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_rDataType);
+
+	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
+
+	RasterLayerRender::RestLutToLinear(_rLut);
+	RasterLayerRender::InitialMinMax(_rBand, _rDataType, &_rMin, &_rMax, &_rRange);
+}
+
+void RasterRgbLayerRender::SetBandG(int g)
+{
+	GDALRasterBand* gBand = _raster->GetGDALDataset()->GetRasterBand(g);
+	GDALDataType gDataType = gBand->GetRasterDataType();
+	if (gDataType > 7 || gDataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+
+	_gBand = gBand;
+	_gDataType = gDataType;
+	_gBandIndex = g;
+	_gDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_gDataType);
+
+	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
+
+	RasterLayerRender::RestLutToLinear(_gLut);
+	RasterLayerRender::InitialMinMax(_gBand, _gDataType, &_gMin, &_gMax, &_gRange);
+}
+
+void RasterRgbLayerRender::SetBandB(int b)
+{
+	GDALRasterBand* bBand = _raster->GetGDALDataset()->GetRasterBand(b);
+	GDALDataType bDataType = bBand->GetRasterDataType();
+	if (bDataType > 7 || bDataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+
+	_bBand = bBand;
+	_bDataType = bDataType;
+	_bBandIndex = b;
+	_bDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_bDataType);
+
+	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
+
+	RasterLayerRender::RestLutToLinear(_bLut);
+	RasterLayerRender::InitialMinMax(_bBand, _bDataType, &_bMin, &_bMax, &_bRange);
 }
 
 

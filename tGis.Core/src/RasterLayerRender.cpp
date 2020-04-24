@@ -86,9 +86,9 @@ void RasterLayerRender::InitialMinMax(GDALRasterBand * band, int dataType, doubl
 		double 	pdfMean;
 		double 	pdfStdDev;
 		band->GetStatistics(TRUE, TRUE, &pdfMin, &pdfMax, &pdfMean, &pdfStdDev);
-		double diffMin = pdfMean - pdfMin;
+		double diffMean = pdfMean - pdfMin;
 		double diffMax = pdfMax - pdfMin;
-		double ratMinMax = diffMin / diffMax;
+		double ratMinMax = diffMean / diffMax;
 		if (ratMinMax > 2.0 || ratMinMax < 0.5)
 		{
 			*min = pdfMean - pdfStdDev;
@@ -114,7 +114,7 @@ void RasterLayerRender::RestLutToLinear(unsigned char lut[256])
 inline bool RasterLayerRender::IsNoDataValue(int noDataLogic, double noDataValue, double value)
 {
 	bool isNoData = false;
-	if ((noDataLogic & EQUAL) != 0)
+	if ((noDataLogic & EQ) != 0)
 		isNoData = value > (noDataValue-DBL_EPSILON) && value < (noDataValue + DBL_EPSILON);
 	if (isNoData == false)
 	{

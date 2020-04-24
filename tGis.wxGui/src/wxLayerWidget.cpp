@@ -1,4 +1,6 @@
 #include "wxLayerWidget.h"
+#include "wxLayerPropertyDialog.h"
+#include "wxTGisApplication.h"
 
 #define _TOOL_PNG(file_name) \
 wxBitmap(wxString(TGisApplication::INSTANCE()->GetExeDir()) \
@@ -330,6 +332,11 @@ void wxLayerWidget::_toolRemoveAllLayers_Clicked(wxCommandEvent & event)
 
 void wxLayerWidget::_toolLayerAttrib_Clicked(wxCommandEvent & event)
 {
+	wxLayerPropertyDialog lpDlg(_selLayer);
+	if (lpDlg.ShowModal() == wxID_OK)
+	{
+		_mapWidget->RepaintMap();
+	}
 }
 
 void wxLayerWidget::_toolLayerUp_Clicked(wxCommandEvent & event)

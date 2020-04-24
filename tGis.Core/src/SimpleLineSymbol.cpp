@@ -72,7 +72,7 @@ void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y, int *
 {
 	int surfWidth;
 	int surfHeight;
-	surf->GetSurfaceSize(&surfWidth, &surfHeight);
+	surf->GetSize(&surfWidth, &surfHeight);
 	GLfloat red = _r / 255.0f;
 	GLfloat green = _g / 255.0f;
 	GLfloat blue = _g / 255.0f;

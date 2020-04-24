@@ -50,7 +50,7 @@ private:
 	wxToolBarToolBase* _toolMapSpatialRef;
 
 private:
-	void OnDatasetOpen(IDataset* dt);
+	void OnDatasetActivated(IDataset* dt);
 	void OnLayerSelChanged(IMapPtr, ILayerPtr, size_t);
 
 private:

@@ -43,7 +43,7 @@ MainFrame::MainFrame()
 	_dataSourceWidget = new wxDataSourceWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize);
 
-	_dataSourceWidget->AfterDatasetActivatedEvent.Add<MainFrame>(this, &MainFrame::OnDatasetOpen);
+	_dataSourceWidget->AfterDatasetActivatedEvent.Add<MainFrame>(this, &MainFrame::OnDatasetActivated);
 
 	_mgr.AddPane(_dataSourceWidget, wxAuiPaneInfo().
 		Name(wxT("DataSource")).Caption(wxT("DataSource")).
@@ -128,8 +128,11 @@ MainFrame::~MainFrame()
 	_mgr.UnInit();
 }
 
-void MainFrame::OnDatasetOpen(IDataset * dt)
+void MainFrame::OnDatasetActivated(IDataset * dt)
 {
+	if (dt->IsOpened() == false)
+		return;
+
 	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 	{
 		MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dt;
@@ -148,16 +151,17 @@ void MainFrame::OnDatasetOpen(IDataset * dt)
 
 			delete prgDlg;
 		}
-
-		Layer* layer = new Layer(dataset);
-		int bandCount = dataset->GetGDALDataset()->GetRasterCount();
-		ILayerRender* layerRender = nullptr;
-		if (bandCount < 3)
-			layerRender = new RasterGrayScaleLayerRender(layer, 1);
-		else
-			layerRender = new RasterRgbLayerRender(layer, 1, 2, 3);
-		_map.AddLayer(layer);
 	}
+
+	Layer* layer = new Layer(dt);
+	wxLayerPropertyDialog lpDlg(layer);
+	if (lpDlg.ShowModal() != wxID_OK)
+	{
+		delete layer;
+		return;
+	}
+
+	_map.AddLayer(layer);
 }
 
 void MainFrame::OnLayerSelChanged(IMapPtr, ILayerPtr layer, size_t)

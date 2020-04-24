@@ -86,6 +86,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\DrawRectTool.h" />
+    <ClInclude Include="..\include\wxLayerPropertyDialog.h" />
+    <ClInclude Include="..\include\wxLayerRenderPanel.h" />
     <ClInclude Include="..\include\MapPanTool.h" />
     <ClInclude Include="..\include\MapZoomTool.h" />
     <ClInclude Include="..\include\RectZoomTool.h" />
@@ -98,9 +100,20 @@
     <ClInclude Include="..\include\wxLayerWidget.h" />
     <ClInclude Include="..\include\wxTGisApplication.h" />
     <ClInclude Include="..\include\wxToolWidget.h" />
+    <ClInclude Include="..\internal\GrayScaleLayerRenderCtrl.h" />
+    <ClInclude Include="..\internal\GrayScaleLayerRenderCtrlBase.h" />
+    <ClInclude Include="..\internal\ILayerRenderCtrl.h" />
+    <ClInclude Include="..\internal\RgbLayerRenderCtrl.h" />
+    <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\internal\GrayScaleLayerRenderCtrl.cpp" />
+    <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp" />
+    <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp" />
+    <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\src\DrawRectTool.cpp" />
+    <ClCompile Include="..\src\wxLayerPropertyDialog.cpp" />
+    <ClCompile Include="..\src\wxLayerRenderPanel.cpp" />
     <ClCompile Include="..\src\MapPanTool.cpp" />
     <ClCompile Include="..\src\MapZoomTool.cpp" />
     <ClCompile Include="..\src\RectZoomTool.cpp" />
@@ -111,6 +124,10 @@
     <ClCompile Include="..\src\wxLayerWidget.cpp" />
     <ClCompile Include="..\src\wxTGisApplication.cpp" />
     <ClCompile Include="..\src\wxToolWidget.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp" />
+    <None Include="..\internal\RgbLayerRanderCtrl.fbp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

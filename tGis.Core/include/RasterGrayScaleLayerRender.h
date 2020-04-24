@@ -23,6 +23,7 @@ private:
 	static const char* const _type;
 
 public:
+	RasterGrayScaleLayerRender(ILayer* layer);
 	RasterGrayScaleLayerRender(ILayer* layer, int band);
 	~RasterGrayScaleLayerRender();
 
@@ -35,6 +36,7 @@ public:
 	void GetMinMax(double* min, double* max);
 	unsigned char* GetLut();
 	int GetBand();
+	void SetBand(int band);
 	void SetNoDataValue(int noDataLogic, double noDataValue);
 	void GetNoDataValue(int* noDataLogic, double* noDataValue);
 

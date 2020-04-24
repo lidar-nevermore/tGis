@@ -58,6 +58,10 @@ public:
 
 	virtual void SetRender(ILayerRender* render)
 	{
+		if (_render == render)
+			return;
+		if (_render != nullptr && _render->_is_in_heap)
+			delete _render;
 		_render = render;
 	}
 

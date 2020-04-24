@@ -18,7 +18,7 @@ GeoSurface::~GeoSurface()
 {
 }
 
-void GeoSurface::BeginPaint(IWidget * w, bool isCache)
+void GeoSurface::BeginPaint(bool isCache)
 {
 	gladLoadGL();
 }

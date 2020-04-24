@@ -24,12 +24,12 @@ public:
 		return &_viewPort;
 	}
 
-	virtual inline void GetSurfaceSize(int* surfW, int* surfH) const
+	virtual inline void GetSize(int* surfW, int* surfH) const
 	{
 		_viewPort.GetSurfaceSize(surfW, surfH);
 	}
 
-	virtual void BeginPaint(IWidget* w, bool isCache);
+	virtual void BeginPaint(bool isCache);
 
 protected:
 	virtual void SetViewPort(GeoViewPort* viewPort)

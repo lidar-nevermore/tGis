@@ -28,27 +28,21 @@ bool RasterGrayScaleLayerRender::IsTypeOf(const char * type)
 }
 
 
-RasterGrayScaleLayerRender::RasterGrayScaleLayerRender(ILayer* layer, int bandIndex)
+RasterGrayScaleLayerRender::RasterGrayScaleLayerRender(ILayer * layer)
 	:RasterLayerRender(layer)
 {
-	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterGrayScaleLayerRender::OuterResample;
-	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterGrayScaleLayerRender::IOResample;
-	GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(bandIndex);
-	GDALDataType dataType = band->GetRasterDataType();
-	if (dataType > 7 || dataType == 0)
-	{
-		throw std::exception("不支持复数和未定义的像素格式");
-	}
-
-	_band = band;
-	_dataType = dataType;
-	_bandIndex = bandIndex;
-	_dataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_dataType);
-	_maxPixDataBytes = _dataBytes;
-	RasterLayerRender::RestLutToLinear(_lut);
-	RasterLayerRender::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
 	_noDataLogic = 0;
 	_noDataValue = 0.0;
+	_dataBytes = 0;
+
+	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterGrayScaleLayerRender::OuterResample;
+	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterGrayScaleLayerRender::IOResample;
+}
+
+RasterGrayScaleLayerRender::RasterGrayScaleLayerRender(ILayer* layer, int bandIndex)
+	:RasterGrayScaleLayerRender(layer)
+{
+	SetBand(bandIndex);
 }
 
 
@@ -77,6 +71,24 @@ unsigned char * RasterGrayScaleLayerRender::GetLut()
 int RasterGrayScaleLayerRender::GetBand()
 {
 	return _bandIndex;
+}
+
+void RasterGrayScaleLayerRender::SetBand(int bandIndex)
+{
+	GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(bandIndex);
+	GDALDataType dataType = band->GetRasterDataType();
+	if (dataType > 7 || dataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+
+	_band = band;
+	_dataType = dataType;
+	_bandIndex = bandIndex;
+	_dataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_dataType);
+	_maxPixDataBytes = _dataBytes;
+	RasterLayerRender::RestLutToLinear(_lut);
+	RasterLayerRender::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
 }
 
 void RasterGrayScaleLayerRender::SetNoDataValue(int noDataLogic, double noDataValue)

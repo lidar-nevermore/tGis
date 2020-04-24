@@ -30,10 +30,10 @@ protected:
 
 public:
 	// 通过 GeoSurface 继承
-	virtual void Present(IWidget * w, int wX, int wY) override;
-	virtual void Present(IWidget * w, int wX, int wY, int wW, int wH) override;
-	virtual void BeginPaint(IWidget * w, bool isCache) override;
-	virtual void EndPaint(IWidget * w, bool isCache) override;
+	virtual void Present(int wX, int wY) override;
+	virtual void Present(int wX, int wY, int wW, int wH) override;
+	virtual void BeginPaint(bool isCache) override;
+	virtual void EndPaint(bool isCache) override;
 
 	//绘制接口
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY) override;

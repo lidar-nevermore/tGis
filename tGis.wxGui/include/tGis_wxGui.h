@@ -16,5 +16,8 @@
 #include "wxLayerWidget.h"
 #include "wxToolWidget.h"
 
+#include "wxLayerPropertyDialog.h"
+#include "wxLayerRenderPanel.h"
+
 
 #endif // !__TGIS_GUI_H__
