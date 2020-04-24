@@ -1,26 +1,26 @@
-#include "GrayScaleLayerRenderCtrl.h"
+#include "ColorRampLayerRenderCtrl.h"
 
-GrayScaleLayerRenderCtrl::GrayScaleLayerRenderCtrl( wxWindow* parent )
-	:GrayScaleLayerRenderCtrlBase( parent )
+ColorRampLayerRenderCtrl::ColorRampLayerRenderCtrl( wxWindow* parent )
+	:ColorRampLayerRenderCtrlBase( parent )
 {
 	_render = nullptr;
 	_raster = nullptr;
 }
 
-const char * GrayScaleLayerRenderCtrl::GetLayerRenderName()
+const char * ColorRampLayerRenderCtrl::GetLayerRenderName()
 {
-	return "Raster GrayScale Render";;
+	return "Raster ColorRamp Render";;
 }
 
-bool GrayScaleLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
+bool ColorRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 {
 	if (IsSupportLayer(layer))
 	{
 		ILayerRender* render = layer->GetRender();
 
-		if (render != nullptr && render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
+		if (render != nullptr && render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
 			return true;
-		
+
 		if (render == nullptr)
 		{
 			MyGDALRasterDataset* raster = dynamic_cast<MyGDALRasterDataset*>(layer->GetDataset());
@@ -34,7 +34,7 @@ bool GrayScaleLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 	return false;
 }
 
-bool GrayScaleLayerRenderCtrl::IsSupportLayer(ILayer * layer)
+bool ColorRampLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 {
 	IDataset* dt = layer->GetDataset();
 	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
@@ -43,7 +43,7 @@ bool GrayScaleLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 	return false;
 }
 
-void GrayScaleLayerRenderCtrl::SetLayer(ILayer * layer)
+void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
 {
 	_layer = layer;
 	_raster = (MyGDALRasterDataset*)layer->GetDataset();
@@ -59,13 +59,13 @@ void GrayScaleLayerRenderCtrl::SetLayer(ILayer * layer)
 	if (render == nullptr)
 		SetDataset(_raster);
 	else
-		SetLayerRender(dynamic_cast<RasterGrayScaleLayerRender*>(render));
+		SetLayerRender(dynamic_cast<RasterColorRampLayerRender*>(render));
 }
 
-void GrayScaleLayerRenderCtrl::UpdateLayerRender()
+void ColorRampLayerRenderCtrl::UpdateLayerRender()
 {
 	if (_render == nullptr)
-		_render = new RasterGrayScaleLayerRender(_layer);
+		_render = new RasterColorRampLayerRender(_layer);
 
 	_render->SetBand(_choiceBand->GetSelection() + 1);
 
@@ -74,12 +74,15 @@ void GrayScaleLayerRenderCtrl::UpdateLayerRender()
 
 	wxString rMinStr = _txtMin->GetValue();
 	wxString rMaxStr = _txtMax->GetValue();
+	wxString pivotStr = _txtPivot->GetValue();
 	double minR;
 	rMinStr.ToDouble(&minR);
 	double maxR;
 	rMaxStr.ToDouble(&maxR);
-	if (minR < maxR)
-		_render->SetMinMax(minR, maxR);
+	double pivot;
+	pivotStr.ToDouble(&pivot);
+	if (minR < maxR && pivot <= maxR && pivot >= minR)
+		_render->SetMinPivotMax(minR, pivot, maxR);
 
 	int noDataLogic = 0;
 	if (_chkNoDataEQ->IsChecked())
@@ -95,10 +98,26 @@ void GrayScaleLayerRenderCtrl::UpdateLayerRender()
 	double noData = 0;
 	noDataStr.ToDouble(&noData);
 	_render->SetNoDataValue(noDataLogic, noData);
+
+	bool leftRChannel;
+	bool leftGChannel;
+	bool leftBChannel;
+	bool rightRChannel;
+	bool rightGChannel;
+	bool rightBChannel;
+
+	leftRChannel = _chkLtPivotR->IsChecked();
+	leftGChannel = _chkLtPivotG->IsChecked();
+	leftBChannel = _chkLtPivotB->IsChecked();
+	rightRChannel = _chkGtPivotR->IsChecked();
+	rightGChannel = _chkGtPivotG->IsChecked();
+	rightBChannel = _chkGtPivotB->IsChecked();
+	_render->SetLeftChannel(leftRChannel, leftGChannel, leftBChannel);
+	_render->SetRightChannel(rightRChannel, rightGChannel, rightBChannel);
 }
 
 
-void GrayScaleLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
+void ColorRampLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 {
 	GDALDataset* dt = _raster->GetGDALDataset();
 	int layerCount = dt->GetRasterCount();
@@ -107,6 +126,7 @@ void GrayScaleLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 	{
 		_txtMin->SetValue(wxT("0"));
 		_txtMax->SetValue(wxT("255"));
+		_txtPivot->SetValue(wxT("127"));
 
 		_chkNoDataEQ->SetValue(false);
 		_chkNoDataGT->SetValue(false);
@@ -125,6 +145,7 @@ void GrayScaleLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 
 		_txtMin->SetValue(wxString::Format(wxT("%.3f"), rMin));
 		_txtMax->SetValue(wxString::Format(wxT("%.3f"), rMax));
+		_txtPivot->SetValue(wxString::Format(wxT("%.3f"), (rMin+rMax)/2.0));
 
 		if (rNoDataOK)
 		{
@@ -135,10 +156,19 @@ void GrayScaleLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 		}
 	}
 
+
+	_chkLtPivotR->SetValue(false);
+	_chkLtPivotG->SetValue(false);
+	_chkLtPivotB->SetValue(true);
+
+	_chkGtPivotR->SetValue(true);
+	_chkGtPivotG->SetValue(false);
+	_chkGtPivotB->SetValue(false);
+
 	_choiceBand->SetSelection(0);
 }
 
-void GrayScaleLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * render)
+void ColorRampLayerRenderCtrl::SetLayerRender(RasterColorRampLayerRender * render)
 {
 	_render = render;
 
@@ -146,10 +176,12 @@ void GrayScaleLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * rende
 
 	double rMin;
 	double rMax;
-	_render->GetMinMax(&rMin, &rMax);
+	double pivot;
+	_render->GetMinPivotMax(&rMin, &pivot, &rMax);
 
 	_txtMin->SetValue(wxString::Format(wxT("%.3f"), rMin));
 	_txtMax->SetValue(wxString::Format(wxT("%.3f"), rMax));
+	_txtPivot->SetValue(wxString::Format(wxT("%.3f"), pivot));
 
 	int noDataLogicR;
 	double rNoData;
@@ -171,6 +203,23 @@ void GrayScaleLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * rende
 	{
 		_chkNoDataLT->SetValue(true);
 	}
+
+	bool leftRChannel;
+	bool leftGChannel;
+	bool leftBChannel;
+	bool rightRChannel;
+	bool rightGChannel;
+	bool rightBChannel;
+	_render->GetLeftChannel(&leftRChannel, &leftGChannel, &leftBChannel);
+	_render->GetRightChannel(&rightRChannel, &rightGChannel, &rightBChannel);
+
+	_chkLtPivotR->SetValue(leftRChannel);
+	_chkLtPivotG->SetValue(leftGChannel);
+	_chkLtPivotB->SetValue(leftBChannel);
+
+	_chkGtPivotR->SetValue(rightRChannel);
+	_chkGtPivotG->SetValue(rightGChannel);
+	_chkGtPivotB->SetValue(rightBChannel);
 
 	_choiceBand->SetSelection(_render->GetBand() - 1);
 }

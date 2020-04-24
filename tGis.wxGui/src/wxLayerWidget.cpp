@@ -335,6 +335,7 @@ void wxLayerWidget::_toolLayerAttrib_Clicked(wxCommandEvent & event)
 	wxLayerPropertyDialog lpDlg(_selLayer);
 	if (lpDlg.ShowModal() == wxID_OK)
 	{
+		_map->LayerRenderChangedEvent(_map, _selLayer);
 		_mapWidget->RepaintMap();
 	}
 }

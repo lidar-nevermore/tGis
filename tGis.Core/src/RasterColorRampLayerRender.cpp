@@ -27,7 +27,7 @@ bool RasterColorRampLayerRender::IsTypeOf(const char * type)
 	return RasterLayerRender::IsTypeOf(type);
 }
 
-RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer* layer, int bandIndex)
+RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer * layer)
 	:RasterLayerRender(layer)
 {
 	_leftRChannel = true;
@@ -38,25 +38,15 @@ RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer* layer, int bandIn
 	_rightBChannel = true;
 	_noDataLogic = 0;
 	_noDataValue = 0.0;
+	_dataBytes = 0;
 	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterColorRampLayerRender::OuterResample;
 	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterColorRampLayerRender::IOResample;
+}
 
-	GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(bandIndex);
-	GDALDataType dataType = band->GetRasterDataType();
-	if (dataType > 7 || dataType == 0)
-	{
-		throw std::exception("不支持复数和未定义的像素格式");
-	}
-	_pivot = 0;
-	_band = band;
-	_dataType = dataType;
-	_bandIndex = bandIndex;
-	_dataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_dataType);
-	_maxPixDataBytes = _dataBytes;
-	_leftRange = _pivot - _min;
-	_rightRange = _max - _pivot;
-	RasterLayerRender::RestLutToLinear(_lut);
-	RasterLayerRender::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
+RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer* layer, int bandIndex)
+	:RasterColorRampLayerRender(layer)
+{
+	SetBand(bandIndex);
 }
 
 
@@ -88,6 +78,26 @@ unsigned char * RasterColorRampLayerRender::GetLut()
 int RasterColorRampLayerRender::GetBand()
 {
 	return _bandIndex;
+}
+
+void RasterColorRampLayerRender::SetBand(int bandIndex)
+{
+	GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(bandIndex);
+	GDALDataType dataType = band->GetRasterDataType();
+	if (dataType > 7 || dataType == 0)
+	{
+		throw std::exception("不支持复数和未定义的像素格式");
+	}
+	_pivot = 0;
+	_band = band;
+	_dataType = dataType;
+	_bandIndex = bandIndex;
+	_dataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_dataType);
+	_maxPixDataBytes = _dataBytes;
+	_leftRange = _pivot - _min;
+	_rightRange = _max - _pivot;
+	RasterLayerRender::RestLutToLinear(_lut);
+	RasterLayerRender::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
 }
 
 void RasterColorRampLayerRender::SetLeftChannel(bool r, bool g, bool b)

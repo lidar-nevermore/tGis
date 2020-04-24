@@ -74,6 +74,12 @@
     <ClInclude Include="..\internal\GrayScaleLayerRenderCtrlBase.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\internal\ColorRampLayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\ColorRampLayerRenderCtrlBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -127,12 +133,21 @@
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
+    <ClCompile Include="..\internal\ColorRampLayerRenderCtrl.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\ColorRampLayerRenderCtrlBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\RgbLayerRanderCtrl.fbp">
       <Filter>internal</Filter>
     </None>
     <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\ColorRampLayerRenderCtrl.fbp">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>

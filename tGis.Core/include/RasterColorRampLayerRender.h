@@ -26,6 +26,7 @@ private:
 	static const char* const _type;
 
 public:
+	RasterColorRampLayerRender(ILayer* layer);
 	RasterColorRampLayerRender(ILayer* layer, int band);
 	~RasterColorRampLayerRender();
 
@@ -38,7 +39,7 @@ public:
 	void GetMinPivotMax(double* min, double* pivot, double* max);
 	unsigned char* GetLut();
 	int GetBand();
-
+	void SetBand(int band);
 	void SetLeftChannel(bool r, bool g, bool b);
 	void GetLeftChannel(bool* r, bool* g, bool* b);
 	void SetRightChannel(bool r, bool g, bool b);

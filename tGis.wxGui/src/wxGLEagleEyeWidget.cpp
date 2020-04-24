@@ -42,6 +42,7 @@ void wxGLEagleEyeWidget::SetMapWidget(IMapWidget * mapWidget)
 		{
 			map->LayerMovedEvent.Remove(this, &wxGLEagleEyeWidget::LayerMoved);
 			map->LayerVisibleChangedEvent.Remove(this, &wxGLEagleEyeWidget::LayerVisibleChanged);
+			map->LayerRenderChangedEvent.Remove(this, &wxGLEagleEyeWidget::LayerVisibleChanged);
 		}
 	}
 
@@ -57,6 +58,7 @@ void wxGLEagleEyeWidget::SetMapWidget(IMapWidget * mapWidget)
 		{
 			map->LayerMovedEvent.Add(this, &wxGLEagleEyeWidget::LayerMoved);
 			map->LayerVisibleChangedEvent.Add(this, &wxGLEagleEyeWidget::LayerVisibleChanged);
+			map->LayerRenderChangedEvent.Add(this, &wxGLEagleEyeWidget::LayerVisibleChanged);
 		}
 	}
 }

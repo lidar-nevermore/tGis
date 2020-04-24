@@ -50,6 +50,7 @@ struct TGIS_CORE_API IMap
 	virtual void Paint(IGeoSurface*) = 0;
 
 	Event<IMap*, ILayer*> LayerVisibleChangedEvent;
+	Event<IMap*, ILayer*> LayerRenderChangedEvent;
 	Event<IMap*, ILayer*, size_t> LayerAddedEvent;
 	Event<IMap*, ILayer*, size_t> LayerRemovedEvent;
 	Event<IMap*, ILayer*, size_t, ILayer*, size_t> LayerMovedEvent;
