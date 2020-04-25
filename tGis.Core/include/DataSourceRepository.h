@@ -26,7 +26,7 @@ class TGIS_CORE_API DataSourceRepository
 private:
 	static DataSourceRepository* _instance;
 public:
-	static DataSourceRepository& INSTANCE();
+	static DataSourceRepository* INSTANCE();
 
 private:
 	DataSourceRepository();

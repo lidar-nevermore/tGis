@@ -15,7 +15,7 @@ class TGIS_CORE_API ToolKitRepository
 private:
 	static ToolKitRepository* _instance;
 public:
-	static ToolKitRepository& INSTANCE();
+	static ToolKitRepository* INSTANCE();
 
 private:
 	ToolKitRepository();

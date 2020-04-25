@@ -14,10 +14,13 @@ BEGIN_NAME_SPACE(tGis, Core)
 SimpleFillSymbol::SimpleFillSymbol()
 	:SimpleFillSymbol(SimpleFillSymbol::Solid)
 {
+	_lib = SimpleSymbolLibrary::GetFillSymbolLibrary();
 }
 
 SimpleFillSymbol::SimpleFillSymbol(int t)
 {
+	_lib = SimpleSymbolLibrary::GetFillSymbolLibrary();
+
 	_type = t;
 	_r = 30;
 	_g = 236;
@@ -30,21 +33,23 @@ SimpleFillSymbol::~SimpleFillSymbol()
 {
 }
 
-const ISymbolLibrary * SimpleFillSymbol::GetSymbolLibrary()
-{
-	return &SimpleSymbolLibrary::INSTANCE();
-}
-
 const int SimpleFillSymbol::GetId()
 {
-	return IdentifierBegin + _type;
+	return _type;
 }
 
-void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)
+
+void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 {
 	//TODO: 调用OpenGL绘制填充面
 	
 }
+
+void SimpleFillSymbol::Paint(ISurface * surf, int * count, int ** x, int ** y)
+{
+
+}
+
 
 void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
 {

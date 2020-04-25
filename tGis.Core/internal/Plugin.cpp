@@ -45,7 +45,7 @@ Plugin::Plugin(const char* cfg)
 						if (fileds[0].compare("name") == 0)
 							_name = fileds[1];
 						else if (fileds[0].compare("file") == 0)
-							_file = PluginManager::INSTANCE().GetPluginsPath() + fileds[1];
+							_file = PluginManager::INSTANCE()->GetPluginsPath() + fileds[1];
 					}
 
 					line = buffer + i + 1;

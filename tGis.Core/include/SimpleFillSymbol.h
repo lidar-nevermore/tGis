@@ -4,17 +4,15 @@
 #define __SIMPLEFILLSYMBOL_H__
 
 #include "Helper.h"
-#include "ISymbol.h"
+#include "IFillSymbol.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISurface;
 
-class TGIS_CORE_API SimpleFillSymbol : public TSymbol<char>
+class TGIS_CORE_API SimpleFillSymbol : public IFillSymbol
 {
 public:
-	static const int IdentifierBegin = 200;
-	static const int IdentifierEnd = 207;
 	static const int NoFill = 0;
 	static const int Solid = 1;
 	static const int Horizontal = 2;
@@ -23,17 +21,17 @@ public:
 	static const int BackwardDiagonal = 5;
 	static const int Cross = 6;
 	static const int DiagonalCross = 7;
+	static const int MaxId = 7;
 
 public:
 	SimpleFillSymbol();
 	SimpleFillSymbol(int t);
 	~SimpleFillSymbol();
 
-	const ISymbolLibrary* GetSymbolLibrary();
-
 	const int GetId();
 
-	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
+	void Paint(ISurface* surf, int count, int* x, int* y) override;
+	void Paint(ISurface* surf, int* count, int** x, int** y) override;
 
 public:
 	void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);

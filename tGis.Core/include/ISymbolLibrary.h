@@ -10,12 +10,24 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISymbol;
 
+enum SymbolLibraryType
+{
+	Marker,
+	Line,
+	Fill
+};
+
 struct TGIS_CORE_API ISymbolLibrary : public IInclusionObject
 {
 	friend class SymbolLibraryRepository;
 
 	ISymbolLibrary() {};
 	virtual ~ISymbolLibrary() {};
+
+	virtual SymbolLibraryType GetType()
+	{
+		return _libType;
+	};
 
 	//必须保证该接口任何时候都返回同一个指针
 	//只是字符串值一样存放地址不一样也是不对的
@@ -33,6 +45,9 @@ struct TGIS_CORE_API ISymbolLibrary : public IInclusionObject
 	//所有从符号库里取出来的符号
 	//当不再使用时都需要调用这个接口返还给符号库
 	virtual void RevertSymbol(ISymbol*) const = 0;
+
+protected:
+	SymbolLibraryType _libType;
 };
 
 typedef ISymbolLibrary* ISymbolLibraryPtr;

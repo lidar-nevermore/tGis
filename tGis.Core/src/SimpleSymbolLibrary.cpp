@@ -8,24 +8,59 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const SimpleSymbolLibrary::_name = "SimpleSymbolLibrary";
-
-SimpleSymbolLibrary* SimpleSymbolLibrary::_instance = nullptr;
-
-SimpleSymbolLibrary & SimpleSymbolLibrary::INSTANCE()
+SimpleSymbolLibrary* SimpleSymbolLibrary::_markerSymbolLibrary = nullptr;
+SimpleSymbolLibrary * SimpleSymbolLibrary::GetMarkerSymbolLibrary()
 {
-	if (_instance == nullptr)
+	if (_markerSymbolLibrary == nullptr)
 	{
-		_instance = new SimpleSymbolLibrary();
-		static std::unique_ptr<SimpleSymbolLibrary> shit(_instance);
+		_markerSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Marker);
+		static std::unique_ptr<SimpleSymbolLibrary> shit(_markerSymbolLibrary);
 	}
 
-	return *_instance;
+	return _markerSymbolLibrary;
 }
 
-SimpleSymbolLibrary::SimpleSymbolLibrary()
+SimpleSymbolLibrary* SimpleSymbolLibrary::_lineSymbolLibrary = nullptr;
+SimpleSymbolLibrary * SimpleSymbolLibrary::GetLineSymbolLibrary()
 {
-	SymbolLibraryRepository::INSTANCE().AddSymbolLibrary(this);
+	if (_lineSymbolLibrary == nullptr)
+	{
+		_lineSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Line);
+		static std::unique_ptr<SimpleSymbolLibrary> shit(_lineSymbolLibrary);
+	}
+
+	return _lineSymbolLibrary;
+}
+
+SimpleSymbolLibrary* SimpleSymbolLibrary::_fillSymbolLibrary = nullptr;
+SimpleSymbolLibrary * SimpleSymbolLibrary::GetFillSymbolLibrary()
+{
+	if (_fillSymbolLibrary == nullptr)
+	{
+		_fillSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Fill);
+		static std::unique_ptr<SimpleSymbolLibrary> shit(_fillSymbolLibrary);
+	}
+
+	return _fillSymbolLibrary;
+}
+
+SimpleSymbolLibrary::SimpleSymbolLibrary(SymbolLibraryType libType)
+{
+	_libType = libType;
+	switch (_libType)
+	{
+	case tGis::Core::Marker:
+		_name = "SimpleMarkerSymbolLibrary";
+		break;
+	case tGis::Core::Line:
+		_name = "SimpleLineSymbolLibrary";
+		break;
+	case tGis::Core::Fill:
+		_name = "SimpleFileSymbolLibrary";
+		break;
+	default:
+		break;
+	}
 }
 
 
@@ -40,49 +75,66 @@ const char * SimpleSymbolLibrary::GetName() const
 
 int SimpleSymbolLibrary::GetSymbolCount() const
 {
-	return (SimpleMarkerSymbol::IdentifierEnd - SimpleMarkerSymbol::IdentifierBegin + 1)
-		+ (SimpleLineSymbol::IdentifierEnd - SimpleLineSymbol::IdentifierBegin + 1)
-		+ (SimpleFillSymbol::IdentifierEnd - SimpleFillSymbol::IdentifierBegin + 1);
+	switch (_libType)
+	{
+	case tGis::Core::Marker:
+		return SimpleMarkerSymbol::MaxId + 1;
+	case tGis::Core::Line:
+		return SimpleLineSymbol::MaxId + 1;
+	default: //tGis::Core::Fill
+		return SimpleFillSymbol::MaxId + 1;
+	}
 }
 
 ISymbol * SimpleSymbolLibrary::GetSymbol(int id) const
 {
-	if (id <= SimpleMarkerSymbol::IdentifierEnd)
-		return new SimpleMarkerSymbol(id - SimpleMarkerSymbol::IdentifierBegin);
-	else if(id <= SimpleLineSymbol::IdentifierEnd)
-		return new SimpleLineSymbol(id - SimpleLineSymbol::IdentifierBegin);
-	else if (id <= SimpleFillSymbol::IdentifierEnd)
-		return new SimpleFillSymbol(id - SimpleFillSymbol::IdentifierBegin);
-
-	return nullptr;
+	switch (_libType)
+	{
+	case tGis::Core::Marker:
+		return id <= SimpleMarkerSymbol::MaxId? new SimpleMarkerSymbol(id) : nullptr;
+	case tGis::Core::Line:
+		return id <= SimpleLineSymbol::MaxId ? new SimpleLineSymbol(id) : nullptr;
+	default: //tGis::Core::Fill
+		return id <= SimpleFillSymbol::MaxId ? new SimpleFillSymbol(id) : nullptr;
+	}
 }
 
 ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 {
-	if (id <= SimpleMarkerSymbol::IdentifierEnd)
+	if (_libType == SymbolLibraryType::Marker)
 	{
-		if (nextId != nullptr && id == SimpleMarkerSymbol::IdentifierEnd)
+		if (id <= SimpleMarkerSymbol::MaxId)
 		{
-			*nextId = SimpleLineSymbol::IdentifierBegin;
+			if (nextId != nullptr && id == SimpleMarkerSymbol::MaxId)
+			{
+				*nextId = SimpleLineSymbol::MaxId;
+			}
+			return new SimpleMarkerSymbol(id);
 		}
-		return new SimpleMarkerSymbol(id - SimpleMarkerSymbol::IdentifierBegin);
 	}
-	else if (id <= SimpleLineSymbol::IdentifierEnd)
+	else if (_libType == SymbolLibraryType::Line)
 	{
-		if (nextId != nullptr && id == SimpleLineSymbol::IdentifierEnd)
+		if (id <= SimpleLineSymbol::MaxId)
 		{
-			*nextId = SimpleFillSymbol::IdentifierBegin;
+			if (nextId != nullptr && id == SimpleLineSymbol::MaxId)
+			{
+				*nextId = SimpleFillSymbol::MaxId;
+			}
+			return new SimpleLineSymbol(id);
 		}
-		return new SimpleLineSymbol(id - SimpleLineSymbol::IdentifierBegin);
 	}
-	else if (id <= SimpleFillSymbol::IdentifierEnd)
+	else
 	{
-		if (nextId != nullptr && id == SimpleFillSymbol::IdentifierEnd)
+		if (id <= SimpleFillSymbol::MaxId)
 		{
-			*nextId = -1;
+			if (nextId != nullptr && id == SimpleFillSymbol::MaxId)
+			{
+				*nextId = SimpleFillSymbol::MaxId;
+			}
+			return new SimpleFillSymbol(id);
 		}
-		return new SimpleFillSymbol(id - SimpleFillSymbol::IdentifierBegin);
 	}
+
 	return nullptr;
 }
 

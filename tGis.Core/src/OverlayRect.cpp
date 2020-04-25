@@ -49,20 +49,20 @@ void OverlayRect::Paint(IGeoSurface * surf)
 	int y[5] = { _top,_top,_bottom,_bottom,_top };
 	if (_lineSymbol != nullptr)
 	{
-		_lineSymbol->Paint((ISurface*)surf, 5, x, y, nullptr, nullptr);
+		_lineSymbol->Paint((ISurface*)surf, 5, x, y);
 	}
 	if (_fillSymbol != nullptr)
 	{
-		_fillSymbol->Paint((ISurface*)surf, 5, x, y, nullptr, nullptr);
+		_fillSymbol->Paint((ISurface*)surf, 5, x, y);
 	}
 }
 
-void OverlayRect::SetLineSymbol(ISymbol * lineSymbol)
+void OverlayRect::SetLineSymbol(ILineSymbol * lineSymbol)
 {
 	_lineSymbol = lineSymbol;
 }
 
-void OverlayRect::SetFillSymbol(ISymbol * fillSymbol)
+void OverlayRect::SetFillSymbol(IFillSymbol * fillSymbol)
 {
 	_fillSymbol = fillSymbol;
 }

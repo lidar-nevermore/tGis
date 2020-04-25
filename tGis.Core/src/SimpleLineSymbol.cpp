@@ -40,10 +40,14 @@ int g_pattern[] =
 SimpleLineSymbol::SimpleLineSymbol()
 	:SimpleLineSymbol(SimpleLineSymbol::Solid)
 {
+	_lib = SimpleSymbolLibrary::GetLineSymbolLibrary();
+
 }
 
 SimpleLineSymbol::SimpleLineSymbol(int t)
 {
+	_lib = SimpleSymbolLibrary::GetLineSymbolLibrary();
+
 	_type = t;
 	if (_type < 0 || _type > 5)
 		_type = 0;
@@ -58,17 +62,12 @@ SimpleLineSymbol::~SimpleLineSymbol()
 {
 }
 
-const ISymbolLibrary * SimpleLineSymbol::GetSymbolLibrary()
-{
-	return &SimpleSymbolLibrary::INSTANCE();
-}
-
 const int SimpleLineSymbol::GetId()
 {
-	return IdentifierBegin + _type;
+	return _type;
 }
 
-void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)
+void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 {
 	int surfWidth;
 	int surfHeight;

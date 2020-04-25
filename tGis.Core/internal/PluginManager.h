@@ -20,7 +20,7 @@ class TGIS_CORE_API PluginManager
 private:
 	static PluginManager* _instance;
 public:
-	static PluginManager& INSTANCE();
+	static PluginManager* INSTANCE();
 
 private:
 	PluginManager();

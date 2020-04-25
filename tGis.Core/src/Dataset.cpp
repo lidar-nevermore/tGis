@@ -21,7 +21,7 @@ void Dataset::Open()
 
 	_opened = true;
 
-	DataSourceRepository::INSTANCE().AddOpenedDataset(this);
+	DataSourceRepository::INSTANCE()->AddOpenedDataset(this);
 }
 
 bool Dataset::IsOpened()
@@ -36,7 +36,7 @@ void Dataset::Close()
 
 	_opened = false;
 
-	DataSourceRepository::INSTANCE().RemoveOpenedDataset(this);
+	DataSourceRepository::INSTANCE()->RemoveOpenedDataset(this);
 }
 
 IDataSource * Dataset::GetParent()

@@ -107,7 +107,7 @@ void DataSource::Connect()
 	if (_connected)
 		return;
 
-	DataSourceRepository::INSTANCE().AddConnectedDataSource(this);
+	DataSourceRepository::INSTANCE()->AddConnectedDataSource(this);
 }
 
 void DataSource::Disconnect()
@@ -115,7 +115,7 @@ void DataSource::Disconnect()
 	if (_connected == false)
 		return;
 
-	DataSourceRepository::INSTANCE().RemoveConnectedDataSource(this);
+	DataSourceRepository::INSTANCE()->RemoveConnectedDataSource(this);
 
 	//释放子数据源和子数据集占据的内存
 	for (auto it = _impl_->_mapDataset.begin(); it != _impl_->_mapDataset.end(); it++)

@@ -101,7 +101,7 @@ wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& po
 	_toolBar->EnableTool(_toolLayerBottom->GetId(), false);
 	_toolBar->EnableTool(_toolRemoveLayer->GetId(), false);
 
-	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Add(this, &wxLayerWidget::OnDatasetClose);
+	DataSourceRepository::INSTANCE()->BeforeDatasetCloseEvent.Add(this, &wxLayerWidget::OnDatasetClose);
 
 	Bind(wxEVT_TREE_SEL_CHANGED, &wxLayerWidget::OnNodeSelChanged, this);
 
@@ -129,7 +129,7 @@ wxLayerWidget::~wxLayerWidget()
 	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerTop_Clicked, this, _toolLayerTop->GetId());
 	Unbind(wxEVT_TOOL, &wxLayerWidget::_toolLayerBottom_Clicked, this, _toolLayerBottom->GetId());
 
-	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Remove(this, &wxLayerWidget::OnDatasetClose);
+	DataSourceRepository::INSTANCE()->BeforeDatasetCloseEvent.Remove(this, &wxLayerWidget::OnDatasetClose);
 
 	wxLayerWidget::SetMap(nullptr, nullptr);
 

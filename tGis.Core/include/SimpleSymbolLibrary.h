@@ -12,14 +12,20 @@ struct ISymbol;
 
 class TGIS_CORE_API SimpleSymbolLibrary : public ISymbolLibrary
 {
-private:
-	static SimpleSymbolLibrary* _instance;
+	friend class SymbolLibraryRepository;
 
 public:
-	static SimpleSymbolLibrary& INSTANCE();
+	static SimpleSymbolLibrary* GetMarkerSymbolLibrary();
+	static SimpleSymbolLibrary* GetLineSymbolLibrary();
+	static SimpleSymbolLibrary* GetFillSymbolLibrary();
 
 private:
-	SimpleSymbolLibrary();
+	static SimpleSymbolLibrary* _markerSymbolLibrary;
+	static SimpleSymbolLibrary* _lineSymbolLibrary;
+	static SimpleSymbolLibrary* _fillSymbolLibrary;
+
+private:
+	SimpleSymbolLibrary(SymbolLibraryType libType);
 	SimpleSymbolLibrary(const SimpleSymbolLibrary &) = delete;
 	SimpleSymbolLibrary &operator=(const SimpleSymbolLibrary &) = delete;
 
@@ -34,7 +40,7 @@ public:
 	void RevertSymbol(ISymbol*) const;
 
 private:
-	static const char* const _name;
+	char* _name;
 };
 
 

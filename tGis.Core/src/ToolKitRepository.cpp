@@ -12,7 +12,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 ToolKitRepository* ToolKitRepository::_instance = nullptr;
 
 
-ToolKitRepository & ToolKitRepository::INSTANCE()
+ToolKitRepository* ToolKitRepository::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
@@ -20,7 +20,7 @@ ToolKitRepository & ToolKitRepository::INSTANCE()
 		static unique_ptr<ToolKitRepository> shit(_instance);
 	}
 
-	return *_instance;
+	return _instance;
 }
 
 class ToolKitRepositoryImpl

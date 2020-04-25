@@ -16,7 +16,7 @@ class TGIS_CORE_API SymbolLibraryRepository
 {
 public:
 	static SymbolLibraryRepository* _instance;
-	static SymbolLibraryRepository& INSTANCE();
+	static SymbolLibraryRepository* INSTANCE();
 
 public:
 	~SymbolLibraryRepository();
@@ -29,6 +29,7 @@ private:
 public:
 	size_t GetSymbolLibraryCount();
 	ISymbolLibrary* GetSymbolLibrary(size_t);
+
 	void AddSymbolLibrary(ISymbolLibrary*);
 	ISymbolLibrary* GetSymbolLibrary(const char* symLibName);
 

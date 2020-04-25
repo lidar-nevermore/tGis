@@ -6,7 +6,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 PluginManager* PluginManager::_instance = nullptr;
 
-PluginManager & PluginManager::INSTANCE()
+PluginManager* PluginManager::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
@@ -14,7 +14,7 @@ PluginManager & PluginManager::INSTANCE()
 		static unique_ptr<PluginManager> shit(_instance);
 	}
 
-	return *_instance;
+	return _instance;
 }
 
 PluginManager::PluginManager()

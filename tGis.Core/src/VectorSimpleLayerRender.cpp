@@ -124,7 +124,7 @@ inline void VectorSimpleLayerRender::DrawPoint(int* xb, int* yb, IGeoSurface* su
 	if (_envelope.Contains(ev))
 	{
 		surf->GetViewPort()->Spatial2Surface(geometry->getX(), geometry->getY(), &x, &y);
-		_simpleMarkerSymbol.Paint(surf, 1, &x, &y, nullptr, nullptr);
+		_simpleMarkerSymbol.Paint(surf, 1, &x, &y);
 	}
 }
 
@@ -307,7 +307,7 @@ inline void VectorSimpleLayerRender::DrawLineString(int* x, int* y, IGeoSurface*
 {
 	int ptcount = TransferGeometryPoints(x, y, surf, geometry);
 
-	_simpleLineSymbol.Paint(surf, ptcount, x, y, nullptr, nullptr);
+	_simpleLineSymbol.Paint(surf, ptcount, x, y);
 }
 
 inline void VectorSimpleLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* surf, OGRPolygon * geometry)
@@ -318,9 +318,9 @@ inline void VectorSimpleLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* su
 		int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 		*(x + ptcount) = *x;
 		*(y + ptcount) = *y;
-		//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
+		//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
 		_simpleLineSymbol.SetColor(0, 255, 255, 255);
-		_simpleLineSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
+		_simpleLineSymbol.Paint(surf, ptcount + 1, x, y);
 	}
 }
 
@@ -346,7 +346,7 @@ inline void VectorSimpleLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurfac
 		if (_envelope.Contains(ev))
 		{
 			surf->GetViewPort()->Spatial2Surface(pt->getX(), pt->getY(), &x, &y);
-			_simpleMarkerSymbol.Paint(surf, 1, &x, &y, nullptr, nullptr);
+			_simpleMarkerSymbol.Paint(surf, 1, &x, &y);
 		}
 	}
 
@@ -361,7 +361,7 @@ inline void VectorSimpleLayerRender::DrawMultiLineString(int* x, int* y, IGeoSur
 		OGRLinearRing*  line = (OGRLinearRing*)geometry->getGeometryRef(i);
 		int ptcount = TransferGeometryPoints(x, y, surf, line);
 
-		_simpleLineSymbol.Paint(surf, ptcount, x, y, nullptr, nullptr);
+		_simpleLineSymbol.Paint(surf, ptcount, x, y);
 	}
 }
 
@@ -377,8 +377,8 @@ inline void VectorSimpleLayerRender::DrawMultiPolygon(int* x, int* y, IGeoSurfac
 			int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 			*(x + ptcount) = *x;
 			*(y + ptcount) = *y;
-			//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
-			_simpleLineSymbol.Paint(surf, ptcount + 1, x, y, nullptr, nullptr);
+			//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
+			_simpleLineSymbol.Paint(surf, ptcount + 1, x, y);
 		}
 	}
 }

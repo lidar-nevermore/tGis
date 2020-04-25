@@ -12,7 +12,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 SymbolLibraryRepository* SymbolLibraryRepository::_instance = nullptr;
 
 
-SymbolLibraryRepository & SymbolLibraryRepository::INSTANCE()
+SymbolLibraryRepository* SymbolLibraryRepository::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
@@ -20,7 +20,7 @@ SymbolLibraryRepository & SymbolLibraryRepository::INSTANCE()
 		static unique_ptr<SymbolLibraryRepository> shit(_instance);
 	}
 
-	return *_instance;
+	return _instance;
 }
 
 struct c_str_ptr_less

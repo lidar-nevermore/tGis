@@ -11,7 +11,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 DataSourceRepository* DataSourceRepository::_instance = nullptr;
 
 
-DataSourceRepository & DataSourceRepository::INSTANCE()
+DataSourceRepository* DataSourceRepository::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
@@ -19,7 +19,7 @@ DataSourceRepository & DataSourceRepository::INSTANCE()
 		static unique_ptr<DataSourceRepository> shit(_instance);
 	}
 
-	return *_instance;
+	return _instance;
 }
 
 class DataSourceRepositoryImpl

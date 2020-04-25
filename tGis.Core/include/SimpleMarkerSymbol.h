@@ -4,17 +4,15 @@
 #define __SIMPLEMARKERSYMBOL_H__
 
 #include "Helper.h"
-#include "ISymbol.h"
+#include "IMarkerSymbol.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISurface;
 
-class TGIS_CORE_API SimpleMarkerSymbol : public TSymbol<char>
+class TGIS_CORE_API SimpleMarkerSymbol : public IMarkerSymbol
 {
 public:
-	static const int IdentifierBegin = 0;
-	static const int IdentifierEnd = 7;
 	static const int Rect = 0;
 	static const int Ellipse = 1;
 	static const int Triangle = 2;
@@ -23,17 +21,17 @@ public:
 	static const int FillTriangle = 5;
 	static const int Cross = 6;
 	static const int EllipseCross = 7;
+	static const int MaxId = 7;
 
 public:
 	SimpleMarkerSymbol();
 	SimpleMarkerSymbol(int t);
 	~SimpleMarkerSymbol();
 
-	const ISymbolLibrary* GetSymbolLibrary();
-
 	const int GetId();
 
-	void Paint(ISurface* surf, int count, int* x, int* y, int* z, char* c) override;
+	void Paint(ISurface* surf, int count, int* x, int* y) override;
+	void Paint(ISurface* surf, int x, int y) override;
 
     void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);
 	void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
@@ -47,14 +45,14 @@ public:
 	void SetYOffset(int yOff);
 
 protected:
-	void DrawRect(ISurface* surf, int count, int* x, int* y, int* z);
-	void DrawEllipse(ISurface* surf, int count, int* x, int* y, int* z);
-	void DrawTriangle(ISurface* surf, int count, int* x, int* y, int* z);
-	void DrawFillRect(ISurface* surf, int count, int* x, int* y, int* z);
-	void DrawFillEllipse(ISurface* surf, int count, int* x, int* y, int* z);
-	void DrawFillTriangle(ISurface* surf, int count, int* x, int* y, int* z);
-	void DrawCross(ISurface* surf, int count, int* x, int* y, int* z);
-	void DrawEllipseCross(ISurface* surf, int count, int* x, int* y, int* z);
+	void DrawRect(ISurface* surf, int count, int* x, int* y);
+	void DrawEllipse(ISurface* surf, int count, int* x, int* y);
+	void DrawTriangle(ISurface* surf, int count, int* x, int* y);
+	void DrawFillRect(ISurface* surf, int count, int* x, int* y);
+	void DrawFillEllipse(ISurface* surf, int count, int* x, int* y);
+	void DrawFillTriangle(ISurface* surf, int count, int* x, int* y);
+	void DrawCross(ISurface* surf, int count, int* x, int* y);
+	void DrawEllipseCross(ISurface* surf, int count, int* x, int* y);
 
 protected:
 	unsigned char _r;

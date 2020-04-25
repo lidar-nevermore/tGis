@@ -8,7 +8,7 @@ const char* const MemoryDataSource::_type = "EED1ACE6-EF20-45E2-857F-F21E3C3C1A4
 MemoryDataSource* MemoryDataSource::_instance = nullptr;
 
 
-MemoryDataSource & MemoryDataSource::INSTANCE()
+MemoryDataSource* MemoryDataSource::INSTANCE()
 {
 	if (_instance == nullptr)
 	{
@@ -16,7 +16,7 @@ MemoryDataSource & MemoryDataSource::INSTANCE()
 		static std::unique_ptr<MemoryDataSource> shit(_instance);
 	}
 
-	return *_instance;
+	return _instance;
 }
 
 MemoryDataSource::MemoryDataSource()

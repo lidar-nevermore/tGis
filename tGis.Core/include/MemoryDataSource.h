@@ -17,7 +17,7 @@ class TGIS_CORE_API MemoryDataSource : public DataSource
 private:
 	static MemoryDataSource* _instance;
 public:
-	static MemoryDataSource& INSTANCE();
+	static MemoryDataSource* INSTANCE();
 
 public:
 	virtual const char* GetType();

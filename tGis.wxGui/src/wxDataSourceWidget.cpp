@@ -97,7 +97,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 
 	wxTreeItemId root = _treeCtrl->AddRoot(wxT("DataSource"), 0);
 	_openedDtItemId = _treeCtrl->AppendItem(root, wxT("Opened Dataset"), dataset_open_img);
-	_memDsItemId = AddDataSourceNode(root, &MemoryDataSource::INSTANCE(), false);
+	_memDsItemId = AddDataSourceNode(root, MemoryDataSource::INSTANCE(), false);
 	_fileSysItemId = _treeCtrl->AppendItem(root, wxT("FileSystem"), disk_img);
 
 
@@ -123,7 +123,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 	_toolBar->EnableTool(_toolSaveDtAs->GetId(), false);
 	_toolBar->EnableTool(_toolCloseDt->GetId(), false);
 
-	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Add(this, &wxDataSourceWidget::RemoveOpenedDatasetNode);
+	DataSourceRepository::INSTANCE()->BeforeDatasetCloseEvent.Add(this, &wxDataSourceWidget::RemoveOpenedDatasetNode);
 	
 	Bind(wxEVT_TREE_ITEM_ACTIVATED, &wxDataSourceWidget::OnNodeActivated, this);
 	Bind(wxEVT_TREE_SEL_CHANGED, &wxDataSourceWidget::OnNodeSelChanged, this);
@@ -141,7 +141,7 @@ wxDataSourceWidget::~wxDataSourceWidget()
 
 	//delete _imgList;
 
-	DataSourceRepository::INSTANCE().BeforeDatasetCloseEvent.Remove(this, &wxDataSourceWidget::RemoveOpenedDatasetNode);
+	DataSourceRepository::INSTANCE()->BeforeDatasetCloseEvent.Remove(this, &wxDataSourceWidget::RemoveOpenedDatasetNode);
 }
 
 wxTreeItemId wxDataSourceWidget::AddDataSourceNode(wxTreeItemId &parent, IDataSource * ds, bool autoDelete)

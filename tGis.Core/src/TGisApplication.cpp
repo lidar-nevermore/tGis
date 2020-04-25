@@ -29,7 +29,7 @@ TGisApplication::TGisApplication()
 	logPath.append("tgis.");
 	_loger = init_log(logPath.c_str(), LOG_DEBUG, 0);
 	_instance = this;
-	PluginManager::INSTANCE().LoadPlugins();
+	PluginManager::INSTANCE()->LoadPlugins();
 }
 
 TGisApplication::~TGisApplication()

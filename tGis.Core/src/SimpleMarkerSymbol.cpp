@@ -11,11 +11,14 @@ BEGIN_NAME_SPACE(tGis, Core)
 SimpleMarkerSymbol::SimpleMarkerSymbol()
 	:SimpleMarkerSymbol(SimpleMarkerSymbol::Rect)
 {
+	_lib = SimpleSymbolLibrary::GetMarkerSymbolLibrary();
 
 }
 
 SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
 {
+	_lib = SimpleSymbolLibrary::GetMarkerSymbolLibrary();
+
 	_type = t;
 	_r = 30;
 	_g = 236;
@@ -31,46 +34,75 @@ SimpleMarkerSymbol::~SimpleMarkerSymbol()
 
 }
 
-const ISymbolLibrary * SimpleMarkerSymbol::GetSymbolLibrary()
-{
-	return &SimpleSymbolLibrary::INSTANCE();
-}
-
 const int SimpleMarkerSymbol::GetId()
 {
-	return IdentifierBegin + _type;
+	return _type;
 }
 
-void SimpleMarkerSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)
+void SimpleMarkerSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 {
 	switch (_type)
 	{
 	case Rect:
-		DrawRect(surf, count, x, y, z);
+		DrawRect(surf, count, x, y);
 		break;
 	case Ellipse:
-		DrawEllipse(surf, count, x, y, z);
+		DrawEllipse(surf, count, x, y);
 		break;
 	case Triangle:
-		DrawTriangle(surf, count, x, y, z);
+		DrawTriangle(surf, count, x, y);
 		break;
 	case FillRect:
-		DrawFillRect(surf, count, x, y, z);
+		DrawFillRect(surf, count, x, y);
 		break;
 	case FillEllipse:
-		DrawFillEllipse(surf, count, x, y, z);
+		DrawFillEllipse(surf, count, x, y);
 		break;
 	case FillTriangle:
-		DrawFillTriangle(surf, count, x, y, z);
+		DrawFillTriangle(surf, count, x, y);
 		break;
 	case Cross:
-		DrawCross(surf, count, x, y, z);
+		DrawCross(surf, count, x, y);
 		break;
 	case EllipseCross:
-		DrawEllipseCross(surf, count, x, y, z);
+		DrawEllipseCross(surf, count, x, y);
 		break;
 	default:
-		DrawFillRect(surf, count, x, y, z);
+		DrawFillRect(surf, count, x, y);
+		break;
+	}
+}
+
+void SimpleMarkerSymbol::Paint(ISurface* surf, int x, int y)
+{
+	switch (_type)
+	{
+	case Rect:
+		DrawRect(surf, 1, &x, &y);
+		break;
+	case Ellipse:
+		DrawEllipse(surf, 1, &x, &y);
+		break;
+	case Triangle:
+		DrawTriangle(surf, 1, &x, &y);
+		break;
+	case FillRect:
+		DrawFillRect(surf, 1, &x, &y);
+		break;
+	case FillEllipse:
+		DrawFillEllipse(surf, 1, &x, &y);
+		break;
+	case FillTriangle:
+		DrawFillTriangle(surf, 1, &x, &y);
+		break;
+	case Cross:
+		DrawCross(surf, 1, &x, &y);
+		break;
+	case EllipseCross:
+		DrawEllipseCross(surf, 1, &x, &y);
+		break;
+	default:
+		DrawFillRect(surf, 1, &x, &y);
 		break;
 	}
 }
@@ -131,7 +163,7 @@ void SimpleMarkerSymbol::SetYOffset(int yOff)
 	_yOffset = yOff;
 }
 
-void SimpleMarkerSymbol::DrawRect(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawRect(ISurface * surf, int count, int * x, int * y)
 {
 	int prex = -_width - _xOffset;
 	int prey = _height - _yOffset;
@@ -148,7 +180,7 @@ void SimpleMarkerSymbol::DrawRect(ISurface * surf, int count, int * x, int * y, 
 	}
 }
 
-void SimpleMarkerSymbol::DrawEllipse(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawEllipse(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -157,7 +189,7 @@ void SimpleMarkerSymbol::DrawEllipse(ISurface * surf, int count, int * x, int * 
 	}
 }
 
-void SimpleMarkerSymbol::DrawTriangle(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawTriangle(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -172,7 +204,7 @@ void SimpleMarkerSymbol::DrawTriangle(ISurface * surf, int count, int * x, int *
 	}
 }
 
-void SimpleMarkerSymbol::DrawFillRect(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawFillRect(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -181,7 +213,7 @@ void SimpleMarkerSymbol::DrawFillRect(ISurface * surf, int count, int * x, int *
 	}
 }
 
-void SimpleMarkerSymbol::DrawFillEllipse(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawFillEllipse(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -190,7 +222,7 @@ void SimpleMarkerSymbol::DrawFillEllipse(ISurface * surf, int count, int * x, in
 	}
 }
 
-void SimpleMarkerSymbol::DrawFillTriangle(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawFillTriangle(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -205,7 +237,7 @@ void SimpleMarkerSymbol::DrawFillTriangle(ISurface * surf, int count, int * x, i
 	}
 }
 
-void SimpleMarkerSymbol::DrawCross(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawCross(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -224,7 +256,7 @@ void SimpleMarkerSymbol::DrawCross(ISurface * surf, int count, int * x, int * y,
 	}
 }
 
-void SimpleMarkerSymbol::DrawEllipseCross(ISurface * surf, int count, int * x, int * y, int * z)
+void SimpleMarkerSymbol::DrawEllipseCross(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
