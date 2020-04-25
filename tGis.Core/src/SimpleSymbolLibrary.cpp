@@ -14,7 +14,8 @@ SimpleSymbolLibrary * SimpleSymbolLibrary::GetMarkerSymbolLibrary()
 	if (_markerSymbolLibrary == nullptr)
 	{
 		_markerSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Marker);
-		static std::unique_ptr<SimpleSymbolLibrary> shit(_markerSymbolLibrary);
+		SymbolLibraryRepository::INSTANCE()->AddSymbolLibrary(_markerSymbolLibrary);
+		//static std::unique_ptr<SimpleSymbolLibrary> shit(_markerSymbolLibrary);
 	}
 
 	return _markerSymbolLibrary;
@@ -26,7 +27,8 @@ SimpleSymbolLibrary * SimpleSymbolLibrary::GetLineSymbolLibrary()
 	if (_lineSymbolLibrary == nullptr)
 	{
 		_lineSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Line);
-		static std::unique_ptr<SimpleSymbolLibrary> shit(_lineSymbolLibrary);
+		SymbolLibraryRepository::INSTANCE()->AddSymbolLibrary(_lineSymbolLibrary);
+		//static std::unique_ptr<SimpleSymbolLibrary> shit(_lineSymbolLibrary);
 	}
 
 	return _lineSymbolLibrary;
@@ -38,7 +40,8 @@ SimpleSymbolLibrary * SimpleSymbolLibrary::GetFillSymbolLibrary()
 	if (_fillSymbolLibrary == nullptr)
 	{
 		_fillSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Fill);
-		static std::unique_ptr<SimpleSymbolLibrary> shit(_fillSymbolLibrary);
+		SymbolLibraryRepository::INSTANCE()->AddSymbolLibrary(_fillSymbolLibrary);
+		//static std::unique_ptr<SimpleSymbolLibrary> shit(_fillSymbolLibrary);
 	}
 
 	return _fillSymbolLibrary;

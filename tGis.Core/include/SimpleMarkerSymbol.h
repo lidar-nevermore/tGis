@@ -39,6 +39,8 @@ public:
 	void SetWidth(int w);
 	int GetHeight();
 	void SetHeight(int h);
+	int GetLineWidth();
+	void SetLineWidth(int lw);
 	int GetXOffset();
 	void SetXOffset(int xOff);
 	int GetYOffset();

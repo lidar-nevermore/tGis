@@ -19,6 +19,7 @@ template class TGIS_CORE_API Event<GeoViewPort*>;
 class TGIS_CORE_API GeoViewPort
 {
 	friend class MapWidget;
+	friend class GeoSurface;
 public:
 	GeoViewPort();
 	~GeoViewPort();

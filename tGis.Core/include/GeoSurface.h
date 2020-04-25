@@ -26,7 +26,16 @@ public:
 
 	virtual inline void GetSize(int* surfW, int* surfH) const
 	{
-		_viewPort.GetSurfaceSize(surfW, surfH);
+		*surfW = _viewPort._surfWidth;
+		*surfH = _viewPort._surfHeight;
+	}
+
+	void inline Surface2glndc(int surfX, int surfY, GLfloat* ndcX, GLfloat* ndcY) override
+	{
+		int surfWidth = _viewPort._surfWidth;
+		int surfHeight = _viewPort._surfHeight;
+		*ndcX = (2.0f*surfX) / surfWidth - 1.0f;
+		*ndcY = 1.0f - (2.0f*surfY) / surfHeight;
 	}
 
 	virtual void BeginPaint(bool isCache);

@@ -2,9 +2,9 @@
 #include "SimpleSymbolLibrary.h"
 
 #include "ISurface.h"
-#include "SimpleLineSymbol.h"
-#include "SimpleFillSymbol.h"
 
+#include "glad.h"
+#include "glutess.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -41,6 +41,16 @@ const int SimpleMarkerSymbol::GetId()
 
 void SimpleMarkerSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 {
+	GLfloat red = _r / 255.0f;
+	GLfloat green = _g / 255.0f;
+	GLfloat blue = _g / 255.0f;
+	GLfloat alpha = _a / 255.0f;
+
+	glLineWidth((GLfloat)_lineWidth);
+	glEnable(GL_BLEND);
+	glEnable(GL_LINE_SMOOTH);
+	glColor4f(red, green, blue, alpha);
+
 	switch (_type)
 	{
 	case Rect:
@@ -75,6 +85,16 @@ void SimpleMarkerSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 
 void SimpleMarkerSymbol::Paint(ISurface* surf, int x, int y)
 {
+	GLfloat red = _r / 255.0f;
+	GLfloat green = _g / 255.0f;
+	GLfloat blue = _g / 255.0f;
+	GLfloat alpha = _a / 255.0f;
+
+	glLineWidth((GLfloat)_lineWidth);
+	glEnable(GL_BLEND);
+	glEnable(GL_LINE_SMOOTH);
+	glColor4f(red, green, blue, alpha);
+
 	switch (_type)
 	{
 	case Rect:
@@ -143,6 +163,16 @@ void SimpleMarkerSymbol::SetHeight(int h)
 	_height = h;
 }
 
+int SimpleMarkerSymbol::GetLineWidth()
+{
+	return _lineWidth;
+}
+
+void SimpleMarkerSymbol::SetLineWidth(int lw)
+{
+	_lineWidth = lw;
+}
+
 int SimpleMarkerSymbol::GetXOffset()
 {
 	return _xOffset;
@@ -165,8 +195,8 @@ void SimpleMarkerSymbol::SetYOffset(int yOff)
 
 void SimpleMarkerSymbol::DrawRect(ISurface * surf, int count, int * x, int * y)
 {
-	int prex = -_width - _xOffset;
-	int prey = _height - _yOffset;
+	int prex = -1;
+	int prey = -1;
 	for (int i = 0; i < count; i++)
 	{
 		bool draw = (prex != x[i] || prey != y[i]);
@@ -174,8 +204,21 @@ void SimpleMarkerSymbol::DrawRect(ISurface * surf, int count, int * x, int * y)
 		prey = y[i];
 		if (draw)
 		{
-			//TODO: µ÷ÓÃOpenGL»æÖÆ
-			;
+			int sleft = x[i] + _xOffset;
+			int stop = y[i] + _yOffset;
+			int sright = sleft + _width;
+			int sbottom = stop + _height;
+			GLfloat left, top, right, bottom;
+			surf->Surface2glndc(sleft, stop, &left, &top);
+			surf->Surface2glndc(sright, sbottom, &right, &bottom);
+
+			glBegin(GL_LINE_STRIP);
+			glVertex3f(left, top, 0.0f);
+			glVertex3f(right, top, 0.0f);
+			glVertex3f(right, bottom, 0.0f);
+			glVertex3f(left, bottom, 0.0f);
+			glVertex3f(left, top, 0.0f);
+			glEnd();
 		}
 	}
 }

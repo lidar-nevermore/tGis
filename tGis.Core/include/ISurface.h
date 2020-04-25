@@ -5,9 +5,14 @@
 
 #include "Helper.h"
 
+#define __gl_h_
+typedef float GLfloat;
+#endif 
+
 BEGIN_NAME_SPACE(tGis, Core)
 
 //ISurface应当实现为状态机
+//Surface的坐标左上角(0,0), x方向朝右，y方向朝下，单位像素
 struct TGIS_CORE_API ISurface
 {
 	virtual void GetSize(int* surfW, int* surfH) const = 0;
@@ -28,6 +33,8 @@ struct TGIS_CORE_API ISurface
 	//buf 四通道RGBA紧蹙格式图像 行的长度单字节对齐的 (某些GL头文件可能不支持BGRA)
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY) = 0;
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY, int surfW, int surfH) = 0;
+
+	virtual void Surface2glndc(int surfX, int surfY, GLfloat* ndcX, GLfloat* ndcY) = 0;
 
 protected:
 	ISurface() {};

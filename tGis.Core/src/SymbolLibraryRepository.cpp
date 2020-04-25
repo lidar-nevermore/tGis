@@ -42,7 +42,9 @@ public:
 
 	SymbolLibraryRepository* _owner;
 
-	vector<ISymbolLibrary*> _vecSymbolLibrary;
+	vector<ISymbolLibrary*> _vecMarkerSymbolLibrary;
+	vector<ISymbolLibrary*> _vecLineSymbolLibrary;
+	vector<ISymbolLibrary*> _vecFillSymbolLibrary;
 	map<const char*, ISymbolLibrary*, c_str_ptr_less> _mapSymbolLibrary;
 };
 
@@ -52,10 +54,25 @@ SymbolLibraryRepository::SymbolLibraryRepository()
 	_impl_ = new SymbolLibraryRepositoryImpl(this);
 }
 
-
 SymbolLibraryRepository::~SymbolLibraryRepository()
 {
-	for (vector<ISymbolLibrary*>::iterator it = _impl_->_vecSymbolLibrary.begin(); it != _impl_->_vecSymbolLibrary.end(); it++)
+	for (vector<ISymbolLibrary*>::iterator it = _impl_->_vecMarkerSymbolLibrary.begin(); it != _impl_->_vecMarkerSymbolLibrary.end(); it++)
+	{
+		ISymbolLibrary* sl = *it;
+
+		if (sl->_is_in_heap)
+			delete sl;
+	}
+
+	for (vector<ISymbolLibrary*>::iterator it = _impl_->_vecLineSymbolLibrary.begin(); it != _impl_->_vecLineSymbolLibrary.end(); it++)
+	{
+		ISymbolLibrary* sl = *it;
+
+		if (sl->_is_in_heap)
+			delete sl;
+	}
+
+	for (vector<ISymbolLibrary*>::iterator it = _impl_->_vecFillSymbolLibrary.begin(); it != _impl_->_vecFillSymbolLibrary.end(); it++)
 	{
 		ISymbolLibrary* sl = *it;
 
@@ -66,20 +83,52 @@ SymbolLibraryRepository::~SymbolLibraryRepository()
 	delete _impl_;
 }
 
-size_t SymbolLibraryRepository::GetSymbolLibraryCount()
+
+size_t SymbolLibraryRepository::GetMarkerSymbolLibraryCount()
 {
-	return _impl_->_vecSymbolLibrary.size();
+	return _impl_->_vecMarkerSymbolLibrary.size();
 }
 
-ISymbolLibrary * SymbolLibraryRepository::GetSymbolLibrary(size_t pos)
+ISymbolLibrary * SymbolLibraryRepository::GetMarkerSymbolLibrary(size_t pos)
 {
-	return _impl_->_vecSymbolLibrary.at(pos);
+	return _impl_->_vecMarkerSymbolLibrary.at(pos);
+}
+
+size_t SymbolLibraryRepository::GetLineSymbolLibraryCount()
+{
+	return _impl_->_vecLineSymbolLibrary.size();
+}
+
+ISymbolLibrary * SymbolLibraryRepository::GetLineSymbolLibrary(size_t pos)
+{
+	return _impl_->_vecLineSymbolLibrary.at(pos);
+}
+
+size_t SymbolLibraryRepository::GetFillSymbolLibraryCount()
+{
+	return _impl_->_vecFillSymbolLibrary.size();
+}
+
+ISymbolLibrary * SymbolLibraryRepository::GetFillSymbolLibrary(size_t pos)
+{
+	return _impl_->_vecFillSymbolLibrary.at(pos);
 }
 
 void SymbolLibraryRepository::AddSymbolLibrary(ISymbolLibrary * sl)
 {
 	string name = sl->GetName();
-	_impl_->_vecSymbolLibrary.push_back(sl);
+	switch (sl->GetType())
+	{
+	case tGis::Core::Marker:
+		_impl_->_vecMarkerSymbolLibrary.push_back(sl);
+		break;
+	case tGis::Core::Line:
+		_impl_->_vecLineSymbolLibrary.push_back(sl);
+		break;
+	default: //tGis::Core::Fill
+		_impl_->_vecFillSymbolLibrary.push_back(sl);
+		break;
+	}
 	_impl_->_mapSymbolLibrary.insert(map<const char*, ISymbolLibrary*>::value_type(sl->GetName(), sl));
 }
 

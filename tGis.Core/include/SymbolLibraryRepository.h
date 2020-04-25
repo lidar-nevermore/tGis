@@ -27,8 +27,14 @@ private:
 	SymbolLibraryRepository &operator=(const SymbolLibraryRepository &) = delete;
 
 public:
-	size_t GetSymbolLibraryCount();
-	ISymbolLibrary* GetSymbolLibrary(size_t);
+	size_t GetMarkerSymbolLibraryCount();
+	ISymbolLibrary* GetMarkerSymbolLibrary(size_t);
+
+	size_t GetLineSymbolLibraryCount();
+	ISymbolLibrary* GetLineSymbolLibrary(size_t);
+
+	size_t GetFillSymbolLibraryCount();
+	ISymbolLibrary* GetFillSymbolLibrary(size_t);
 
 	void AddSymbolLibrary(ISymbolLibrary*);
 	ISymbolLibrary* GetSymbolLibrary(const char* symLibName);
