@@ -49,7 +49,7 @@ void MyGDALFileRasterDataset::Attach(GDALDataset * dataset, bool autoClose, doub
 {
 	GDALDriver* pDriver = dataset->GetDriver();
 	const char* drName = GDALGetDriverShortName(pDriver);
-	if (memcmp("MEM", drName, 3) == 0)
+	if (_strnicmp("MEM", drName, 3) == 0)
 	{
 		throw std::exception("MyGDALFileRasterDataset中不可以附加内存数据集！");
 	}

@@ -86,6 +86,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\DrawRectTool.h" />
+    <ClInclude Include="..\include\wxDatasetInfoCtrl.h" />
     <ClInclude Include="..\include\wxLayerPropertyDialog.h" />
     <ClInclude Include="..\include\wxLayerRenderPanel.h" />
     <ClInclude Include="..\include\MapPanTool.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\src\DrawRectTool.cpp" />
+    <ClCompile Include="..\src\wxDatasetInfoCtrl.cpp" />
     <ClCompile Include="..\src\wxLayerPropertyDialog.cpp" />
     <ClCompile Include="..\src\wxLayerRenderPanel.cpp" />
     <ClCompile Include="..\src\MapPanTool.cpp" />
@@ -133,6 +135,8 @@
     <None Include="..\internal\ColorRampLayerRenderCtrl.fbp" />
     <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp" />
     <None Include="..\internal\RgbLayerRanderCtrl.fbp" />
+    <None Include="..\src\gdalinfo.inl" />
+    <None Include="..\src\ogrinfo.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

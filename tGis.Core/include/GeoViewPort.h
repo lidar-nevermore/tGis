@@ -62,6 +62,7 @@ public:
 
 private:
 	//spatial extent of the viewport
+	//指向map对象的_spatialRef，不必释放
 	OGRSpatialReference* _spatialRef;
 	double _spatialCenterX;
 	double _spatialCenterY;

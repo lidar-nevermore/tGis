@@ -45,9 +45,8 @@ Map::~Map()
 	_impl_->_vecLayer.clear();
 
 	if (_spatialRef != nullptr)
-	{
-		_spatialRef->Dereference();
-	}
+		OSRDestroySpatialReference(_spatialRef);
+
 	delete _impl_;
 }
 
@@ -104,9 +103,10 @@ bool Map::AddLayer(ILayer *layer)
 		layerSpatialRef = const_cast<OGRSpatialReference*>(clayerSpatialRef);
 	if (layerCount == 0)
 	{
-		_spatialRef = layerSpatialRef;
-		if(_spatialRef != nullptr)
-			_spatialRef->Reference();
+		if (_spatialRef != nullptr)
+			OSRDestroySpatialReference(_spatialRef);
+		if(layerSpatialRef != nullptr)
+			_spatialRef = layerSpatialRef->Clone();
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}
@@ -186,9 +186,11 @@ bool Map::InsertLayer(size_t pos, ILayer * layer)
 	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetDataset()->GetSpatialReference());
 	if (_impl_->_vecLayer.size() == 0)
 	{
-		_spatialRef = layerSpatialRef;
 		if (_spatialRef != nullptr)
-			_spatialRef->Reference();
+			OSRDestroySpatialReference(_spatialRef);
+		if (layerSpatialRef != nullptr)
+			_spatialRef = layerSpatialRef->Clone();
+
 		_envelope = *(layer->GetEnvelope());
 		canAdd = true;
 	}

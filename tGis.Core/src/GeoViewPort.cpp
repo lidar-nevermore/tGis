@@ -24,20 +24,12 @@ GeoViewPort::GeoViewPort()
 
 GeoViewPort::~GeoViewPort()
 {
-	if (_spatialRef != nullptr)
-	{
-		_spatialRef->Dereference();
-	}
 }
 
 GeoViewPort::GeoViewPort(const GeoViewPort & viewPort)
 {
 	*this = viewPort;
 	//_spatialRef = viewPort._spatialRef;
-	//if (_spatialRef != nullptr)
-	//{
-	//	_spatialRef->Reference();
-	//}
 	//_spatialCenterX = viewPort._spatialCenterX;
 	//_spatialCenterY = viewPort._spatialCenterY;
 	//_spatialLeft = viewPort._spatialLeft;
@@ -51,15 +43,7 @@ GeoViewPort::GeoViewPort(const GeoViewPort & viewPort)
 
 GeoViewPort & GeoViewPort::operator=(const GeoViewPort & viewPort)
 {
-	if (_spatialRef != nullptr)
-	{
-		_spatialRef->Dereference();
-	}
 	_spatialRef = viewPort._spatialRef;
-	if (_spatialRef != nullptr)
-	{
-		_spatialRef->Reference();
-	}
 	_spatialCenterX = viewPort._spatialCenterX;
 	_spatialCenterY = viewPort._spatialCenterY;
 	_spatialLeft = viewPort._spatialLeft;
@@ -93,15 +77,7 @@ const OGRSpatialReference * GeoViewPort::GetSpatialReference() const
 
 void GeoViewPort::SetSpatialReference(const OGRSpatialReference * spatialRef)
 {
-	if (_spatialRef != nullptr)
-	{
-		_spatialRef->Dereference();
-	}
 	_spatialRef = const_cast<OGRSpatialReference*>(spatialRef);
-	if (_spatialRef != nullptr)
-	{
-		_spatialRef->Reference();
-	}
 }
 
 void GeoViewPort::GetSpatialCenter(double * spatialCenterX, double * spatialCenterY) const

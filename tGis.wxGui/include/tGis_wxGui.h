@@ -18,6 +18,6 @@
 
 #include "wxLayerPropertyDialog.h"
 #include "wxLayerRenderPanel.h"
-
+#include "wxDatasetInfoCtrl.h"
 
 #endif // !__TGIS_GUI_H__

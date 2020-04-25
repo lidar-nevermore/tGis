@@ -80,6 +80,9 @@
     <ClInclude Include="..\internal\ColorRampLayerRenderCtrlBase.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxDatasetInfoCtrl.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -139,6 +142,9 @@
     <ClCompile Include="..\internal\ColorRampLayerRenderCtrlBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\wxDatasetInfoCtrl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\RgbLayerRanderCtrl.fbp">
@@ -149,6 +155,12 @@
     </None>
     <None Include="..\internal\ColorRampLayerRenderCtrl.fbp">
       <Filter>internal</Filter>
+    </None>
+    <None Include="..\src\gdalinfo.inl">
+      <Filter>src</Filter>
+    </None>
+    <None Include="..\src\ogrinfo.inl">
+      <Filter>src</Filter>
     </None>
   </ItemGroup>
 </Project>
