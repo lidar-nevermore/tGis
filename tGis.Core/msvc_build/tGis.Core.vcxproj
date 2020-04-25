@@ -11,6 +11,23 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\glad\glad.h" />
+    <ClInclude Include="..\glad\khrplatform.h" />
+    <ClInclude Include="..\glutess\dict-list.h" />
+    <ClInclude Include="..\glutess\dict.h" />
+    <ClInclude Include="..\glutess\geom.h" />
+    <ClInclude Include="..\glutess\gluos.h" />
+    <ClInclude Include="..\glutess\glutess.h" />
+    <ClInclude Include="..\glutess\memalloc.h" />
+    <ClInclude Include="..\glutess\mesh.h" />
+    <ClInclude Include="..\glutess\normal.h" />
+    <ClInclude Include="..\glutess\priorityq-heap.h" />
+    <ClInclude Include="..\glutess\priorityq-sort.h" />
+    <ClInclude Include="..\glutess\priorityq.h" />
+    <ClInclude Include="..\glutess\render.h" />
+    <ClInclude Include="..\glutess\sweep.h" />
+    <ClInclude Include="..\glutess\tess.h" />
+    <ClInclude Include="..\glutess\tessmono.h" />
     <ClInclude Include="..\include\bi_list.h" />
     <ClInclude Include="..\include\BuildPyramids.h" />
     <ClInclude Include="..\include\Dataset.h" />
@@ -86,13 +103,22 @@
     <ClInclude Include="..\include\RasterLayerRender.h" />
     <ClInclude Include="..\include\VectorLayerRender.h" />
     <ClInclude Include="..\include\VectorSimpleLayerRender.h" />
-    <ClInclude Include="..\internal\glad.h" />
-    <ClInclude Include="..\internal\khrplatform.h" />
     <ClInclude Include="..\internal\Plugin.h" />
     <ClInclude Include="..\internal\PluginManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\internal\glad.c" />
+    <ClCompile Include="..\glad\glad.c" />
+    <ClCompile Include="..\glutess\dict.c" />
+    <ClCompile Include="..\glutess\geom.c" />
+    <ClCompile Include="..\glutess\memalloc.c" />
+    <ClCompile Include="..\glutess\mesh.c" />
+    <ClCompile Include="..\glutess\normal.c" />
+    <ClCompile Include="..\glutess\priorityq-heap.c" />
+    <ClCompile Include="..\glutess\priorityq.c" />
+    <ClCompile Include="..\glutess\render.c" />
+    <ClCompile Include="..\glutess\sweep.c" />
+    <ClCompile Include="..\glutess\tess.c" />
+    <ClCompile Include="..\glutess\tessmono.c" />
     <ClCompile Include="..\internal\Plugin.cpp" />
     <ClCompile Include="..\internal\PluginManager.cpp" />
     <ClCompile Include="..\src\bi_list.c" />
@@ -191,9 +217,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;ENABLE_ILOG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLUTESS_GLAPI_EXPORT;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;ENABLE_ILOG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\..\include;$(ProjectDir)\..\internal</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\..\include;$(ProjectDir)\..\internal;$(ProjectDir)\..\glad;$(ProjectDir)\..\glutess</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -211,9 +237,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;ENABLE_ILOG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLUTESS_GLAPI_EXPORT;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;NDEBUG;ENABLE_ILOG;TGIS_CORE_EXPORTS;TINYXML2_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\..\include;$(ProjectDir)\..\internal</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ELRMPL);$(GDALDIR)\include;$(ProjectDir)\..\include;$(ProjectDir)\..\internal;$(ProjectDir)\..\glad;$(ProjectDir)\..\glutess</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>

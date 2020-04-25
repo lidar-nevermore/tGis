@@ -42,6 +42,12 @@
     <Filter Include="include\Organizer">
       <UniqueIdentifier>{ff866a89-9e1d-4b9c-81c6-86269367443c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="glutess">
+      <UniqueIdentifier>{3f3419c0-cde6-455c-b13c-48215580583e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="glad">
+      <UniqueIdentifier>{0b419c5c-cbf8-4a12-bc6c-8d13ac4b0f7e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\RasterBandSeqBlockReader.h">
@@ -269,17 +275,62 @@
     <ClInclude Include="..\include\IInclusionObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="..\internal\glad.h">
-      <Filter>internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\internal\khrplatform.h">
-      <Filter>internal</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RasterColorRampLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
     <ClInclude Include="..\include\BuildPyramids.h">
       <Filter>include\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\dict.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\dict-list.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\geom.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\gluos.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\glutess.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\memalloc.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\mesh.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\normal.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\priorityq.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\priorityq-heap.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\priorityq-sort.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\render.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\sweep.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\tess.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glutess\tessmono.h">
+      <Filter>glutess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glad\glad.h">
+      <Filter>glad</Filter>
+    </ClInclude>
+    <ClInclude Include="..\glad\khrplatform.h">
+      <Filter>glad</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -436,14 +487,47 @@
     <ClCompile Include="..\src\ILayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\internal\glad.c">
-      <Filter>internal</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RasterColorRampLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BuildPyramids.cpp">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\dict.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\geom.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\memalloc.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\mesh.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\normal.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\priorityq.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\priorityq-heap.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\render.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\sweep.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\tess.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glutess\tessmono.c">
+      <Filter>glutess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\glad\glad.c">
+      <Filter>glad</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

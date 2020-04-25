@@ -4,6 +4,9 @@
 
 #include "ISurface.h"
 
+#include "glad.h"
+#include "glutess.h"
+
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -40,6 +43,7 @@ const int SimpleFillSymbol::GetId()
 void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y, int * z, char * c)
 {
 	//TODO: 调用OpenGL绘制填充面
+	
 }
 
 void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)
