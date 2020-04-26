@@ -38,8 +38,8 @@ public:
 
 	const int GetId();
 
-	virtual void Paint(ISurface* surf, int count, int* x, int* y) override;
-	virtual void Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y) override;
+	void Paint(ISurface* surf, int count, int* x, int* y) override;
+	void Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y) override;
 
 public:
 	void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);

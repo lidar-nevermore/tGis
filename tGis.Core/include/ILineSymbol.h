@@ -15,6 +15,12 @@ public:
 	virtual const char* GetType();
 	static const char* S_GetType();
 	virtual bool IsTypeOf(const char* type);
+
+	virtual void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a) = 0;
+	virtual void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) = 0;
+	virtual int GetWidth() = 0;
+	virtual void SetWidth(int w) = 0;
+
 	//一次画一条线
 	virtual void Paint(ISurface* surf, int count, int* x, int* y) = 0;
 

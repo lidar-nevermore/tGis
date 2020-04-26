@@ -19,9 +19,9 @@ struct TGIS_CORE_API ISurface
 {
 	virtual void GetSize(int* surfW, int* surfH) const = 0;
 
-	//将Surface当前缓冲内容按1:1绘制到控件上
+	//将Surface当前内容按1:1绘制到控件上
 	virtual void Present(int wX, int wY) = 0;
-	//将Surface当前缓冲内容绘制到控件指定的范围内（缩放了）
+	//将Surface当前内容绘制到控件指定的范围内（缩放了）
 	virtual void Present(int wX, int wY, int wW, int wH) = 0;
 	//开始一屏绘制，在每一屏绘制之前调用
 	//如果使用OpenGL或者DirectX渲染引擎，可以在BeginPaint里准备画布、上下文

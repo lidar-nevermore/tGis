@@ -15,14 +15,17 @@ class wxGLMapWidget;
 
 class TGIS_GUI_API wxGLGeoSurface : public GeoSurface
 {
+	friend class wxGLMapWidget;
 public:
-	wxGLGeoSurface(wxGLMapWidget* mapWidget);
+	//除非可以确定所有需要绘制的东西都不会从外部读取，否则不可使extraBuffer = false
+	wxGLGeoSurface(wxGLMapWidget* mapWidget, bool extraBuffer = true);
 	virtual ~wxGLGeoSurface();
 
 protected:
 	wxGLMapWidget* _mapWidget;
 	wxGLContext _glContext;
 	void* _mapBuffer;
+	bool _extraBuffer;
 	int _bufWidth;
 	int _bufHeight;
 	int _mapWidth;

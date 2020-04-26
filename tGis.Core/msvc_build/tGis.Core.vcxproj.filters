@@ -341,6 +341,9 @@
     <ClInclude Include="..\include\VectorUniformLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\SymbolLibraryRender.h">
+      <Filter>include\Symbol</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -546,6 +549,9 @@
     </ClCompile>
     <ClCompile Include="..\src\VectorUniformLayerRender.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SymbolLibraryRender.cpp">
+      <Filter>src\Symbol</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

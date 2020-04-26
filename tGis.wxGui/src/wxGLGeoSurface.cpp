@@ -5,12 +5,13 @@
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
-wxGLGeoSurface::wxGLGeoSurface(wxGLMapWidget* mapWidget)
+wxGLGeoSurface::wxGLGeoSurface(wxGLMapWidget* mapWidget, bool extraBuffer = true)
 	:_glContext(mapWidget)
 {
 	_mapWidget = mapWidget;
 	_glContext.SetCurrent(*_mapWidget);
 	_mapBuffer = nullptr;
+	_extraBuffer = extraBuffer;
 	_bufWidth = 0;
 	_bufHeight = 0;
 }
@@ -29,6 +30,9 @@ void wxGLGeoSurface::Present(int wX, int wY)
 
 void wxGLGeoSurface::Present(int wX, int wY, int wW, int wH)
 {
+	if (_mapBuffer = nullptr)
+		return;
+
 	wxSize sz = _mapWidget->GetClientSize();
 	//目标范围的NDC坐标
 	float left = (2.0f*wX) / sz.x - 1.0;
@@ -89,7 +93,7 @@ void wxGLGeoSurface::EndPaint(bool isCache)
 	int surfHeight;
 	_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
 
-	if (isCache == false && surfHeight > 0 && surfWidth > 0)
+	if (_extraBuffer && isCache == false && surfHeight > 0 && surfWidth > 0)
 	{
 		glFinish();
 

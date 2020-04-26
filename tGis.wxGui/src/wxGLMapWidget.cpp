@@ -66,6 +66,8 @@ void wxGLMapWidget::RepaintMap()
 
 void wxGLMapWidget::PresentMap()
 {
+	if(!_thisGeoSurface._extraBuffer)
+		_repaint = true;
 	Refresh();
 }
 

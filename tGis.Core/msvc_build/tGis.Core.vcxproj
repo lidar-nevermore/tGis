@@ -86,6 +86,7 @@
     <ClInclude Include="..\include\SimpleSymbolLibrary.h" />
     <ClInclude Include="..\include\sorted_list.h" />
     <ClInclude Include="..\include\Statistics.h" />
+    <ClInclude Include="..\include\SymbolLibraryRender.h" />
     <ClInclude Include="..\include\SymbolLibraryRepository.h" />
     <ClInclude Include="..\include\TGisApplication.h" />
     <ClInclude Include="..\include\tGis_Core.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="..\src\SimpleSymbolLibrary.cpp" />
     <ClCompile Include="..\src\sorted_list.c" />
     <ClCompile Include="..\src\Statistics.cpp" />
+    <ClCompile Include="..\src\SymbolLibraryRender.cpp" />
     <ClCompile Include="..\src\SymbolLibraryRepository.cpp" />
     <ClCompile Include="..\src\TGisApplication.cpp" />
     <ClCompile Include="..\src\tinyxml2.cpp" />
