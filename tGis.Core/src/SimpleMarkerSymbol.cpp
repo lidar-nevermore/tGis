@@ -25,7 +25,9 @@ SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
 	_b = 63;
 	_a = 255;
 	_width = 5;
+	_halfWidth = 2;
 	_height = 5;
+	_halfHeight = 2;
 	_lineWidth = 1;
 }
 
@@ -151,6 +153,9 @@ int SimpleMarkerSymbol::GetWidth()
 void SimpleMarkerSymbol::SetWidth(int w)
 {
 	_width = w;
+	_halfWidth = _width / 2;
+	if (_halfWidth == 0)
+		_halfWidth = 1;
 }
 
 int SimpleMarkerSymbol::GetHeight()
@@ -161,6 +166,9 @@ int SimpleMarkerSymbol::GetHeight()
 void SimpleMarkerSymbol::SetHeight(int h)
 {
 	_height = h;
+	_halfHeight = _height / 2;
+	if (_halfHeight == 0)
+		_halfHeight = 1;
 }
 
 int SimpleMarkerSymbol::GetLineWidth()
@@ -227,7 +235,78 @@ void SimpleMarkerSymbol::DrawEllipse(ISurface * surf, int count, int * x, int * 
 {
 	for (int i = 0; i < count; i++)
 	{
-		;
+		int xc = x[i];
+		int yc = y[i];
+		int a = _halfWidth;
+		int b = _halfHeight;
+
+		int sqa = a * a;
+		int sqb = b * b;
+
+		int x = 0;
+		int y = b;
+		int d = 2 * sqb - 2 * b * sqa + sqa;
+
+		GLfloat ndcX, ndcY;
+
+		glBegin(GL_POINTS);
+
+		surf->Surface2glndc(xc + x, yc + y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+		surf->Surface2glndc(xc - x, yc + y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+		surf->Surface2glndc(xc - x, yc - y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+		surf->Surface2glndc(xc + x, yc - y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+
+		int P_x = (int)round((double)sqa / sqrt((double)(sqa + sqb)));
+		while (x <= P_x)
+		{
+			if (d < 0)
+			{
+				d += 2 * sqb * (2 * x + 3);
+			}
+			else
+			{
+				d += 2 * sqb * (2 * x + 3) - 4 * sqa * (y - 1);
+				y--;
+			}
+			x++;
+			surf->Surface2glndc(xc + x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc + x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+		}
+
+		d = sqb * (x * x + x) + sqa * (y * y - y) - sqa * sqb;
+		while (y >= 0)
+		{
+			surf->Surface2glndc(xc + x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc + x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			y--;
+			if (d < 0)
+			{
+				x++;
+				d = d - 2 * sqa * y - sqa + 2 * sqb * x + 2 * sqb;
+			}
+			else
+			{
+				d = d - 2 * sqa * y - sqa;
+			}
+		}
+
+		glEnd();
 	}
 }
 
@@ -235,8 +314,8 @@ void SimpleMarkerSymbol::DrawTriangle(ISurface * surf, int count, int * x, int *
 {
 	for (int i = 0; i < count; i++)
 	{
-		int hw = _width / 2;
-		int hh = _height / 2;
+		int hw = _halfWidth;
+		int hh = _halfHeight;
 		int offx = x[i] + _xOffset;
 		int offy = y[i] + _yOffset;
 		GLfloat ndcX[3];
@@ -275,8 +354,81 @@ void SimpleMarkerSymbol::DrawFillEllipse(ISurface * surf, int count, int * x, in
 {
 	for (int i = 0; i < count; i++)
 	{
-		//TODO: 调用OpenGL绘制
-		;
+		int xc = x[i];
+		int yc = y[i];
+		int a = _halfWidth;
+		int b = _halfHeight;
+
+		int sqa = a * a;
+		int sqb = b * b;
+
+		int x = 0;
+		int y = b;
+		int d = 2 * sqb - 2 * b * sqa + sqa;
+
+		GLfloat ndcX, ndcY;
+
+		glBegin(GL_TRIANGLE_FAN);
+
+		surf->Surface2glndc(xc, yc, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+
+		surf->Surface2glndc(xc + x, yc + y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+		surf->Surface2glndc(xc - x, yc + y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+		surf->Surface2glndc(xc - x, yc - y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+		surf->Surface2glndc(xc + x, yc - y, &ndcX, &ndcY);
+		glVertex2f(ndcX, ndcY);
+
+		int P_x = (int)round((double)sqa / sqrt((double)(sqa + sqb)));
+		while (x <= P_x)
+		{
+			if (d < 0)
+			{
+				d += 2 * sqb * (2 * x + 3);
+			}
+			else
+			{
+				d += 2 * sqb * (2 * x + 3) - 4 * sqa * (y - 1);
+				y--;
+			}
+			x++;
+			surf->Surface2glndc(xc + x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc + x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+		}
+
+		d = sqb * (x * x + x) + sqa * (y * y - y) - sqa * sqb;
+		while (y >= 0)
+		{
+			surf->Surface2glndc(xc + x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc + y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc - x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			surf->Surface2glndc(xc + x, yc - y, &ndcX, &ndcY);
+			glVertex2f(ndcX, ndcY);
+			y--;
+			if (d < 0)
+			{
+				x++;
+				d = d - 2 * sqa * y - sqa + 2 * sqb * x + 2 * sqb;
+			}
+			else
+			{
+				d = d - 2 * sqa * y - sqa;
+			}
+		}
+
+		glEnd();
 	}
 }
 
@@ -284,8 +436,8 @@ void SimpleMarkerSymbol::DrawFillTriangle(ISurface * surf, int count, int * x, i
 {
 	for (int i = 0; i < count; i++)
 	{
-		int hw = _width / 2;
-		int hh = _height / 2;
+		int hw = _halfWidth;
+		int hh = _halfHeight;
 		int offx = x[i] + _xOffset;
 		int offy = y[i] + _yOffset;
 		GLfloat ndcX[3];
@@ -295,11 +447,10 @@ void SimpleMarkerSymbol::DrawFillTriangle(ISurface * surf, int count, int * x, i
 		surf->Surface2glndc(offx + hw, offy + hh, ndcX + 1, ndcY + 1);
 		surf->Surface2glndc(offx - hw, offy + hh, ndcX + 2, ndcY + 2);
 
-		glBegin(GL_LINE_STRIP);
+		glBegin(GL_TRIANGLES);
 		glVertex3f(ndcX[0], ndcY[0], 0.0f);
 		glVertex3f(ndcX[1], ndcY[1], 0.0f);
 		glVertex3f(ndcX[2], ndcY[2], 0.0f);
-		glVertex3f(ndcX[0], ndcY[0], 0.0f);
 		glEnd();
 	}
 }
@@ -308,8 +459,8 @@ void SimpleMarkerSymbol::DrawCross(ISurface * surf, int count, int * x, int * y)
 {
 	for (int i = 0; i < count; i++)
 	{
-		int hw = _width / 2;
-		int hh = _height / 2;
+		int hw = _halfWidth;
+		int hh = _halfHeight;
 		int offx = x[i] + _xOffset;
 		int offy = y[i] + _yOffset;
 
@@ -353,9 +504,9 @@ void SimpleMarkerSymbol::DrawEllipseCross(ISurface * surf, int count, int * x, i
 		glVertex3f(ndcX[2], ndcY[2], 0.0f);
 		glVertex3f(ndcX[3], ndcY[3], 0.0f);
 		glEnd();
-
-		//TODO: 还要画一个椭圆
 	}
+
+	DrawEllipse(surf, count, x, y);
 }
 
 END_NAME_SPACE(tGis, Core)

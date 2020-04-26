@@ -63,7 +63,9 @@ protected:
 	unsigned char _a;
 
 	int _width;
+	int _halfWidth;
 	int _height;
+	int _halfHeight;
 	int _xOffset;
 	int _yOffset;
 

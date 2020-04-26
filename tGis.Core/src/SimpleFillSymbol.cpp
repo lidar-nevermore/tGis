@@ -148,6 +148,7 @@ const int SimpleFillSymbol::GetId()
 	return _type;
 }
 
+
 void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 {
 	size_t ndcSize = count * 3 * sizeof(GLdouble);
