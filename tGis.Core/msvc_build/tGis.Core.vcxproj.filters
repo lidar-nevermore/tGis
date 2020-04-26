@@ -548,4 +548,45 @@
       <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\internal\DenseDot1.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\BackwardDiagonal.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\Cross.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\DenseDot2.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\DenseDot3.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\DenseDot4.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\DenseDot5.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\DenseDot6.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\DenseDot7.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\DiagonalCross.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\ForwardDiagonal.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\Horizontal.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\Vertical.inl">
+      <Filter>internal</Filter>
+    </None>
+  </ItemGroup>
 </Project>

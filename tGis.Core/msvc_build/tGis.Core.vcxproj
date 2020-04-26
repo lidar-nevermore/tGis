@@ -179,6 +179,21 @@
     <ClCompile Include="..\src\VectorLayerRender.cpp" />
     <ClCompile Include="..\src\VectorUniformLayerRender.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\internal\BackwardDiagonal.inl" />
+    <None Include="..\internal\Cross.inl" />
+    <None Include="..\internal\DenseDot1.inl" />
+    <None Include="..\internal\DenseDot2.inl" />
+    <None Include="..\internal\DenseDot3.inl" />
+    <None Include="..\internal\DenseDot4.inl" />
+    <None Include="..\internal\DenseDot5.inl" />
+    <None Include="..\internal\DenseDot6.inl" />
+    <None Include="..\internal\DenseDot7.inl" />
+    <None Include="..\internal\DiagonalCross.inl" />
+    <None Include="..\internal\ForwardDiagonal.inl" />
+    <None Include="..\internal\Horizontal.inl" />
+    <None Include="..\internal\Vertical.inl" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

@@ -12,14 +12,32 @@ extern "C"
 #include "bi_list.h"
 }
 
+namespace Strippe
+{
+#include "DenseDot1.inl"
+#include "DenseDot2.inl"
+#include "DenseDot3.inl"
+#include "DenseDot4.inl"
+#include "DenseDot5.inl"
+#include "DenseDot6.inl"
+#include "DenseDot7.inl"
+#include "Horizontal.inl"
+#include "Vertical.inl"
+#include "ForwardDiagonal.inl"
+#include "BackwardDiagonal.inl"
+#include "Cross.inl"
+#include "DiagonalCross.inl"
+}
+
 BEGIN_NAME_SPACE(tGis, Core)
 
 class gluTessHelper
 {
 private:
 	static gluTessHelper* _instance;
+
 public:
-	static GLUtesselator* GetTesselator()
+	static inline gluTessHelper* GetInstance()
 	{
 		if (_instance == nullptr)
 		{
@@ -27,12 +45,22 @@ public:
 			static std::unique_ptr<gluTessHelper> shit(_instance);
 		}
 
-		return _instance->_tesselator;
+		return _instance;
+	}
+
+	static GLUtesselator* GetTesselator()
+	{
+		return GetInstance()->_tesselator;
 	}
 
 	static void TessEnd()
 	{
-		bi_list_release(&(_instance->_newVertexList));
+		bi_list_release(&(GetInstance()->_newVertexList));
+	}
+
+	static const GLubyte* GetStrippe(int id)
+	{
+		return GetInstance()->_strippes[id];
 	}
 
 
@@ -69,16 +97,32 @@ private:
 			free,
 			nullptr,
 			nullptr);
+
+		_strippes[0] = nullptr;
+		_strippes[1] = Strippe::DenseDot1;
+		_strippes[2] = Strippe::DenseDot2;
+		_strippes[3] = Strippe::DenseDot3;
+		_strippes[4] = Strippe::DenseDot4;
+		_strippes[5] = Strippe::DenseDot5;
+		_strippes[6] = Strippe::DenseDot6;
+		_strippes[7] = Strippe::DenseDot7;
+		_strippes[8] = Strippe::Horizontal;
+		_strippes[9] = Strippe::Vertical;
+		_strippes[10] = Strippe::ForwardDiagonal;
+		_strippes[11] = Strippe::BackwardDiagonal;
+		_strippes[12] = Strippe::Cross;
+		_strippes[13] = Strippe::DiagonalCross;
 	}
 
 	GLUtesselator* _tesselator;
 	BI_LIST _newVertexList;
+	const GLubyte* _strippes[SimpleFillSymbol::MaxId + 1];
 };
 
 gluTessHelper* gluTessHelper::_instance = nullptr;
 
 SimpleFillSymbol::SimpleFillSymbol()
-	:SimpleFillSymbol(SimpleFillSymbol::Solid)
+	:SimpleFillSymbol(SimpleFillSymbol::DiagonalCross)
 {
 	_lib = SimpleSymbolLibrary::GetFillSymbolLibrary();
 }
@@ -118,6 +162,11 @@ void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 	GLfloat alpha = _a / 255.0f;
 
 	glColor4f(red, green, blue, alpha);
+	if (_type > 0)
+	{
+		glEnable(GL_POLYGON_STIPPLE);
+		glPolygonStipple(gluTessHelper::GetStrippe(_type));
+	}
 
 	GLUtesselator* tess = gluTessHelper::GetTesselator();
 	GLdouble* ndc1 = ndc;
@@ -134,6 +183,8 @@ void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 	gluTessEndPolygon(tess);
 	free(ndc);
 	gluTessHelper::TessEnd();
+	if (_type > 0)
+		glDisable(GL_POLYGON_STIPPLE);
 }
 
 void SimpleFillSymbol::Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y)
@@ -150,6 +201,11 @@ void SimpleFillSymbol::Paint(ISurface* surf, int contourCount, int* ptCount, int
 	GLfloat alpha = _a / 255.0f;
 
 	glColor4f(red, green, blue, alpha);
+	if (_type > 0)
+	{
+		glEnable(GL_POLYGON_STIPPLE);
+		glPolygonStipple(gluTessHelper::GetStrippe(_type));
+	}
 	GLUtesselator* tess = gluTessHelper::GetTesselator();
 	GLdouble* ndc1 = ndc;
 	gluTessBeginPolygon(tess, 0);
@@ -173,6 +229,8 @@ void SimpleFillSymbol::Paint(ISurface* surf, int contourCount, int* ptCount, int
 
 	free(ndc);
 	gluTessHelper::TessEnd();
+	if (_type > 0)
+		glDisable(GL_POLYGON_STIPPLE);
 }
 
 void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)

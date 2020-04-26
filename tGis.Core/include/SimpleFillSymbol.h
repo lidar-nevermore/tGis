@@ -15,15 +15,21 @@ struct ISurface;
 class TGIS_CORE_API SimpleFillSymbol : public IFillSymbol
 {
 public:
-	static const int NoFill = 0;
-	static const int Solid = 1;
-	static const int Horizontal = 2;
-	static const int Vertical = 3;
-	static const int ForwardDiagonal = 4;
-	static const int BackwardDiagonal = 5;
-	static const int Cross = 6;
-	static const int DiagonalCross = 7;
-	static const int MaxId = 7;
+	static const int Solid = 0;
+	static const int DenseDot1 = 1;
+	static const int DenseDot2 = 2;
+	static const int DenseDot3 = 3;
+	static const int DenseDot4 = 4;
+	static const int DenseDot5 = 5;
+	static const int DenseDot6 = 6;
+	static const int DenseDot7 = 7;
+	static const int Horizontal = 8;
+	static const int Vertical = 9;
+	static const int ForwardDiagonal = 10;
+	static const int BackwardDiagonal = 11;
+	static const int Cross = 12;
+	static const int DiagonalCross = 13;
+	static const int MaxId = 13;
 
 public:
 	SimpleFillSymbol();
