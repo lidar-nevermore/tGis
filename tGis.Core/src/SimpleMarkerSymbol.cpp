@@ -24,11 +24,13 @@ SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
 	_g = 236;
 	_b = 63;
 	_a = 255;
-	_width = 5;
-	_halfWidth = 2;
-	_height = 5;
-	_halfHeight = 2;
+	_width = 11;
+	_halfWidth = 5;
+	_height = 11;
+	_halfHeight = 5;
 	_lineWidth = 1;
+	_xOffset = 0;
+	_yOffset = 0;
 }
 
 SimpleMarkerSymbol::~SimpleMarkerSymbol()
@@ -93,6 +95,7 @@ void SimpleMarkerSymbol::Paint(ISurface* surf, int x, int y)
 	GLfloat alpha = _a / 255.0f;
 
 	glLineWidth((GLfloat)_lineWidth);
+	glPointSize((GLfloat)_lineWidth);
 	glEnable(GL_BLEND);
 	glEnable(GL_LINE_SMOOTH);
 	glColor4f(red, green, blue, alpha);
@@ -212,8 +215,8 @@ void SimpleMarkerSymbol::DrawRect(ISurface * surf, int count, int * x, int * y)
 		prey = y[i];
 		if (draw)
 		{
-			int sleft = x[i] + _xOffset;
-			int stop = y[i] + _yOffset;
+			int sleft = x[i] + _xOffset - _halfWidth;
+			int stop = y[i] + _yOffset - _halfHeight;
 			int sright = sleft + _width;
 			int sbottom = stop + _height;
 			GLfloat left, top, right, bottom;
@@ -235,8 +238,8 @@ void SimpleMarkerSymbol::DrawEllipse(ISurface * surf, int count, int * x, int * 
 {
 	for (int i = 0; i < count; i++)
 	{
-		int xc = x[i];
-		int yc = y[i];
+		int xc = x[i] + _xOffset;
+		int yc = y[i] + _yOffset;
 		int a = _halfWidth;
 		int b = _halfHeight;
 
@@ -338,8 +341,8 @@ void SimpleMarkerSymbol::DrawFillRect(ISurface * surf, int count, int * x, int *
 {
 	for (int i = 0; i < count; i++)
 	{
-		int sleft = x[i] + _xOffset;
-		int stop = y[i] + _yOffset;
+		int sleft = x[i] + _xOffset - _halfWidth;
+		int stop = y[i] + _yOffset - _halfHeight;
 		int sright = sleft + _width;
 		int sbottom = stop + _height;
 		GLfloat left, top, right, bottom;
@@ -354,8 +357,8 @@ void SimpleMarkerSymbol::DrawFillEllipse(ISurface * surf, int count, int * x, in
 {
 	for (int i = 0; i < count; i++)
 	{
-		int xc = x[i];
-		int yc = y[i];
+		int xc = x[i] + _xOffset;
+		int yc = y[i] + _yOffset;
 		int a = _halfWidth;
 		int b = _halfHeight;
 

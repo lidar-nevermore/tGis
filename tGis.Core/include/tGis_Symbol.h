@@ -13,3 +13,5 @@
 
 #include "SimpleSymbolLibrary.h"
 #include "SymbolLibraryRepository.h"
+
+#include "SymbolLibraryRender.h"

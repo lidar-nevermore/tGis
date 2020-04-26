@@ -5,7 +5,7 @@
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
-wxGLGeoSurface::wxGLGeoSurface(wxGLMapWidget* mapWidget, bool extraBuffer = true)
+wxGLGeoSurface::wxGLGeoSurface(wxGLMapWidget* mapWidget, bool extraBuffer)
 	:_glContext(mapWidget)
 {
 	_mapWidget = mapWidget;

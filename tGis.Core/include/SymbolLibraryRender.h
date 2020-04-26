@@ -8,6 +8,7 @@
 #include "ILayerRender.h"
 
 #include "ogr_core.h"
+#include <assert.h>
 
 
 BEGIN_NAME_SPACE(tGis, Core)
@@ -40,6 +41,7 @@ public:
 
 	void SetSymbolWidth(int width)
 	{
+		assert(width > 1);
 		_symWidth = width;
 	}
 
@@ -50,6 +52,7 @@ public:
 
 	void SetSymbolSpan(int span)
 	{
+		assert(span > 0);
 		_symSpan = span;
 	}
 

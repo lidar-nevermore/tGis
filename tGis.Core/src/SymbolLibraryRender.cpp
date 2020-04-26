@@ -35,7 +35,7 @@ bool SymbolLibraryRender::IsTypeOf(const char * type)
 SymbolLibraryRender::SymbolLibraryRender(ILayer* layer, ISymbolLibrary* symLib)
 {
 	_symWidth = 32;
-	_symSpan = 3;
+	_symSpan = 10;
 	_layer = layer;
 	_layer->SetRender(this);
 	_symLib = symLib;
@@ -52,6 +52,14 @@ SymbolLibraryRender::~SymbolLibraryRender()
 
 void SymbolLibraryRender::DrawMarkerSymbol(IGeoSurface* surf, IMarkerSymbol * sym, int x, int y)
 {
+	int hw = _symWidth / 2;
+	int dx = x + hw + _symSpan;
+	int dy = y + hw + _symSpan;
+	sym->SetWidth(_symWidth);
+	sym->SetHeight(_symWidth);
+	sym->SetLineWidth(2);
+
+	sym->Paint(surf, dx, dy);
 }
 
 void SymbolLibraryRender::DrawLineSymbol(IGeoSurface* surf, ILineSymbol * sym, int x, int y)
@@ -76,8 +84,9 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 	if (rowSymCount < 1)
 		rowSymCount = 1;
 
+	int symCount = _symLib->GetSymbolCount();
 	_envelope.MaxX = rowSymCount*symOccupy;
-	_envelope.MaxY = (_symLib->GetSymbolCount() + rowSymCount - 1) / rowSymCount;
+	_envelope.MaxY = ((symCount + rowSymCount - 1) / rowSymCount)*symOccupy;;
 
 	int curCol = 0;
 	int curRow = 0;
@@ -97,7 +106,7 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 				DrawLineSymbol(surf, (ILineSymbol*)sym, curX, curY);
 			else
 				DrawFillSymbol(surf, (IFillSymbol*)sym, curX, curY);
-
+			_symLib->RevertSymbol(sym);
 			curCol++;
 			if (curCol == rowSymCount)
 			{

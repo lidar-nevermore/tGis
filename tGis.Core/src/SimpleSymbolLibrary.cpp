@@ -108,9 +108,12 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 	{
 		if (id <= SimpleMarkerSymbol::MaxId)
 		{
-			if (nextId != nullptr && id == SimpleMarkerSymbol::MaxId)
+			if (nextId != nullptr)
 			{
-				*nextId = -1;
+				if (id == SimpleMarkerSymbol::MaxId)
+					*nextId = -1;
+				else
+					*nextId = id + 1;
 			}
 			return new SimpleMarkerSymbol(id);
 		}
@@ -119,9 +122,12 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 	{
 		if (id <= SimpleLineSymbol::MaxId)
 		{
-			if (nextId != nullptr && id == SimpleLineSymbol::MaxId)
+			if (nextId != nullptr)
 			{
-				*nextId = -1;
+				if (id == SimpleLineSymbol::MaxId)
+					*nextId = -1;
+				else
+					*nextId = id + 1;
 			}
 			return new SimpleLineSymbol(id);
 		}
@@ -130,13 +136,19 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 	{
 		if (id <= SimpleFillSymbol::MaxId)
 		{
-			if (nextId != nullptr && id == SimpleFillSymbol::MaxId)
+			if (nextId != nullptr)
 			{
-				*nextId = -1;
+				if (id == SimpleFillSymbol::MaxId)
+					*nextId = -1;
+				else
+					*nextId = id + 1;
 			}
 			return new SimpleFillSymbol(id);
 		}
 	}
+
+	if (nextId != nullptr)
+		*nextId = -1;
 
 	return nullptr;
 }
