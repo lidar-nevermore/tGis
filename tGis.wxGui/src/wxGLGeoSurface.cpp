@@ -124,7 +124,7 @@ void wxGLGeoSurface::EndPaint(bool isCache)
 	//		painter.drawLine(0, y, wW, y);
 	//	}
 	//}
-	glFlush();
+	glFinish();
 }
 
 void wxGLGeoSurface::DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY)

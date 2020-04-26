@@ -33,6 +33,6 @@
 #include "RasterColorRampLayerRender.h"
 
 #include "VectorLayerRender.h"
-#include "VectorSimpleLayerRender.h"
+#include "VectorUniformLayerRender.h"
 
 

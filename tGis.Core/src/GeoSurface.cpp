@@ -4,8 +4,10 @@
 #include "ogr_spatialref.h"
 #include <algorithm>
 #include <cmath>
+#include <memory>
 
 #include "glad.h"
+#include "glutess.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 

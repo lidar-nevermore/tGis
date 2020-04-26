@@ -6,6 +6,8 @@
 #include "Helper.h"
 #include "IFillSymbol.h"
 
+class GLUtesselator;
+
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISurface;
@@ -26,12 +28,12 @@ public:
 public:
 	SimpleFillSymbol();
 	SimpleFillSymbol(int t);
-	~SimpleFillSymbol();
+	virtual ~SimpleFillSymbol();
 
 	const int GetId();
 
-	void Paint(ISurface* surf, int count, int* x, int* y) override;
-	void Paint(ISurface* surf, int* count, int** x, int** y) override;
+	virtual void Paint(ISurface* surf, int count, int* x, int* y) override;
+	virtual void Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y) override;
 
 public:
 	void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);

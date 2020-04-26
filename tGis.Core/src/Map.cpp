@@ -97,7 +97,7 @@ bool Map::AddLayer(ILayer *layer)
 {
 	bool canAdd = false;
 	size_t layerCount = _impl_->_vecLayer.size();
-	const OGRSpatialReference* clayerSpatialRef = layer->GetDataset()->GetSpatialReference();
+	const OGRSpatialReference* clayerSpatialRef = layer->GetRender()->GetSpatialReference();
 	OGRSpatialReference* layerSpatialRef = nullptr;
 	if(clayerSpatialRef != nullptr)
 		layerSpatialRef = const_cast<OGRSpatialReference*>(clayerSpatialRef);
@@ -183,7 +183,7 @@ void Map::RemoveLayer(IDataset * dt)
 bool Map::InsertLayer(size_t pos, ILayer * layer)
 {
 	bool canAdd = false;
-	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetDataset()->GetSpatialReference());
+	OGRSpatialReference* layerSpatialRef = const_cast<OGRSpatialReference*>(layer->GetRender()->GetSpatialReference());
 	if (_impl_->_vecLayer.size() == 0)
 	{
 		if (_spatialRef != nullptr)

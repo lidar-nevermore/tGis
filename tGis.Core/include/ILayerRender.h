@@ -21,6 +21,7 @@ struct TGIS_CORE_API ILayerRender : public ITypedObject, public IInclusionObject
 
 	//所关联的Layer的数据在Layer所属Map的投影下的范围
 	virtual const OGREnvelope* GetEnvelope() = 0;
+	virtual const OGRSpatialReference* GetSpatialReference() = 0;
 	virtual bool CanTransformTo(const OGRSpatialReference*) = 0;
 
 	virtual float GetOpacity() = 0;

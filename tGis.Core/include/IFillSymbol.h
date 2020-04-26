@@ -21,7 +21,7 @@ public:
 	//一次画一个可以带洞的多边形
 	//x[0] y[0] 表示外部边界 count[0]表示外部范围的顶点数量
 	//其它都是内部边界
-	virtual void Paint(ISurface* surf, int* count, int** x, int** y) = 0;
+	virtual void Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y) = 0;
 
 private:
 	static const char* const _type;

@@ -38,6 +38,14 @@ public:
 		*ndcY = 1.0f - (2.0f*surfY) / surfHeight;
 	}
 
+	void inline Surface2glndc(int surfX, int surfY, GLdouble* ndcX, GLdouble* ndcY) override
+	{
+		int surfWidth = _viewPort._surfWidth;
+		int surfHeight = _viewPort._surfHeight;
+		*ndcX = (2.0*surfX) / surfWidth - 1.0;
+		*ndcY = 1.0 - (2.0*surfY) / surfHeight;
+	}
+
 	virtual void BeginPaint(bool isCache);
 
 protected:

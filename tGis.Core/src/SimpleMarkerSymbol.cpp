@@ -227,7 +227,6 @@ void SimpleMarkerSymbol::DrawEllipse(ISurface * surf, int count, int * x, int * 
 {
 	for (int i = 0; i < count; i++)
 	{
-		//TODO: 调用OpenGL绘制
 		;
 	}
 }
@@ -237,13 +236,22 @@ void SimpleMarkerSymbol::DrawTriangle(ISurface * surf, int count, int * x, int *
 	for (int i = 0; i < count; i++)
 	{
 		int hw = _width / 2;
-		int tx[3] = { x[i] + _xOffset,x[i] + _xOffset + hw,x[i] + _xOffset + _width };
-		int ty[3] = { y[i] + _yOffset + _height,y[i] + _yOffset,y[i] + _yOffset + _height };
+		int hh = _height / 2;
+		int offx = x[i] + _xOffset;
+		int offy = y[i] + _yOffset;
+		GLfloat ndcX[3];
+		GLfloat ndcY[3];
 
-		{
-			//TODO: 调用OpenGL绘制
-			;
-		}
+		surf->Surface2glndc(offx, offy - hh, ndcX, ndcY);
+		surf->Surface2glndc(offx + hw, offy + hh, ndcX + 1, ndcY + 1);
+		surf->Surface2glndc(offx - hw, offy + hh, ndcX + 2, ndcY + 2);
+
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(ndcX[0], ndcY[0], 0.0f);
+		glVertex3f(ndcX[1], ndcY[1], 0.0f);
+		glVertex3f(ndcX[2], ndcY[2], 0.0f);
+		glVertex3f(ndcX[0], ndcY[0], 0.0f);
+		glEnd();
 	}
 }
 
@@ -251,8 +259,15 @@ void SimpleMarkerSymbol::DrawFillRect(ISurface * surf, int count, int * x, int *
 {
 	for (int i = 0; i < count; i++)
 	{
-		//TODO: 调用OpenGL绘制
-		;
+		int sleft = x[i] + _xOffset;
+		int stop = y[i] + _yOffset;
+		int sright = sleft + _width;
+		int sbottom = stop + _height;
+		GLfloat left, top, right, bottom;
+		surf->Surface2glndc(sleft, stop, &left, &top);
+		surf->Surface2glndc(sright, sbottom, &right, &bottom);
+
+		glRectf(left, bottom, right, top);
 	}
 }
 
@@ -270,13 +285,22 @@ void SimpleMarkerSymbol::DrawFillTriangle(ISurface * surf, int count, int * x, i
 	for (int i = 0; i < count; i++)
 	{
 		int hw = _width / 2;
-		int tx[3] = { x[i] + _xOffset,x[i] + _xOffset + hw,x[i] + _xOffset + _width };
-		int ty[3] = { y[i] + _yOffset + _height,y[i] + _yOffset,y[i] + _yOffset + _height };
+		int hh = _height / 2;
+		int offx = x[i] + _xOffset;
+		int offy = y[i] + _yOffset;
+		GLfloat ndcX[3];
+		GLfloat ndcY[3];
 
-		{
-			//TODO: 调用OpenGL绘制
-			;
-		}
+		surf->Surface2glndc(offx, offy - hh, ndcX, ndcY);
+		surf->Surface2glndc(offx + hw, offy + hh, ndcX + 1, ndcY + 1);
+		surf->Surface2glndc(offx - hw, offy + hh, ndcX + 2, ndcY + 2);
+
+		glBegin(GL_LINE_STRIP);
+		glVertex3f(ndcX[0], ndcY[0], 0.0f);
+		glVertex3f(ndcX[1], ndcY[1], 0.0f);
+		glVertex3f(ndcX[2], ndcY[2], 0.0f);
+		glVertex3f(ndcX[0], ndcY[0], 0.0f);
+		glEnd();
 	}
 }
 
@@ -286,16 +310,23 @@ void SimpleMarkerSymbol::DrawCross(ISurface * surf, int count, int * x, int * y)
 	{
 		int hw = _width / 2;
 		int hh = _height / 2;
+		int offx = x[i] + _xOffset;
+		int offy = y[i] + _yOffset;
 
-		int l1x[2] = { x[i] + _xOffset,x[i] + _xOffset + _width };
-		int l1y[2] = { y[i] + _yOffset + hh,y[i] + _yOffset + hh };
-		int l2x[2] = { x[i] + _xOffset + hw,x[i] + _xOffset + hw };
-		int l2y[2] = { y[i] + _yOffset,y[i] + _yOffset + _height };
+		GLfloat ndcX[4];
+		GLfloat ndcY[4];
 
-		{
-			//TODO: 调用OpenGL绘制
-			;
-		}
+		surf->Surface2glndc(offx, offy - hh, ndcX, ndcY);
+		surf->Surface2glndc(offx, offy + hh, ndcX + 1, ndcY + 1);
+		surf->Surface2glndc(offx - hw, offy, ndcX + 2, ndcY + 2);
+		surf->Surface2glndc(offx + hw, offy, ndcX + 3, ndcY + 3);
+
+		glBegin(GL_LINES);
+		glVertex3f(ndcX[0], ndcY[0], 0.0f);
+		glVertex3f(ndcX[1], ndcY[1], 0.0f);
+		glVertex3f(ndcX[2], ndcY[2], 0.0f);
+		glVertex3f(ndcX[3], ndcY[3], 0.0f);
+		glEnd();
 	}
 }
 
@@ -305,16 +336,25 @@ void SimpleMarkerSymbol::DrawEllipseCross(ISurface * surf, int count, int * x, i
 	{
 		int hw = _width / 2;
 		int hh = _height / 2;
+		int offx = x[i] + _xOffset;
+		int offy = y[i] + _yOffset;
 
-		int l1x[2] = { x[i] + _xOffset,x[i] + _xOffset + _width };
-		int l1y[2] = { y[i] + _yOffset + hh,y[i] + _yOffset + hh };
-		int l2x[2] = { x[i] + _xOffset + hw,x[i] + _xOffset + hw };
-		int l2y[2] = { y[i] + _yOffset,y[i] + _yOffset + _height };
+		GLfloat ndcX[4];
+		GLfloat ndcY[4];
 
-		{
-			//TODO: 调用OpenGL绘制
-			;
-		}
+		surf->Surface2glndc(offx, offy - hh, ndcX, ndcY);
+		surf->Surface2glndc(offx, offy + hh, ndcX + 1, ndcY + 1);
+		surf->Surface2glndc(offx - hw, offy, ndcX + 2, ndcY + 2);
+		surf->Surface2glndc(offx + hw, offy, ndcX + 3, ndcY + 3);
+
+		glBegin(GL_LINES);
+		glVertex3f(ndcX[0], ndcY[0], 0.0f);
+		glVertex3f(ndcX[1], ndcY[1], 0.0f);
+		glVertex3f(ndcX[2], ndcY[2], 0.0f);
+		glVertex3f(ndcX[3], ndcY[3], 0.0f);
+		glEnd();
+
+		//TODO: 还要画一个椭圆
 	}
 }
 

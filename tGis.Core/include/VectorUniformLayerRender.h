@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef __VECTORSIMPLELAYERRENDER_H__
-#define __VECTORSIMPLELAYERRENDER_H__
+#ifndef __VectorUniformLayerRender_H__
+#define __VectorUniformLayerRender_H__
 
 
 #include "Helper.h"
@@ -23,9 +23,8 @@ class OGRSimpleCurve;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class VectorSimpleLayerProvider;
 
-class TGIS_CORE_API VectorSimpleLayerRender : public VectorLayerRender
+class TGIS_CORE_API VectorUniformLayerRender : public VectorLayerRender
 {
 public:
 	virtual const char* GetType();
@@ -36,12 +35,12 @@ private:
 	static const char* const _type;
 
 public:
-	VectorSimpleLayerRender(ILayer* layer, int ogrLayer,int geometryField = -1, int labelField = -1);
-	~VectorSimpleLayerRender();
+	VectorUniformLayerRender(ILayer* layer, int ogrLayer,int geometryField = -1, int labelField = -1);
+	~VectorUniformLayerRender();
 
 private:
-	VectorSimpleLayerRender(const VectorSimpleLayerRender &) = delete;
-	VectorSimpleLayerRender &operator=(const VectorSimpleLayerRender &) = delete;
+	VectorUniformLayerRender(const VectorUniformLayerRender &) = delete;
+	VectorUniformLayerRender &operator=(const VectorUniformLayerRender &) = delete;
 
 private:
 	int _geometryField;

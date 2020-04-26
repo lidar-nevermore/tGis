@@ -1,4 +1,4 @@
-#include "VectorSimpleLayerRender.h"
+#include "VectorUniformLayerRender.h"
 #include "IGeoSurface.h"
 #include "MyGDALVectorDataset.h"
 
@@ -11,26 +11,26 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const VectorSimpleLayerRender::_type = "57D45D8B-E28E-4D5F-A588-1A55347A0C68";
+const char* const VectorUniformLayerRender::_type = "57D45D8B-E28E-4D5F-A588-1A55347A0C68";
 
-const char * VectorSimpleLayerRender::GetType()
+const char * VectorUniformLayerRender::GetType()
 {
 	return _type;
 }
 
-const char * VectorSimpleLayerRender::S_GetType()
+const char * VectorUniformLayerRender::S_GetType()
 {
 	return _type;
 }
 
-bool VectorSimpleLayerRender::IsTypeOf(const char * type)
+bool VectorUniformLayerRender::IsTypeOf(const char * type)
 {
 	if (strcmp(type, _type) == 0)
 		return true;
 	return VectorLayerRender::IsTypeOf(type);
 }
 
-VectorSimpleLayerRender::VectorSimpleLayerRender(ILayer* layer, int ogrLayerIndex, int geometryField, int labelField)
+VectorUniformLayerRender::VectorUniformLayerRender(ILayer* layer, int ogrLayerIndex, int geometryField, int labelField)
 	:VectorLayerRender(layer, ogrLayerIndex)
 {
 	_geometryField = geometryField;
@@ -38,12 +38,12 @@ VectorSimpleLayerRender::VectorSimpleLayerRender(ILayer* layer, int ogrLayerInde
 }
 
 
-VectorSimpleLayerRender::~VectorSimpleLayerRender()
+VectorUniformLayerRender::~VectorUniformLayerRender()
 {
 }
 
 
-void VectorSimpleLayerRender::Paint(IGeoSurface * surf)
+void VectorUniformLayerRender::Paint(IGeoSurface * surf)
 {
 	OGRFeature* feature = nullptr;
 	OGRGeometry* geometry = nullptr;
@@ -93,7 +93,7 @@ void VectorSimpleLayerRender::Paint(IGeoSurface * surf)
 }
 
 
-inline OGRGeometry * VectorSimpleLayerRender::GetGeometry(OGRFeature *feature)
+inline OGRGeometry * VectorUniformLayerRender::GetGeometry(OGRFeature *feature)
 {
 	if (_geometryField < 0)
 		return feature->GetGeometryRef();
@@ -101,12 +101,12 @@ inline OGRGeometry * VectorSimpleLayerRender::GetGeometry(OGRFeature *feature)
 		return feature->GetGeomFieldRef(_geometryField);
 }
 
-inline const char * VectorSimpleLayerRender::GetLabel(OGRFeature *)
+inline const char * VectorUniformLayerRender::GetLabel(OGRFeature *)
 {
 	return nullptr;
 }
 
-inline void VectorSimpleLayerRender::DrawPoint(int* xb, int* yb, IGeoSurface* surf, OGRPoint *geometry)
+inline void VectorUniformLayerRender::DrawPoint(int* xb, int* yb, IGeoSurface* surf, OGRPoint *geometry)
 {
 	if (_CT != nullptr)
 	{
@@ -128,7 +128,7 @@ inline void VectorSimpleLayerRender::DrawPoint(int* xb, int* yb, IGeoSurface* su
 	}
 }
 
-inline int VectorSimpleLayerRender::TransferGeometryPoints(int * x, int * y, IGeoSurface* surf, OGRSimpleCurve *geometry)
+inline int VectorUniformLayerRender::TransferGeometryPoints(int * x, int * y, IGeoSurface* surf, OGRSimpleCurve *geometry)
 {
 	if (_CT != nullptr)
 	{
@@ -137,13 +137,13 @@ inline int VectorSimpleLayerRender::TransferGeometryPoints(int * x, int * y, IGe
 
 	int surfW;
 	int surfH;
-	surf->GetViewPort()->GetSurfaceSize(&surfW, &surfH);
+	surf->GetSize(&surfW, &surfH);
 	int ptcount = geometry->getNumPoints();
 	int pti = 0;
 	int spti = 0;
 
-	int presx;
-	int presy;
+	int presx = INT_MAX;
+	int presy = INT_MAX;
 	int omitedPointCount = 0; //从上一次保留点到现在排除的点数目
 	int pointArea; //当前保留点所在的区域；显示区域+以外左上右下分别是012345678
 	int keepPointArea[9];//下一次所需保留点出现的区域，数组位置表示区域，其中值为1表示保留
@@ -155,6 +155,11 @@ inline int VectorSimpleLayerRender::TransferGeometryPoints(int * x, int * y, IGe
 		int sx;
 		int sy;
 		surf->GetViewPort()->Spatial2Surface(geometry->getX(pti), geometry->getY(pti), &sx, &sy);
+		pti++;
+
+		//坐标值相等的点只保留一个
+		if (presx == sx && presx == sy)
+			continue;
 
 		*(x + spti) = sx;
 		*(y + spti) = sy;
@@ -199,25 +204,22 @@ inline int VectorSimpleLayerRender::TransferGeometryPoints(int * x, int * y, IGe
 
 		if (keepPointArea[curPointArea] != 0 )
 		{
-			if (pti == 0 || (presx != sx || presy != sy))
+			if (omitedPointCount > 0)
 			{
-				if (omitedPointCount > 0)
-				{
-					*(x + spti) = presx;
-					*(y + spti) = presy;
-					spti++;
-					*(x + spti) = sx;
-					*(y + spti) = sy;
-				}
+				*(x + spti) = presx;
+				*(y + spti) = presy;
 				spti++;
+				*(x + spti) = sx;
+				*(y + spti) = sy;
 			}
+			spti++;
 			omitedPointCount = 0;
 		}
 		else
 		{
 			omitedPointCount++;
 		}
-		pti++;
+
 
 		presx = sx;
 		presy = sy;
@@ -225,92 +227,19 @@ inline int VectorSimpleLayerRender::TransferGeometryPoints(int * x, int * y, IGe
 		if(curPointArea != 0)
 			keepPointArea[curPointArea] = 0;
 		pointArea = curPointArea;
-
-		//switch (pointArea)
-		//{
-		//case 0:
-		//	memset(keepPointArea, 1, 9 * sizeof(int));
-		//	break;
-		//case 1:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[3] = 1;
-		//	keepPointArea[4] = 1;
-		//	keepPointArea[5] = 1;
-		//	keepPointArea[6] = 1;
-		//	keepPointArea[7] = 1;
-		//	break;
-		//case 2:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[5] = 1;
-		//	keepPointArea[6] = 1;
-		//	keepPointArea[7] = 1;
-		//	break;
-		//case 3:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[5] = 1;
-		//	keepPointArea[6] = 1;
-		//	keepPointArea[7] = 1;
-		//	keepPointArea[8] = 1;
-		//	keepPointArea[1] = 1;
-		//	break;
-		//case 4:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[7] = 1;
-		//	keepPointArea[8] = 1;
-		//	keepPointArea[1] = 1;
-		//	break;
-		//case 5:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[7] = 1;
-		//	keepPointArea[8] = 1;
-		//	keepPointArea[1] = 1;
-		//	keepPointArea[2] = 1;
-		//	keepPointArea[3] = 1;
-		//	break;
-		//case 6:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[1] = 1;
-		//	keepPointArea[2] = 1;
-		//	keepPointArea[3] = 1;
-		//	break;
-		//case 7:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[1] = 1;
-		//	keepPointArea[2] = 1;
-		//	keepPointArea[3] = 1;
-		//	keepPointArea[4] = 1;
-		//	keepPointArea[5] = 1;
-		//	break;
-		//case 8:
-		//	memset(keepPointArea, 0, 9 * sizeof(int));
-		//	keepPointArea[0] = 1;
-		//	keepPointArea[3] = 1;
-		//	keepPointArea[4] = 1;
-		//	keepPointArea[5] = 1;
-		//	break;
-		//default:
-		//	break;
-		//}
 	}
 
 	return spti;
 }
 
-inline void VectorSimpleLayerRender::DrawLineString(int* x, int* y, IGeoSurface* surf, OGRLineString *geometry)
+inline void VectorUniformLayerRender::DrawLineString(int* x, int* y, IGeoSurface* surf, OGRLineString *geometry)
 {
 	int ptcount = TransferGeometryPoints(x, y, surf, geometry);
 
 	_simpleLineSymbol.Paint(surf, ptcount, x, y);
 }
 
-inline void VectorSimpleLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* surf, OGRPolygon * geometry)
+inline void VectorUniformLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* surf, OGRPolygon * geometry)
 {
 	OGRLinearRing*  exterior = geometry->getExteriorRing();
 	if (exterior != nullptr)
@@ -318,13 +247,13 @@ inline void VectorSimpleLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* su
 		int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 		*(x + ptcount) = *x;
 		*(y + ptcount) = *y;
-		//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
+		_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
 		_simpleLineSymbol.SetColor(0, 255, 255, 255);
 		_simpleLineSymbol.Paint(surf, ptcount + 1, x, y);
 	}
 }
 
-inline void VectorSimpleLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurface* surf, OGRMultiPoint * geometry)
+inline void VectorUniformLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurface* surf, OGRMultiPoint * geometry)
 {
 	if (_CT != nullptr)
 	{
@@ -353,7 +282,7 @@ inline void VectorSimpleLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurfac
 
 }
 
-inline void VectorSimpleLayerRender::DrawMultiLineString(int* x, int* y, IGeoSurface* surf, OGRMultiLineString * geometry)
+inline void VectorUniformLayerRender::DrawMultiLineString(int* x, int* y, IGeoSurface* surf, OGRMultiLineString * geometry)
 {
 	int c = geometry->getNumGeometries();
 	for (int i = 0; i < c; i++)
@@ -365,7 +294,7 @@ inline void VectorSimpleLayerRender::DrawMultiLineString(int* x, int* y, IGeoSur
 	}
 }
 
-inline void VectorSimpleLayerRender::DrawMultiPolygon(int* x, int* y, IGeoSurface* surf, OGRMultiPolygon *geometry)
+inline void VectorUniformLayerRender::DrawMultiPolygon(int* x, int* y, IGeoSurface* surf, OGRMultiPolygon *geometry)
 {
 	int c = geometry->getNumGeometries();
 	for (int i = 0; i < c; i++)
@@ -377,7 +306,7 @@ inline void VectorSimpleLayerRender::DrawMultiPolygon(int* x, int* y, IGeoSurfac
 			int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 			*(x + ptcount) = *x;
 			*(y + ptcount) = *y;
-			//_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
+			_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
 			_simpleLineSymbol.Paint(surf, ptcount + 1, x, y);
 		}
 	}

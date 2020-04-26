@@ -105,7 +105,7 @@
     <ClInclude Include="..\include\RasterGrayScaleLayerRender.h" />
     <ClInclude Include="..\include\RasterLayerRender.h" />
     <ClInclude Include="..\include\VectorLayerRender.h" />
-    <ClInclude Include="..\include\VectorSimpleLayerRender.h" />
+    <ClInclude Include="..\include\VectorUniformLayerRender.h" />
     <ClInclude Include="..\internal\Plugin.h" />
     <ClInclude Include="..\internal\PluginManager.h" />
   </ItemGroup>
@@ -177,7 +177,7 @@
     <ClCompile Include="..\src\ToolKit.cpp" />
     <ClCompile Include="..\src\ToolKitRepository.cpp" />
     <ClCompile Include="..\src\VectorLayerRender.cpp" />
-    <ClCompile Include="..\src\VectorSimpleLayerRender.cpp" />
+    <ClCompile Include="..\src\VectorUniformLayerRender.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E7DB3249-BD63-4362-BF16-6D47BBF2DFF4}</ProjectGuid>

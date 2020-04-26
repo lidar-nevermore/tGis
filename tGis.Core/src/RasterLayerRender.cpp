@@ -59,6 +59,10 @@ const OGREnvelope * RasterLayerRender::GetEnvelope()
 	return _raster->GetEnvelope();
 }
 
+const OGRSpatialReference * RasterLayerRender::GetSpatialReference()
+{
+	return _raster->GetSpatialReference();
+}
 
 bool RasterLayerRender::CanTransformTo(const OGRSpatialReference * spatialRef)
 {

@@ -236,9 +236,6 @@
     <ClInclude Include="..\include\VectorLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\VectorSimpleLayerRender.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\ITypedObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
@@ -340,6 +337,9 @@
     </ClInclude>
     <ClInclude Include="..\include\IMarkerSymbol.h">
       <Filter>include\Symbol</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\VectorUniformLayerRender.h">
+      <Filter>include\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -481,9 +481,6 @@
     <ClCompile Include="..\src\VectorLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\VectorSimpleLayerRender.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Tool.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
@@ -546,6 +543,9 @@
     </ClCompile>
     <ClCompile Include="..\src\IMarkerSymbol.cpp">
       <Filter>src\Symbol</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\VectorUniformLayerRender.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
