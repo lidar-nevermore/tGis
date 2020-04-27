@@ -179,8 +179,8 @@ void wxLayerWidget::LayerRemoved(IMapPtr, ILayerPtr layer, size_t pos)
 void wxLayerWidget::LayerCleared(IMapPtr)
 {
 	wxTreeItemId root = _treeCtrl->GetRootItem();
-	_treeCtrl->DeleteChildren(root);
 	_impl_->_vecLayerNode.clear();
+	_treeCtrl->DeleteChildren(root);	
 }
 
 inline wxTreeItemId wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
@@ -273,7 +273,8 @@ void wxLayerWidget::OnNodeSelChanged(wxTreeEvent & event)
 	_selId = event.GetItem();
 	_selLayer = nullptr;
 	size_t selLayerPos = 0;
-	if (_selId.IsOk())
+	//清空图层时selId居然是OK的
+	if (_selId.IsOk() && _map->GetLayerCount() > 0)
 	{		
 		layerTreeItemData* selData = (layerTreeItemData*)_treeCtrl->GetItemData(_selId);
 		_selLayer = selData->_layer;
