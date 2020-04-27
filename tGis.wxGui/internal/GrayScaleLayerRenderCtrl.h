@@ -17,6 +17,7 @@ class GrayScaleLayerRenderCtrl : public GrayScaleLayerRenderCtrlBase, public ILa
 public:
 	/** Constructor */
 	GrayScaleLayerRenderCtrl(wxWindow* parent);
+	~GrayScaleLayerRenderCtrl();
 	//// end generated class members
 
 public:
@@ -39,6 +40,9 @@ private:
 	RasterGrayScaleLayerRender* _render;
 	MyGDALRasterDataset* _raster;
 	ILayer* _layer;
+
+private:
+	void _sldOpacity_scroll(wxCommandEvent& event);
 };
 
 #endif // __GrayScaleLayerRenderCtrl__

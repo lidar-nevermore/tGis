@@ -9,7 +9,11 @@
 #include "ILineSymbol.h"
 #include "IFillSymbol.h"
 
+#include "glad.h"
 
+#include <vector>
+
+using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -32,10 +36,35 @@ bool SymbolLibraryRender::IsTypeOf(const char * type)
 	return false;
 }
 
+
+class SymbolLibraryRenderImpl
+{
+public:
+	SymbolLibraryRenderImpl(SymbolLibraryRender* owner)
+	{
+		_owner = owner;
+		_surfWidth = 0;
+		_surfHeight = 0;
+		_rowCount = 0;
+		_colCount = 0;
+		_selSymId = 0;
+	}
+
+	SymbolLibraryRender* _owner;
+	int _surfWidth;
+	int _surfHeight;
+	int _rowCount;
+	int _colCount;
+	int _selSymId;
+	std::vector<int> _vecSymId;
+};
+
 SymbolLibraryRender::SymbolLibraryRender(ILayer* layer, ISymbolLibrary* symLib)
 {
-	_symWidth = 32;
-	_symSpan = 10;
+	_impl_ = new SymbolLibraryRenderImpl(this);
+	_symWidth = 48;
+	_symHalfWidth = 24;
+	_symSpan = 16;
 	_layer = layer;
 	_layer->SetRender(this);
 	_symLib = symLib;
@@ -48,26 +77,74 @@ SymbolLibraryRender::SymbolLibraryRender(ILayer* layer, ISymbolLibrary* symLib)
 
 SymbolLibraryRender::~SymbolLibraryRender()
 {
+	delete _impl_;
+}
+
+int SymbolLibraryRender::SelectSymbol(int x, int y)
+{
+	int symOccupy = _symWidth + _symSpan + _symSpan;
+	int col = (x + symOccupy) / symOccupy;
+	int row = (y + symOccupy) / symOccupy;
+	_impl_->_selSymId = -1;
+	if (col <= _impl_->_colCount)
+	{
+		size_t pos = (row - 1)*_impl_->_colCount + col - 1;
+		if (pos < _impl_->_vecSymId.size())
+			_impl_->_selSymId = _impl_->_vecSymId.at(pos);
+	}
+	return _impl_->_selSymId;
+}
+
+int SymbolLibraryRender::SelectSymbol(int symId)
+{
+	if (_symLib != nullptr && _symLib->SymbolExists(symId))
+	{
+		_impl_->_selSymId = symId;
+		return symId;
+	}
+	return -1;
 }
 
 void SymbolLibraryRender::DrawMarkerSymbol(IGeoSurface* surf, IMarkerSymbol * sym, int x, int y)
 {
-	int hw = _symWidth / 2;
+	int hw = _symHalfWidth;
 	int dx = x + hw + _symSpan;
 	int dy = y + hw + _symSpan;
 	sym->SetWidth(_symWidth);
 	sym->SetHeight(_symWidth);
 	sym->SetLineWidth(2);
-
+	sym->SetColor(0, 0, 0, 255);
 	sym->Paint(surf, dx, dy);
 }
 
 void SymbolLibraryRender::DrawLineSymbol(IGeoSurface* surf, ILineSymbol * sym, int x, int y)
 {
+	int dx[2];
+	int dy[2];
+	dx[0] = x + _symSpan;
+	dx[1] = dx[0] + _symWidth;
+	dy[0] = y + _symSpan + _symHalfWidth;
+	dy[1] = dy[0];
+
+	sym->SetWidth(2);
+	sym->SetColor(0, 0, 0, 255);
+	sym->Paint(surf, 2, dx, dy);
 }
 
 void SymbolLibraryRender::DrawFillSymbol(IGeoSurface* surf, IFillSymbol * sym, int x, int y)
 {
+	int dx[4];
+	int dy[4];
+	dx[0] = x + _symSpan;
+	dx[1] = dx[0] + _symWidth;
+	dx[2] = dx[1];
+	dx[3] = dx[0];
+	dy[0] = y + _symSpan;
+	dy[1] = dy[0];
+	dy[2] = dy[0] + _symWidth;
+	dy[3] = dy[2];
+	sym->SetColor(0, 0, 0, 255);
+	sym->Paint(surf, 4, dx, dy);
 }
 
 void SymbolLibraryRender::Paint(IGeoSurface * surf)
@@ -79,14 +156,27 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 	int surfWidth;
 	int surfHeight;
 	surf->GetSize(&surfWidth, &surfHeight);
+	bool resetIdPos = false;
+	if (_impl_->_surfHeight != surfHeight || _impl_->_surfWidth != surfWidth)
+	{
+		resetIdPos = true;
+		_impl_->_vecSymId.clear();
+	}
 
-	int rowSymCount = surfWidth / symOccupy;
-	if (rowSymCount < 1)
-		rowSymCount = 1;
+	_impl_->_surfHeight = surfHeight;
+	_impl_->_surfWidth = surfWidth;
+
+	int colCount = surfWidth / symOccupy;
+	if (colCount < 1)
+		colCount = 1;
 
 	int symCount = _symLib->GetSymbolCount();
-	_envelope.MaxX = rowSymCount*symOccupy;
-	_envelope.MaxY = ((symCount + rowSymCount - 1) / rowSymCount)*symOccupy;;
+	int rowCount = (symCount + colCount - 1) / colCount;
+	_envelope.MaxX = colCount*symOccupy;
+	_envelope.MaxY = rowCount*symOccupy;
+
+	_impl_->_rowCount = rowCount;
+	_impl_->_colCount = colCount;
 
 	int curCol = 0;
 	int curRow = 0;
@@ -97,18 +187,44 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 
 	while (nextSymId >= 0)
 	{
-		ISymbol* sym = _symLib->GetSymbol(nextSymId, &nextSymId);
+		int curSymId = nextSymId;
+		ISymbol* sym = _symLib->GetSymbol(curSymId, &nextSymId);
 		if (sym != nullptr)
 		{
-			if (sym->IsTypeOf(IMarkerSymbol::S_GetType()))
+			if (sym->GetType() == SymbolType::Marker)
 				DrawMarkerSymbol(surf, (IMarkerSymbol*)sym, curX, curY);
-			else if (sym->IsTypeOf(ILineSymbol::S_GetType()))
+			else if (sym->GetType() == SymbolType::Line)
 				DrawLineSymbol(surf, (ILineSymbol*)sym, curX, curY);
 			else
 				DrawFillSymbol(surf, (IFillSymbol*)sym, curX, curY);
-			_symLib->RevertSymbol(sym);
+
+			if (resetIdPos)
+				_impl_->_vecSymId.push_back(curSymId);
+
+			int sleft = curX + _symSpan - 3;
+			int stop = curY + _symSpan - 3;
+			int sright = sleft + _symWidth + 6;
+			int sbottom = stop + _symWidth + 6;
+			GLfloat left, top, right, bottom;
+			surf->Surface2glndc(sleft, stop, &left, &top);
+			surf->Surface2glndc(sright, sbottom, &right, &bottom);
+			if (curSymId == _impl_->_selSymId)
+				glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+			else
+				glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+			glEnable(GL_LINE_SMOOTH);
+			glBegin(GL_LINE_STRIP);
+			glVertex3f(left, top, 0.0f);
+			glVertex3f(right, top, 0.0f);
+			glVertex3f(right, bottom, 0.0f);
+			glVertex3f(left, bottom, 0.0f);
+			glVertex3f(left, top, 0.0f);
+			glEnd();
+
+			_symLib->ReleaseSymbol(sym);
+
 			curCol++;
-			if (curCol == rowSymCount)
+			if (curCol == colCount)
 			{
 				curCol = 0;
 				curRow++;
@@ -119,6 +235,9 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 			{
 				curX += symOccupy;
 			}
+
+			if (curRow == rowCount)
+				break;
 		}
 	}
 

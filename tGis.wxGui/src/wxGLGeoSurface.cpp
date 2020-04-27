@@ -30,7 +30,7 @@ void wxGLGeoSurface::Present(int wX, int wY)
 
 void wxGLGeoSurface::Present(int wX, int wY, int wW, int wH)
 {
-	if (_mapBuffer = nullptr)
+	if (_mapBuffer == nullptr)
 		return;
 
 	wxSize sz = _mapWidget->GetClientSize();

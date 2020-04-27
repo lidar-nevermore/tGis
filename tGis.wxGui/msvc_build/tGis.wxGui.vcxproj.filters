@@ -56,9 +56,6 @@
     <ClInclude Include="..\include\wxLayerPropertyDialog.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\wxLayerRenderPanel.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h">
       <Filter>internal</Filter>
     </ClInclude>
@@ -80,8 +77,23 @@
     <ClInclude Include="..\internal\ColorRampLayerRenderCtrlBase.h">
       <Filter>internal</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\wxDatasetInfoCtrl.h">
+    <ClInclude Include="..\include\wxDatasetInfoWidget.h">
       <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxLayerRenderWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxSymbolLibraryWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxSymbolPickerWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\VectorUniformLayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\VectorUniformLayerRenderCtrlBase.h">
+      <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -121,9 +133,6 @@
     <ClCompile Include="..\src\wxLayerPropertyDialog.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\wxLayerRenderPanel.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
@@ -142,8 +151,23 @@
     <ClCompile Include="..\internal\ColorRampLayerRenderCtrlBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\wxDatasetInfoCtrl.cpp">
+    <ClCompile Include="..\src\wxDatasetInfoWidget.cpp">
       <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxLayerRenderWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxSymbolLibraryWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxSymbolPickerWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\VectorUniformLayerRenderCtrl.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\VectorUniformLayerRenderCtrlBase.cpp">
+      <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +185,9 @@
     </None>
     <None Include="..\src\ogrinfo.inl">
       <Filter>src</Filter>
+    </None>
+    <None Include="..\internal\VectorUniformLayerRenderCtrl.fbp">
+      <Filter>internal</Filter>
     </None>
   </ItemGroup>
 </Project>

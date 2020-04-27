@@ -1,3 +1,4 @@
+#include "SimpleSymbolLibrary.h"
 #include "SymbolLibraryRepository.h"
 #include "SimpleSymbolLibrary.h"
 #include <memory>
@@ -17,6 +18,9 @@ SymbolLibraryRepository* SymbolLibraryRepository::INSTANCE()
 	if (_instance == nullptr)
 	{
 		_instance = new SymbolLibraryRepository();
+		_instance->AddSymbolLibrary(SimpleSymbolLibrary::GetMarkerSymbolLibrary());
+		_instance->AddSymbolLibrary(SimpleSymbolLibrary::GetLineSymbolLibrary());
+		_instance->AddSymbolLibrary(SimpleSymbolLibrary::GetFillSymbolLibrary());
 		static unique_ptr<SymbolLibraryRepository> shit(_instance);
 	}
 

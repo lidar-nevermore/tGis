@@ -86,9 +86,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\DrawRectTool.h" />
-    <ClInclude Include="..\include\wxDatasetInfoCtrl.h" />
+    <ClInclude Include="..\include\wxDatasetInfoWidget.h" />
     <ClInclude Include="..\include\wxLayerPropertyDialog.h" />
-    <ClInclude Include="..\include\wxLayerRenderPanel.h" />
+    <ClInclude Include="..\include\wxLayerRenderWidget.h" />
     <ClInclude Include="..\include\MapPanTool.h" />
     <ClInclude Include="..\include\MapZoomTool.h" />
     <ClInclude Include="..\include\RectZoomTool.h" />
@@ -99,6 +99,8 @@
     <ClInclude Include="..\include\wxGLGeoSurface.h" />
     <ClInclude Include="..\include\wxGLMapWidget.h" />
     <ClInclude Include="..\include\wxLayerWidget.h" />
+    <ClInclude Include="..\include\wxSymbolLibraryWidget.h" />
+    <ClInclude Include="..\include\wxSymbolPickerWidget.h" />
     <ClInclude Include="..\include\wxTGisApplication.h" />
     <ClInclude Include="..\include\wxToolWidget.h" />
     <ClInclude Include="..\internal\ColorRampLayerRenderCtrl.h" />
@@ -108,6 +110,8 @@
     <ClInclude Include="..\internal\ILayerRenderCtrl.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h" />
+    <ClInclude Include="..\internal\VectorUniformLayerRenderCtrl.h" />
+    <ClInclude Include="..\internal\VectorUniformLayerRenderCtrlBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\internal\ColorRampLayerRenderCtrl.cpp" />
@@ -116,10 +120,12 @@
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp" />
+    <ClCompile Include="..\internal\VectorUniformLayerRenderCtrl.cpp" />
+    <ClCompile Include="..\internal\VectorUniformLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\src\DrawRectTool.cpp" />
-    <ClCompile Include="..\src\wxDatasetInfoCtrl.cpp" />
+    <ClCompile Include="..\src\wxDatasetInfoWidget.cpp" />
     <ClCompile Include="..\src\wxLayerPropertyDialog.cpp" />
-    <ClCompile Include="..\src\wxLayerRenderPanel.cpp" />
+    <ClCompile Include="..\src\wxLayerRenderWidget.cpp" />
     <ClCompile Include="..\src\MapPanTool.cpp" />
     <ClCompile Include="..\src\MapZoomTool.cpp" />
     <ClCompile Include="..\src\RectZoomTool.cpp" />
@@ -128,6 +134,8 @@
     <ClCompile Include="..\src\wxGLGeoSurface.cpp" />
     <ClCompile Include="..\src\wxGLMapWidget.cpp" />
     <ClCompile Include="..\src\wxLayerWidget.cpp" />
+    <ClCompile Include="..\src\wxSymbolLibraryWidget.cpp" />
+    <ClCompile Include="..\src\wxSymbolPickerWidget.cpp" />
     <ClCompile Include="..\src\wxTGisApplication.cpp" />
     <ClCompile Include="..\src\wxToolWidget.cpp" />
   </ItemGroup>
@@ -135,6 +143,7 @@
     <None Include="..\internal\ColorRampLayerRenderCtrl.fbp" />
     <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp" />
     <None Include="..\internal\RgbLayerRanderCtrl.fbp" />
+    <None Include="..\internal\VectorUniformLayerRenderCtrl.fbp" />
     <None Include="..\src\gdalinfo.inl" />
     <None Include="..\src\ogrinfo.inl" />
   </ItemGroup>

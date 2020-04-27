@@ -11,18 +11,26 @@ BEGIN_NAME_SPACE(tGis, Core)
 SimpleMarkerSymbol::SimpleMarkerSymbol()
 	:SimpleMarkerSymbol(SimpleMarkerSymbol::Rect)
 {
-	_lib = SimpleSymbolLibrary::GetMarkerSymbolLibrary();
-
 }
 
 SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
+	:SimpleMarkerSymbol(t, nullptr)
 {
-	_lib = SimpleSymbolLibrary::GetMarkerSymbolLibrary();
 
+}
+
+SimpleMarkerSymbol::~SimpleMarkerSymbol()
+{
+
+}
+
+SimpleMarkerSymbol::SimpleMarkerSymbol(int t, const ISymbolLibrary * symLib)
+	:IMarkerSymbol(symLib)
+{
 	_type = t;
-	_r = 30;
-	_g = 236;
-	_b = 63;
+	_r = 0;
+	_g = 0;
+	_b = 0;
 	_a = 255;
 	_width = 11;
 	_halfWidth = 5;
@@ -33,12 +41,7 @@ SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
 	_yOffset = 0;
 }
 
-SimpleMarkerSymbol::~SimpleMarkerSymbol()
-{
-
-}
-
-const int SimpleMarkerSymbol::GetId()
+int SimpleMarkerSymbol::GetId()
 {
 	return _type;
 }
@@ -47,7 +50,7 @@ void SimpleMarkerSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 {
 	GLfloat red = _r / 255.0f;
 	GLfloat green = _g / 255.0f;
-	GLfloat blue = _g / 255.0f;
+	GLfloat blue = _b / 255.0f;
 	GLfloat alpha = _a / 255.0f;
 
 	glLineWidth((GLfloat)_lineWidth);
@@ -91,7 +94,7 @@ void SimpleMarkerSymbol::Paint(ISurface* surf, int x, int y)
 {
 	GLfloat red = _r / 255.0f;
 	GLfloat green = _g / 255.0f;
-	GLfloat blue = _g / 255.0f;
+	GLfloat blue = _b / 255.0f;
 	GLfloat alpha = _a / 255.0f;
 
 	glLineWidth((GLfloat)_lineWidth);

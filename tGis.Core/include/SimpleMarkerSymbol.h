@@ -12,6 +12,7 @@ struct ISurface;
 
 class TGIS_CORE_API SimpleMarkerSymbol : public IMarkerSymbol
 {
+	friend class SimpleSymbolLibrary;
 public:
 	static const int Rect = 0;
 	static const int Ellipse = 1;
@@ -28,7 +29,11 @@ public:
 	SimpleMarkerSymbol(int t);
 	~SimpleMarkerSymbol();
 
-	const int GetId();
+protected:
+	SimpleMarkerSymbol(int t, const ISymbolLibrary* symLib);
+
+public:
+	int GetId();
 
 	void Paint(ISurface* surf, int count, int* x, int* y) override;
 	void Paint(ISurface* surf, int x, int y) override;

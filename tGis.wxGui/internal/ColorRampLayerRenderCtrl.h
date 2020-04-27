@@ -17,6 +17,7 @@ class ColorRampLayerRenderCtrl : public ColorRampLayerRenderCtrlBase, public ILa
 public:
 	/** Constructor */
 	ColorRampLayerRenderCtrl(wxWindow* parent);
+	~ColorRampLayerRenderCtrl();
 	//// end generated class members
 
 public:
@@ -39,6 +40,9 @@ private:
 	RasterColorRampLayerRender* _render;
 	MyGDALRasterDataset* _raster;
 	ILayer* _layer;
+
+private:
+	void _sldOpacity_scroll(wxCommandEvent& event);
 };
 
 #endif // __ColorRampLayerRenderCtrl__

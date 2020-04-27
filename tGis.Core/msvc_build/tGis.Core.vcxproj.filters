@@ -538,15 +538,6 @@
     <ClCompile Include="..\glad\glad.c">
       <Filter>glad</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\IFillSymbol.cpp">
-      <Filter>src\Symbol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ILineSymbol.cpp">
-      <Filter>src\Symbol</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\IMarkerSymbol.cpp">
-      <Filter>src\Symbol</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\VectorUniformLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>

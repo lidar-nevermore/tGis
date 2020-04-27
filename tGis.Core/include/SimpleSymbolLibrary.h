@@ -35,9 +35,10 @@ public:
 public:
 	const char* GetName() const;
 	int GetSymbolCount() const;
+	bool SymbolExists(int id) const;
 	ISymbol* GetSymbol(int id) const;
 	ISymbol* GetSymbol(int id, int* nextId) const;
-	void RevertSymbol(ISymbol*) const;
+	void ReleaseSymbol(ISymbol*) const;
 
 private:
 	char* _name;

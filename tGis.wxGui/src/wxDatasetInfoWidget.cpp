@@ -1,4 +1,4 @@
-#include "wxDatasetInfoCtrl.h"
+#include "wxDatasetInfoWidget.h"
 
 #include "gdalinfo.inl"
 #include "ogrinfo.inl"
@@ -9,38 +9,38 @@ wxDEFINE_EVENT(wxEVT_DATASET_INFO_COMPLETED, wxCommandEvent);
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
-class wxDatasetInfoCtrlImpl
+class wxDatasetInfoWidgetImpl
 {
 public:
-	wxDatasetInfoCtrlImpl(wxDatasetInfoCtrl* owner, IDataset* dataset)
+	wxDatasetInfoWidgetImpl(wxDatasetInfoWidget* owner, IDataset* dataset)
 	{
 		_owner = owner;
 		_dataset = dataset;
 	}
 
-	wxDatasetInfoCtrl* _owner;
+	wxDatasetInfoWidget* _owner;
 	IDataset* _dataset;
 	wxString _info;
 	bool _infoShowing;
 };
 
 
-wxDatasetInfoCtrl::wxDatasetInfoCtrl(IDataset * dataset, wxWindow * parent, wxWindowID id, const wxString & value, const wxPoint & pos, const wxSize & size, long style, const wxValidator & validator, const wxString & name)
+wxDatasetInfoWidget::wxDatasetInfoWidget(IDataset * dataset, wxWindow * parent, wxWindowID id, const wxString & value, const wxPoint & pos, const wxSize & size, long style, const wxValidator & validator, const wxString & name)
 	: wxTextCtrl(parent, id, value, pos, size, style, validator, name)
 {
-	_impl_ = new wxDatasetInfoCtrlImpl(this, dataset);
+	_impl_ = new wxDatasetInfoWidgetImpl(this, dataset);
 	_impl_->_infoShowing = false;
 
-	Bind(wxEVT_SIZE, &wxDatasetInfoCtrl::OnSize, this, this->GetId());
+	Bind(wxEVT_SIZE, &wxDatasetInfoWidget::OnSize, this, this->GetId());
 }
 
-wxDatasetInfoCtrl::~wxDatasetInfoCtrl()
+wxDatasetInfoWidget::~wxDatasetInfoWidget()
 {
-	Unbind(wxEVT_SIZE, &wxDatasetInfoCtrl::OnSize, this, this->GetId());
+	Unbind(wxEVT_SIZE, &wxDatasetInfoWidget::OnSize, this, this->GetId());
 	delete _impl_;
 }
 
-void wxDatasetInfoCtrl::OnDatasetInfo(wxCommandEvent & event)
+void wxDatasetInfoWidget::OnDatasetInfo(wxCommandEvent & event)
 {
 	SetValue(_impl_->_info);
 
@@ -50,7 +50,7 @@ void wxDatasetInfoCtrl::OnDatasetInfo(wxCommandEvent & event)
 class MyThread : public wxThread
 {
 public:
-	MyThread(wxDatasetInfoCtrl *w, wxDatasetInfoCtrlImpl* wimpl)
+	MyThread(wxDatasetInfoWidget *w, wxDatasetInfoWidgetImpl* wimpl)
 	{
 		_handler = w;
 		_handler_impl_ = wimpl;
@@ -92,11 +92,11 @@ public:
 		return (wxThread::ExitCode)0;     // success
 	}
 
-	wxDatasetInfoCtrl* _handler;
-	wxDatasetInfoCtrlImpl* _handler_impl_;
+	wxDatasetInfoWidget* _handler;
+	wxDatasetInfoWidgetImpl* _handler_impl_;
 };
 
-void wxDatasetInfoCtrl::OnSize(wxSizeEvent & event)
+void wxDatasetInfoWidget::OnSize(wxSizeEvent & event)
 {
 	event.Skip();
 
@@ -114,8 +114,8 @@ void wxDatasetInfoCtrl::OnSize(wxSizeEvent & event)
 	}
 }
 
-wxBEGIN_EVENT_TABLE(wxDatasetInfoCtrl, wxTextCtrl)
-    EVT_COMMAND(wxID_ANY, wxEVT_DATASET_INFO_COMPLETED, wxDatasetInfoCtrl::OnDatasetInfo)
+wxBEGIN_EVENT_TABLE(wxDatasetInfoWidget, wxTextCtrl)
+    EVT_COMMAND(wxID_ANY, wxEVT_DATASET_INFO_COMPLETED, wxDatasetInfoWidget::OnDatasetInfo)
 wxEND_EVENT_TABLE()
 
 

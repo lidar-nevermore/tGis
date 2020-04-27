@@ -14,7 +14,8 @@ SimpleSymbolLibrary * SimpleSymbolLibrary::GetMarkerSymbolLibrary()
 	if (_markerSymbolLibrary == nullptr)
 	{
 		_markerSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Marker);
-		SymbolLibraryRepository::INSTANCE()->AddSymbolLibrary(_markerSymbolLibrary);
+		//调用一个无副作用的函数，确保_markerSymbolLibrary放到Repository中了
+		SymbolLibraryRepository::INSTANCE()->GetMarkerSymbolLibraryCount();
 		//static std::unique_ptr<SimpleSymbolLibrary> shit(_markerSymbolLibrary);
 	}
 
@@ -27,7 +28,7 @@ SimpleSymbolLibrary * SimpleSymbolLibrary::GetLineSymbolLibrary()
 	if (_lineSymbolLibrary == nullptr)
 	{
 		_lineSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Line);
-		SymbolLibraryRepository::INSTANCE()->AddSymbolLibrary(_lineSymbolLibrary);
+		SymbolLibraryRepository::INSTANCE()->GetMarkerSymbolLibraryCount();
 		//static std::unique_ptr<SimpleSymbolLibrary> shit(_lineSymbolLibrary);
 	}
 
@@ -40,7 +41,7 @@ SimpleSymbolLibrary * SimpleSymbolLibrary::GetFillSymbolLibrary()
 	if (_fillSymbolLibrary == nullptr)
 	{
 		_fillSymbolLibrary = new SimpleSymbolLibrary(SymbolLibraryType::Fill);
-		SymbolLibraryRepository::INSTANCE()->AddSymbolLibrary(_fillSymbolLibrary);
+		SymbolLibraryRepository::INSTANCE()->GetMarkerSymbolLibraryCount();
 		//static std::unique_ptr<SimpleSymbolLibrary> shit(_fillSymbolLibrary);
 	}
 
@@ -59,7 +60,7 @@ SimpleSymbolLibrary::SimpleSymbolLibrary(SymbolLibraryType libType)
 		_name = "SimpleLineSymbolLibrary";
 		break;
 	case tGis::Core::Fill:
-		_name = "SimpleFileSymbolLibrary";
+		_name = "SimpleFillSymbolLibrary";
 		break;
 	default:
 		break;
@@ -89,21 +90,47 @@ int SimpleSymbolLibrary::GetSymbolCount() const
 	}
 }
 
-ISymbol * SimpleSymbolLibrary::GetSymbol(int id) const
+bool SimpleSymbolLibrary::SymbolExists(int id) const
 {
+	if (id < 0)
+		return false;
+
 	switch (_libType)
 	{
 	case tGis::Core::Marker:
-		return id <= SimpleMarkerSymbol::MaxId? new SimpleMarkerSymbol(id) : nullptr;
+		return id <= SimpleMarkerSymbol::MaxId;
 	case tGis::Core::Line:
-		return id <= SimpleLineSymbol::MaxId ? new SimpleLineSymbol(id) : nullptr;
+		return id <= SimpleLineSymbol::MaxId;
 	default: //tGis::Core::Fill
-		return id <= SimpleFillSymbol::MaxId ? new SimpleFillSymbol(id) : nullptr;
+		return id <= SimpleFillSymbol::MaxId;
+	}
+}
+
+ISymbol * SimpleSymbolLibrary::GetSymbol(int id) const
+{
+	if (id < 0)
+		return nullptr;
+
+	switch (_libType)
+	{
+	case tGis::Core::Marker:
+		return id <= SimpleMarkerSymbol::MaxId? new SimpleMarkerSymbol(id, this) : nullptr;
+	case tGis::Core::Line:
+		return id <= SimpleLineSymbol::MaxId ? new SimpleLineSymbol(id, this) : nullptr;
+	default: //tGis::Core::Fill
+		return id <= SimpleFillSymbol::MaxId ? new SimpleFillSymbol(id, this) : nullptr;
 	}
 }
 
 ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 {
+	if (id < 0)
+	{
+		if (nextId != nullptr)
+			*nextId = 0;
+		return nullptr;
+	}
+
 	if (_libType == SymbolLibraryType::Marker)
 	{
 		if (id <= SimpleMarkerSymbol::MaxId)
@@ -115,7 +142,7 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 				else
 					*nextId = id + 1;
 			}
-			return new SimpleMarkerSymbol(id);
+			return new SimpleMarkerSymbol(id, this);
 		}
 	}
 	else if (_libType == SymbolLibraryType::Line)
@@ -129,7 +156,7 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 				else
 					*nextId = id + 1;
 			}
-			return new SimpleLineSymbol(id);
+			return new SimpleLineSymbol(id, this);
 		}
 	}
 	else
@@ -143,7 +170,7 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 				else
 					*nextId = id + 1;
 			}
-			return new SimpleFillSymbol(id);
+			return new SimpleFillSymbol(id, this);
 		}
 	}
 
@@ -153,7 +180,7 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 	return nullptr;
 }
 
-void SimpleSymbolLibrary::RevertSymbol(ISymbol * sym) const
+void SimpleSymbolLibrary::ReleaseSymbol(ISymbol * sym) const
 {
 	delete sym;
 }

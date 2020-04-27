@@ -19,10 +19,6 @@ class MyGDALVectorDataset;
 class TGIS_CORE_API VectorLayerRender : public LayerRender
 {
 public:
-	VectorLayerRender(ILayer* layer, int ogrLayer);
-	~VectorLayerRender();
-
-public:
 	virtual const char* GetType();
 	static const char* S_GetType();
 	virtual bool IsTypeOf(const char* type);
@@ -31,9 +27,16 @@ private:
 	static const char* const _type;
 
 public:
+	VectorLayerRender(ILayer* layer, int ogrLayer);
+	~VectorLayerRender();
+
+
+public:
 	virtual const OGREnvelope* GetEnvelope();
 	virtual const OGRSpatialReference* GetSpatialReference();
 	virtual bool CanTransformTo(const OGRSpatialReference*);
+
+	virtual void SetOGRLayer(int ogrLayerIndex);
 
 	virtual int GetOGRLayer()
 	{
@@ -49,6 +52,7 @@ protected:
 	int _ogrLayerIndex;
 	OGREnvelope _envelope;
 	OGRSpatialReference* _spatialRef;
+	//指向地图投影的指针， 方便进行坐标转换
 	OGRSpatialReference* _mapSpatialRef;
 	OGRCoordinateTransformation* _CT;
 };

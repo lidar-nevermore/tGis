@@ -11,10 +11,15 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct TGIS_CORE_API IFillSymbol : public ISymbol
 {
-public:
-	virtual const char* GetType();
-	static const char* S_GetType();
-	virtual bool IsTypeOf(const char* type);
+	IFillSymbol(const ISymbolLibrary* lib)
+		:ISymbol(lib)
+	{
+	};
+
+	SymbolType GetType() override
+	{
+		return SymbolType::Fill;
+	};
 
 	virtual void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a) = 0;
 	virtual void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) = 0;
@@ -26,9 +31,6 @@ public:
 	//x[0] y[0] 表示外部边界 count[0]表示外部范围的顶点数量
 	//其它都是内部边界
 	virtual void Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y) = 0;
-
-private:
-	static const char* const _type;
 };
 
 

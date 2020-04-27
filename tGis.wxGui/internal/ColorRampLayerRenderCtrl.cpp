@@ -5,6 +5,16 @@ ColorRampLayerRenderCtrl::ColorRampLayerRenderCtrl( wxWindow* parent )
 {
 	_render = nullptr;
 	_raster = nullptr;
+	_layer = nullptr;
+
+	Bind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+
+}
+
+ColorRampLayerRenderCtrl::~ColorRampLayerRenderCtrl()
+{
+	Unbind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	
 }
 
 const char * ColorRampLayerRenderCtrl::GetLayerRenderName()
@@ -18,15 +28,17 @@ bool ColorRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 	{
 		ILayerRender* render = layer->GetRender();
 
-		if (render != nullptr && render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
-			return true;
-
 		if (render == nullptr)
 		{
 			MyGDALRasterDataset* raster = dynamic_cast<MyGDALRasterDataset*>(layer->GetDataset());
 			int bandCount = raster->GetGDALDataset()->GetRasterCount();
 
 			if (bandCount == 1)
+				return true;
+		}
+		else
+		{
+			if (render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
 				return true;
 		}
 	}
@@ -70,7 +82,7 @@ void ColorRampLayerRenderCtrl::UpdateLayerRender()
 	_render->SetBand(_choiceBand->GetSelection() + 1);
 
 	int opacity = _sldOpacity->GetValue();
-	_render->SetOpacity(opacity / 255.0);
+	_render->SetOpacity(opacity / 255.0f);
 
 	wxString rMinStr = _txtMin->GetValue();
 	wxString rMaxStr = _txtMax->GetValue();
@@ -222,4 +234,9 @@ void ColorRampLayerRenderCtrl::SetLayerRender(RasterColorRampLayerRender * rende
 	_chkGtPivotB->SetValue(rightBChannel);
 
 	_choiceBand->SetSelection(_render->GetBand() - 1);
+}
+
+void ColorRampLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
+{
+	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
 }

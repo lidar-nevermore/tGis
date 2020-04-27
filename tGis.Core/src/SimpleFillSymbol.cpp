@@ -99,19 +99,20 @@ private:
 			nullptr);
 
 		_strippes[0] = nullptr;
-		_strippes[1] = Strippe::DenseDot1;
-		_strippes[2] = Strippe::DenseDot2;
-		_strippes[3] = Strippe::DenseDot3;
-		_strippes[4] = Strippe::DenseDot4;
-		_strippes[5] = Strippe::DenseDot5;
-		_strippes[6] = Strippe::DenseDot6;
-		_strippes[7] = Strippe::DenseDot7;
-		_strippes[8] = Strippe::Horizontal;
-		_strippes[9] = Strippe::Vertical;
-		_strippes[10] = Strippe::ForwardDiagonal;
-		_strippes[11] = Strippe::BackwardDiagonal;
-		_strippes[12] = Strippe::Cross;
-		_strippes[13] = Strippe::DiagonalCross;
+		_strippes[1] = nullptr;
+		_strippes[2] = Strippe::DenseDot1;
+		_strippes[3] = Strippe::DenseDot2;
+		_strippes[4] = Strippe::DenseDot3;
+		_strippes[5] = Strippe::DenseDot4;
+		_strippes[6] = Strippe::DenseDot5;
+		_strippes[7] = Strippe::DenseDot6;
+		_strippes[8] = Strippe::DenseDot7;
+		_strippes[9] = Strippe::Horizontal;
+		_strippes[10] = Strippe::Vertical;
+		_strippes[11] = Strippe::ForwardDiagonal;
+		_strippes[12] = Strippe::BackwardDiagonal;
+		_strippes[13] = Strippe::Cross;
+		_strippes[14] = Strippe::DiagonalCross;
 	}
 
 	GLUtesselator* _tesselator;
@@ -124,18 +125,13 @@ gluTessHelper* gluTessHelper::_instance = nullptr;
 SimpleFillSymbol::SimpleFillSymbol()
 	:SimpleFillSymbol(SimpleFillSymbol::DiagonalCross)
 {
-	_lib = SimpleSymbolLibrary::GetFillSymbolLibrary();
+	_lib = nullptr;
 }
 
 SimpleFillSymbol::SimpleFillSymbol(int t)
+	: SimpleFillSymbol(t, nullptr)
 {
-	_lib = SimpleSymbolLibrary::GetFillSymbolLibrary();
 
-	_type = t;
-	_r = 30;
-	_g = 236;
-	_b = 63;
-	_a = 255;
 }
 
 
@@ -143,7 +139,17 @@ SimpleFillSymbol::~SimpleFillSymbol()
 {
 }
 
-const int SimpleFillSymbol::GetId()
+SimpleFillSymbol::SimpleFillSymbol(int t, const ISymbolLibrary * symLib)
+	:IFillSymbol(symLib)
+{
+	_type = t;
+	_r = 30;
+	_g = 236;
+	_b = 63;
+	_a = 255;
+}
+
+int SimpleFillSymbol::GetId()
 {
 	return _type;
 }
@@ -151,6 +157,9 @@ const int SimpleFillSymbol::GetId()
 
 void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 {
+	if (_type == NoFill)
+		return;
+
 	size_t ndcSize = count * 3 * sizeof(GLdouble);
 	GLdouble* ndc = (GLdouble*)malloc(ndcSize);
 
@@ -159,11 +168,11 @@ void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 
 	GLfloat red = _r / 255.0f;
 	GLfloat green = _g / 255.0f;
-	GLfloat blue = _g / 255.0f;
+	GLfloat blue = _b / 255.0f;
 	GLfloat alpha = _a / 255.0f;
 
 	glColor4f(red, green, blue, alpha);
-	if (_type > 0)
+	if (_type > 1)
 	{
 		glEnable(GL_POLYGON_STIPPLE);
 		glPolygonStipple(gluTessHelper::GetStrippe(_type));
@@ -184,12 +193,15 @@ void SimpleFillSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 	gluTessEndPolygon(tess);
 	free(ndc);
 	gluTessHelper::TessEnd();
-	if (_type > 0)
+	if (_type > 1)
 		glDisable(GL_POLYGON_STIPPLE);
 }
 
 void SimpleFillSymbol::Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y)
 {
+	if (_type == NoFill)
+		return;
+
 	size_t ndcSize = 0;
 	for (int c = 0; c < contourCount; c++)
 		ndcSize += (ptCount[c] * 3 * sizeof(GLdouble));
@@ -198,11 +210,11 @@ void SimpleFillSymbol::Paint(ISurface* surf, int contourCount, int* ptCount, int
 
 	GLfloat red = _r / 255.0f;
 	GLfloat green = _g / 255.0f;
-	GLfloat blue = _g / 255.0f;
+	GLfloat blue = _b / 255.0f;
 	GLfloat alpha = _a / 255.0f;
 
 	glColor4f(red, green, blue, alpha);
-	if (_type > 0)
+	if (_type > 1)
 	{
 		glEnable(GL_POLYGON_STIPPLE);
 		glPolygonStipple(gluTessHelper::GetStrippe(_type));
@@ -230,7 +242,7 @@ void SimpleFillSymbol::Paint(ISurface* surf, int contourCount, int* ptCount, int
 
 	free(ndc);
 	gluTessHelper::TessEnd();
-	if (_type > 0)
+	if (_type > 1)
 		glDisable(GL_POLYGON_STIPPLE);
 }
 

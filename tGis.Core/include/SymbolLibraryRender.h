@@ -19,6 +19,8 @@ struct IMarkerSymbol;
 struct ILineSymbol;
 struct IFillSymbol;
 
+class SymbolLibraryRenderImpl;
+
 class TGIS_CORE_API SymbolLibraryRender : public ILayerRender
 {
 public:
@@ -41,8 +43,9 @@ public:
 
 	void SetSymbolWidth(int width)
 	{
-		assert(width > 1);
+		assert(width > 3);
 		_symWidth = width;
+		_symHalfWidth = _symWidth / 2;
 	}
 
 	int GetSymbolWidth()
@@ -52,7 +55,7 @@ public:
 
 	void SetSymbolSpan(int span)
 	{
-		assert(span > 0);
+		assert(span > 3);
 		_symSpan = span;
 	}
 
@@ -61,12 +64,20 @@ public:
 		return _symSpan;
 	}
 
+	//选择Surface坐标(x,y)处的符号 返回符号id
+	int SelectSymbol(int x, int y);
+
+	int SelectSymbol(int symId);
+
 private:
 	ILayer* _layer;
 	ISymbolLibrary* _symLib;
 	OGREnvelope _envelope;
 	int _symWidth;
+	int _symHalfWidth;
 	int _symSpan;
+
+	SymbolLibraryRenderImpl* _impl_;
 
 private:
 	void DrawMarkerSymbol(IGeoSurface*, IMarkerSymbol* sym, int x, int y);

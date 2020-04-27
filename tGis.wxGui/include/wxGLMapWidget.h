@@ -17,6 +17,7 @@ class TGIS_GUI_API wxGLMapWidget : public wxGLCanvas, public MapWidget
 {
 	friend class wxGLGeoSurface;
 public:
+	//除非可以确定所有需要绘制的东西都不会从外部读取，否则不可使extraBuffer = false
     explicit // avoid implicitly converting a wxWindow* to wxGLCanvas
     wxGLMapWidget(wxWindow *parent,
 		wxWindowID id = wxID_ANY,
@@ -24,7 +25,8 @@ public:
         const wxSize& size = wxDefaultSize,
         long style = 0,
         const wxString& name = wxGLCanvasName,
-        const wxPalette& palette = wxNullPalette);
+        const wxPalette& palette = wxNullPalette,
+		bool extraBuffer = true);
 
 	virtual ~wxGLMapWidget();
 

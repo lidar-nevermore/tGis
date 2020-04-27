@@ -23,7 +23,13 @@ class OGRSimpleCurve;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+struct IMarkerSymbol;
+struct ILineSymbol;
+struct IFillSymbol;
 
+//TODO:
+//矢量的图形和文字属性分开可视化
+//后期可能会增加 VectorLabelLayerRender
 class TGIS_CORE_API VectorUniformLayerRender : public VectorLayerRender
 {
 public:
@@ -35,19 +41,27 @@ private:
 	static const char* const _type;
 
 public:
-	VectorUniformLayerRender(ILayer* layer, int ogrLayer,int geometryField = -1, int labelField = -1);
+	VectorUniformLayerRender(ILayer* layer, int ogrLayer,int geometryField = -1);
 	~VectorUniformLayerRender();
 
 private:
 	VectorUniformLayerRender(const VectorUniformLayerRender &) = delete;
 	VectorUniformLayerRender &operator=(const VectorUniformLayerRender &) = delete;
 
+public:
+	IMarkerSymbol* GetMarkerSymbol();
+	void SetMarkerSymbol(IMarkerSymbol* sym);
+	ILineSymbol* GetLineSymbol();
+	void SetLineSymbol(ILineSymbol* sym);
+	IFillSymbol* GetFillSymbol();
+	void SetFillSymbol(IFillSymbol* sym);
+
 private:
 	int _geometryField;
-	int _labelField;
-	SimpleMarkerSymbol _simpleMarkerSymbol;
-	SimpleLineSymbol _simpleLineSymbol;
-	SimpleFillSymbol _simpleFillSymbol;
+
+	IMarkerSymbol* _markerSymbol;
+	ILineSymbol* _lineSymbol;
+	IFillSymbol* _fillSymbol;
 
 public:
 	virtual void Paint(IGeoSurface*);

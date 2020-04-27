@@ -5,6 +5,15 @@ RgbLayerRenderCtrl::RgbLayerRenderCtrl( wxWindow* parent )
 {
 	_render = nullptr;
 	_raster = nullptr;
+	_layer = nullptr;
+
+	Bind(wxEVT_SLIDER, &RgbLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+
+}
+
+RgbLayerRenderCtrl::~RgbLayerRenderCtrl()
+{
+	Unbind(wxEVT_SLIDER, &RgbLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
 }
 
 const char * RgbLayerRenderCtrl::GetLayerRenderName()
@@ -27,6 +36,11 @@ bool RgbLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 			int bandCount = raster->GetGDALDataset()->GetRasterCount();
 
 			if (bandCount > 2)
+				return true;
+		}
+		else
+		{
+			if (render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
 				return true;
 		}
 	}
@@ -74,7 +88,7 @@ void RgbLayerRenderCtrl::UpdateLayerRender()
 	_render->SetBandB(_choiceBBand->GetSelection() + 1);
 
 	int opacity = _sldOpacity->GetValue();
-	_render->SetOpacity(opacity / 255.0);
+	_render->SetOpacity(opacity / 255.0f);
 
 	wxString rMinStr = _txtRMin->GetValue();
 	wxString rMaxStr = _txtRMax->GetValue();
@@ -351,4 +365,9 @@ void RgbLayerRenderCtrl::SetLayerRender(RasterRgbLayerRender * render)
 	_choiceRBand->SetSelection(_render->GetBandR() - 1);
 	_choiceGBand->SetSelection(_render->GetBandG() - 1);
 	_choiceBBand->SetSelection(_render->GetBandB() - 1);
+}
+
+void RgbLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
+{
+	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
 }

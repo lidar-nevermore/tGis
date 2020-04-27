@@ -12,6 +12,7 @@ struct ISurface;
 
 class TGIS_CORE_API SimpleLineSymbol : public ILineSymbol
 {
+	friend class SimpleSymbolLibrary;
 public:
 	static const int Solid = 0;
 	static const int Dash = 1;
@@ -26,7 +27,11 @@ public:
 	SimpleLineSymbol(int t);
 	~SimpleLineSymbol();
 
-	const int GetId();
+protected:
+	SimpleLineSymbol(int t, const ISymbolLibrary* symLib);
+
+public:
+	int GetId();
 
 	void Paint(ISurface* surf, int count, int* x, int* y) override;
 

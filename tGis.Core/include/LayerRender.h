@@ -67,11 +67,11 @@ protected:
 		//获取可视图像的buffer
 		unsigned char * AcquireSurfaceBuffer();
 		//归还可视图像的buffer
-		static void RevertSurfaceBuffer();
+		static void ReleaseSurfaceBuffer();
 		//获取读取数据集的buffer 
 		static unsigned char * AcquireDatasetBuffer();
 		//归还读取数据集的buffer
-		static void RevertDatasetBuffer();
+		static void ReleaseDatasetBuffer();
 	};
 
 private:

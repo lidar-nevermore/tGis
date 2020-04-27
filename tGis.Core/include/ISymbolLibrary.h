@@ -10,12 +10,14 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ISymbol;
 
-enum SymbolLibraryType
+enum SymbolType
 {
 	Marker,
 	Line,
 	Fill
 };
+
+typedef  SymbolType SymbolLibraryType;
 
 struct TGIS_CORE_API ISymbolLibrary : public IInclusionObject
 {
@@ -34,6 +36,7 @@ struct TGIS_CORE_API ISymbolLibrary : public IInclusionObject
 	//因此SymbolLibrary一旦创建其名称不得修改
 	virtual const char* GetName() const = 0;
 	virtual int GetSymbolCount() const = 0;
+	virtual bool SymbolExists(int id) const = 0;
 	virtual ISymbol* GetSymbol(int id) const = 0;
 	//当符号库中的符号Id不连续的时候辅助快速遍历符号库
 	//第一个参数当前将要获取的符号Id
@@ -44,7 +47,7 @@ struct TGIS_CORE_API ISymbolLibrary : public IInclusionObject
 	virtual ISymbol* GetSymbol(int id,int* nextId) const = 0;
 	//所有从符号库里取出来的符号
 	//当不再使用时都需要调用这个接口返还给符号库
-	virtual void RevertSymbol(ISymbol*) const = 0;
+	virtual void ReleaseSymbol(ISymbol*) const = 0;
 
 protected:
 	SymbolLibraryType _libType;

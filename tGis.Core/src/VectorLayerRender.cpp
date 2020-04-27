@@ -38,12 +38,12 @@ VectorLayerRender::VectorLayerRender(ILayer* layer, int ogrLayerIndex)
 
 
 	_vector = (MyGDALVectorDataset*)dt;
-	_ogrLayer = _vector->GetGDALDataset()->GetLayer(ogrLayerIndex);
-	_ogrLayerIndex = ogrLayerIndex;
-	_ogrLayer->GetExtent(&_envelope);
-	_spatialRef = _ogrLayer->GetSpatialRef();
+	
+	_spatialRef = nullptr;
 	_mapSpatialRef = nullptr;
 	_CT = nullptr;
+
+	SetOGRLayer(ogrLayerIndex);
 }
 
 
@@ -69,6 +69,25 @@ const OGRSpatialReference * VectorLayerRender::GetSpatialReference()
 bool VectorLayerRender::CanTransformTo(const OGRSpatialReference * spatialRef)
 {
 	return ILayerRender::CanTransform(_ogrLayer->GetSpatialRef(), spatialRef);
+}
+
+void VectorLayerRender::SetOGRLayer(int ogrLayerIndex)
+{
+	_ogrLayer = _vector->GetGDALDataset()->GetLayer(ogrLayerIndex);
+	_ogrLayerIndex = ogrLayerIndex;
+	_ogrLayer->GetExtent(&_envelope);
+	OGRSpatialReference* spatialRef = _ogrLayer->GetSpatialRef();
+	if (_CT != nullptr)
+	{
+		if (spatialRef != nullptr
+			&& spatialRef != _spatialRef
+			&& !(_spatialRef != nullptr && spatialRef->IsSame(_spatialRef)))
+		{
+			OGRCoordinateTransformation::DestroyCT(_CT);
+			_CT = nullptr;
+		}
+	}
+	_spatialRef = spatialRef;
 }
 
 inline void VectorLayerRender::PrepareCT()

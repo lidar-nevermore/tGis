@@ -40,29 +40,29 @@ int g_pattern[] =
 SimpleLineSymbol::SimpleLineSymbol()
 	:SimpleLineSymbol(SimpleLineSymbol::Solid)
 {
-	_lib = SimpleSymbolLibrary::GetLineSymbolLibrary();
-
 }
 
 SimpleLineSymbol::SimpleLineSymbol(int t)
+	:SimpleLineSymbol(t, nullptr)
 {
-	_lib = SimpleSymbolLibrary::GetLineSymbolLibrary();
-
-	_type = t;
-	if (_type < 0 || _type > 5)
-		_type = 0;
-	_r = 0;
-	_g = 0;
-	_b = 0;
-	_a = 255;
-	_width = 1;
 }
 
 SimpleLineSymbol::~SimpleLineSymbol()
 {
 }
 
-const int SimpleLineSymbol::GetId()
+SimpleLineSymbol::SimpleLineSymbol(int t, const ISymbolLibrary * symLib)
+	:ILineSymbol(symLib)
+{
+	_type = t;
+	_r = 238;
+	_g = 177;
+	_b = 17;
+	_a = 255;
+	_width = 1;
+}
+
+int SimpleLineSymbol::GetId()
 {
 	return _type;
 }
@@ -74,14 +74,17 @@ void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 	surf->GetSize(&surfWidth, &surfHeight);
 	GLfloat red = _r / 255.0f;
 	GLfloat green = _g / 255.0f;
-	GLfloat blue = _g / 255.0f;
+	GLfloat blue = _b / 255.0f;
 	GLfloat alpha = _a / 255.0f;
 
 	glLineWidth((GLfloat)_width);
 	glEnable(GL_BLEND);
 	glEnable(GL_LINE_SMOOTH);
-	glEnable(GL_LINE_STIPPLE);
-	glLineStipple(1, g_pattern[_type]);
+	if (_type > 0)
+	{
+		glEnable(GL_LINE_STIPPLE);
+		glLineStipple(1, g_pattern[_type]);
+	}
 	glColor4f(red, green, blue, alpha);
 	glBegin(GL_LINE_STRIP);
 	for (int i = 0; i < count; i++)
@@ -91,7 +94,8 @@ void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 		glVertex3f(xg, yg, 0.0f);
 	}	
 	glEnd();
-	glDisable(GL_LINE_STIPPLE);
+	if (_type > 0)
+		glDisable(GL_LINE_STIPPLE);
 }
 
 void SimpleLineSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)

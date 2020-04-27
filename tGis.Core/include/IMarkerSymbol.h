@@ -11,10 +11,15 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct TGIS_CORE_API IMarkerSymbol : public ISymbol
 {
-public:
-	virtual const char* GetType();
-	static const char* S_GetType();
-	virtual bool IsTypeOf(const char* type);
+	IMarkerSymbol(const ISymbolLibrary* lib)
+		:ISymbol(lib)
+	{
+	};
+
+	SymbolType GetType() override
+	{
+		return SymbolType::Marker;
+	};
 
 	virtual void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a) = 0;
 	virtual void SetColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a) = 0;
@@ -36,9 +41,6 @@ public:
 	virtual void Paint(ISurface* surf, int count, int* x, int* y) = 0;
 	//一次画一个marker符号的
 	virtual void Paint(ISurface* surf, int x, int y) = 0;
-
-private:
-	static const char* const _type;
 };
 
 

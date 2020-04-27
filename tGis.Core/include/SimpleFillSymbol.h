@@ -14,29 +14,36 @@ struct ISurface;
 
 class TGIS_CORE_API SimpleFillSymbol : public IFillSymbol
 {
+	friend class SimpleSymbolLibrary;
+
 public:
-	static const int Solid = 0;
-	static const int DenseDot1 = 1;
-	static const int DenseDot2 = 2;
-	static const int DenseDot3 = 3;
-	static const int DenseDot4 = 4;
-	static const int DenseDot5 = 5;
-	static const int DenseDot6 = 6;
-	static const int DenseDot7 = 7;
-	static const int Horizontal = 8;
-	static const int Vertical = 9;
-	static const int ForwardDiagonal = 10;
-	static const int BackwardDiagonal = 11;
-	static const int Cross = 12;
-	static const int DiagonalCross = 13;
-	static const int MaxId = 13;
+	static const int NoFill = 0;
+	static const int Solid = 1;
+	static const int DenseDot1 = 2;
+	static const int DenseDot2 = 3;
+	static const int DenseDot3 = 4;
+	static const int DenseDot4 = 5;
+	static const int DenseDot5 = 6;
+	static const int DenseDot6 = 7;
+	static const int DenseDot7 = 8;
+	static const int Horizontal = 9;
+	static const int Vertical = 10;
+	static const int ForwardDiagonal = 11;
+	static const int BackwardDiagonal = 12;
+	static const int Cross = 13;
+	static const int DiagonalCross = 14;
+	static const int MaxId = 14;
 
 public:
 	SimpleFillSymbol();
 	SimpleFillSymbol(int t);
 	virtual ~SimpleFillSymbol();
 
-	const int GetId();
+protected:
+	SimpleFillSymbol(int t, const ISymbolLibrary* symLib);
+
+public:
+	int GetId();
 
 	void Paint(ISurface* surf, int count, int* x, int* y) override;
 	void Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y) override;

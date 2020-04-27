@@ -137,12 +137,9 @@
     <ClCompile Include="..\src\GeoViewPort.cpp" />
     <ClCompile Include="..\src\hashmap.c" />
     <ClCompile Include="..\src\Helper.cpp" />
-    <ClCompile Include="..\src\IFillSymbol.cpp" />
     <ClCompile Include="..\src\IInclusionObject.cpp" />
     <ClCompile Include="..\src\ILayerRender.cpp" />
-    <ClCompile Include="..\src\ILineSymbol.cpp" />
     <ClCompile Include="..\src\ilog.c" />
-    <ClCompile Include="..\src\IMarkerSymbol.cpp" />
     <ClCompile Include="..\src\Layer.cpp" />
     <ClCompile Include="..\src\LayerRender.cpp" />
     <ClCompile Include="..\src\linked_array.c" />

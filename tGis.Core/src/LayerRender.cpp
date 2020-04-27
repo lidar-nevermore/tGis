@@ -24,9 +24,10 @@ float LayerRender::GetOpacity()
 void LayerRender::SetOpacity(float opacity)
 {
 	_opacity = opacity;
-	_alpha = unsigned char(255 * _opacity);
-	if (_alpha > 255)
-		_alpha = 255;
+	int alpha = int(255 * _opacity);
+	if (alpha > 255)
+		alpha = 255;
+	_alpha = (unsigned char)alpha;
 }
 
 int LayerRender::LayerRenderBuffer::_ins_count = 0;
@@ -64,12 +65,12 @@ LayerRender::LayerRenderBuffer::~LayerRenderBuffer()
 		_ins_count = 1;
 		if (_acquiredSurfaceBuffer != nullptr)
 		{
-			RevertSurfaceBuffer();
+			ReleaseSurfaceBuffer();
 			_acquiredSurfaceBuffer = nullptr;
 		}
 		if (_acquiredDatasetBuffer != nullptr)
 		{
-			RevertDatasetBuffer();
+			ReleaseDatasetBuffer();
 			_acquiredDatasetBuffer = nullptr;
 		}
 	}
@@ -104,7 +105,7 @@ unsigned char * LayerRender::LayerRenderBuffer::AcquireSurfaceBuffer()
 	return nullptr;
 }
 
-void LayerRender::LayerRenderBuffer::RevertSurfaceBuffer()
+void LayerRender::LayerRenderBuffer::ReleaseSurfaceBuffer()
 {
 	elr_atomic_dec(&_surfaceBufferInUsing);
 }
@@ -129,7 +130,7 @@ unsigned char * LayerRender::LayerRenderBuffer::AcquireDatasetBuffer()
 	return nullptr;
 }
 
-void LayerRender::LayerRenderBuffer::RevertDatasetBuffer()
+void LayerRender::LayerRenderBuffer::ReleaseDatasetBuffer()
 {
 	elr_atomic_dec(&_datasetBufferInUsing);
 }

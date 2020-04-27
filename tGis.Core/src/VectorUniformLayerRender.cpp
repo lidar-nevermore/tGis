@@ -2,6 +2,10 @@
 #include "IGeoSurface.h"
 #include "MyGDALVectorDataset.h"
 
+#include "IMarkerSymbol.h"
+#include "ILineSymbol.h"
+#include "IFillSymbol.h"
+
 #include "gdal.h"
 #include "gdal_priv.h"
 #include "ogr_spatialref.h"
@@ -30,11 +34,13 @@ bool VectorUniformLayerRender::IsTypeOf(const char * type)
 	return VectorLayerRender::IsTypeOf(type);
 }
 
-VectorUniformLayerRender::VectorUniformLayerRender(ILayer* layer, int ogrLayerIndex, int geometryField, int labelField)
+VectorUniformLayerRender::VectorUniformLayerRender(ILayer* layer, int ogrLayerIndex, int geometryField)
 	:VectorLayerRender(layer, ogrLayerIndex)
 {
 	_geometryField = geometryField;
-	_labelField = labelField;
+	_markerSymbol = nullptr;
+	_lineSymbol = nullptr;
+	_fillSymbol = nullptr;
 }
 
 
@@ -42,6 +48,58 @@ VectorUniformLayerRender::~VectorUniformLayerRender()
 {
 }
 
+
+
+IMarkerSymbol * VectorUniformLayerRender::GetMarkerSymbol()
+{
+	return _markerSymbol;
+}
+
+void VectorUniformLayerRender::SetMarkerSymbol(IMarkerSymbol * sym)
+{
+	if (_markerSymbol != sym)
+	{
+		if(_markerSymbol != nullptr)
+		    _markerSymbol->Release();
+		_markerSymbol = sym;
+		if (_markerSymbol != nullptr)
+			_markerSymbol->Reference();
+	}
+}
+
+ILineSymbol * VectorUniformLayerRender::GetLineSymbol()
+{
+	return _lineSymbol;
+}
+
+void VectorUniformLayerRender::SetLineSymbol(ILineSymbol * sym)
+{
+	if (_lineSymbol != sym)
+	{
+		if (_lineSymbol != nullptr)
+			_lineSymbol->Release();
+		_lineSymbol = sym;
+		if (_lineSymbol != nullptr)
+			_lineSymbol->Reference();
+	}
+}
+
+IFillSymbol * VectorUniformLayerRender::GetFillSymbol()
+{
+	return _fillSymbol;
+}
+
+void VectorUniformLayerRender::SetFillSymbol(IFillSymbol * sym)
+{
+	if (_fillSymbol != sym)
+	{
+		if (_fillSymbol != nullptr)
+			_fillSymbol->Release();
+		_fillSymbol = sym;
+		if (_fillSymbol != nullptr)
+			_fillSymbol->Reference();
+	}
+}
 
 void VectorUniformLayerRender::Paint(IGeoSurface * surf)
 {
@@ -108,6 +166,9 @@ inline const char * VectorUniformLayerRender::GetLabel(OGRFeature *)
 
 inline void VectorUniformLayerRender::DrawPoint(int* xb, int* yb, IGeoSurface* surf, OGRPoint *geometry)
 {
+	if (_markerSymbol == nullptr)
+		return;
+
 	if (_CT != nullptr)
 	{
 		geometry->transform(_CT);
@@ -124,7 +185,7 @@ inline void VectorUniformLayerRender::DrawPoint(int* xb, int* yb, IGeoSurface* s
 	if (_envelope.Contains(ev))
 	{
 		surf->GetViewPort()->Spatial2Surface(geometry->getX(), geometry->getY(), &x, &y);
-		_simpleMarkerSymbol.Paint(surf, 1, &x, &y);
+		_markerSymbol->Paint(surf, 1, &x, &y);
 	}
 }
 
@@ -234,27 +295,36 @@ inline int VectorUniformLayerRender::TransferGeometryPoints(int * x, int * y, IG
 
 inline void VectorUniformLayerRender::DrawLineString(int* x, int* y, IGeoSurface* surf, OGRLineString *geometry)
 {
+	if (_lineSymbol == nullptr)
+		return;
+
 	int ptcount = TransferGeometryPoints(x, y, surf, geometry);
 
-	_simpleLineSymbol.Paint(surf, ptcount, x, y);
+	_lineSymbol->Paint(surf, ptcount, x, y);
 }
 
 inline void VectorUniformLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* surf, OGRPolygon * geometry)
 {
+	if (_lineSymbol == nullptr)
+		return;
+
 	OGRLinearRing*  exterior = geometry->getExteriorRing();
 	if (exterior != nullptr)
 	{
 		int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 		*(x + ptcount) = *x;
 		*(y + ptcount) = *y;
-		_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
-		_simpleLineSymbol.SetColor(0, 255, 255, 255);
-		_simpleLineSymbol.Paint(surf, ptcount + 1, x, y);
+		if(_fillSymbol != nullptr)
+			_fillSymbol->Paint(surf, ptcount + 1, x, y);
+		_lineSymbol->Paint(surf, ptcount + 1, x, y);
 	}
 }
 
 inline void VectorUniformLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurface* surf, OGRMultiPoint * geometry)
 {
+	if (_markerSymbol == nullptr)
+		return;
+
 	if (_CT != nullptr)
 	{
 		geometry->transform(_CT);
@@ -275,7 +345,7 @@ inline void VectorUniformLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurfa
 		if (_envelope.Contains(ev))
 		{
 			surf->GetViewPort()->Spatial2Surface(pt->getX(), pt->getY(), &x, &y);
-			_simpleMarkerSymbol.Paint(surf, 1, &x, &y);
+			_markerSymbol->Paint(surf, 1, &x, &y);
 		}
 	}
 
@@ -284,18 +354,24 @@ inline void VectorUniformLayerRender::DrawMultiPoint(int* xb, int* yb, IGeoSurfa
 
 inline void VectorUniformLayerRender::DrawMultiLineString(int* x, int* y, IGeoSurface* surf, OGRMultiLineString * geometry)
 {
+	if (_lineSymbol == nullptr)
+		return;
+
 	int c = geometry->getNumGeometries();
 	for (int i = 0; i < c; i++)
 	{
 		OGRLinearRing*  line = (OGRLinearRing*)geometry->getGeometryRef(i);
 		int ptcount = TransferGeometryPoints(x, y, surf, line);
 
-		_simpleLineSymbol.Paint(surf, ptcount, x, y);
+		_lineSymbol->Paint(surf, ptcount, x, y);
 	}
 }
 
 inline void VectorUniformLayerRender::DrawMultiPolygon(int* x, int* y, IGeoSurface* surf, OGRMultiPolygon *geometry)
 {
+	if (_lineSymbol == nullptr)
+		return;
+
 	int c = geometry->getNumGeometries();
 	for (int i = 0; i < c; i++)
 	{
@@ -306,14 +382,12 @@ inline void VectorUniformLayerRender::DrawMultiPolygon(int* x, int* y, IGeoSurfa
 			int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 			*(x + ptcount) = *x;
 			*(y + ptcount) = *y;
-			_simpleFillSymbol.Paint(surf, ptcount + 1, x, y);
-			_simpleLineSymbol.Paint(surf, ptcount + 1, x, y);
+			if (_fillSymbol != nullptr)
+				_fillSymbol->Paint(surf, ptcount + 1, x, y);
+			_lineSymbol->Paint(surf, ptcount + 1, x, y);
 		}
 	}
 }
 
-
-
 END_NAME_SPACE(tGis, Core)
-
 

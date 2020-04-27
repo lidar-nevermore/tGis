@@ -5,6 +5,16 @@ GrayScaleLayerRenderCtrl::GrayScaleLayerRenderCtrl( wxWindow* parent )
 {
 	_render = nullptr;
 	_raster = nullptr;
+	_layer = nullptr;
+
+	Bind(wxEVT_SLIDER, &GrayScaleLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+
+}
+
+GrayScaleLayerRenderCtrl::~GrayScaleLayerRenderCtrl()
+{
+	Unbind(wxEVT_SLIDER, &GrayScaleLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+
 }
 
 const char * GrayScaleLayerRenderCtrl::GetLayerRenderName()
@@ -17,9 +27,6 @@ bool GrayScaleLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 	if (IsSupportLayer(layer))
 	{
 		ILayerRender* render = layer->GetRender();
-
-		if (render != nullptr && render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
-			return true;
 		
 		if (render == nullptr)
 		{
@@ -27,6 +34,11 @@ bool GrayScaleLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 			int bandCount = raster->GetGDALDataset()->GetRasterCount();
 
 			if (bandCount == 1)
+				return true;
+		}
+		else
+		{
+			if (render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
 				return true;
 		}
 	}
@@ -70,7 +82,7 @@ void GrayScaleLayerRenderCtrl::UpdateLayerRender()
 	_render->SetBand(_choiceBand->GetSelection() + 1);
 
 	int opacity = _sldOpacity->GetValue();
-	_render->SetOpacity(opacity / 255.0);
+	_render->SetOpacity(opacity / 255.0f);
 
 	wxString rMinStr = _txtMin->GetValue();
 	wxString rMaxStr = _txtMax->GetValue();
@@ -173,4 +185,9 @@ void GrayScaleLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * rende
 	}
 
 	_choiceBand->SetSelection(_render->GetBand() - 1);
+}
+
+void GrayScaleLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
+{
+	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
 }

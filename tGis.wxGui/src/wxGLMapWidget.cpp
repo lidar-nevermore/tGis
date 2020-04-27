@@ -12,9 +12,10 @@ wxGLMapWidget::wxGLMapWidget(wxWindow *parent,
 	const wxSize& size,
 	long style,
 	const wxString& name,
-	const wxPalette& palette)
+	const wxPalette& palette,
+	bool extraBuffer)
 	:wxGLCanvas(parent, id, wxGLAttribList, pos, size, style, name, palette)
-	, _thisGeoSurface(this)
+	, _thisGeoSurface(this, extraBuffer)
 {
 	_repaint = false;
 	_geoSurface = &_thisGeoSurface;
@@ -96,7 +97,10 @@ void wxGLMapWidget::OnPaint(wxPaintEvent & event)
 	}
 	else
 	{
-		MapWidget::PresentMap();
+		if (!_thisGeoSurface._extraBuffer)
+			MapWidget::RepaintMap();
+		else
+			MapWidget::PresentMap();
 	}
 
 	SwapBuffers();
