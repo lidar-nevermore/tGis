@@ -452,7 +452,7 @@ ISymbol * wxSymbolPickerWidget::GetSymbol()
 
 		wxString lineWidthStr = _txtMarkerLineWidth->GetValue();
 		long llineWidth;
-		widthStr.ToLong(&llineWidth);
+		lineWidthStr.ToLong(&llineWidth);
 
 		int xOff = _spMarkerXOff->GetValue();
 		int yOff = _spMarkerYOff->GetValue();
