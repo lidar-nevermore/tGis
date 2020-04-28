@@ -344,6 +344,9 @@
     <ClInclude Include="..\include\tGisApplication.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\InProcessTool.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -542,6 +545,9 @@
       <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\tGisApplication.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\InProcessTool.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
   </ItemGroup>

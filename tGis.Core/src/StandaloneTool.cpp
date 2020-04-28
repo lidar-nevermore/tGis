@@ -7,6 +7,26 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+const char* const StandaloneTool::_type = "25DDF5CC-0351-4AF1-BE7D-89351FAFDA78";
+
+
+const char * StandaloneTool::GetType()
+{
+	return _type;
+}
+
+bool StandaloneTool::IsTypeOf(const char * type)
+{
+	if (strcmp(type, _type) == 0)
+		return true;
+	return false;
+}
+
+const char * StandaloneTool::S_GetType()
+{
+	return _type;
+}
+
 class StandaloneToolImpl
 {
 public:
@@ -34,6 +54,17 @@ StandaloneTool::StandaloneTool(const char* name, ToolKit* parent)
 StandaloneTool::~StandaloneTool()
 {
 	delete _impl_;
+}
+
+const char * StandaloneTool::GetName()
+{
+	return _impl_->_name.c_str();
+}
+
+void StandaloneTool::Execute()
+{
+	//TODO: 无命令行窗口方式的启动外部程序
+
 }
 
 void StandaloneTool::SetExeFile(const char * exe)

@@ -12,17 +12,23 @@ class StandaloneToolImpl;
 
 class TGIS_CORE_API StandaloneTool : public ITool
 {
+	TGIS_DECLARE_NO_COPY_CLASS(StandaloneTool);
+
+public:
+	virtual const char* GetType();
+	static const char* S_GetType();
+	virtual bool IsTypeOf(const char* type);
+
+private:
+	static const char* const _type;
+
 public:
 	StandaloneTool(const char* name, ToolKit* parent);
 	virtual ~StandaloneTool();
 
-private:
-	StandaloneTool(const StandaloneTool &) = delete;
-	StandaloneTool &operator=(const StandaloneTool &) = delete;
-
 public:
-	virtual const char* GetName() = 0;
-	virtual void Execute() = 0;
+	virtual const char* GetName();
+	virtual void Execute();
 
 public:
 	virtual void SetExeFile(const char* exe);

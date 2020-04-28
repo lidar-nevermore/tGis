@@ -4,7 +4,7 @@
 #include "tGisApplication.h"
 
 #include "ITool.h"
-#include "Tool.h"
+#include "InProcessTool.h"
 #include "ToolKit.h"
 #include "ToolKitRepository.h"
 #include "DataSourceRepository.h"

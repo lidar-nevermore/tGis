@@ -32,6 +32,8 @@ public:
 	size_t GetToolKitCount();
 	ToolKit* GetToolKit(size_t);
 	ToolKit* GetToolKit(const char* name);
+	void RemoveToolKit(ToolKit* kit);
+	void SaveStandaloneTool();
 	
 private:
 	ToolKitRepositoryImpl* _impl_;

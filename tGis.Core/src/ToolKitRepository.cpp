@@ -147,6 +147,27 @@ ToolKit * ToolKitRepository::GetToolKit(const char * name)
 	return nullptr;
 }
 
+void ToolKitRepository::RemoveToolKit(ToolKit * kit)
+{
+	for (auto it = _impl_->_vecToolKit.begin(); it != _impl_->_vecToolKit.end(); it++)
+	{
+		ToolKit* kit_ = *it;
+		if (kit_ == kit)
+		{
+			_impl_->_vecToolKit.erase(it);
+			_impl_->_mapToolKit.erase(kit_->GetName());
+			if (kit->_is_in_heap)
+				delete kit;
+			break;
+		}
+	}
+}
+
+void ToolKitRepository::SaveStandaloneTool()
+{
+	//TODO: 将StandaloneTool的信息保存至文件
+}
+
 
 END_NAME_SPACE(tGis, Core)
 

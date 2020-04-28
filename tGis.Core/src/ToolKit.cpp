@@ -1,5 +1,8 @@
 #include "ToolKit.h"
 #include "ITool.h"
+
+#include "StandaloneTool.h"
+
 #include <vector>
 #include <map>
 
@@ -7,6 +10,7 @@ using namespace std;
 
 
 BEGIN_NAME_SPACE(tGis, Core)
+
 
 class ToolKitImpl
 {
@@ -19,6 +23,7 @@ public:
 	ToolKit* _owner;
 
 	string _name;
+	vector<StandaloneTool*> _vecStandaloneTool;
 	vector<ToolKit*> _vecToolKit;
 	map<string, ToolKit*> _mapToolKit;
 	vector<ITool*> _vecTool;
@@ -76,6 +81,21 @@ ITool * ToolKit::GetTool(size_t pos)
 	return _impl_->_vecTool.at(pos);
 }
 
+void ToolKit::RemoveTool(ITool * tool)
+{
+	for (auto it = _impl_->_vecTool.begin(); it != _impl_->_vecTool.end(); it++)
+	{
+		ITool* tool_ = *it;
+		if (tool_ == tool)
+		{
+			_impl_->_vecTool.erase(it);
+			if (tool_->_is_in_heap)
+				delete tool_;
+			break;
+		}
+	}
+}
+
 void ToolKit::AddToolKit(ToolKit * kit)
 {
 	ToolKit* toFillKit = GetToolKit(kit->GetName());
@@ -120,6 +140,22 @@ ToolKit * ToolKit::GetToolKit(const char * name)
 	if (pos != _impl_->_mapToolKit.end())
 		return (*pos).second;
 	return nullptr;
+}
+
+void ToolKit::RemoveToolKit(ToolKit * kit)
+{
+	for (auto it = _impl_->_vecToolKit.begin(); it != _impl_->_vecToolKit.end(); it++)
+	{
+		ToolKit* kit_ = *it;
+		if (kit_ == kit)
+		{
+			_impl_->_vecToolKit.erase(it);
+			_impl_->_mapToolKit.erase(kit_->GetName());
+			if (kit->_is_in_heap)
+				delete kit;
+			break;
+		}
+	}
 }
 
 

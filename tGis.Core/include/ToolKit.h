@@ -10,6 +10,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 struct ITool;
 class ToolKitImpl;
+class StandaloneTool;
 
 class TGIS_CORE_API ToolKit : public IInclusionObject
 {
@@ -29,11 +30,13 @@ public:
 	void AddTool(ITool* tool);
 	size_t GetToolCount();
 	ITool* GetTool(size_t);
+	void RemoveTool(ITool* tool);
 
 	void AddToolKit(ToolKit* kit);
 	size_t GetToolKitCount();
 	ToolKit* GetToolKit(size_t);
 	ToolKit* GetToolKit(const char* name);
+	void RemoveToolKit(ToolKit* kit);
 
 private:
 	ToolKit* _parent;

@@ -4,13 +4,14 @@
 #define __I_TOOL_H__
 
 #include "Helper.h"
+#include "ITypedObject.h"
 #include "IInclusionObject.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 class ToolKit;
 
-struct TGIS_CORE_API ITool : public IInclusionObject
+struct TGIS_CORE_API ITool : public IInclusionObject, public ITypedObject
 {
 	friend class ToolKit;
 
