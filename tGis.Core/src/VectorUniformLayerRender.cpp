@@ -46,6 +46,13 @@ VectorUniformLayerRender::VectorUniformLayerRender(ILayer* layer, int ogrLayerIn
 
 VectorUniformLayerRender::~VectorUniformLayerRender()
 {
+	if (_markerSymbol != nullptr)
+		_markerSymbol->Release();
+	if (_lineSymbol != nullptr)
+		_lineSymbol->Release();
+	//逻辑运算符真应该把右值放到左边
+	if (nullptr != _fillSymbol)
+		_fillSymbol->Release();
 }
 
 

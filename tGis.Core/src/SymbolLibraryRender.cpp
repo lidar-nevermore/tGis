@@ -48,6 +48,7 @@ public:
 		_rowCount = 0;
 		_colCount = 0;
 		_selSymId = 0;
+		_curSurY = INT_MAX;
 	}
 
 	SymbolLibraryRender* _owner;
@@ -56,6 +57,8 @@ public:
 	int _rowCount;
 	int _colCount;
 	int _selSymId;
+	int _curSurY;
+	//记录当前Surf上显示的符号的Id
 	std::vector<int> _vecSymId;
 };
 
@@ -65,6 +68,7 @@ SymbolLibraryRender::SymbolLibraryRender(ILayer* layer, ISymbolLibrary* symLib)
 	_symWidth = 48;
 	_symHalfWidth = 24;
 	_symSpan = 16;
+	_symOccupy = _symWidth + _symSpan + _symSpan;
 	_layer = layer;
 	_layer->SetRender(this);
 	_symLib = symLib;
@@ -80,11 +84,55 @@ SymbolLibraryRender::~SymbolLibraryRender()
 	delete _impl_;
 }
 
+void SymbolLibraryRender::SetSymbolLibrary(ISymbolLibrary * symLib)
+{
+	_symLib = symLib;
+	_impl_->_vecSymId.clear();
+	UpdateEnvelope(_impl_->_surfWidth, _impl_->_surfHeight);
+}
+
+void SymbolLibraryRender::SetSymbolWidth(int width)
+{
+	assert(width > 3);
+	_symWidth = width;
+	_symHalfWidth = _symWidth / 2;
+	_symOccupy = _symWidth + _symSpan + _symSpan;
+	UpdateEnvelope(_impl_->_surfWidth, _impl_->_surfHeight);
+}
+
+void SymbolLibraryRender::SetSymbolSpan(int span)
+{
+	assert(span > 3);
+	_symSpan = span;
+	_symOccupy = _symWidth + _symSpan + _symSpan;
+	UpdateEnvelope(_impl_->_surfWidth, _impl_->_surfHeight);
+}
+
+void SymbolLibraryRender::UpdateEnvelope(int surfW, int surfH)
+{
+	_impl_->_surfHeight = surfH;
+	_impl_->_surfWidth = surfW;
+
+	int colCount = surfW / _symOccupy;
+	if (colCount < 1)
+		colCount = 1;
+
+	int symCount = _symLib != nullptr? _symLib->GetSymbolCount() : 0;
+	int rowCount = (symCount + colCount - 1) / colCount;
+
+	//如果符号id不是连续的，留三行空，尽量让符号都显示全
+	_impl_->_rowCount = rowCount + 3;
+	_impl_->_colCount = colCount;
+
+	_envelope.MaxX = colCount*_symOccupy;
+	//y方向朝上，左上角为0，好计算
+	_envelope.MinY = -(_impl_->_rowCount*_symOccupy);
+}
+
 int SymbolLibraryRender::SelectSymbol(int x, int y)
 {
-	int symOccupy = _symWidth + _symSpan + _symSpan;
-	int col = (x + symOccupy) / symOccupy;
-	int row = (y + symOccupy) / symOccupy;
+	int col = (x + _symOccupy) / _symOccupy;
+	int row = (y - _impl_->_curSurY + _symOccupy) / _symOccupy;
 	_impl_->_selSymId = -1;
 	if (col <= _impl_->_colCount)
 	{
@@ -152,38 +200,30 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 	if (_symLib == nullptr)
 		return;
 
-	int symOccupy = _symWidth + _symSpan + _symSpan;
-	int surfWidth;
-	int surfHeight;
-	surf->GetSize(&surfWidth, &surfHeight);
-	bool resetIdPos = false;
-	if (_impl_->_surfHeight != surfHeight || _impl_->_surfWidth != surfWidth)
-	{
-		resetIdPos = true;
-		_impl_->_vecSymId.clear();
-	}
+	int rowCount = _impl_->_rowCount;
+	int colCount = _impl_->_colCount;
 
-	_impl_->_surfHeight = surfHeight;
-	_impl_->_surfWidth = surfWidth;
+	//只允许上下滚动，所以surfX==0的地方spatialX==0
+	double drwLeft, drwTop, drwRight, drwBottom;
+	surf->GetViewPort()->GetEnvelope(&drwLeft, &drwTop, &drwRight, &drwBottom);
+	
+	//左上角的行列号
+	//GeoViewPort中的Spatial坐标x轴向右y轴向上
+	//drwTop不大于零
+	//_envelope.MaxY == 0
+	int upRow = (-int(drwTop) + _symOccupy) / _symOccupy;
+	int curDrwX = 0;
+	int curDrwY = - (upRow - 1)*_symOccupy;
+	int drwYEnd = int(drwBottom);
 
-	int colCount = surfWidth / symOccupy;
-	if (colCount < 1)
-		colCount = 1;
 
-	int symCount = _symLib->GetSymbolCount();
-	int rowCount = (symCount + colCount - 1) / colCount;
-	_envelope.MaxX = colCount*symOccupy;
-	_envelope.MaxY = rowCount*symOccupy;
-
-	_impl_->_rowCount = rowCount;
-	_impl_->_colCount = colCount;
-
+	//假设符号id是连续的
+	int nextSymId = (upRow - 1)*colCount;
 	int curCol = 0;
-	int curRow = 0;
-	int curX = 0;
-	int curY = 0;
 
-	int nextSymId = 0;
+	//更新当前Surf上显示的符号的Id
+	_impl_->_vecSymId.clear();
+	_impl_->_curSurY = INT_MAX;
 
 	while (nextSymId >= 0)
 	{
@@ -191,18 +231,22 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 		ISymbol* sym = _symLib->GetSymbol(curSymId, &nextSymId);
 		if (sym != nullptr)
 		{
+			int curSurfX, curSurfY;
+			surf->GetViewPort()->Spatial2Surface(curDrwX, curDrwY, &curSurfX, &curSurfY);
+			if (_impl_->_curSurY == INT_MAX)
+				_impl_->_curSurY = curSurfY;
+
 			if (sym->GetType() == SymbolType::Marker)
-				DrawMarkerSymbol(surf, (IMarkerSymbol*)sym, curX, curY);
+				DrawMarkerSymbol(surf, (IMarkerSymbol*)sym, curSurfX, curSurfY);
 			else if (sym->GetType() == SymbolType::Line)
-				DrawLineSymbol(surf, (ILineSymbol*)sym, curX, curY);
+				DrawLineSymbol(surf, (ILineSymbol*)sym, curSurfX, curSurfY);
 			else
-				DrawFillSymbol(surf, (IFillSymbol*)sym, curX, curY);
+				DrawFillSymbol(surf, (IFillSymbol*)sym, curSurfX, curSurfY);
 
-			if (resetIdPos)
-				_impl_->_vecSymId.push_back(curSymId);
+			_impl_->_vecSymId.push_back(curSymId);
 
-			int sleft = curX + _symSpan - 3;
-			int stop = curY + _symSpan - 3;
+			int sleft = curSurfX + _symSpan - 3;
+			int stop = curSurfY + _symSpan - 3;
 			int sright = sleft + _symWidth + 6;
 			int sbottom = stop + _symWidth + 6;
 			GLfloat left, top, right, bottom;
@@ -227,16 +271,15 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 			if (curCol == colCount)
 			{
 				curCol = 0;
-				curRow++;
-				curX = 0;
-				curY += symOccupy;
+				curDrwX = 0;
+				curDrwY -= _symOccupy;
 			}
 			else
 			{
-				curX += symOccupy;
+				curDrwX += _symOccupy;
 			}
 
-			if (curRow == rowCount)
+			if (curDrwY <= drwYEnd)
 				break;
 		}
 	}
@@ -273,5 +316,4 @@ void SymbolLibraryRender::SetOpacity(float)
 
 
 END_NAME_SPACE(tGis, Core)
-
 

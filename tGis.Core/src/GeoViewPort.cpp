@@ -98,17 +98,23 @@ void GeoViewPort::IncludeEnvelope(const OGREnvelope * envelope)
 	double height = envelope->MaxY - envelope->MinY;
 	double width = envelope->MaxX - envelope->MinX;
 
-	_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
+	if (abs(width) < DBL_EPSILON || abs(height) < DBL_EPSILON)
+		_scale = 1.0;
+	else
+		_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
 
 	SetSpatialCenter((envelope->MaxX + envelope->MinX) / 2.0, (envelope->MaxY + envelope->MinY) / 2.0);
 }
 
 void GeoViewPort::IncludeEnvelope(double spatialLeft, double spatialTop, double spatialRight, double spatialBottom)
 {
-	double height = spatialRight - spatialLeft;
-	double width = spatialBottom - spatialTop;
+	double height = spatialBottom - spatialTop;
+	double width = spatialRight - spatialLeft;
 
-	_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
+	if (abs(width) < DBL_EPSILON || abs(height) < DBL_EPSILON)
+		_scale = 1.0;
+	else
+		_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
 
 	SetSpatialCenter((spatialRight + spatialLeft) / 2.0, (spatialBottom + spatialTop) / 2.0);
 }

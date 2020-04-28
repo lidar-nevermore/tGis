@@ -36,33 +36,23 @@ public:
 	~SymbolLibraryRender();
 
 public:
-	void SetSymbolLibrary(ISymbolLibrary* symLib)
-	{
-		_symLib = symLib;
-	}
+	void SetSymbolLibrary(ISymbolLibrary* symLib);
 
-	void SetSymbolWidth(int width)
-	{
-		assert(width > 3);
-		_symWidth = width;
-		_symHalfWidth = _symWidth / 2;
-	}
+	void SetSymbolWidth(int width);
 
 	int GetSymbolWidth()
 	{
 		return _symWidth;
 	}
 
-	void SetSymbolSpan(int span)
-	{
-		assert(span > 3);
-		_symSpan = span;
-	}
+	void SetSymbolSpan(int span);
 
 	int GetSymbolSpan()
 	{
 		return _symSpan;
 	}
+
+	void UpdateEnvelope(int surfW, int surfH);
 
 	//选择Surface坐标(x,y)处的符号 返回符号id
 	int SelectSymbol(int x, int y);
@@ -76,6 +66,7 @@ private:
 	int _symWidth;
 	int _symHalfWidth;
 	int _symSpan;
+	int _symOccupy;
 
 	SymbolLibraryRenderImpl* _impl_;
 

@@ -37,6 +37,7 @@ public:
 	int GetSymbolCount() const;
 	bool SymbolExists(int id) const;
 	ISymbol* GetSymbol(int id) const;
+	bool SymbolExists(int id, int* nextId) const;
 	ISymbol* GetSymbol(int id, int* nextId) const;
 	void ReleaseSymbol(ISymbol*) const;
 

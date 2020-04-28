@@ -16,6 +16,12 @@ class GeoViewPort;
 template struct TGIS_CORE_API IEventHandler<GeoViewPort*>;
 template class TGIS_CORE_API Event<GeoViewPort*>;
 
+//GeoViewPort中的Spatial坐标x轴向右y轴向上
+//
+//以后再实现绘制功能时，
+//可以利用GeoViewPort中的坐标映射关系计算设置坐标转换矩阵
+//然后就可以直接用Spatial坐标绘制了，
+//可以省了自己从Spatial坐标向Surface坐标转换
 class TGIS_CORE_API GeoViewPort
 {
 	friend class MapWidget;
@@ -76,7 +82,7 @@ private:
 	int _surfWidth;
 	int _surfHeight;
 
-	//spatial length per device unit
+	//spatial length per device unit (pix)
 	double _scale;
 };
 

@@ -5,6 +5,7 @@
 #include "SymbolLibraryRepository.h"
 
 #include <memory>
+#include <assert.h>
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -122,14 +123,62 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id) const
 	}
 }
 
+bool SimpleSymbolLibrary::SymbolExists(int id, int * nextId) const
+{
+	assert(id >= 0);
+
+	if (_libType == SymbolLibraryType::Marker)
+	{
+		if (id <= SimpleMarkerSymbol::MaxId)
+		{
+			if (nextId != nullptr)
+			{
+				if (id == SimpleMarkerSymbol::MaxId)
+					*nextId = -1;
+				else
+					*nextId = id + 1;
+			}
+			return true;
+		}
+	}
+	else if (_libType == SymbolLibraryType::Line)
+	{
+		if (id <= SimpleLineSymbol::MaxId)
+		{
+			if (nextId != nullptr)
+			{
+				if (id == SimpleLineSymbol::MaxId)
+					*nextId = -1;
+				else
+					*nextId = id + 1;
+			}
+			return true;
+		}
+	}
+	else
+	{
+		if (id <= SimpleFillSymbol::MaxId)
+		{
+			if (nextId != nullptr)
+			{
+				if (id == SimpleFillSymbol::MaxId)
+					*nextId = -1;
+				else
+					*nextId = id + 1;
+			}
+			return true;
+		}
+	}
+
+	if (nextId != nullptr)
+		*nextId = -1;
+
+	return false;
+}
+
 ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 {
-	if (id < 0)
-	{
-		if (nextId != nullptr)
-			*nextId = 0;
-		return nullptr;
-	}
+	assert(id >= 0);
 
 	if (_libType == SymbolLibraryType::Marker)
 	{

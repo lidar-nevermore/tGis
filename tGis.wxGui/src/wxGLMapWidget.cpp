@@ -111,6 +111,7 @@ void wxGLMapWidget::OnSize(wxSizeEvent & event)
 	wxSize sz = GetClientSize();
 	SetSurfaceSize(sz.x, sz.y);
 	RepaintMap();
+	event.Skip();
 }
 
 void wxGLMapWidget::OnMouseEvent(wxMouseEvent & event)

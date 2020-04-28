@@ -58,10 +58,10 @@ protected:
 	void LayerCleared(IMapPtr) override;
 
 private:
-	void OnPaint(wxPaintEvent& event);
-	void OnSize(wxSizeEvent& event);
-	void OnMouseEvent(wxMouseEvent& event);
-	void OnWheelEvent(wxMouseEvent& event);
+	virtual void OnPaint(wxPaintEvent& event);
+	virtual void OnSize(wxSizeEvent& event);
+	virtual void OnMouseEvent(wxMouseEvent& event);
+	virtual void OnWheelEvent(wxMouseEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

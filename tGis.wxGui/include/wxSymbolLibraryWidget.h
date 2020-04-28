@@ -41,6 +41,11 @@ private:
 	Map* _map;
 	SymbolLibraryRender* _render;
 	wxSymbolLibraryWidgetImpl* _impl_;
+
+private:
+	void _scrollBar_scroll(wxScrollEvent& event);
+
+	wxDECLARE_EVENT_TABLE();
 };
 
 END_NAME_SPACE(tGis, Gui)

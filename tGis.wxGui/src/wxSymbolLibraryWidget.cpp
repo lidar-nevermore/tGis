@@ -5,6 +5,42 @@
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
+class wxSymbolDispalyWidget : public wxGLMapWidget
+{
+public:
+    explicit 
+    wxSymbolDispalyWidget(wxWindow *parent,
+		wxWindowID id = wxID_ANY,
+        const wxPoint& pos = wxDefaultPosition,
+        const wxSize& size = wxDefaultSize,
+        long style = 0,
+        const wxString& name = wxGLCanvasName,
+        const wxPalette& palette = wxNullPalette)
+		:wxGLMapWidget(parent, id, pos, size, style, name, palette, false)
+	{
+		_render = nullptr;
+	};
+
+	void OnSize(wxSizeEvent& event)
+	{
+		wxSize sz = GetClientSize();
+		if (_render != nullptr)
+		{
+			_render->UpdateEnvelope(sz.x, sz.y);
+			const OGREnvelope* env = _render->GetEnvelope();
+			if (_scrollBar != nullptr)
+				_scrollBar->SetScrollbar(0, sz.y, -env->MinY, 1);
+		}
+		SetSurfaceSize(sz.x, sz.y);
+		GetViewPort()->IncludeEnvelope(0, 0, sz.x, -sz.y);
+
+		event.Skip();
+	}
+
+	SymbolLibraryRender* _render;
+	wxScrollBar* _scrollBar;
+};
+
 class wxSymbolLibraryWidgetImpl : public MapTool
 {
 public:
@@ -62,7 +98,7 @@ wxSymbolLibraryWidget::wxSymbolLibraryWidget( wxWindow* parent, wxWindowID id, c
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxHORIZONTAL );
 
-	_symWidget = new wxGLMapWidget( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxGLCanvasName, wxNullPalette, false);
+	_symWidget = new wxSymbolDispalyWidget( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, wxGLCanvasName, wxNullPalette);
 	bSizer2->Add( _symWidget, 1, wxEXPAND | wxALL, 5 );
 
 	_scrollBar = new wxScrollBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL );
@@ -71,11 +107,14 @@ wxSymbolLibraryWidget::wxSymbolLibraryWidget( wxWindow* parent, wxWindowID id, c
 
 	this->SetSizer( bSizer2 );
 	this->Layout();
+
+	((wxSymbolDispalyWidget*)_symWidget)->_scrollBar = _scrollBar;
 	_map = new Map();
 	Layer* layer = new Layer(nullptr);
 	_render = new SymbolLibraryRender(layer);
 	_impl_->_selSymId = 0;
 	_render->SelectSymbol(0);
+	((wxSymbolDispalyWidget*)_symWidget)->_render = _render;
 	_map->AddLayer(layer);
 	_symWidget->SetMap(_map);
 
@@ -107,5 +146,19 @@ void wxSymbolLibraryWidget::SetSelSymbolId(int symId)
 	_symWidget->Refresh();
 }
 
+void wxSymbolLibraryWidget::_scrollBar_scroll(wxScrollEvent & event)
+{
+	int pos = event.GetPosition();
+	GeoViewPort* vport = _symWidget->GetViewPort();
+	double cenX, cenY;
+	vport->GetSpatialCenter(&cenX, &cenY);
+	wxSize sz = _symWidget->GetClientSize();
+	vport->SetSpatialCenter(cenX, -pos - sz.y / 2.0);
+	_symWidget->Refresh();
+}
+
+wxBEGIN_EVENT_TABLE(wxSymbolLibraryWidget, wxPanel)
+    EVT_SCROLL(wxSymbolLibraryWidget::_scrollBar_scroll)
+wxEND_EVENT_TABLE()
 
 END_NAME_SPACE(tGis, Gui)
