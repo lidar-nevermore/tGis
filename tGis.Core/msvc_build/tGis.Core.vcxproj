@@ -85,14 +85,14 @@
     <ClInclude Include="..\include\SimpleMarkerSymbol.h" />
     <ClInclude Include="..\include\SimpleSymbolLibrary.h" />
     <ClInclude Include="..\include\sorted_list.h" />
+    <ClInclude Include="..\include\StandaloneTool.h" />
     <ClInclude Include="..\include\Statistics.h" />
     <ClInclude Include="..\include\SymbolLibraryRender.h" />
     <ClInclude Include="..\include\SymbolLibraryRepository.h" />
-    <ClInclude Include="..\include\TGisApplication.h" />
+    <ClInclude Include="..\include\tGisApplication.h" />
     <ClInclude Include="..\include\tGis_Core.h" />
     <ClInclude Include="..\include\tGis_CoreCfg.h" />
     <ClInclude Include="..\include\tinyxml2.h" />
-    <ClInclude Include="..\include\Tool.h" />
     <ClInclude Include="..\include\ToolKit.h" />
     <ClInclude Include="..\include\ToolKitRepository.h" />
     <ClInclude Include="..\include\tGis_Utility.h" />
@@ -167,12 +167,12 @@
     <ClCompile Include="..\src\SimpleMarkerSymbol.cpp" />
     <ClCompile Include="..\src\SimpleSymbolLibrary.cpp" />
     <ClCompile Include="..\src\sorted_list.c" />
+    <ClCompile Include="..\src\StandaloneTool.cpp" />
     <ClCompile Include="..\src\Statistics.cpp" />
     <ClCompile Include="..\src\SymbolLibraryRender.cpp" />
     <ClCompile Include="..\src\SymbolLibraryRepository.cpp" />
-    <ClCompile Include="..\src\TGisApplication.cpp" />
+    <ClCompile Include="..\src\tGisApplication.cpp" />
     <ClCompile Include="..\src\tinyxml2.cpp" />
-    <ClCompile Include="..\src\Tool.cpp" />
     <ClCompile Include="..\src\ToolKit.cpp" />
     <ClCompile Include="..\src\ToolKitRepository.cpp" />
     <ClCompile Include="..\src\VectorLayerRender.cpp" />
@@ -191,6 +191,7 @@
     <None Include="..\internal\DiagonalCross.inl" />
     <None Include="..\internal\ForwardDiagonal.inl" />
     <None Include="..\internal\Horizontal.inl" />
+    <None Include="..\internal\ToolKitRepositoryImpl.inl" />
     <None Include="..\internal\Vertical.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

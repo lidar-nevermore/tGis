@@ -4,17 +4,34 @@
 #define __I_TOOL_H__
 
 #include "Helper.h"
+#include "IInclusionObject.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-struct TGIS_CORE_API ITool
+class ToolKit;
+
+struct TGIS_CORE_API ITool : public IInclusionObject
 {
+	friend class ToolKit;
+
 	virtual const char* GetName() = 0;
 
 	virtual void Execute() = 0;
 
-	ITool() {};
+	virtual ToolKit* GetParent()
+	{
+		return _parent;
+	};
+
+	ITool(ToolKit* parent) 
+	{
+		_parent = parent;
+	};
 	virtual ~ITool() {};
+
+protected:
+	ToolKit* _parent;
+
 private:
 	ITool(const ITool &) = delete;
 	ITool &operator=(const ITool &) = delete;

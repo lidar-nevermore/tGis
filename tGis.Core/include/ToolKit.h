@@ -4,16 +4,18 @@
 #define __TOOLKIT_H__
 
 #include "Helper.h"
+#include "IInclusionObject.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 struct ITool;
 class ToolKitImpl;
 
-class TGIS_CORE_API ToolKit
+class TGIS_CORE_API ToolKit : public IInclusionObject
 {
+	friend class ToolKitRepository;
 public:
-	ToolKit(const char* name);
+	ToolKit(const char* name, ToolKit* parent = nullptr);
 	~ToolKit();
 private:
 	ToolKit(const ToolKit &) = delete;
@@ -21,6 +23,8 @@ private:
 
 public:
 	const char* GetName();
+
+	ToolKit* GetParent();
 
 	void AddTool(ITool* tool);
 	size_t GetToolCount();
@@ -32,6 +36,7 @@ public:
 	ToolKit* GetToolKit(const char* name);
 
 private:
+	ToolKit* _parent;
 	ToolKitImpl* _impl_;
 };
 

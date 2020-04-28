@@ -7,7 +7,7 @@
 MainFrame::MainFrame()
     : MainFrameBase(NULL,wxID_ANY,wxT("tGis Desktop"))
 {
-	wxIcon icon(wxString(TGisApplication::INSTANCE()->GetExeDir()) + wxString("/wxApp_res/icon.png"), wxBITMAP_TYPE_PNG);
+	wxIcon icon(wxString(tGisApplication::INSTANCE()->GetExeDir()) + wxString("/wxApp_res/icon.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(icon);
 
 	_toolZoomIn = _toolBar->AddTool(wxID_ANY, wxT("Zoom In"), _TOOL_PNG("MapTool", "ZoomIn"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);

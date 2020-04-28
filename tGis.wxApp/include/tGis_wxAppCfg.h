@@ -13,7 +13,7 @@
 #endif
 
 #define _TOOL_PNG(tool_group,file_name) \
-wxBitmap(wxString(TGisApplication::INSTANCE()->GetExeDir()) \
+wxBitmap(wxString(tGisApplication::INSTANCE()->GetExeDir()) \
 + wxString("/wxApp_res/"##tool_group##"/"##file_name##".png"), \
 wxBITMAP_TYPE_PNG )
 

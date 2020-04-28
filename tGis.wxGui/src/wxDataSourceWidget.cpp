@@ -2,12 +2,12 @@
 #include <wx/dir.h>
 
 #define _TOOL_PNG(file_name) \
-wxBitmap(wxString(TGisApplication::INSTANCE()->GetExeDir()) \
+wxBitmap(wxString(tGisApplication::INSTANCE()->GetExeDir()) \
 + wxString("/wxGui_res/wxDataSourceWidget/tool/"##file_name##".png"), \
 wxBITMAP_TYPE_PNG )
 
 #define _TREE_PNG(file_name) \
-wxBitmap(wxString(TGisApplication::INSTANCE()->GetExeDir()) \
+wxBitmap(wxString(tGisApplication::INSTANCE()->GetExeDir()) \
 + wxString("/wxGui_res/wxDataSourceWidget/tree/"##file_name##".png"), \
 wxBITMAP_TYPE_PNG )
 

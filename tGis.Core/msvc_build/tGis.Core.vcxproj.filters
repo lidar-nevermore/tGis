@@ -164,9 +164,6 @@
     <ClInclude Include="..\include\EventBase.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\TGisApplication.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\RasterWriter.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
@@ -240,9 +237,6 @@
       <Filter>include\Entity</Filter>
     </ClInclude>
     <ClInclude Include="..\include\ITool.h">
-      <Filter>include\Organizer</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\Tool.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
     <ClInclude Include="..\include\ToolKit.h">
@@ -344,6 +338,12 @@
     <ClInclude Include="..\include\SymbolLibraryRender.h">
       <Filter>include\Symbol</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\StandaloneTool.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\tGisApplication.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -424,9 +424,6 @@
     <ClCompile Include="..\src\EventBase.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TGisApplication.cpp">
-      <Filter>src\Organizer</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\RasterWriter.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
@@ -483,9 +480,6 @@
     </ClCompile>
     <ClCompile Include="..\src\VectorLayerRender.cpp">
       <Filter>src\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\Tool.cpp">
-      <Filter>src\Organizer</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ToolKit.cpp">
       <Filter>src\Organizer</Filter>
@@ -544,6 +538,12 @@
     <ClCompile Include="..\src\SymbolLibraryRender.cpp">
       <Filter>src\Symbol</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\StandaloneTool.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\tGisApplication.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\DenseDot1.inl">
@@ -583,6 +583,9 @@
       <Filter>internal</Filter>
     </None>
     <None Include="..\internal\Vertical.inl">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\ToolKitRepositoryImpl.inl">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>

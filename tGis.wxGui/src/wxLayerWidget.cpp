@@ -3,12 +3,12 @@
 #include "wxTGisApplication.h"
 
 #define _TOOL_PNG(file_name) \
-wxBitmap(wxString(TGisApplication::INSTANCE()->GetExeDir()) \
+wxBitmap(wxString(tGisApplication::INSTANCE()->GetExeDir()) \
 + wxString("/wxGui_res/wxLayerWidget/tool/"##file_name##".png"), \
 wxBITMAP_TYPE_PNG )
 
 #define _TREE_PNG(file_name) \
-wxBitmap(wxString(TGisApplication::INSTANCE()->GetExeDir()) \
+wxBitmap(wxString(tGisApplication::INSTANCE()->GetExeDir()) \
 + wxString("/wxGui_res/wxLayerWidget/tree/"##file_name##".png"), \
 wxBITMAP_TYPE_PNG )
 

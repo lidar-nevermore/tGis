@@ -1,4 +1,5 @@
 #include "ToolKit.h"
+#include "ITool.h"
 #include <vector>
 #include <map>
 
@@ -23,21 +24,41 @@ public:
 	vector<ITool*> _vecTool;
 };
 
-ToolKit::ToolKit(const char* name)
+ToolKit::ToolKit(const char* name, ToolKit* parent)
 {
 	_impl_ = new ToolKitImpl(this);
 	_impl_->_name = name;
+	_parent = parent;
 }
 
 
 ToolKit::~ToolKit()
 {
+	for (auto it = _impl_->_vecTool.begin(); it != _impl_->_vecTool.end(); it++)
+	{
+		ITool* tool = *it;
+		if (tool->_is_in_heap)
+			delete tool;
+	}
+
+	for (auto it = _impl_->_vecToolKit.begin(); it != _impl_->_vecToolKit.end(); it++)
+	{
+		ToolKit* kit = *it;
+		if (kit->_is_in_heap)
+			delete kit;
+	}
+
 	delete _impl_;
 }
 
 const char * ToolKit::GetName()
 {
 	return _impl_->_name.c_str();
+}
+
+ToolKit * ToolKit::GetParent()
+{
+	return _parent;
 }
 
 void ToolKit::AddTool(ITool * tool)
@@ -76,6 +97,9 @@ void ToolKit::AddToolKit(ToolKit * kit)
 		{
 			toFillKit->AddToolKit(kit->GetToolKit(i));
 		}
+
+		if (kit->_is_in_heap)
+			delete kit;
 	}
 }
 

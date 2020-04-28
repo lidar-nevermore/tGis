@@ -1,6 +1,6 @@
 #include "Plugin.h"
 #include "PluginManager.h"
-#include "TGisApplication.h"
+#include "tGisApplication.h"
 
 #include <io.h>
 #include <stdio.h>
@@ -78,7 +78,7 @@ Plugin::Plugin(const char* cfg)
 		else if (_initializeProc == NULL || _finalizeProc == NULL)
 			result = "Not a valid plugin!";
 		TGIS_LOG_FORMAT(LOG_INFO, "%s", result);
-		TGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
+		tGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
 	}
 	catch (exception &ex)
 	{
@@ -87,14 +87,14 @@ Plugin::Plugin(const char* cfg)
 		msg.append(ex.what());
 		const char* result = msg.c_str();
 		TGIS_LOG_FORMAT(LOG_ERR, "%s", result);
-		TGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
+		tGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
 	}
 	catch (...)
 	{
 		file.close();
 		const char* result = "unknown error!";
 		TGIS_LOG_FORMAT(LOG_ERR, "%s", result);
-		TGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
+		tGisApplication::LoadPluginEvent(cfg, plugin_name, plugin_file, result);
 	}
 }
 

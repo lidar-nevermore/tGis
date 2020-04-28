@@ -12,6 +12,7 @@ class ToolKitRepositoryImpl;
 
 class TGIS_CORE_API ToolKitRepository
 {
+	friend class StandaloneTool;
 private:
 	static ToolKitRepository* _instance;
 public:

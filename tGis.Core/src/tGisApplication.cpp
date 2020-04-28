@@ -1,4 +1,4 @@
-#include "TGisApplication.h"
+#include "tGisApplication.h"
 #include "PluginManager.h"
 #include "ilog.h"
 #include <stdarg.h>
@@ -8,16 +8,16 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-TGisApplication* TGisApplication::_instance = nullptr;
+tGisApplication* tGisApplication::_instance = nullptr;
 
-Event<const char*, const char*, const char*, const char*> TGisApplication::LoadPluginEvent;
+Event<const char*, const char*, const char*, const char*> tGisApplication::LoadPluginEvent;
 
-TGisApplication* TGisApplication::INSTANCE()
+tGisApplication* tGisApplication::INSTANCE()
 {
 	return _instance;
 }
 
-TGisApplication::TGisApplication()
+tGisApplication::tGisApplication()
 {
 	if (_instance != NULL)
 		throw exception("Only allow one instance!");
@@ -32,7 +32,7 @@ TGisApplication::TGisApplication()
 	PluginManager::INSTANCE()->LoadPlugins();
 }
 
-TGisApplication::~TGisApplication()
+tGisApplication::~tGisApplication()
 {
 	finalize_log(_loger);
 }

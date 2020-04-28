@@ -13,7 +13,7 @@ BEGIN_NAME_SPACE(tGis, Gui)
 
 class wxGLMapWidget;
 
-class TGIS_GUI_API wxTGisApplication : public TGisApplication
+class TGIS_GUI_API wxTGisApplication : public tGisApplication
 {
 protected:
 	wxTGisApplication();

@@ -23,6 +23,8 @@ ToolKitRepository* ToolKitRepository::INSTANCE()
 	return _instance;
 }
 
+class StandaloneTool;
+
 class ToolKitRepositoryImpl
 {
 public:
@@ -33,6 +35,7 @@ public:
 
 	ToolKitRepository* _owner;
 
+	vector<StandaloneTool*> _vecStandaloneTool;
 	vector<ToolKit*> _vecToolKit;
 	map<string, ToolKit*> _mapToolKit;
 };
@@ -45,6 +48,13 @@ ToolKitRepository::ToolKitRepository()
 
 ToolKitRepository::~ToolKitRepository()
 {
+	for (auto it = _impl_->_vecToolKit.begin(); it != _impl_->_vecToolKit.end(); it++)
+	{
+		ToolKit* kit = *it;
+		if (kit->_is_in_heap)
+			delete kit;
+	}
+
 	delete _impl_;
 }
 
@@ -69,6 +79,9 @@ void ToolKitRepository::AddToolKit(ToolKit * kit)
 		{
 			toFillKit->AddToolKit(kit->GetToolKit(i));
 		}
+
+		if (kit->_is_in_heap)
+			delete kit;
 	}
 }
 
