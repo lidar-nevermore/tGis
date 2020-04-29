@@ -12,10 +12,10 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+
 ToolKitSet::ToolKitSet()
 {
 	_impl_ = new ToolKitSetImpl(this);
-	_parent = nullptr;
 }
 
 
@@ -31,33 +31,9 @@ ToolKitSet::~ToolKitSet()
 	delete _impl_;
 }
 
-ToolKitSet * ToolKitSet::GetParent()
-{
-	return _parent;
-}
 
 void ToolKitSet::AddToolKit(ToolKit * kit)
 {
-	ToolKitSet* kitSet = kit;
-	kitSet->_parent = this;
-	if (kitSet->_impl_->_vecStandaloneTool.size() > 0)
-	{
-		ToolKitSet* parent = this;
-		while (nullptr != parent)
-		{
-			//将加入的kit中的StandaloneTool加入到其祖先的_vecStandaloneTool中
-			//为得是保存StandaloneTool信息时免得遍历树
-			//删除的时候也需要注意维护_vecStandaloneTool
-
-			parent->_impl_->_vecStandaloneTool.insert(
-				parent->_impl_->_vecStandaloneTool.end(),
-				kitSet->_impl_->_vecStandaloneTool.begin(),
-				kitSet->_impl_->_vecStandaloneTool.end());
-
-			parent = parent->GetParent();
-		}
-	}
-
 	ToolKit* toFillKit = GetToolKit(kit->GetName());
 	if (toFillKit == NULL)
 	{
@@ -114,31 +90,6 @@ void ToolKitSet::RemoveToolKit(ToolKit * kit)
 			_impl_->_vecToolKit.erase(it);
 			_impl_->_mapToolKit.erase(kit_->GetName());
 			break;
-		}
-	}
-
-	if (found)
-	{
-		//将ToolKit各级子StandaloneTool从其各级父亲的的_vecStandaloneTool中移除
-		ToolKitSet* kitSet = kit;
-		for (auto itOfKit = kitSet->_impl_->_vecStandaloneTool.begin(); itOfKit != kitSet->_impl_->_vecStandaloneTool.end(); itOfKit++)
-		{
-			StandaloneTool* toolOfKit = *itOfKit;
-			ToolKitSet* parent = this;
-			while (parent != nullptr)
-			{
-				for (auto itOfParent = parent->_impl_->_vecStandaloneTool.begin(); itOfParent != parent->_impl_->_vecStandaloneTool.end(); itOfParent++)
-				{
-					StandaloneTool* toolOfParent = *itOfParent;
-					if (toolOfParent == toolOfKit)
-					{
-						parent->_impl_->_vecStandaloneTool.erase(itOfParent);
-						break;
-					}
-				}
-
-				parent = parent->GetParent();
-			}
 		}
 	}
 

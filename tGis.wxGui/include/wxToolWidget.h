@@ -39,8 +39,21 @@ protected:
 	wxToolBarToolBase* _toolSrch;
 	//wxToolBarToolBase* _toolEndFind;
 	wxTreeCtrl* _treeCtrl;
+	wxImageList* _imgList;
 
+private:
+	wxTreeItemId _selId;
+	ToolKit* _selKit;
+	ITool* _selTool;
 
+private:
+	void AddToolKitSubNode(wxTreeItemId &parent, ToolKit* toolKit);
+
+private:
+	void OnNodeActivated(wxTreeEvent& event);
+	void OnNodeSelChanged(wxTreeEvent& event);
+	void _toolAddTool_Clicked(wxCommandEvent& event);
+	void _toolRemoveTool_Clicked(wxCommandEvent& event);
 };
 
 END_NAME_SPACE(tGis, Gui)

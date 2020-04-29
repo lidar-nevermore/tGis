@@ -95,6 +95,12 @@
     <ClInclude Include="..\internal\VectorUniformLayerRenderCtrlBase.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\internal\StandaloneToolDialog.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\StandaloneToolDialogBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -169,6 +175,12 @@
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrlBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
+    <ClCompile Include="..\internal\StandaloneToolDialog.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\StandaloneToolDialogBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\RgbLayerRanderCtrl.fbp">
@@ -187,6 +199,9 @@
       <Filter>src</Filter>
     </None>
     <None Include="..\internal\VectorUniformLayerRenderCtrl.fbp">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\StandaloneToolDialog.fbp">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>

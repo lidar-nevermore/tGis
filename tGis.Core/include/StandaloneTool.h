@@ -5,14 +5,15 @@
 
 #include "Helper.h"
 #include "ITool.h"
+#include "Event.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
 class StandaloneToolImpl;
 
+
 class TGIS_CORE_API StandaloneTool : public ITool
 {
-	TGIS_DECLARE_NO_COPY_CLASS(StandaloneTool);
 
 public:
 	virtual const char* GetType();
@@ -24,6 +25,8 @@ private:
 
 public:
 	StandaloneTool(const char* name);
+	StandaloneTool(const StandaloneTool& tool);
+	StandaloneTool& operator=(const StandaloneTool& tool);
 	virtual ~StandaloneTool();
 
 public:

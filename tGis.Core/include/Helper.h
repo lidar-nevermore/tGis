@@ -99,9 +99,9 @@ inline double _tgis_round(double val, int places) {
 	return !_tgis_isnan(x) ? x : t;
 }
 
-inline void _tgis_str_split(char* str, const char *delim, std::vector<std::string>& out)
+inline void _tgis_str_split(const char* str, const char *delim, std::vector<std::string>& out)
 {
-	char * p = std::strtok(str, delim);
+	char * p = std::strtok(const_cast<char*>(str), delim);
 	while (p != 0)
 	{
 		bool not_delim = true;

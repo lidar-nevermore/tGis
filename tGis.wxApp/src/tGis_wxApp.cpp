@@ -7,6 +7,7 @@ IMPLEMENT_APP(tGisWxApp)
 bool tGisWxApp::OnInit()
 {
 	wxInitAllImageHandlers();
+	//TODO: 获取屏幕最大尺寸
 	MapWidget::SetMaxSize(1920, 1280);
 	_mainFrame  = new MainFrame();
 	SetTopWindow(_mainFrame);

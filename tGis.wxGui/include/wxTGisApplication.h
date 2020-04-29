@@ -13,6 +13,8 @@ BEGIN_NAME_SPACE(tGis, Gui)
 
 class wxGLMapWidget;
 
+class wxTGisApplicationImpl;
+
 class TGIS_GUI_API wxTGisApplication : public tGisApplication
 {
 protected:
@@ -22,6 +24,12 @@ protected:
 public:
 	virtual wxFrame* GetMainFrame() = 0;
 	virtual wxGLMapWidget* GetCurMapWidget() = 0;
+
+	// Í¨¹ý tGisApplication ¼Ì³Ð
+	virtual void Execute(const char * cmd) override;
+
+private:
+	wxTGisApplicationImpl* _impl_;
 };
 
 END_NAME_SPACE(tGis, Gui)

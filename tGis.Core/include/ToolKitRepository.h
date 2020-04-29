@@ -6,9 +6,12 @@
 #include "Helper.h"
 #include "ToolKitSet.h"
 
-BEGIN_NAME_SPACE(tGis, Core)
+namespace tinyxml2
+{
+	class XMLDocument;
+}
 
-class ToolKitRepositoryImpl;
+BEGIN_NAME_SPACE(tGis, Core)
 
 class TGIS_CORE_API ToolKitRepository : public ToolKitSet
 {
@@ -29,9 +32,10 @@ public:
 	void AddToolKit(int count, ...);
 	void SaveStandaloneTool();
 	using ToolKitSet::AddToolKit;
-	
+
 private:
-	ToolKitRepositoryImpl* _impl_;
+	void SaveStandaloneTool(tinyxml2::XMLDocument* doc, ToolKitSet* kitSet);
+
 };
 
 END_NAME_SPACE(tGis, Core)

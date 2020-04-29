@@ -1,8 +1,17 @@
 #include "tGisApplication.h"
 #include "PluginManager.h"
 #include "ilog.h"
+
+#include "ToolKit.h"
+#include "ToolKitRepository.h"
+#include "StandaloneTool.h"
+
 #include <stdarg.h>
 #include <string>
+
+#include "tinyxml2.h"
+
+using namespace tinyxml2;
 
 using namespace std;
 
@@ -17,6 +26,8 @@ tGisApplication* tGisApplication::INSTANCE()
 	return _instance;
 }
 
+void LoadStandaloneTool(const char* tgis);
+
 tGisApplication::tGisApplication()
 {
 	if (_instance != NULL)
@@ -30,11 +41,75 @@ tGisApplication::tGisApplication()
 	_loger = init_log(logPath.c_str(), LOG_DEBUG, 0);
 	_instance = this;
 	PluginManager::INSTANCE()->LoadPlugins();
+	LoadStandaloneTool(_exeDir);
 }
 
 tGisApplication::~tGisApplication()
 {
 	finalize_log(_loger);
+}
+
+void LoadStandaloneTool(const char* tgis)
+{
+	string path = tgis;
+	path.append(TGIS_PATH_SEPARATOR_STR);
+	path.append("Plugins");
+	path.append(TGIS_PATH_SEPARATOR_STR);
+	path.append("StandaloneTool.xml");
+
+	tinyxml2::XMLDocument doc;
+	if (XML_SUCCESS == doc.LoadFile(path.c_str()))
+	{
+		XMLElement *eleTool = doc.FirstChildElement();
+		while (eleTool != nullptr)
+		{
+			XMLElement* eleName = eleTool->FirstChildElement("name");
+			StandaloneTool* tool = new StandaloneTool(eleName->GetText());
+
+			XMLElement* eleExeFile = eleTool->FirstChildElement("exe");
+			tool->SetExeFile(eleExeFile->GetText());
+
+			XMLElement* eleParam = eleTool->FirstChildElement("param");
+			XMLElement* eleParamItem = eleParam->FirstChildElement();
+			while (eleParamItem != nullptr)
+			{
+				tool->AddParam(eleParamItem->GetText());
+				eleParamItem = eleParamItem->NextSiblingElement();
+			}
+
+			XMLElement* eleToolBelong = eleTool->FirstChildElement("belong");
+			std::vector<std::string> belongParts;
+			_tgis_str_split(eleToolBelong->GetText(), "/", belongParts);
+
+			ToolKit* toFillKit = nullptr;
+			ToolKitSet* kitSet = ToolKitRepository::INSTANCE();
+			bool needNewKit = false;
+
+			for (auto it = belongParts.begin(); it != belongParts.end(); it++)
+			{
+				string& strKit = *it;
+
+				if (strKit.empty())
+					continue;
+
+				ToolKit* kit = needNewKit ? nullptr : kitSet->GetToolKit(strKit.c_str());
+				if (kit == nullptr)
+				{
+					needNewKit = true;
+					kit = new ToolKit(strKit.c_str());
+					kitSet->AddToolKit(kit);
+				}
+
+				toFillKit = kit;
+				kitSet = kit;
+			}
+
+			toFillKit->AddTool(tool);
+
+			//加载下一个工具
+			eleTool = eleTool->NextSiblingElement();
+		}
+	}
 }
 
 

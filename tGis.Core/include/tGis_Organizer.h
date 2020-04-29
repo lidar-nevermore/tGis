@@ -5,7 +5,10 @@
 
 #include "ITool.h"
 #include "InProcessTool.h"
+#include "StandaloneTool.h"
+#include "ToolKitSet.h"
 #include "ToolKit.h"
+
 #include "ToolKitRepository.h"
 #include "DataSourceRepository.h"
 

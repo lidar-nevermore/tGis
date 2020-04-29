@@ -176,6 +176,8 @@ void MainFrame::OnLayerSelChanged(IMapPtr, ILayerPtr layer, size_t)
 		_toolBar->EnableTool(_toolZoomLayer->GetId(), true);
 		if(layer->GetDataset()->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 			_toolBar->EnableTool(_toolZoomOriginal->GetId(), true);
+		else
+			_toolBar->EnableTool(_toolZoomOriginal->GetId(), false);
 	}
 }
 

@@ -1,11 +1,15 @@
 #include "StandaloneTool.h"
 #include <vector>
 #include <string>
+#include <sstream>
 #include "tGisApplication.h"
+
+#include <stdlib.h>
 
 using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
+
 
 const char* const StandaloneTool::_type = "25DDF5CC-0351-4AF1-BE7D-89351FAFDA78";
 
@@ -49,6 +53,24 @@ StandaloneTool::StandaloneTool(const char* name)
 	_impl_->_name = name;
 }
 
+StandaloneTool::StandaloneTool(const StandaloneTool & tool)
+{
+	_impl_ = new StandaloneToolImpl(this);
+	operator=(tool);
+}
+
+StandaloneTool & StandaloneTool::operator=(const StandaloneTool & tool)
+{
+	_impl_->_name = tool._impl_->_name;
+	_impl_->_exe = tool._impl_->_exe;
+	_impl_->_absExe = tool._impl_->_absExe;
+	_impl_->_vecParam.insert(_impl_->_vecParam.end(),
+		tool._impl_->_vecParam.begin(),
+		tool._impl_->_vecParam.end());
+
+	return *this;
+}
+
 
 StandaloneTool::~StandaloneTool()
 {
@@ -63,7 +85,21 @@ const char * StandaloneTool::GetName()
 void StandaloneTool::Execute()
 {
 	//TODO: 无命令行窗口方式的启动外部程序
+	std::ostringstream oss;
+	oss << "\"";
+	oss << _impl_->_absExe;
+	oss << "\" ";
 
+	for (auto it = _impl_->_vecParam.begin(); it != _impl_->_vecParam.begin(); it++)
+	{
+		oss << *it;
+		oss << " ";
+	}
+
+	string cmdstr = oss.str();
+
+	tGisApplication::INSTANCE()->Execute(cmdstr.c_str());
+	//system(cmdstr.c_str());
 }
 
 void StandaloneTool::SetExeFile(const char * exe)
@@ -74,7 +110,7 @@ void StandaloneTool::SetExeFile(const char * exe)
 	{
 		_impl_->_absExe = tGisApplication::INSTANCE()->GetExeDir();
 		//_impl_->_absExe.append(TGIS_PATH_SEPARATOR_STR);
-		_impl_->_absExe.append(_impl_->_exe.substr(8));
+		_impl_->_absExe.append(_impl_->_exe.substr(7));
 	}
 	else
 	{
@@ -84,7 +120,7 @@ void StandaloneTool::SetExeFile(const char * exe)
 
 const char * StandaloneTool::GetExeFile()
 {
-	return _impl_->_absExe.c_str();
+	return _impl_->_exe.c_str();
 }
 
 size_t StandaloneTool::GetParamCount()

@@ -35,6 +35,9 @@ private:
 	char _exeDir[TGIS_MAX_PATH];
 
 public:
+	virtual void Execute(const char* cmd) = 0;
+
+public:
 	const char* GetExeDir() { return _exeDir; }
 	void* GetLogger() { return _loger; }
 };

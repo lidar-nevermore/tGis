@@ -1,11 +1,18 @@
 #include "ToolKitRepository.h"
 #include "ToolKit.h"
+#include "StandaloneTool.h"
+#include "tGisApplication.h"
+#include "ToolKitSetImpl.inl"
+
+#include "tinyxml2.h"
+
 #include <memory>
 #include <stdarg.h>
 #include <vector>
 #include <map>
 
 using namespace std;
+using namespace tinyxml2;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -76,7 +83,68 @@ void ToolKitRepository::AddToolKit(int count, ...)
 
 void ToolKitRepository::SaveStandaloneTool()
 {
-	//TODO: 将StandaloneTool的信息保存至文件
+	tinyxml2::XMLDocument doc;
+	SaveStandaloneTool(&doc, this);
+	string path = tGisApplication::INSTANCE()->GetExeDir();
+	path.append(TGIS_PATH_SEPARATOR_STR);
+	path.append("Plugins");
+	path.append(TGIS_PATH_SEPARATOR_STR);
+	path.append("StandaloneTool.xml");
+	doc.SaveFile(path.c_str());
+}
+
+void ToolKitRepository::SaveStandaloneTool(tinyxml2::XMLDocument* doc, ToolKitSet * kitSet)
+{
+	for (auto it = kitSet->_impl_->_vecStandaloneTool.begin(); it != kitSet->_impl_->_vecStandaloneTool.end(); it++)
+	{
+		StandaloneTool* tool = *it;
+
+		XMLElement* eleTool = doc->NewElement("StandaloneTool");
+		doc->LinkEndChild(eleTool);
+
+		string strToolBelong;
+		ToolKit* parent = tool->GetParent();
+		while (nullptr != parent)
+		{
+			strToolBelong.insert(0, parent->GetName());
+			strToolBelong.insert(0, "/");
+			parent = parent->GetParent();
+		}
+
+		XMLElement* eleName = doc->NewElement("name");
+		eleTool->LinkEndChild(eleName);
+		XMLText* txtName = doc->NewText(tool->GetName());
+		//txtName->SetCData(true);
+		eleName->LinkEndChild(txtName);
+
+		XMLElement* eleToolBelong = doc->NewElement("belong");
+		eleTool->LinkEndChild(eleToolBelong);
+		XMLText* txtToolBelong = doc->NewText(strToolBelong.c_str());
+		txtToolBelong->SetCData(true);
+		eleToolBelong->LinkEndChild(txtToolBelong);
+
+		XMLElement* eleExeFile = doc->NewElement("exe");
+		eleTool->LinkEndChild(eleExeFile);
+		XMLText* txtExeFile = doc->NewText(tool->GetExeFile());
+		txtExeFile->SetCData(true);
+		eleExeFile->LinkEndChild(txtExeFile);
+
+		XMLElement* eleParam = doc->NewElement("param");
+		eleTool->LinkEndChild(eleParam);
+
+		size_t paramCount = tool->GetParamCount();
+		for (size_t i = 0; i < paramCount; i++)
+		{
+			XMLElement* eleString = doc->NewElement("str");
+			eleParam->LinkEndChild(eleString);
+			eleString->SetText(tool->GetParam(i));
+		}
+	}
+
+	for (auto it = kitSet->_impl_->_vecToolKit.begin(); it != kitSet->_impl_->_vecToolKit.end(); it++)
+	{
+		SaveStandaloneTool(doc, *it);
+	}
 }
 
 

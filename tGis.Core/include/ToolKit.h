@@ -18,19 +18,24 @@ class TGIS_CORE_API ToolKit : public ToolKitSet, public IInclusionObject
 	TGIS_DECLARE_NO_COPY_CLASS(ToolKit);
 
 	friend class ToolKitSet;
+
 public:
 	ToolKit(const char* name);
 	~ToolKit();
 
 public:
 	const char* GetName();
-
+	ToolKit* GetParent();
 	void AddTool(ITool* tool);
 	size_t GetToolCount();
 	ITool* GetTool(size_t);
 	void RemoveTool(ITool* tool);
 
+public:
+	void AddToolKit(ToolKit* kit) override;
+
 private:
+	ToolKit* _parent;
 	ToolKitImpl* _impl_;
 };
 

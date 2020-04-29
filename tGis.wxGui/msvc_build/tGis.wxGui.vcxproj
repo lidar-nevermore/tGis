@@ -110,6 +110,8 @@
     <ClInclude Include="..\internal\ILayerRenderCtrl.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h" />
+    <ClInclude Include="..\internal\StandaloneToolDialog.h" />
+    <ClInclude Include="..\internal\StandaloneToolDialogBase.h" />
     <ClInclude Include="..\internal\VectorUniformLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\VectorUniformLayerRenderCtrlBase.h" />
   </ItemGroup>
@@ -120,6 +122,8 @@
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp" />
+    <ClCompile Include="..\internal\StandaloneToolDialog.cpp" />
+    <ClCompile Include="..\internal\StandaloneToolDialogBase.cpp" />
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\src\DrawRectTool.cpp" />
@@ -143,6 +147,7 @@
     <None Include="..\internal\ColorRampLayerRenderCtrl.fbp" />
     <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp" />
     <None Include="..\internal\RgbLayerRanderCtrl.fbp" />
+    <None Include="..\internal\StandaloneToolDialog.fbp" />
     <None Include="..\internal\VectorUniformLayerRenderCtrl.fbp" />
     <None Include="..\src\gdalinfo.inl" />
     <None Include="..\src\ogrinfo.inl" />
