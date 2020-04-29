@@ -23,7 +23,7 @@ private:
 	static const char* const _type;
 
 public:
-	StandaloneTool(const char* name, ToolKit* parent);
+	StandaloneTool(const char* name);
 	virtual ~StandaloneTool();
 
 public:

@@ -22,7 +22,7 @@ private:
 	static const char* const _type;
 
 public:
-	InProcessTool(ToolKit* parent);
+	InProcessTool();
 	virtual ~InProcessTool();
 
 public:

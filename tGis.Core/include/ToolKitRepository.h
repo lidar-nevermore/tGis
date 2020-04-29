@@ -4,15 +4,16 @@
 #define __TOOLKITREPOSITORY_H__
 
 #include "Helper.h"
+#include "ToolKitSet.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-class ToolKit;
 class ToolKitRepositoryImpl;
 
-class TGIS_CORE_API ToolKitRepository
+class TGIS_CORE_API ToolKitRepository : public ToolKitSet
 {
-	friend class StandaloneTool;
+	TGIS_DECLARE_NO_COPY_CLASS(ToolKitRepository);
+
 private:
 	static ToolKitRepository* _instance;
 public:
@@ -20,20 +21,14 @@ public:
 
 private:
 	ToolKitRepository();
-	ToolKitRepository(const ToolKitRepository &) = delete;
-	ToolKitRepository &operator=(const ToolKitRepository &) = delete;
 
 public:
 	~ToolKitRepository();
 
 public:
 	void AddToolKit(int count, ...);
-	void AddToolKit(ToolKit* kit);	
-	size_t GetToolKitCount();
-	ToolKit* GetToolKit(size_t);
-	ToolKit* GetToolKit(const char* name);
-	void RemoveToolKit(ToolKit* kit);
 	void SaveStandaloneTool();
+	using ToolKitSet::AddToolKit;
 	
 private:
 	ToolKitRepositoryImpl* _impl_;

@@ -1,8 +1,11 @@
 #include "ToolKit.h"
 #include "ITool.h"
 
+#include "ToolKitSetImpl.inl"
+
 #include "StandaloneTool.h"
 
+#include <string>
 #include <vector>
 #include <map>
 
@@ -23,17 +26,13 @@ public:
 	ToolKit* _owner;
 
 	string _name;
-	vector<StandaloneTool*> _vecStandaloneTool;
-	vector<ToolKit*> _vecToolKit;
-	map<string, ToolKit*> _mapToolKit;
 	vector<ITool*> _vecTool;
 };
 
-ToolKit::ToolKit(const char* name, ToolKit* parent)
+ToolKit::ToolKit(const char* name)
 {
 	_impl_ = new ToolKitImpl(this);
 	_impl_->_name = name;
-	_parent = parent;
 }
 
 
@@ -46,13 +45,6 @@ ToolKit::~ToolKit()
 			delete tool;
 	}
 
-	for (auto it = _impl_->_vecToolKit.begin(); it != _impl_->_vecToolKit.end(); it++)
-	{
-		ToolKit* kit = *it;
-		if (kit->_is_in_heap)
-			delete kit;
-	}
-
 	delete _impl_;
 }
 
@@ -61,14 +53,23 @@ const char * ToolKit::GetName()
 	return _impl_->_name.c_str();
 }
 
-ToolKit * ToolKit::GetParent()
-{
-	return _parent;
-}
-
 void ToolKit::AddTool(ITool * tool)
 {
+	tool->_parent = this;
 	_impl_->_vecTool.push_back(tool);
+
+	//如果加入的是StandaloneTool，则还加入到其自生及所有祖先的_vecStandaloneTool中
+	//为得是保存StandaloneTool信息时免得遍历树
+	//删除tool的时候也需要注意维护_vecStandaloneTool
+	if (tool->IsTypeOf(StandaloneTool::S_GetType()))
+	{
+		ToolKitSet* parent = this;
+		while (nullptr != parent)
+		{
+			parent->_impl_->_vecStandaloneTool.push_back(dynamic_cast<StandaloneTool*>(tool));
+			parent = parent->GetParent();
+		}
+	}
 }
 
 size_t ToolKit::GetToolCount()
@@ -83,80 +84,39 @@ ITool * ToolKit::GetTool(size_t pos)
 
 void ToolKit::RemoveTool(ITool * tool)
 {
+	bool found = false;
 	for (auto it = _impl_->_vecTool.begin(); it != _impl_->_vecTool.end(); it++)
 	{
 		ITool* tool_ = *it;
 		if (tool_ == tool)
 		{
+			found = true;
 			_impl_->_vecTool.erase(it);
-			if (tool_->_is_in_heap)
-				delete tool_;
 			break;
 		}
 	}
-}
 
-void ToolKit::AddToolKit(ToolKit * kit)
-{
-	ToolKit* toFillKit = GetToolKit(kit->GetName());
-	if (toFillKit == NULL)
+	if (found && tool->IsTypeOf(StandaloneTool::S_GetType()))
 	{
-		_impl_->_vecToolKit.push_back(kit);
-		_impl_->_mapToolKit.insert(map<string, ToolKit*>::value_type(kit->GetName(), kit));
-	}
-	else
-	{
-		size_t toolCount = kit->GetToolCount();
-		for (size_t i = 0; i < toolCount; i++)
+		ToolKitSet* parent = this;
+		while (parent != nullptr)
 		{
-			toFillKit->AddTool(kit->GetTool(i));
-		}
+			for (auto it = parent->_impl_->_vecStandaloneTool.begin(); it != parent->_impl_->_vecStandaloneTool.end(); it++)
+			{
+				ITool* tool_ = *it;
+				if (tool_ == tool)
+				{
+					parent->_impl_->_vecStandaloneTool.erase(it);
+					break;
+				}
+			}
 
-		size_t toolkitCount = kit->GetToolKitCount();
-		for (size_t i = 0; i < toolkitCount; i++)
-		{
-			toFillKit->AddToolKit(kit->GetToolKit(i));
-		}
-
-		if (kit->_is_in_heap)
-			delete kit;
-	}
-}
-
-size_t ToolKit::GetToolKitCount()
-{
-	return _impl_->_vecToolKit.size();
-}
-
-ToolKit * ToolKit::GetToolKit(size_t pos)
-{
-	return _impl_->_vecToolKit.at(pos);
-}
-
-ToolKit * ToolKit::GetToolKit(const char * name)
-{
-	map<string, ToolKit*>::iterator pos = _impl_->_mapToolKit.find(name);
-
-	if (pos != _impl_->_mapToolKit.end())
-		return (*pos).second;
-	return nullptr;
-}
-
-void ToolKit::RemoveToolKit(ToolKit * kit)
-{
-	for (auto it = _impl_->_vecToolKit.begin(); it != _impl_->_vecToolKit.end(); it++)
-	{
-		ToolKit* kit_ = *it;
-		if (kit_ == kit)
-		{
-			_impl_->_vecToolKit.erase(it);
-			_impl_->_mapToolKit.erase(kit_->GetName());
-			if (kit->_is_in_heap)
-				delete kit;
-			break;
+			parent = parent->GetParent();
 		}
 	}
-}
 
+	if (found && tool->_is_in_heap)
+		delete tool;
+}
 
 END_NAME_SPACE(tGis, Core)

@@ -24,9 +24,9 @@ struct TGIS_CORE_API ITool : public IInclusionObject, public ITypedObject
 		return _parent;
 	};
 
-	ITool(ToolKit* parent) 
+	ITool() 
 	{
-		_parent = parent;
+		_parent = nullptr;
 	};
 	virtual ~ITool() {};
 

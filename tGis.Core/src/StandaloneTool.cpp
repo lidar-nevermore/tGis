@@ -43,8 +43,7 @@ public:
 	vector<string> _vecParam;
 };
 
-StandaloneTool::StandaloneTool(const char* name, ToolKit* parent)
-	: ITool(parent)
+StandaloneTool::StandaloneTool(const char* name)
 {
 	_impl_ = new StandaloneToolImpl(this);
 	_impl_->_name = name;

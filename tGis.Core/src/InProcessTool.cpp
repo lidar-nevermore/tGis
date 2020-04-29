@@ -23,8 +23,7 @@ const char * InProcessTool::S_GetType()
 	return _type;
 }
 
-InProcessTool::InProcessTool(ToolKit* parent)
-	: ITool(parent)
+InProcessTool::InProcessTool()
 {
 }
 

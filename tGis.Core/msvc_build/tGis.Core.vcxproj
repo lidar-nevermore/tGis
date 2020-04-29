@@ -59,6 +59,7 @@
     <ClInclude Include="..\include\ISurface.h" />
     <ClInclude Include="..\include\ISymbol.h" />
     <ClInclude Include="..\include\ISymbolLibrary.h" />
+    <ClInclude Include="..\include\ToolKitSet.h" />
     <ClInclude Include="..\include\ITypedObject.h" />
     <ClInclude Include="..\include\ITool.h" />
     <ClInclude Include="..\include\IWidget.h" />
@@ -141,6 +142,7 @@
     <ClCompile Include="..\src\IInclusionObject.cpp" />
     <ClCompile Include="..\src\ILayerRender.cpp" />
     <ClCompile Include="..\src\ilog.c" />
+    <ClCompile Include="..\src\ToolKitSet.cpp" />
     <ClCompile Include="..\src\Layer.cpp" />
     <ClCompile Include="..\src\LayerRender.cpp" />
     <ClCompile Include="..\src\linked_array.c" />
@@ -193,7 +195,7 @@
     <None Include="..\internal\DiagonalCross.inl" />
     <None Include="..\internal\ForwardDiagonal.inl" />
     <None Include="..\internal\Horizontal.inl" />
-    <None Include="..\internal\ToolKitRepositoryImpl.inl" />
+    <None Include="..\internal\ToolKitSetImpl.inl" />
     <None Include="..\internal\Vertical.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

@@ -347,6 +347,9 @@
     <ClInclude Include="..\include\InProcessTool.h">
       <Filter>include\Organizer</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\ToolKitSet.h">
+      <Filter>include\Organizer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -550,6 +553,9 @@
     <ClCompile Include="..\src\InProcessTool.cpp">
       <Filter>src\Organizer</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ToolKitSet.cpp">
+      <Filter>src\Organizer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\DenseDot1.inl">
@@ -591,7 +597,7 @@
     <None Include="..\internal\Vertical.inl">
       <Filter>internal</Filter>
     </None>
-    <None Include="..\internal\ToolKitRepositoryImpl.inl">
+    <None Include="..\internal\ToolKitSetImpl.inl">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>
