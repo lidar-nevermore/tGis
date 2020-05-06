@@ -51,6 +51,7 @@ struct GDALInitializer
 		pluginPath.append(TGIS_PATH_SEPARATOR_STR);
 		pluginPath.append("gdalplugins");
 
+		CPLSetConfigOption("GDAL_PAM_ENABLED", "YES");
 		CPLSetConfigOption("GDAL_FILENAME_IS_UTF8", "NO");  //支持中文路径
 		CPLSetConfigOption("GDAL_DATA", dataPath.c_str());
 		CPLSetConfigOption("GEOTIFF_CSV", dataPath.c_str());

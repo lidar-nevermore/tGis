@@ -22,7 +22,7 @@ RgbLayerRenderCtrlBase::RgbLayerRenderCtrlBase( wxWindow* parent, wxWindowID id,
 
 	wxArrayString _choiceRBandChoices;
 	_choiceRBand = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, _choiceRBandChoices, 0 );
-	_choiceRBand->SetSelection( 0 );
+	_choiceRBand->SetSelection( -1 );
 	gbSizer1->Add( _choiceRBand, wxGBPosition( 0, 1 ), wxGBSpan( 1, 7 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_staticText5 = new wxStaticText( this, wxID_ANY, wxT("R Min"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -47,13 +47,13 @@ RgbLayerRenderCtrlBase::RgbLayerRenderCtrlBase( wxWindow* parent, wxWindowID id,
 	gbSizer1->Add( _txtRNoData, wxGBPosition( 2, 1 ), wxGBSpan( 1, 3 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_chkRNoDataEQ = new wxCheckBox( this, wxID_ANY, wxT("EQ"), wxDefaultPosition, wxDefaultSize, 0 );
-	gbSizer1->Add( _chkRNoDataEQ, wxGBPosition( 2, 4 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( _chkRNoDataEQ, wxGBPosition( 2, 4 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_chkRNoDataGT = new wxCheckBox( this, wxID_ANY, wxT("GT"), wxDefaultPosition, wxDefaultSize, 0 );
-	gbSizer1->Add( _chkRNoDataGT, wxGBPosition( 2, 5 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( _chkRNoDataGT, wxGBPosition( 2, 5 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_chkRNoDataLT = new wxCheckBox( this, wxID_ANY, wxT("LT"), wxDefaultPosition, wxDefaultSize, 0 );
-	gbSizer1->Add( _chkRNoDataLT, wxGBPosition( 2, 6 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( _chkRNoDataLT, wxGBPosition( 2, 6 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_staticText7 = new wxStaticText( this, wxID_ANY, wxT("G Band"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
@@ -61,7 +61,7 @@ RgbLayerRenderCtrlBase::RgbLayerRenderCtrlBase( wxWindow* parent, wxWindowID id,
 
 	wxArrayString _choiceGBandChoices;
 	_choiceGBand = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, _choiceGBandChoices, 0 );
-	_choiceGBand->SetSelection( 0 );
+	_choiceGBand->SetSelection( -1 );
 	gbSizer1->Add( _choiceGBand, wxGBPosition( 3, 1 ), wxGBSpan( 1, 7 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_staticText8 = new wxStaticText( this, wxID_ANY, wxT("G Min"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -100,7 +100,7 @@ RgbLayerRenderCtrlBase::RgbLayerRenderCtrlBase( wxWindow* parent, wxWindowID id,
 
 	wxArrayString _choiceBBandChoices;
 	_choiceBBand = new wxChoice( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, _choiceBBandChoices, 0 );
-	_choiceBBand->SetSelection( 0 );
+	_choiceBBand->SetSelection( -1 );
 	gbSizer1->Add( _choiceBBand, wxGBPosition( 6, 1 ), wxGBSpan( 1, 7 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_staticText11 = new wxStaticText( this, wxID_ANY, wxT("B Min"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -150,9 +150,9 @@ RgbLayerRenderCtrlBase::RgbLayerRenderCtrlBase( wxWindow* parent, wxWindowID id,
 	_btnComputeStatistics = new wxButton( this, wxID_ANY, wxT("Compute Statistics"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer1->Add( _btnComputeStatistics, 0, wxALL, 5 );
 
-	_gaugeStatistics = new wxGauge( this, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
-	_gaugeStatistics->SetValue( 0 );
-	bSizer1->Add( _gaugeStatistics, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	_chkApproximate  = new wxCheckBox( this, wxID_ANY, wxT("approximate"), wxDefaultPosition, wxDefaultSize, 0 );
+	_chkApproximate ->SetValue(true);
+	bSizer1->Add( _chkApproximate , 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	gbSizer1->Add( bSizer1, wxGBPosition( 10, 0 ), wxGBSpan( 1, 8 ), wxEXPAND, 5 );

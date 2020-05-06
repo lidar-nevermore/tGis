@@ -23,7 +23,6 @@
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
-#include <wx/gauge.h>
 #include <wx/sizer.h>
 #include <wx/gbsizer.h>
 #include <wx/panel.h>
@@ -54,7 +53,7 @@ class GrayScaleLayerRenderCtrlBase : public wxPanel
 		wxStaticText* _lblOpacityValue;
 		wxSlider* _sldOpacity;
 		wxButton* _btnComputeStatistics;
-		wxGauge* _gaugeStatistics;
+		wxCheckBox* _chkApproximate;
 
 	public:
 

@@ -1,4 +1,5 @@
 #include "RgbLayerRenderCtrl.h"
+#include <wx/progdlg.h>
 
 RgbLayerRenderCtrl::RgbLayerRenderCtrl( wxWindow* parent )
 	:RgbLayerRenderCtrlBase( parent )
@@ -8,12 +9,15 @@ RgbLayerRenderCtrl::RgbLayerRenderCtrl( wxWindow* parent )
 	_layer = nullptr;
 
 	Bind(wxEVT_SLIDER, &RgbLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Bind(wxEVT_BUTTON, &RgbLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 
 }
 
 RgbLayerRenderCtrl::~RgbLayerRenderCtrl()
 {
 	Unbind(wxEVT_SLIDER, &RgbLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Unbind(wxEVT_BUTTON, &RgbLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+
 }
 
 const char * RgbLayerRenderCtrl::GetLayerRenderName()
@@ -216,14 +220,17 @@ void RgbLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 
 			GDALRasterBand* band2 = dt->GetRasterBand(2);
 			GDALRasterBand* band3 = dt->GetRasterBand(3);
-			rMin = band3->GetMinimum();
-			rMax = band3->GetMaximum();
+
+			band3->ComputeStatistics(TRUE, &rMin, &rMax, nullptr, nullptr, nullptr, nullptr);
 			rNoData = band3->GetNoDataValue(&rNoDataOK);
-			gMin = band2->GetMinimum();
-			gMax = band2->GetMaximum();
+			//char szValue[100];
+			//CPLsnprintf(szValue, sizeof(szValue), "%.14g", rMin);
+			//band3->SetMetadataItem("STATISTICS_MINIMUM", szValue);
+
+			band2->ComputeStatistics(TRUE, &gMin, &gMax, nullptr, nullptr, nullptr, nullptr);
 			gNoData = band2->GetNoDataValue(&gNoDataOK);
-			bMin = band1->GetMinimum();
-			bMax = band1->GetMaximum();
+
+			band1->ComputeStatistics(TRUE, &bMin, &bMax, nullptr, nullptr, nullptr, nullptr);
 			bNoData = band1->GetNoDataValue(&bNoDataOK);
 		}
 		else
@@ -234,14 +241,17 @@ void RgbLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 
 			GDALRasterBand* band2 = dt->GetRasterBand(2);
 			GDALRasterBand* band4 = dt->GetRasterBand(4);
-			rMin = band4->GetMinimum();
-			rMax = band4->GetMaximum();
+
+			band4->ComputeStatistics(TRUE, &rMin, &rMax, nullptr, nullptr, nullptr, nullptr);
 			rNoData = band4->GetNoDataValue(&rNoDataOK);
-			gMin = band2->GetMinimum();
-			gMax = band2->GetMaximum();
+			//char szValue[100];
+			//CPLsnprintf(szValue, sizeof(szValue), "%.14g", rMin);
+			//band4->SetMetadataItem("STATISTICS_MINIMUM", szValue);
+
+			band2->ComputeStatistics(TRUE, &gMin, &gMax, nullptr, nullptr, nullptr, nullptr);
 			gNoData = band2->GetNoDataValue(&gNoDataOK);
-			bMin = band1->GetMinimum();
-			bMax = band1->GetMaximum();
+
+			band1->ComputeStatistics(TRUE, &bMin, &bMax, nullptr, nullptr, nullptr, nullptr);
 			bNoData = band1->GetNoDataValue(&bNoDataOK);
 		}
 
@@ -370,4 +380,54 @@ void RgbLayerRenderCtrl::SetLayerRender(RasterRgbLayerRender * render)
 void RgbLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
 {
 	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
+}
+
+static int CPL_STDCALL ComputeStatisticsPrgFunc(double dfComplete, const char *pszMessage, void *pProgressArg)
+{
+	void** progData = (void**)pProgressArg;
+	int prog = *((int*)progData[0]);
+	wxProgressDialog* prgDlg = (wxProgressDialog*)progData[1];
+
+	prgDlg->Update(prog + int(100 * dfComplete));
+
+	return TRUE;
+}
+
+void RgbLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
+{
+	GDALDataset* dt = _raster->GetGDALDataset();
+	bool bApproxOK = _chkApproximate->GetValue();
+
+	int prog = 0;
+	wxProgressDialog* prgDlg = new wxProgressDialog(wxT("Compute Statistics..."), wxT("Computing Statistics..."), 300, this, wxPD_AUTO_HIDE | wxPD_APP_MODAL);
+	void* progData[2] = { &prog, prgDlg };
+
+	int rBandIndex = _choiceRBand->GetSelection() + 1;
+	GDALRasterBand* rBand = dt->GetRasterBand(rBandIndex);
+	double rMin = -1.0;
+	double rMax = -1.0;
+	rBand->ComputeStatistics(bApproxOK ? TRUE : FALSE, &rMin, &rMax, nullptr, nullptr, ComputeStatisticsPrgFunc, progData);
+
+	int gBandIndex = _choiceGBand->GetSelection() + 1;
+	GDALRasterBand* gBand = dt->GetRasterBand(gBandIndex);
+	double gMin = -1.0;
+	double gMax = -1.0;
+	prog = 100;
+	gBand->ComputeStatistics(bApproxOK ? TRUE : FALSE, &gMin, &gMax, nullptr, nullptr, ComputeStatisticsPrgFunc, progData);
+
+	int bBandIndex = _choiceBBand->GetSelection() + 1;
+	GDALRasterBand* bBand = dt->GetRasterBand(bBandIndex);
+	double bMin = -1.0;
+	double bMax = -1.0;
+	prog = 200;
+	bBand->ComputeStatistics(bApproxOK ? TRUE : FALSE, &bMin, &bMax, nullptr, nullptr, ComputeStatisticsPrgFunc, progData);
+
+	_txtRMin->SetValue(wxString::Format(wxT("%.3f"), rMin));
+	_txtGMin->SetValue(wxString::Format(wxT("%.3f"), gMin));
+	_txtBMin->SetValue(wxString::Format(wxT("%.3f"), bMin));
+	_txtRMax->SetValue(wxString::Format(wxT("%.3f"), rMax));
+	_txtGMax->SetValue(wxString::Format(wxT("%.3f"), gMax));
+	_txtBMax->SetValue(wxString::Format(wxT("%.3f"), bMax));
+
+	delete prgDlg;
 }

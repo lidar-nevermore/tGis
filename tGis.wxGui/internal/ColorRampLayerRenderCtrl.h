@@ -43,6 +43,7 @@ private:
 
 private:
 	void _sldOpacity_scroll(wxCommandEvent& event);
+	void _btnComputeStatistics_Clicked(wxCommandEvent& event);
 };
 
 #endif // __ColorRampLayerRenderCtrl__

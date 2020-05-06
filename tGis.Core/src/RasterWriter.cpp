@@ -32,7 +32,8 @@ int CPL_STDCALL WriteMemoryBlockPrgFunc(double dfComplete, const char *pszMessag
 		pszMessage,
 		arg->stepInfo);
 	arg->progressEvent->Raise(prg);
-	return CE_None;
+
+	return TRUE;
 }
 
 TGIS_CORE_API void WriteMemoryBlock(

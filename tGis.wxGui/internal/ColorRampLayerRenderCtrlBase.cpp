@@ -105,9 +105,9 @@ ColorRampLayerRenderCtrlBase::ColorRampLayerRenderCtrlBase( wxWindow* parent, wx
 	_btnComputeStatistics = new wxButton( this, wxID_ANY, wxT("Compute Statistics"), wxDefaultPosition, wxDefaultSize, 0 );
 	bSizer1->Add( _btnComputeStatistics, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	_gaugeStatistics = new wxGauge( this, wxID_ANY, 100, wxDefaultPosition, wxDefaultSize, wxGA_HORIZONTAL );
-	_gaugeStatistics->SetValue( 0 );
-	bSizer1->Add( _gaugeStatistics, 1, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+	_chkApproximate = new wxCheckBox( this, wxID_ANY, wxT("approximate"), wxDefaultPosition, wxDefaultSize, 0 );
+	_chkApproximate->SetValue(true);
+	bSizer1->Add( _chkApproximate, 0, wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 
 	gbSizer1->Add( bSizer1, wxGBPosition( 6, 0 ), wxGBSpan( 1, 8 ), wxEXPAND, 5 );

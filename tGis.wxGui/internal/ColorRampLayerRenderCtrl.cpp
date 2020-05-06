@@ -1,4 +1,5 @@
 #include "ColorRampLayerRenderCtrl.h"
+#include <wx/progdlg.h>
 
 ColorRampLayerRenderCtrl::ColorRampLayerRenderCtrl( wxWindow* parent )
 	:ColorRampLayerRenderCtrlBase( parent )
@@ -151,8 +152,7 @@ void ColorRampLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 		double rNoData = 0;
 		int rNoDataOK = 0;
 
-		rMin = band1->GetMinimum();
-		rMax = band1->GetMaximum();
+		band1->ComputeStatistics(TRUE, &rMin, &rMax, nullptr, nullptr, nullptr, nullptr);
 		rNoData = band1->GetNoDataValue(&rNoDataOK);
 
 		_txtMin->SetValue(wxString::Format(wxT("%.3f"), rMin));
@@ -239,4 +239,33 @@ void ColorRampLayerRenderCtrl::SetLayerRender(RasterColorRampLayerRender * rende
 void ColorRampLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
 {
 	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
+}
+
+
+static int CPL_STDCALL ComputeStatisticsPrgFunc(double dfComplete, const char *pszMessage, void *pProgressArg)
+{
+	wxProgressDialog* prgDlg = (wxProgressDialog*)pProgressArg;
+
+	prgDlg->Update(int(100 * dfComplete));
+
+	return TRUE;
+}
+
+void ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
+{
+	GDALDataset* dt = _raster->GetGDALDataset();
+	bool bApproxOK = _chkApproximate->GetValue();
+
+	wxProgressDialog* prgDlg = new wxProgressDialog(wxT("Compute Statistics..."), wxT("Computing Statistics..."), 100, this, wxPD_AUTO_HIDE | wxPD_APP_MODAL);
+
+	int rBandIndex = _choiceBand->GetSelection() + 1;
+	GDALRasterBand* rBand = dt->GetRasterBand(rBandIndex);
+	double rMin = -1.0;
+	double rMax = -1.0;
+	rBand->ComputeStatistics(bApproxOK ? TRUE : FALSE, &rMin, &rMax, nullptr, nullptr, ComputeStatisticsPrgFunc, prgDlg);
+
+	_txtMin->SetValue(wxString::Format(wxT("%.3f"), rMin));
+	_txtMax->SetValue(wxString::Format(wxT("%.3f"), rMax));
+
+	delete prgDlg;
 }
