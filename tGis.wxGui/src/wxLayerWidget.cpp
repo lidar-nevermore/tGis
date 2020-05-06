@@ -1,3 +1,4 @@
+#include <wx/wx.h>
 #include "wxLayerWidget.h"
 #include "wxLayerPropertyDialog.h"
 #include "wxTGisApplication.h"

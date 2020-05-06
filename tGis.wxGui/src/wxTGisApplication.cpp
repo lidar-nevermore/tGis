@@ -37,7 +37,7 @@ public:
 	// instead of overriding this virtual function we might as well process the
 	// event from it in the frame class - this might be more convenient in some
 	// cases
-	virtual void OnTerminate(int pid, int status) wxOVERRIDE
+	virtual void OnTerminate(int pid, int status)
 	{
 		for (auto it = _owner->_vecProcess.begin(); it != _owner->_vecProcess.end(); it++)
 		{

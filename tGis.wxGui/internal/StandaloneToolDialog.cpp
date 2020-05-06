@@ -1,3 +1,4 @@
+#include <wx/wx.h>
 #include "StandaloneToolDialog.h"
 #include "wxTGisApplication.h"
 

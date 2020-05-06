@@ -1,3 +1,4 @@
+#include <wx/wx.h>
 #include "GrayScaleLayerRenderCtrl.h"
 #include <wx/progdlg.h>
 

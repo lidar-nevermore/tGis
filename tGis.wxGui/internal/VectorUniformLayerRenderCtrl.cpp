@@ -1,3 +1,4 @@
+#include <wx/wx.h>
 #include "VectorUniformLayerRenderCtrl.h"
 #include "wxSymbolPickerWidget.h"
 #include "SymbolLibraryRepository.h"

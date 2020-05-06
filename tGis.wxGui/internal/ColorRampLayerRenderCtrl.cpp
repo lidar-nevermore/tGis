@@ -1,3 +1,4 @@
+#include <wx/wx.h>
 #include "ColorRampLayerRenderCtrl.h"
 #include <wx/progdlg.h>
 
