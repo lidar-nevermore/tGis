@@ -10,8 +10,8 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 int CPL_STDCALL BuildPyramidsPrgFunc(double dfComplete, const char *pszMessage, void *pProgressArg)
 {
-	ProgressEvent* prgEvent = (ProgressEvent*)pProgressArg;
-	if (prgEvent != nullptr)
+	ProgressEventHandler* prgHandler = (ProgressEventHandler*)pProgressArg;
+	if (prgHandler != nullptr)
 	{
 		int totalValue = int(MAX_PRG_VALUE * dfComplete);
 		if (totalValue > MAX_PRG_VALUE)
@@ -22,7 +22,7 @@ int CPL_STDCALL BuildPyramidsPrgFunc(double dfComplete, const char *pszMessage, 
 			MAX_PRG_VALUE,
 			"正在创建金字塔");
 
-		prgEvent->Raise(prg);
+		(*prgHandler)(prg);
 	}
 	return TRUE;
 }
@@ -64,7 +64,7 @@ TGIS_CORE_API bool NeedBuildPyramids(GDALDataset * raster, int sizeThreshold, in
 }
 
 TGIS_CORE_API void BuildPyramids(GDALDataset * raster,
-	ProgressEvent * progressEvent,
+	ProgressEventHandler * progressHandler,
 	int sizeThreshold,
 	int topLevelSize)
 {
@@ -99,17 +99,17 @@ TGIS_CORE_API void BuildPyramids(GDALDataset * raster,
 		const char      *pszResampling = "NEAREST"; //采样方式
 		GDALProgressFunc pfnProgress = BuildPyramidsPrgFunc;//进度条
 
-		CPLErr ret = pDataset->BuildOverviews(pszResampling, nLevelCount, anLevels, 0, NULL, pfnProgress, progressEvent);
+		CPLErr ret = pDataset->BuildOverviews(pszResampling, nLevelCount, anLevels, 0, NULL, pfnProgress, progressHandler);
 
 		if (ret != CE_None)
 		{
 			CPLErrorNum errNum = CPLGetLastErrorNo();
 			if(errNum != CPLE_NotSupported)
-				BuildPyramidsPrgFunc(1.0, "金字塔创建失败！", progressEvent);
+				BuildPyramidsPrgFunc(1.0, "金字塔创建失败！", progressHandler);
 		}
 		else
 		{
-			BuildPyramidsPrgFunc(1.0, "金字塔创建成功。", progressEvent);
+			BuildPyramidsPrgFunc(1.0, "金字塔创建成功。", progressHandler);
 		}
 	}
 }

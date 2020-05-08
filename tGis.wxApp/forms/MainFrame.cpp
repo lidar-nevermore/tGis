@@ -139,15 +139,13 @@ void MainFrame::OnDatasetActivated(IDataset * dt)
 		if (NeedBuildPyramids(dataset->GetGDALDataset()))
 		{
 			wxProgressDialog* prgDlg = new wxProgressDialog(wxT("建立图像金字塔..."), wxT("建立图像金字塔..."), 100, this, wxPD_AUTO_HIDE|wxPD_APP_MODAL);
-			ProgressEvent pyrPrgEvent;
 			FunctorEventHandler<const Progress&> handler(
 				[prgDlg](const Progress& prg)->void
 			{
 				prgDlg->Update(prg.StepValue, prg.Message);
 			});
-			pyrPrgEvent.Add(&handler);
 
-			BuildPyramids(dataset->GetGDALDataset(), &pyrPrgEvent);
+			BuildPyramids(dataset->GetGDALDataset(), &handler);
 
 			delete prgDlg;
 		}

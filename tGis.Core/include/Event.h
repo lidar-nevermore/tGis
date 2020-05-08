@@ -15,6 +15,11 @@ struct IEventHandler
 {
 	virtual void operator()(Args... args) = 0;
 
+	virtual void Raise(Args... args)
+	{
+		(*this)(args...);
+	}
+
 	virtual bool IsEqual(const IEventHandler<Args...>* handler)
 	{
 		return this == handler;

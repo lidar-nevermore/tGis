@@ -18,7 +18,7 @@ TGIS_CORE_API bool NeedBuildPyramids(GDALDataset * raster,
 
 
 TGIS_CORE_API void BuildPyramids(GDALDataset * raster,
-	ProgressEvent * progressEvent = nullptr,
+	ProgressEventHandler * progressHanler = nullptr,
 	int sizeThreshold = 1080, 
 	int topLevelSize = 255);
 

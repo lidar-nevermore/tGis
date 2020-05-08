@@ -18,7 +18,7 @@ struct WriteMemoryBlockPrgArg
 	int maxValue;
 	int totalValue;
 	double stepRatio;
-	ProgressEvent* progressEvent;
+	ProgressEventHandler* progressHandler;
 };
 
 int CPL_STDCALL WriteMemoryBlockPrgFunc(double dfComplete, const char *pszMessage, void *pProgressArg)
@@ -31,7 +31,7 @@ int CPL_STDCALL WriteMemoryBlockPrgFunc(double dfComplete, const char *pszMessag
 		arg->maxValue,
 		pszMessage,
 		arg->stepInfo);
-	arg->progressEvent->Raise(prg);
+	(*(arg->progressHandler))(prg);
 
 	return TRUE;
 }
@@ -39,7 +39,7 @@ int CPL_STDCALL WriteMemoryBlockPrgFunc(double dfComplete, const char *pszMessag
 TGIS_CORE_API void WriteMemoryBlock(
 	const char* path, 
 	void** mem, GDALDataType dt, int w, int h, int count, double noDataValue,
-	ProgressEvent * progressEvent,
+	ProgressEventHandler * progressHandler,
 	GDALDataset * raster, int xOffset, int yOffset, int xSize, int ySize)
 {
 	bool supported = false;
@@ -91,14 +91,14 @@ TGIS_CORE_API void WriteMemoryBlock(
 	outRaster->SetGeoTransform(geoTransform);
 
 	WriteMemoryBlockPrgArg prga;
-	prga.progressEvent = progressEvent;
+	prga.progressHandler = progressHandler;
 	prga.stepRatio = 1.0 / count;
 
 	GDALRasterIOExtraArg rasterIoArg;
 	INIT_RASTERIO_EXTRA_ARG(rasterIoArg);
 	rasterIoArg.pfnProgress = WriteMemoryBlockPrgFunc;
 	rasterIoArg.pProgressData = &prga;
-	GDALRasterIOExtraArg *pRasterIoArg = progressEvent == nullptr ? nullptr : &rasterIoArg;
+	GDALRasterIOExtraArg *pRasterIoArg = progressHandler == nullptr ? nullptr : &rasterIoArg;
 	char stepInfoBuf[1000];
 	for (int i = 1; i <= count; i++)
 	{
@@ -108,14 +108,14 @@ TGIS_CORE_API void WriteMemoryBlock(
 		outBand->SetNoDataValue(noDataValue);
 		outBand->RasterIO(GF_Write, 0, 0, w, h, mem[i - 1], w, h, dt, 0, 0, pRasterIoArg);
 		outBand->FlushCache();
-		if (progressEvent != nullptr)
+		if (progressHandler != nullptr)
 		{
 			Progress prg(i==count?prga.maxValue:prga.totalValue,
 				prga.maxValue,
 				prga.maxValue,
 				nullptr,
 				stepInfoBuf);
-			progressEvent->Raise(prg);
+			(*progressHandler)(prg);
 		}
 	}
 
@@ -128,7 +128,7 @@ TGIS_CORE_API void CopyRaster(const char* path,
 	int xOffset, int yOffset, int xSize, int ySize,
 	int dstXSize, int dstYSize,
 	int* bands, int count,
-	ProgressEvent * progressEvent)
+	ProgressEventHandler * progressHandler)
 {
 }
 
