@@ -25,8 +25,8 @@ int CPL_STDCALL WriteMemoryBlockPrgFunc(double dfComplete, const char *pszMessag
 {
 	WriteMemoryBlockPrgArg* arg = (WriteMemoryBlockPrgArg*)pProgressArg;
 	int stepValue = int(arg->maxValue * dfComplete);
-	arg->totalValue += int(arg->stepRatio*stepValue);
-	Progress prg(arg->totalValue,
+	int totalValue = arg->totalValue + int(arg->stepRatio*stepValue);
+	Progress prg(totalValue,
 		stepValue,
 		arg->maxValue,
 		pszMessage,
@@ -108,15 +108,18 @@ TGIS_CORE_API void WriteMemoryBlock(
 		outBand->SetNoDataValue(noDataValue);
 		outBand->RasterIO(GF_Write, 0, 0, w, h, mem[i - 1], w, h, dt, 0, 0, pRasterIoArg);
 		outBand->FlushCache();
-		if (progressHandler != nullptr)
-		{
-			Progress prg(i==count?prga.maxValue:prga.totalValue,
-				prga.maxValue,
-				prga.maxValue,
-				nullptr,
-				stepInfoBuf);
-			(*progressHandler)(prg);
-		}
+
+		prga.totalValue += prga.maxValue*i/count;
+	}
+
+	if (progressHandler != nullptr)
+	{
+		Progress prg(prga.maxValue,
+			prga.maxValue,
+			prga.maxValue,
+			nullptr,
+			stepInfoBuf);
+		(*progressHandler)(prg);
 	}
 
 	outRaster->FlushCache();
