@@ -155,49 +155,31 @@ void LayerRender::SetMaxSurfaceSize(int width, int height)
 	size_t surfaceBufferSize = width*height * 4;
 	if (surfaceBufferSize > _g_rbuf._surfaceBufferSize)
 	{
-		_g_rbuf._surfaceBufferSize = surfaceBufferSize;
-		_g_rbuf._datasetBufferSize = surfaceBufferSize * 2;
+		size_t datasetBufferSize = surfaceBufferSize * 2;
 
+		//所有的render都在单一UI线程里运行，这些骚操作其实没必要
+		elr_mtx_lock(&_g_rbuf._mtx);
+
+		while (_g_rbuf._surfaceBufferInUsing != 0);
+
+		if (_g_rbuf._surfaceBuffer != nullptr)
+			free(_g_rbuf._surfaceBuffer);
+		
+		_g_rbuf._surfaceBuffer = (unsigned char*)malloc(surfaceBufferSize);
+
+		while (_g_rbuf._datasetBufferInUsing != 0);
+
+		if (_g_rbuf._datasetBuffer != nullptr)
+			free(_g_rbuf._datasetBuffer);
+
+		_g_rbuf._datasetBuffer = (unsigned char*)malloc(datasetBufferSize);
+
+		_g_rbuf._surfaceBufferSize = surfaceBufferSize;
+		_g_rbuf._datasetBufferSize = datasetBufferSize;
 		_g_rbuf._maxSurfaceWidth = width;
 		_g_rbuf._maxSurfaceHeight = height;
 
-		bool ok = false;
-		if (_g_rbuf._surfaceBufferInUsing == 0)
-		{
-			elr_mtx_lock(&_g_rbuf._mtx);
-			if (_g_rbuf._surfaceBufferInUsing == 0)
-			{
-				elr_atomic_inc(&_g_rbuf._surfaceBufferInUsing);
-				ok = true;
-				if (_g_rbuf._surfaceBuffer != nullptr)
-					free(_g_rbuf._surfaceBuffer);
-			}
-			elr_mtx_lock(&_g_rbuf._mtx);
-		}
-
-		_g_rbuf._surfaceBuffer = (unsigned char*)malloc(width*height * 4);
-
-		if (ok)
-			elr_atomic_dec(&_g_rbuf._surfaceBufferInUsing);
-
-		ok = false;
-		if (_g_rbuf._datasetBufferInUsing == 0)
-		{
-			elr_mtx_lock(&_g_rbuf._mtx);
-			if (_g_rbuf._datasetBufferInUsing == 0)
-			{
-				elr_atomic_inc(&_g_rbuf._datasetBufferInUsing);
-				ok = true;
-				if (_g_rbuf._datasetBuffer != nullptr)
-					free(_g_rbuf._datasetBuffer);
-			}
-			elr_mtx_lock(&_g_rbuf._mtx);
-		}
-
-		_g_rbuf._datasetBuffer = (unsigned char*)malloc(width*height * 8);
-
-		if (ok)
-			elr_atomic_dec(&_g_rbuf._datasetBufferInUsing);
+		elr_mtx_lock(&_g_rbuf._mtx);
 	}
 }
 

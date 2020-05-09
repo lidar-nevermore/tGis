@@ -81,6 +81,7 @@ protected:
 	//这里才真正申请 数据集的buffer 和 将数据集转换为可视图像的buffer
 	//所需缓存的大小与显示屏大小有关系，
 	//系统初始化时按照显示屏大小申请一份就可以满足缩小窗口的使用要求
+	//SetMaxSurfaceSize不允许失败
 	static void SetMaxSurfaceSize(int width, int height);
 };
 
