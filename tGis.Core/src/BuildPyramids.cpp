@@ -44,17 +44,23 @@ TGIS_CORE_API bool NeedBuildPyramids(GDALDataset * raster, int sizeThreshold, in
 	int iWidth = pDataset->GetRasterXSize();
 	int iHeight = pDataset->GetRasterYSize();
 
-	int iCurNum = max(iWidth, iHeight);
+	if (max(iWidth, iHeight) < sizeThreshold)
+		return false;
+
+	sizeThreshold = topLevelSize*topLevelSize;
+
+	int iPixelNum = iWidth * iHeight;    //图像中的总像元个数
+	int iCurNum = iPixelNum;
 
 	int anLevels[1024] = { 0 };
 	int nLevelCount = 0;                //金字塔级数
 
 	do    //计算金字塔级数，从第二级到顶层
 	{
-		iCurNum /= 2;
+		iCurNum /= 4;
 		anLevels[nLevelCount] = static_cast<int>(pow(2.0, nLevelCount + 2));
 		nLevelCount++;
-	} while (iCurNum > topLevelSize);
+	} while (iCurNum > sizeThreshold);
 
 	GDALRasterBand* band = pDataset->GetRasterBand(1);
 	if (band->GetOverviewCount() < nLevelCount)
@@ -77,17 +83,23 @@ TGIS_CORE_API void BuildPyramids(GDALDataset * raster,
 	int iWidth = pDataset->GetRasterXSize();
 	int iHeight = pDataset->GetRasterYSize();
 
-	int iCurNum = max(iWidth, iHeight);
+	if (max(iWidth, iHeight) < sizeThreshold)
+		return;
+
+	sizeThreshold = topLevelSize*topLevelSize;
+
+	int iPixelNum = iWidth * iHeight;    //图像中的总像元个数
+	int iCurNum = iPixelNum;
 
 	int anLevels[1024] = { 0 };
 	int nLevelCount = 0;                //金字塔级数
 
 	do    //计算金字塔级数，从第二级到顶层
 	{
-		iCurNum /= 2;
+		iCurNum /= 4;
 		anLevels[nLevelCount] = static_cast<int>(pow(2.0, nLevelCount + 2));
 		nLevelCount++;
-	} while (iCurNum > topLevelSize);
+	} while (iCurNum > sizeThreshold);
 
 	/* -------------------------------------------------------------------- */
 	/*      Generate overviews.                                             */
