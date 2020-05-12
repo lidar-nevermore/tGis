@@ -267,21 +267,21 @@ void RgbLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 			_chkRNoDataEQ->SetValue(true);
 			_chkRNoDataGT->SetValue(false);
 			_chkRNoDataLT->SetValue(false);
-			_txtRNoData->SetValue(wxString::Format(wxT("%.f"), rNoData));
+			_txtRNoData->SetValue(wxString::Format(wxT("%f"), rNoData));
 		}
 		if (gNoDataOK)
 		{
 			_chkGNoDataEQ->SetValue(true);
 			_chkGNoDataGT->SetValue(false);
 			_chkGNoDataLT->SetValue(false);
-			_txtGNoData->SetValue(wxString::Format(wxT("%.f"), gNoData));
+			_txtGNoData->SetValue(wxString::Format(wxT("%f"), gNoData));
 		}
 		if (bNoDataOK)
 		{
 			_chkBNoDataEQ->SetValue(true);
 			_chkBNoDataGT->SetValue(false);
 			_chkBNoDataLT->SetValue(false);
-			_txtBNoData->SetValue(wxString::Format(wxT("%.f"), bNoData));
+			_txtBNoData->SetValue(wxString::Format(wxT("%f"), bNoData));
 		}
 	}
 }
@@ -314,7 +314,7 @@ void RgbLayerRenderCtrl::SetLayerRender(RasterRgbLayerRender * render)
 	int noDataLogicR;
 	double rNoData;
 	_render->GetNoDataValueR(&noDataLogicR, &rNoData);
-	_txtRNoData->SetValue(wxString::Format(wxT("%.f"), rNoData));
+	_txtRNoData->SetValue(wxString::Format(wxT("%f"), rNoData));
 	_chkRNoDataEQ->SetValue(false);
 	_chkRNoDataGT->SetValue(false);
 	_chkRNoDataLT->SetValue(false);
@@ -335,7 +335,7 @@ void RgbLayerRenderCtrl::SetLayerRender(RasterRgbLayerRender * render)
 	int noDataLogicG;
 	double gNoData;
 	_render->GetNoDataValueG(&noDataLogicG, &gNoData);
-	_txtGNoData->SetValue(wxString::Format(wxT("%.f"), gNoData));
+	_txtGNoData->SetValue(wxString::Format(wxT("%f"), gNoData));
 	_chkGNoDataEQ->SetValue(false);
 	_chkGNoDataGT->SetValue(false);
 	_chkGNoDataLT->SetValue(false);
@@ -356,7 +356,7 @@ void RgbLayerRenderCtrl::SetLayerRender(RasterRgbLayerRender * render)
 	int noDataLogicB;
 	double bNoData;
 	_render->GetNoDataValueB(&noDataLogicB, &bNoData);
-	_txtBNoData->SetValue(wxString::Format(wxT("%.f"), bNoData));
+	_txtBNoData->SetValue(wxString::Format(wxT("%f"), bNoData));
 	_chkBNoDataEQ->SetValue(false);
 	_chkBNoDataGT->SetValue(false);
 	_chkBNoDataLT->SetValue(false);

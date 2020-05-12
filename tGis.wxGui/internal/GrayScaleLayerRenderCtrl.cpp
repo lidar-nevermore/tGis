@@ -144,7 +144,7 @@ void GrayScaleLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 			_chkNoDataEQ->SetValue(true);
 			_chkNoDataGT->SetValue(false);
 			_chkNoDataLT->SetValue(false);
-			_txtNoData->SetValue(wxString::Format(wxT("%.f"), rNoData));
+			_txtNoData->SetValue(wxString::Format(wxT("%f"), rNoData));
 		}
 	}
 
@@ -167,7 +167,7 @@ void GrayScaleLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * rende
 	int noDataLogicR;
 	double rNoData;
 	_render->GetNoDataValue(&noDataLogicR, &rNoData);
-	_txtNoData->SetValue(wxString::Format(wxT("%.f"), rNoData));
+	_txtNoData->SetValue(wxString::Format(wxT("%f"), rNoData));
 	_chkNoDataEQ->SetValue(false);
 	_chkNoDataGT->SetValue(false);
 	_chkNoDataLT->SetValue(false);
