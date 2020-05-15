@@ -81,7 +81,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);$(ELRMPL);$(GDALDIR)\lib;$(WXDIR)\lib\vc140_x64_dll</AdditionalLibraryDirectories>
-      <AdditionalDependencies>tGis.Core.lib;gdal_i.lib;elr_mpl.lib;wxmsw30ud_core.lib;wxbase30ud.lib;wxmsw30ud_gl.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tGis.Core.lib;gdal_i.lib;elr_mpl.lib;wxmsw30u_core.lib;wxbase30u.lib;wxmsw30u_gl.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
