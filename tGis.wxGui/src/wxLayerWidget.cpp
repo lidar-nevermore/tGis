@@ -215,36 +215,42 @@ inline void wxLayerWidget::RemoveLayerNode(ILayer * layer, size_t pos)
 	wxTreeItemId layerNodeId = _impl_->_vecLayerNode[pos];
 	_impl_->_vecLayerNode.erase(_impl_->_vecLayerNode.begin() + pos);
 	_treeCtrl->Delete(layerNodeId);	
+
+	//wxTreeCtrl有bug删除item之后选择新节点但是不触发事件
+	//wxTreeCtrl还有另外的bug，删除item之后，GetChildrenCount返回的值不变
+	wxTreeEvent treeEvent;
+	treeEvent.SetItem(_treeCtrl->GetSelection());
+	OnNodeSelChanged(treeEvent);
 }
 
-void wxLayerWidget::RemoveLayerNode(IDataset * dt)
-{
-	for (auto it = _impl_->_vecLayerNode.begin(); it != _impl_->_vecLayerNode.end(); it++)
-	{
-		wxTreeItemId layerNodeId = *it;
-		layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
-		if (layerData->_layer->GetDataset() == dt)
-		{
-			_impl_->_vecLayerNode.erase(it);
-			_treeCtrl->Delete(layerNodeId);
-			break;
-		}
-	}
-
-	//wxTreeItemId root = _treeCtrl->GetRootItem();
-	//wxTreeItemIdValue layerCookie;
-	//wxTreeItemId layerNodeId = _treeCtrl->GetFirstChild(root, layerCookie);
-	//while (layerNodeId.IsOk())
-	//{
-	//	layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
-	//	if (layerData->_layer->GetDataset() == dt)
-	//	{
-	//		_treeCtrl->Delete(layerNodeId);
-	//		break;
-	//	}
-	//	layerNodeId = _treeCtrl->GetNextChild(root, layerCookie);
-	//}
-}
+//void wxLayerWidget::RemoveLayerNode(IDataset * dt)
+//{
+//	for (auto it = _impl_->_vecLayerNode.begin(); it != _impl_->_vecLayerNode.end(); it++)
+//	{
+//		wxTreeItemId layerNodeId = *it;
+//		layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
+//		if (layerData->_layer->GetDataset() == dt)
+//		{
+//			_impl_->_vecLayerNode.erase(it);
+//			_treeCtrl->Delete(layerNodeId);
+//			break;
+//		}
+//	}
+//
+//	//wxTreeItemId root = _treeCtrl->GetRootItem();
+//	//wxTreeItemIdValue layerCookie;
+//	//wxTreeItemId layerNodeId = _treeCtrl->GetFirstChild(root, layerCookie);
+//	//while (layerNodeId.IsOk())
+//	//{
+//	//	layerTreeItemData* layerData = (layerTreeItemData*)_treeCtrl->GetItemData(layerNodeId);
+//	//	if (layerData->_layer->GetDataset() == dt)
+//	//	{
+//	//		_treeCtrl->Delete(layerNodeId);
+//	//		break;
+//	//	}
+//	//	layerNodeId = _treeCtrl->GetNextChild(root, layerCookie);
+//	//}
+//}
 
 void wxLayerWidget::OnDatasetClose(IDataset * dt)
 {

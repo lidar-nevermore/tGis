@@ -68,7 +68,7 @@ private:
 private:
 	wxTreeItemId AddLayerNode(ILayer* layer, size_t pos);
 	void RemoveLayerNode(ILayer* layer, size_t pos);
-	void RemoveLayerNode(IDataset* dt);
+	//void RemoveLayerNode(IDataset* dt);
 	void OnDatasetClose(IDataset* dt);
 	size_t UpdateLayerTool();
 

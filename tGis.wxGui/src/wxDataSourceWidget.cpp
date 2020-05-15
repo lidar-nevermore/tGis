@@ -267,6 +267,12 @@ void wxDataSourceWidget::RemoveOpenedDatasetNode(IDataset * dt)
 		}
 		dsNodeId = _treeCtrl->GetNextChild(_openedDtItemId, dsCookie);
 	}
+
+	//wxTreeCtrl有bug删除item之后选择新节点但是不触发事件
+	//wxTreeCtrl还有另外的bug，删除item之后，GetChildrenCount返回的值不变
+	wxTreeEvent treeEvent;
+	treeEvent.SetItem(_treeCtrl->GetSelection());
+	OnNodeSelChanged(treeEvent);
 }
 
 void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
