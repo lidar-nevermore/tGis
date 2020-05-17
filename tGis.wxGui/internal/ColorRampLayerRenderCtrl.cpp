@@ -10,13 +10,15 @@ ColorRampLayerRenderCtrl::ColorRampLayerRenderCtrl( wxWindow* parent )
 	_layer = nullptr;
 
 	Bind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Bind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 
 }
 
 ColorRampLayerRenderCtrl::~ColorRampLayerRenderCtrl()
 {
 	Unbind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
-	
+	Unbind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+
 }
 
 const char * ColorRampLayerRenderCtrl::GetLayerRenderName()

@@ -10,12 +10,14 @@ GrayScaleLayerRenderCtrl::GrayScaleLayerRenderCtrl( wxWindow* parent )
 	_layer = nullptr;
 
 	Bind(wxEVT_SLIDER, &GrayScaleLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Bind(wxEVT_BUTTON, &GrayScaleLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 
 }
 
 GrayScaleLayerRenderCtrl::~GrayScaleLayerRenderCtrl()
 {
 	Unbind(wxEVT_SLIDER, &GrayScaleLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Unbind(wxEVT_BUTTON, &GrayScaleLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 
 }
 
