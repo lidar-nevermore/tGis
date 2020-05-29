@@ -90,10 +90,23 @@ void StandaloneTool::Execute()
 	oss << _impl_->_absExe;
 	oss << "\" ";
 
-	for (auto it = _impl_->_vecParam.begin(); it != _impl_->_vecParam.begin(); it++)
+	for (auto it = _impl_->_vecParam.begin(); it != _impl_->_vecParam.end(); it++)
 	{
-		oss << *it;
-		oss << " ";
+		string& param = *it;
+		if (param.compare(0, 7, "$(tGis)") == 0)
+		{
+			oss << "\"";
+			oss << tGisApplication::INSTANCE()->GetExeDir();
+			//oss << TGIS_PATH_SEPARATOR_STR;
+			oss << param.substr(7);
+			oss << "\" ";
+		}
+		else
+		{
+			oss << "\"";
+			oss << *it;
+			oss << "\" ";
+		}
 	}
 
 	string cmdstr = oss.str();
