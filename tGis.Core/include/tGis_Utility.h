@@ -13,8 +13,8 @@ extern "C"
 #include "linked_array.h"
 }
 
-#include "RasterBandSeqBlockReader.h"
-#include "RasterBandSeqPixelReader.h"
+#include "RasterBandPixelBlockWalker.h"
+#include "RasterBandStorageBlockWalker.h"
 #include "RasterBandStorageBlockGridReader.h"
 
 #include "Progress.h"

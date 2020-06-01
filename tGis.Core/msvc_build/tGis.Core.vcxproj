@@ -59,6 +59,7 @@
     <ClInclude Include="..\include\ISurface.h" />
     <ClInclude Include="..\include\ISymbol.h" />
     <ClInclude Include="..\include\ISymbolLibrary.h" />
+    <ClInclude Include="..\include\MultiRasterBandStorageBlockWalker.h" />
     <ClInclude Include="..\include\ToolKitSet.h" />
     <ClInclude Include="..\include\ITypedObject.h" />
     <ClInclude Include="..\include\ITool.h" />
@@ -102,8 +103,8 @@
     <ClInclude Include="..\include\tGis_Organizer.h" />
     <ClInclude Include="..\include\tGis_Symbol.h" />
     <ClInclude Include="..\include\tGis_Visualize.h" />
-    <ClInclude Include="..\include\RasterBandSeqBlockReader.h" />
-    <ClInclude Include="..\include\RasterBandSeqPixelReader.h" />
+    <ClInclude Include="..\include\RasterBandPixelBlockWalker.h" />
+    <ClInclude Include="..\include\RasterBandStorageBlockWalker.h" />
     <ClInclude Include="..\include\RasterBandStorageBlockGridReader.h" />
     <ClInclude Include="..\include\RasterGrayScaleLayerRender.h" />
     <ClInclude Include="..\include\RasterLayerRender.h" />
@@ -142,6 +143,7 @@
     <ClCompile Include="..\src\IInclusionObject.cpp" />
     <ClCompile Include="..\src\ILayerRender.cpp" />
     <ClCompile Include="..\src\ilog.c" />
+    <ClCompile Include="..\src\MultiRasterBandStorageBlockWalker.cpp" />
     <ClCompile Include="..\src\ToolKitSet.cpp" />
     <ClCompile Include="..\src\Layer.cpp" />
     <ClCompile Include="..\src\LayerRender.cpp" />
@@ -157,8 +159,8 @@
     <ClCompile Include="..\src\MyGDALVectorDataset.cpp" />
     <ClCompile Include="..\src\OverlayLayer.cpp" />
     <ClCompile Include="..\src\OverlayRect.cpp" />
-    <ClCompile Include="..\src\RasterBandSeqBlockReader.cpp" />
-    <ClCompile Include="..\src\RasterBandSeqPixelReader.cpp" />
+    <ClCompile Include="..\src\RasterBandPixelBlockWalker.cpp" />
+    <ClCompile Include="..\src\RasterBandStorageBlockWalker.cpp" />
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp" />
     <ClCompile Include="..\src\RasterColorRampLayerRender.cpp" />
     <ClCompile Include="..\src\RasterGrayScaleLayerRender.cpp" />

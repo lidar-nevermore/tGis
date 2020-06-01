@@ -12,10 +12,10 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-typedef struct _StorageBlockBuffer
+//影像一般会按块进行存储，每个存储块占据连续的地址空间
+//调用readblock接口一次读取一整块，具有更高的读写效率
+struct StorageBlockInfo
 {
-	//当前遍历至的块指针
-	void* Buffer; 
 	//xBlockOff,yBlockOff 当前所遍历块的编号，也就是第几个块
 	int xBlockOff; 
 	int yBlockOff;
@@ -34,21 +34,54 @@ typedef struct _StorageBlockBuffer
 	//xEndPosIB,yEndPosIB 当前块中 处于AOI外接矩形中的部分 的右下角 在Block中的位置
 	int xEndPosIB;
 	int yEndPosIB;
-} StorageBlockBuffer;
+} ;
 
 
-class TGIS_CORE_API RasterBandSeqPixelReader
+class TGIS_CORE_API RasterBandStorageBlockWalker
 {
 public:
-	typedef void(*FOREACHPIXEL_FUNC)(void* user, GDALRasterBand* band, double pix, int x, int y, void* orgPix, StorageBlockBuffer* block, int xPosIB, int yPosIB);
-	typedef void(*FOREACHBLOCK_FUNC)(void* user, GDALRasterBand* band, StorageBlockBuffer* block);
+	//遍历像素回调
+	//band 当前遍历的波段 
+	//pix 像素值 
+	//xIM, yIM 像素的图像坐标 
+	//xIB, yIB 当前遍历至像素在块中坐标 
+	//orgPix 原始像素值指针(指向blockBuffer中某处，具体类型由band的DataType确定) 
+	//blockInfo 当前块信息 
+	//blockBuffer 当前块内存 
+	//dataType 波段的数据类型
+	//dataBytes 波段数据占据的字节数目
+	//progress 遍历进度 多个块更新一次进度，如果进度值没有改变不需要更新ui上的进度提示，更新进度提示会拖累效率
+	//
+	//functor或者lambda表达式调用比直接函数指针调用要慢很多
+	//不推荐用该接口
+	typedef void(__stdcall *FOREACHPIXEL_FUNC)(void* user, 
+		GDALRasterBand* band,
+		double pix, int xIM, int yIM, int xIB, int yIB, void* orgPix,
+		StorageBlockInfo* blockInfo, void* blockBuffer,
+		GDALDataType dataType, int dataBytes,
+		double progress);
+
+	//遍历像素块回调
+	//blockInfo 当前块信息 
+	//blockBuffer 当前块内存 
+	//dataType 波段的数据类型
+	//dataBytes 波段数据占据的字节数目
+	//aoiBuffer 当前块中在AOI范围内的部分对应的AOI像素缓存
+	//aoiNoDataValue aoi像素的无效值，没有无效值将会传递INT_MIN
+	//progress 遍历进度 多个块更新一次进度，如果进度值没有改变不需要更新ui上的进度提示，更新进度提示会拖累效率
+	typedef void(__stdcall *FOREACHBLOCK_FUNC)(void* user,
+		GDALRasterBand* band,
+		StorageBlockInfo* blockInfo, void* blockBuffer,
+		GDALDataType dataType, int dataBytes,
+		unsigned char* aoiBuffer, double aoiNoDataValue,
+		double progress);
 
 public:
-	RasterBandSeqPixelReader(GDALDataset* raster,int band,GDALDataset* aoiRaster = nullptr, int aoiBand=0);
-	RasterBandSeqPixelReader(GDALDataset* raster,GDALRasterBand* band,GDALDataset* aoiRaster = nullptr, int aoiBand=0);
-	RasterBandSeqPixelReader(GDALDataset* raster,int band,int xOffset, int yOffset, int xSize, int ySize);
-	RasterBandSeqPixelReader(GDALDataset* raster,GDALRasterBand* band,int xOffset, int yOffset, int xSize, int ySize);
-	~RasterBandSeqPixelReader(void);
+	RasterBandStorageBlockWalker(GDALDataset* raster,int band,GDALDataset* aoiRaster = nullptr, int aoiBand=0);
+	RasterBandStorageBlockWalker(GDALDataset* raster,GDALRasterBand* band,GDALDataset* aoiRaster = nullptr, int aoiBand=0);
+	RasterBandStorageBlockWalker(GDALDataset* raster,int band,int xOffset, int yOffset, int xSize, int ySize);
+	RasterBandStorageBlockWalker(GDALDataset* raster,GDALRasterBand* band,int xOffset, int yOffset, int xSize, int ySize);
+	~RasterBandStorageBlockWalker(void);
 
 public:
 	int GetXOffset() { return _xOffset; }
@@ -65,7 +98,7 @@ public:
 
 	void ResetPixelReading();
 
-	//遍历像素; raster 当前遍历的影像 band 当前遍历的波段 pix 像素值 x,y 像素的图像坐标 orgPix 原始像素值指针   xPos,yPos 当前遍历至像素在块中坐标
+	//遍历像素
 	void ForEachPixel(FOREACHPIXEL_FUNC proc, void* user);
 
 	void ResetBlockReading();
@@ -73,7 +106,7 @@ public:
 	//遍历像素块; 
 	void ForEachBlock(FOREACHBLOCK_FUNC proc, void* user);
 
-private:
+protected:
 	int _xOffset;
 	int _yOffset;
 	int _xEnd;
@@ -129,10 +162,8 @@ private:
 private:
 	void CalcPixelTraverseParam(int xBlockOff,int yBlockOff,int xBlockSize,int yBlockSize);
 
-	double GetPixelValue(void* pix);
-
 private:
-    CPL_DISALLOW_COPY_ASSIGN(RasterBandSeqPixelReader)
+    CPL_DISALLOW_COPY_ASSIGN(RasterBandStorageBlockWalker)
 
 };
 

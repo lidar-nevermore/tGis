@@ -13,19 +13,23 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-//按块读取像素，一般用来做卷积计算用
-class TGIS_CORE_API RasterBandSeqBlockReader
+//遍历波段上每一个像素块， 通常用作卷积计算
+//
+//没有padding，步长是1，卷积计算的padding需要自行处理
+//假如波段大小是4*4，请求遍历的像素块是3*3，那么总共需要遍历4次
+//
+class TGIS_CORE_API RasterBandPixelBlockWalker
 {
 public:
 	// x,y为读取像素块左上角的像素坐标
 	typedef void(*FOREACHBLOCK_FUNC)(void* user, GDALRasterBand* band, void* block, int x, int y);
 
 public:
-	RasterBandSeqBlockReader(GDALDataset* raster,int band,int width,int height,GDALDataset* aoiRaster = nullptr, int aoiBand=0,int mlimit = 16);
-	RasterBandSeqBlockReader(GDALDataset* raster,GDALRasterBand* band,int width,int height,GDALDataset* aoiRaster = nullptr, int aoiBand=0,int mlimit = 16);
-	RasterBandSeqBlockReader(GDALDataset* raster,int band,int width,int height,int xOffset = 0, int yOffset = 0, int xSize = -1, int ySize = -1,int mlimit = 16);
-	RasterBandSeqBlockReader(GDALDataset* raster,GDALRasterBand* band,int width,int height,int xOffset = 0, int yOffset = 0, int xSize = -1, int ySize = -1,int mlimit = 16);
-	~RasterBandSeqBlockReader(void);
+	RasterBandPixelBlockWalker(GDALDataset* raster,int band,int width,int height,GDALDataset* aoiRaster = nullptr, int aoiBand=0,int mlimit = 16);
+	RasterBandPixelBlockWalker(GDALDataset* raster,GDALRasterBand* band,int width,int height,GDALDataset* aoiRaster = nullptr, int aoiBand=0,int mlimit = 16);
+	RasterBandPixelBlockWalker(GDALDataset* raster,int band,int width,int height,int xOffset = 0, int yOffset = 0, int xSize = -1, int ySize = -1,int mlimit = 16);
+	RasterBandPixelBlockWalker(GDALDataset* raster,GDALRasterBand* band,int width,int height,int xOffset = 0, int yOffset = 0, int xSize = -1, int ySize = -1,int mlimit = 16);
+	~RasterBandPixelBlockWalker(void);
 
 	int GetXOffset() { return _xOffset; }
 
