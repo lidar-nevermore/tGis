@@ -32,7 +32,9 @@ bool RgbLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 	{
 		ILayerRender* render = layer->GetRender();
 
-		if (render != nullptr && render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
+		if (render == nullptr)
+			return true;
+		else if (render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
 			return true;
 	}
 
