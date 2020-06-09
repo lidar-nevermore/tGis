@@ -76,7 +76,7 @@ FileSystemDataSource::~FileSystemDataSource()
 	delete _impl_;
 }
 
-void FileSystemDataSource::OnTraverseDir(void * usr, const char * dir, const char * name, unsigned int attrib)
+void FileSystemDataSource::OnTraverseDirConnect(void * usr, const char * dir, const char * name, unsigned int attrib)
 {
 	FileSystemDataSource* fsDataSrc = (FileSystemDataSource*)usr;
 
@@ -114,6 +114,52 @@ void FileSystemDataSource::OnTraverseDir(void * usr, const char * dir, const cha
 	}
 }
 
+void FileSystemDataSource::OnTraverseDirRefresh(void * usr, const char * dir, const char * name, unsigned int attrib)
+{
+	if ((attrib&_TGIS_A_HIDDEN)
+		|| (attrib&_TGIS_A_SYSTEM))
+		return;
+
+	FileSystemDataSource* fsDataSrc = (FileSystemDataSource*)usr;
+
+	char path[TGIS_MAX_PATH] = { 0 };
+	strcpy(path, dir);
+	strcat(path, TGIS_PATH_SEPARATOR_STR);
+	strcat(path, name);
+
+	if (attrib&_TGIS_A_SUBDIR)
+	{
+		bool contain = fsDataSrc->ContainDataSource(name);
+
+		if (false == contain)
+		{
+			IDataSource* ds = new FileSystemDataSource(path);
+			fsDataSrc->AddDataSource(ds);
+		}
+	}
+	else
+	{
+		size_t pos = _tgis_find_last_of(name, TGIS_EXT_SEPARATOR_STR, 0);
+		if (pos != -1)
+		{
+			bool contain = fsDataSrc->ContainDataset(name);
+			if (contain) return;
+
+			const char* ext = name + pos + 1;
+			GDALAccess eAccess = (attrib&_TGIS_A_RDONLY) == 0 ? GA_Update : GA_ReadOnly;
+
+			if (MyGDALDataset::IsSupportedRasterFormatFirstExt(ext))
+			{
+				MyGDALFileRasterDataset* dt = new MyGDALFileRasterDataset(fsDataSrc, path, eAccess);
+			}
+			else if (MyGDALDataset::IsSupportedVectorFormatFirstExt(ext))
+			{
+				MyGDALVectorDataset* dt = new MyGDALVectorDataset(fsDataSrc, path, eAccess);
+			}
+		}
+	}
+}
+
 void FileSystemDataSource::Connect()
 {
 	if (_connected)
@@ -121,9 +167,17 @@ void FileSystemDataSource::Connect()
 
 	_connected = true;
 
-	_tgis_traverse_dir(_impl_->_path.c_str(),"*", this, OnTraverseDir);
+	_tgis_traverse_dir(_impl_->_path.c_str(),"*", this, OnTraverseDirConnect);
 
 	DataSource::Connect();
+}
+
+void FileSystemDataSource::Refresh()
+{
+	if (false == _connected)
+		return;
+
+	_tgis_traverse_dir(_impl_->_path.c_str(), "*", this, OnTraverseDirRefresh);
 }
 
 const char * FileSystemDataSource::GetPath()

@@ -129,6 +129,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 	Bind(wxEVT_TREE_SEL_CHANGED, &wxDataSourceWidget::OnNodeSelChanged, this);
 	
 	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolCloseDt_Clicked, this, _toolCloseDt->GetId());
+	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolRefreshDs_Clicked, this, _toolRefreshDs->GetId());
 
 }
 
@@ -138,6 +139,7 @@ wxDataSourceWidget::~wxDataSourceWidget()
 	Unbind(wxEVT_TREE_SEL_CHANGED, &wxDataSourceWidget::OnNodeSelChanged, this);
 
 	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolCloseDt_Clicked, this, _toolCloseDt->GetId());
+	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolRefreshDs_Clicked, this, _toolRefreshDs->GetId());
 
 	//delete _imgList;
 
@@ -362,6 +364,21 @@ void wxDataSourceWidget::OnNodeSelChanged(wxTreeEvent & event)
 void wxDataSourceWidget::_toolCloseDt_Clicked(wxCommandEvent & event)
 {
 	_selDt->Close();
+}
+
+void wxDataSourceWidget::_toolDtInfo_Clicked(wxCommandEvent & event)
+{
+}
+
+void wxDataSourceWidget::_toolRefreshDs_Clicked(wxCommandEvent & event)
+{
+	if (!_selId.IsOk() || _selDs == nullptr)
+		return;
+
+	_selDs->Refresh();
+
+	_treeCtrl->DeleteChildren(_selId);
+	AddDataSourceSubNode(_selId, _selDs);
 }
 
 END_NAME_SPACE(tGis, Gui)

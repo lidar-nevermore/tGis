@@ -62,6 +62,12 @@ void DataSource::SetName(const char * name)
 	_impl_->_name = name;
 }
 
+bool DataSource::ContainDataset(const char * name)
+{
+	auto it = _impl_->_mapDataset.find(name);
+	return it != _impl_->_mapDataset.end();
+}
+
 void DataSource::AddDataset(IDataset * dt)
 {
 	_impl_->_mapDataset[dt->GetName()] = dt;
@@ -75,6 +81,12 @@ void DataSource::RemoveDataset(IDataset * dt)
 void DataSource::RemoveDataset(const char * name)
 {
 	_impl_->_mapDataset.erase(name);
+}
+
+bool DataSource::ContainDataSource(const char * name)
+{
+	auto it = _impl_->_mapDataSource.find(name);
+	return it != _impl_->_mapDataSource.end();
 }
 
 void DataSource::AddDataSource(IDataSource *ds)

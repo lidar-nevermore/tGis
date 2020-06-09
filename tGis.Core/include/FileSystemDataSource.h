@@ -31,8 +31,11 @@ public:
 public:
 	virtual void Connect();
 
+	virtual void Refresh();
+
 private:
-	static void OnTraverseDir(void* usr, const char * dir, const char* name, unsigned int attrib);
+	static void OnTraverseDirConnect(void* usr, const char * dir, const char* name, unsigned int attrib);
+	static void OnTraverseDirRefresh(void* usr, const char * dir, const char* name, unsigned int attrib);
 
 protected:
 	const char* GetPath();

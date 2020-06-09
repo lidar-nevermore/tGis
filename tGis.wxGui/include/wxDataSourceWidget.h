@@ -73,7 +73,8 @@ private:
 	void OnNodeActivated(wxTreeEvent& event);
 	void OnNodeSelChanged(wxTreeEvent& event);
 	void _toolCloseDt_Clicked(wxCommandEvent& event);
-
+	void _toolDtInfo_Clicked(wxCommandEvent& event);
+	void _toolRefreshDs_Clicked(wxCommandEvent& event);
 };
 
 END_NAME_SPACE(tGis, Gui)

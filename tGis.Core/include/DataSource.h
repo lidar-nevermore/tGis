@@ -45,9 +45,11 @@ protected:
 
 protected:
 	void SetName(const char* name);
+	bool ContainDataset(const char* name);
 	void AddDataset(IDataset*);
 	void RemoveDataset(IDataset*);
 	void RemoveDataset(const char* name);
+	bool ContainDataSource(const char* name);
 	void AddDataSource(IDataSource*);
 	void RemoveDataSource(IDataSource*);
 	void RemoveDataSource(const char* name);
