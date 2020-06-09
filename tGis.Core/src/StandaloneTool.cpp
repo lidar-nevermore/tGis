@@ -117,6 +117,9 @@ void StandaloneTool::Execute()
 
 void StandaloneTool::SetExeFile(const char * exe)
 {
+	if (exe == nullptr)
+		return;
+
 	_impl_->_exe = exe;
 	//Èç¹ûÒÔ
 	if (_impl_->_exe.compare(0, 7, "$(tGis)") == 0)

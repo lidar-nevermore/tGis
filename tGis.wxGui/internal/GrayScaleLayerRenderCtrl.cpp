@@ -72,10 +72,11 @@ void GrayScaleLayerRenderCtrl::SetLayer(ILayer * layer)
 	}
 
 	ILayerRender* render = layer->GetRender();
-	if (render == nullptr)
+	RasterGrayScaleLayerRender* trender = dynamic_cast<RasterGrayScaleLayerRender*>(render);
+	if (trender == nullptr)
 		SetDataset(_raster);
 	else
-		SetLayerRender(dynamic_cast<RasterGrayScaleLayerRender*>(render));
+		SetLayerRender(trender);
 }
 
 void GrayScaleLayerRenderCtrl::UpdateLayerRender()

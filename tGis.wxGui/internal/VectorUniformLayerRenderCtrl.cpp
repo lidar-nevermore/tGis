@@ -96,10 +96,11 @@ void VectorUniformLayerRenderCtrl::SetLayer(ILayer * layer)
 	}
 
 	ILayerRender* render = layer->GetRender();
-	if (render == nullptr)
+	VectorUniformLayerRender* trender = dynamic_cast<VectorUniformLayerRender*>(render);
+	if (trender == nullptr)
 		_choiceLayer->SetSelection(0);
 	else
-		SetLayerRender(dynamic_cast<VectorUniformLayerRender*>(render));
+		SetLayerRender(trender);
 
 }
 

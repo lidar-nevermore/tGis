@@ -34,20 +34,6 @@ bool RgbLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 
 		if (render != nullptr && render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
 			return true;
-		
-		if (render == nullptr)
-		{
-			MyGDALRasterDataset* raster = dynamic_cast<MyGDALRasterDataset*>(layer->GetDataset());
-			int bandCount = raster->GetGDALDataset()->GetRasterCount();
-
-			if (bandCount > 2)
-				return true;
-		}
-		else
-		{
-			if (render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
-				return true;
-		}
 	}
 
 	return false;
@@ -56,10 +42,17 @@ bool RgbLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 bool RgbLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 {
 	IDataset* dt = layer->GetDataset();
-	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
-		return true;
+	if (false == dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		return false;
 
-	return false;
+	MyGDALRasterDataset* raster = (MyGDALRasterDataset*)dt;
+	GDALDataset* gdalDt = raster->GetGDALDataset();
+	int bandCount = gdalDt->GetRasterCount();
+
+	if (1 == bandCount)
+		return false;
+
+	return true;
 }
 
 void RgbLayerRenderCtrl::SetLayer(ILayer * layer)
@@ -77,10 +70,11 @@ void RgbLayerRenderCtrl::SetLayer(ILayer * layer)
 	}
 
 	ILayerRender* render = layer->GetRender();
-	if (render == nullptr)
+	RasterRgbLayerRender* trender = dynamic_cast<RasterRgbLayerRender*>(render);
+	if (trender == nullptr)
 		SetDataset(_raster);
 	else
-		SetLayerRender(dynamic_cast<RasterRgbLayerRender*>(render));
+		SetLayerRender(trender);
 }
 
 void RgbLayerRenderCtrl::UpdateLayerRender()
@@ -213,7 +207,45 @@ void RgbLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 		double bNoData = 0;
 		int bNoDataOK = 0;
 
-		if (layerCount == 3)
+		if (layerCount == 1)
+		{
+			_choiceRBand->SetSelection(0);
+			_choiceGBand->SetSelection(0);
+			_choiceBBand->SetSelection(0);
+
+			band1->ComputeStatistics(TRUE, &bMin, &bMax, nullptr, nullptr, nullptr, nullptr);
+			bNoData = band1->GetNoDataValue(&bNoDataOK);
+
+			rMin = bMin;
+			rMax = bMax;
+			rNoData = bNoData;
+			rNoDataOK = bNoDataOK;
+
+			gMin = bMin;
+			gMax = bMax;
+			gNoData = bNoData;
+			gNoDataOK = bNoDataOK;
+		}
+		else if (layerCount == 2)
+		{
+			_choiceRBand->SetSelection(1);
+			_choiceGBand->SetSelection(1);
+			_choiceBBand->SetSelection(0);
+
+			GDALRasterBand* band2 = dt->GetRasterBand(2);
+
+			band2->ComputeStatistics(TRUE, &gMin, &gMax, nullptr, nullptr, nullptr, nullptr);
+			gNoData = band2->GetNoDataValue(&gNoDataOK);
+
+			rMin = gMin;
+			rMax = gMax;
+			rNoData = gNoData;
+			rNoDataOK = gNoDataOK;
+
+			band1->ComputeStatistics(TRUE, &bMin, &bMax, nullptr, nullptr, nullptr, nullptr);
+			bNoData = band1->GetNoDataValue(&bNoDataOK);
+		}
+		else if (layerCount == 3)
 		{
 			_choiceRBand->SetSelection(2);
 			_choiceGBand->SetSelection(1);

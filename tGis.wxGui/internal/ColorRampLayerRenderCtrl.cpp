@@ -72,10 +72,11 @@ void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
 	}
 
 	ILayerRender* render = layer->GetRender();
-	if (render == nullptr)
+	RasterColorRampLayerRender* trender = dynamic_cast<RasterColorRampLayerRender*>(render);
+	if (trender == nullptr)
 		SetDataset(_raster);
 	else
-		SetLayerRender(dynamic_cast<RasterColorRampLayerRender*>(render));
+		SetLayerRender(trender);
 }
 
 void ColorRampLayerRenderCtrl::UpdateLayerRender()
