@@ -7,6 +7,12 @@
 
 #include <string>
 
+#if defined(_MSC_VER) || defined(__MINGW32__)
+#include <Windows.h>
+#else
+#error Only supported under Windows currently.
+#endif
+
 using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)

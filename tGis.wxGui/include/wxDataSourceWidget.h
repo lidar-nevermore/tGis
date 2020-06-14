@@ -3,20 +3,12 @@
 #ifndef __WX_DATASOURCEWIDGET_H__
 #define __WX_DATASOURCEWIDGET_H__
 
-#include <wx/artprov.h>
-#include <wx/xrc/xmlres.h>
 #include <wx/string.h>
 #include <wx/bitmap.h>
-#include <wx/image.h>
-#include <wx/icon.h>
-#include <wx/gdicmn.h>
 #include <wx/toolbar.h>
-#include <wx/font.h>
-#include <wx/colour.h>
-#include <wx/settings.h>
 #include <wx/treectrl.h>
 #include <wx/sizer.h>
-#include <wx/panel.h>
+
 
 #include "tGis_wxGuiCfg.h"
 

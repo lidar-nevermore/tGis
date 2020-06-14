@@ -101,6 +101,9 @@
     <ClInclude Include="..\internal\StandaloneToolDialogBase.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxDatasetInfoDialog.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -180,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="..\internal\StandaloneToolDialogBase.cpp">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxDatasetInfoDialog.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

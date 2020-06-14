@@ -79,10 +79,10 @@ void MyGDALRasterDataset::Attach(GDALDataset* dataset, bool autoClose, double no
 	this->Pixel2Spatial(xRasterSize, yRasterSize, &x2, &y2);
 	this->Pixel2Spatial(xRasterSize, 0, &x3, &y3);
 
-	_envelope.MinX = min(_geoTransform[0], min(x1, min(x2, x3)));
-	_envelope.MaxX = max(_geoTransform[0], max(x1, max(x2, x3)));
-	_envelope.MinY = min(_geoTransform[3], min(y1, min(y2, y3)));
-	_envelope.MaxY = max(_geoTransform[3], max(y1, max(y2, y3)));
+	_envelope.MinX = _tgis_min(_geoTransform[0], _tgis_min(x1, _tgis_min(x2, x3)));
+	_envelope.MaxX = _tgis_max(_geoTransform[0], _tgis_max(x1, _tgis_max(x2, x3)));
+	_envelope.MinY = _tgis_min(_geoTransform[3], _tgis_min(y1, _tgis_min(y2, y3)));
+	_envelope.MaxY = _tgis_max(_geoTransform[3], _tgis_max(y1, _tgis_max(y2, y3)));
 
 	if (!isnan(noDataValue))
 	{

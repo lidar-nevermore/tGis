@@ -85,10 +85,10 @@ RasterBandStorageBlockGridReader::RasterBandStorageBlockGridReader( GDALRasterBa
 	_yAoiBlockCount = _yAoiBlockEnd - _yAoiBlockBegin;
 
 	int maxBlockCountX = maxTotalBlockCount/yBlockCount;
-	maxBlockCountX = min(maxBlockCountX,_xAoiBlockCount);
+	maxBlockCountX = _tgis_min(maxBlockCountX,_xAoiBlockCount);
 
 	int maxBlockCountY = maxTotalBlockCount/xBlockCount;
-	maxBlockCountY = min(maxBlockCountY,_yAoiBlockCount);
+	maxBlockCountY = _tgis_min(maxBlockCountY,_yAoiBlockCount);
 
 	//以下遍历找出总内存消耗最少，读取字节数量最少的缓冲方案
 	int minTotalReadBytes = INT_MAX;
@@ -100,7 +100,7 @@ RasterBandStorageBlockGridReader::RasterBandStorageBlockGridReader( GDALRasterBa
 	{
 		int curMaxBlockCountY = maxTotalBlockCount/i;
 		if (curMaxBlockCountY < yBlockCount) break;
-		curMaxBlockCountY = min(curMaxBlockCountY,maxBlockCountY);
+		curMaxBlockCountY = _tgis_min(curMaxBlockCountY,maxBlockCountY);
 		for (int j = yBlockCount; j <= curMaxBlockCountY; j++)
 		{
 			int xMoveTotalReadBytes = i*j + j*(_xAoiBlockCount-i)*(_yAoiBlockCount-j) + (_yAoiBlockCount-j)*i;

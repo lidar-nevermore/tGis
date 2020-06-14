@@ -5,31 +5,27 @@
 
 #include "tGis_CoreCfg.h"
 
-#define TGIS_DECLARE_NO_COPY_CLASS(classname)      \
-    private:                                    \
-        classname(const classname&) = delete; \
-        classname& operator=(const classname&) = delete
-
 #include <math.h>
 #include <float.h>
 #include <string>
 #include <vector>
 #include <time.h>
 
+
+#define TGIS_DECLARE_NO_COPY_CLASS(classname)      \
+    private:                                    \
+        classname(const classname&) = delete; \
+        classname& operator=(const classname&) = delete
+
+
 //portability helper
+
 #if defined(_MSC_VER) || defined(__MINGW32__)
 
-  #include <windows.h>
-  #include <direct.h>
-  #include <stdlib.h>
   #include <io.h>
 
-#ifndef _WINDOWS_
-#define _WINDOWS_
-#endif
-
-  
-  #define _tgis_max max
+  #define _tgis_max(a,b) (((a) > (b)) ? (a) : (b))
+  #define _tgis_min(a,b) (((a) < (b)) ? (a) : (b))
   
 
   #define TGIS_MAX_PATH _MAX_PATH 
@@ -67,7 +63,6 @@
 
 
 //common method
-
 
 #define _tgis_isinf(a)   ((_fpclass(a) == _FPCLASS_PINF) || (_fpclass(a) == _FPCLASS_NINF))
 #define _tgis_isnan(x)   _isnan(x)

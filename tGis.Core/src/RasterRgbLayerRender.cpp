@@ -140,7 +140,7 @@ void RasterRgbLayerRender::SetBandR(int r)
 	_rBandIndex = r;
 	_rDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_rDataType);
 
-	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
+	_maxPixDataBytes = _tgis_max(_rDataBytes, _tgis_max(_gDataBytes, _bDataBytes));
 
 	RasterLayerRender::RestLutToLinear(_rLut);
 	RasterLayerRender::InitialMinMax(_rBand, _rDataType, &_rMin, &_rMax, &_rRange);
@@ -160,7 +160,7 @@ void RasterRgbLayerRender::SetBandG(int g)
 	_gBandIndex = g;
 	_gDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_gDataType);
 
-	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
+	_maxPixDataBytes = _tgis_max(_rDataBytes, _tgis_max(_gDataBytes, _bDataBytes));
 
 	RasterLayerRender::RestLutToLinear(_gLut);
 	RasterLayerRender::InitialMinMax(_gBand, _gDataType, &_gMin, &_gMax, &_gRange);
@@ -180,7 +180,7 @@ void RasterRgbLayerRender::SetBandB(int b)
 	_bBandIndex = b;
 	_bDataBytes = GDALGetDataTypeSizeBytes((GDALDataType)_bDataType);
 
-	_maxPixDataBytes = max(_rDataBytes, max(_gDataBytes, _bDataBytes));
+	_maxPixDataBytes = _tgis_max(_rDataBytes, _tgis_max(_gDataBytes, _bDataBytes));
 
 	RasterLayerRender::RestLutToLinear(_bLut);
 	RasterLayerRender::InitialMinMax(_bBand, _bDataType, &_bMin, &_bMax, &_bRange);

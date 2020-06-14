@@ -44,7 +44,7 @@ TGIS_CORE_API bool NeedBuildPyramids(GDALDataset * raster, int sizeThreshold, in
 	int iWidth = pDataset->GetRasterXSize();
 	int iHeight = pDataset->GetRasterYSize();
 
-	if (max(iWidth, iHeight) < sizeThreshold)
+	if (_tgis_max(iWidth, iHeight) < sizeThreshold)
 		return false;
 
 	sizeThreshold = topLevelSize*topLevelSize;
@@ -83,7 +83,7 @@ TGIS_CORE_API void BuildPyramids(GDALDataset * raster,
 	int iWidth = pDataset->GetRasterXSize();
 	int iHeight = pDataset->GetRasterYSize();
 
-	if (max(iWidth, iHeight) < sizeThreshold)
+	if (_tgis_max(iWidth, iHeight) < sizeThreshold)
 		return;
 
 	sizeThreshold = topLevelSize*topLevelSize;

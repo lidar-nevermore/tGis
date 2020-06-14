@@ -122,6 +122,8 @@ TGIS_CORE_API char * _tgis_str_trim(char * src)
 }
 
 #if defined(_MSC_VER) || defined(__MINGW32__)
+#include <windows.h>
+#include <direct.h>
 
 TGIS_CORE_API void _tgis_get_exe_dir(char * dir, int * size)
 {

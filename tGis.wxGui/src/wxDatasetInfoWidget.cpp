@@ -43,8 +43,6 @@ wxDatasetInfoWidget::~wxDatasetInfoWidget()
 void wxDatasetInfoWidget::OnDatasetInfo(wxCommandEvent & event)
 {
 	SetValue(_impl_->_info);
-
-	_impl_->_infoShowing = true;
 }
 
 class MyThread : public wxThread
@@ -106,10 +104,12 @@ void wxDatasetInfoWidget::OnSize(wxSizeEvent & event)
 	if (_impl_->_infoShowing)
 		return;
 
+	_impl_->_infoShowing = true;
 	MyThread* pThread = new MyThread(this, _impl_);
 	if (pThread->Run() != wxTHREAD_NO_ERROR)
 	{
 		wxLogError("Can't create the thread!");
+		_impl_->_infoShowing = false;
 		delete pThread;
 	}
 }

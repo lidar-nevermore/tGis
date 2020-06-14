@@ -165,10 +165,10 @@ bool RasterLayerRender::PreparePaint(IGeoSurface* surf)
 	_raster->Spatial2Pixel(aoienvelope.MaxX, aoienvelope.MaxY, &maxInPixX, &maxInPixY);
 
 
-	_minPixX = min(minInPixX, maxInPixX);
-	_minPixY = min(minInPixY, maxInPixY);
-	_maxPixX = max(minInPixX, maxInPixX);
-	_maxPixY = max(minInPixY, maxInPixY);
+	_minPixX = _tgis_min(minInPixX, maxInPixX);
+	_minPixY = _tgis_min(minInPixY, maxInPixY);
+	_maxPixX = _tgis_max(minInPixX, maxInPixX);
+	_maxPixY = _tgis_max(minInPixY, maxInPixY);
 
 	double minInSurfX = 0;
 	double minInSurfY = 0;
@@ -178,10 +178,10 @@ bool RasterLayerRender::PreparePaint(IGeoSurface* surf)
 	surf->GetViewPort()->Spatial2Surface(aoienvelope.MinX, aoienvelope.MinY, &minInSurfX, &minInSurfY);
 	surf->GetViewPort()->Spatial2Surface(aoienvelope.MaxX, aoienvelope.MaxY, &maxInSurfX, &maxInSurfY);
 
-	_minSurfX = min(minInSurfX, maxInSurfX);
-	_minSurfY = min(minInSurfY, maxInSurfY);
-	_maxSurfX = max(minInSurfX, maxInSurfX);
-	_maxSurfY = max(minInSurfY, maxInSurfY);
+	_minSurfX = _tgis_min(minInSurfX, maxInSurfX);
+	_minSurfY = _tgis_min(minInSurfY, maxInSurfY);
+	_maxSurfX = _tgis_max(minInSurfX, maxInSurfX);
+	_maxSurfY = _tgis_max(minInSurfY, maxInSurfY);
 
 	_surfPixRatioX = (_maxPixX - _minPixX) / (_maxSurfX - _minSurfX);
 	_surfPixRatioY = (_maxPixY - _minPixY) / (_maxSurfY - _minSurfY);

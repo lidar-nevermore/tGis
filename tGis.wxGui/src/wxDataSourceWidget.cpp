@@ -1,4 +1,8 @@
+#include "wxDatasetInfoDialog.h"
 #include "wxDataSourceWidget.h"
+
+
+
 #include <wx/dir.h>
 
 #define _TOOL_PNG(file_name) \
@@ -130,6 +134,7 @@ wxDataSourceWidget::wxDataSourceWidget( wxWindow* parent, wxWindowID id, const w
 	
 	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolCloseDt_Clicked, this, _toolCloseDt->GetId());
 	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolRefreshDs_Clicked, this, _toolRefreshDs->GetId());
+	Bind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolDtInfo_Clicked, this, _toolDtInfo->GetId());
 
 }
 
@@ -140,6 +145,7 @@ wxDataSourceWidget::~wxDataSourceWidget()
 
 	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolCloseDt_Clicked, this, _toolCloseDt->GetId());
 	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolRefreshDs_Clicked, this, _toolRefreshDs->GetId());
+	Unbind(wxEVT_COMMAND_TOOL_CLICKED, &wxDataSourceWidget::_toolDtInfo_Clicked, this, _toolDtInfo->GetId());
 
 	//delete _imgList;
 
@@ -368,6 +374,8 @@ void wxDataSourceWidget::_toolCloseDt_Clicked(wxCommandEvent & event)
 
 void wxDataSourceWidget::_toolDtInfo_Clicked(wxCommandEvent & event)
 {
+	wxDatasetInfoDialog dtInfoDlg(_selDt);
+	dtInfoDlg.ShowModal();
 }
 
 void wxDataSourceWidget::_toolRefreshDs_Clicked(wxCommandEvent & event)

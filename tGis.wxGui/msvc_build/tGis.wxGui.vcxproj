@@ -86,6 +86,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\DrawRectTool.h" />
+    <ClInclude Include="..\include\wxDatasetInfoDialog.h" />
     <ClInclude Include="..\include\wxDatasetInfoWidget.h" />
     <ClInclude Include="..\include\wxLayerPropertyDialog.h" />
     <ClInclude Include="..\include\wxLayerRenderWidget.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\src\DrawRectTool.cpp" />
+    <ClCompile Include="..\src\wxDatasetInfoDialog.cpp" />
     <ClCompile Include="..\src\wxDatasetInfoWidget.cpp" />
     <ClCompile Include="..\src\wxLayerPropertyDialog.cpp" />
     <ClCompile Include="..\src\wxLayerRenderWidget.cpp" />

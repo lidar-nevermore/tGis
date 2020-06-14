@@ -119,10 +119,10 @@ RasterBandStorageBlockWalker::RasterBandStorageBlockWalker(GDALDataset* raster,G
 		myInRaster.Spatial2Pixel(aoienvelope.MinX,aoienvelope.MinY,&minInPixX,&minInPixY);
 		myInRaster.Spatial2Pixel(aoienvelope.MaxX,aoienvelope.MaxY,&maxInPixX,&maxInPixY);
 
-		xOffset = (int)_tgis_round(min(minInPixX,maxInPixX), 0);
-		yOffset = (int)_tgis_round(min(minInPixY,maxInPixY), 0);
-		xEnd = (int)_tgis_round(max(minInPixX,maxInPixX), 0);
-		yEnd = (int)_tgis_round(max(minInPixY,maxInPixY), 0);
+		xOffset = (int)_tgis_round(_tgis_min(minInPixX,maxInPixX), 0);
+		yOffset = (int)_tgis_round(_tgis_min(minInPixY,maxInPixY), 0);
+		xEnd = (int)_tgis_round(_tgis_max(minInPixX,maxInPixX), 0);
+		yEnd = (int)_tgis_round(_tgis_max(minInPixY,maxInPixY), 0);
 
 		if(xOffset < 0)
 			xOffset = 0;
@@ -147,10 +147,10 @@ RasterBandStorageBlockWalker::RasterBandStorageBlockWalker(GDALDataset* raster,G
 		myAoiRaster.Spatial2Pixel(aoienvelope.MinX,aoienvelope.MinY,&minAoiPixX,&minAoiPixY);
 		myAoiRaster.Spatial2Pixel(aoienvelope.MaxX,aoienvelope.MaxY,&maxAoiPixX,&maxAoiPixY);
 
-		_xAoiOffset = (int)_tgis_round(min(minAoiPixX,maxAoiPixX), 0);
-		_yAoiOffset = (int)_tgis_round(min(minAoiPixY,maxAoiPixY), 0);
-		_xAoiEnd = (int)_tgis_round(max(minAoiPixX,maxAoiPixX), 0);
-		_yAoiEnd = (int)_tgis_round(max(minAoiPixY,maxAoiPixY), 0);
+		_xAoiOffset = (int)_tgis_round(_tgis_min(minAoiPixX,maxAoiPixX), 0);
+		_yAoiOffset = (int)_tgis_round(_tgis_min(minAoiPixY,maxAoiPixY), 0);
+		_xAoiEnd = (int)_tgis_round(_tgis_max(minAoiPixX,maxAoiPixX), 0);
+		_yAoiEnd = (int)_tgis_round(_tgis_max(minAoiPixY,maxAoiPixY), 0);
 
 		if(_xAoiOffset < 0)
 			_xAoiOffset = 0;
