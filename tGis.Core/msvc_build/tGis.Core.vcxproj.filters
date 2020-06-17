@@ -48,6 +48,12 @@
     <Filter Include="glad">
       <UniqueIdentifier>{0b419c5c-cbf8-4a12-bc6c-8d13ac4b0f7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\GradientColor">
+      <UniqueIdentifier>{0f2c3483-b559-4247-a3ef-8523dd2a9d7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GradientColor">
+      <UniqueIdentifier>{577ee955-5918-455b-97db-5a35a7bc406b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\RasterBandStorageBlockGridReader.h">
@@ -353,6 +359,15 @@
     <ClInclude Include="..\include\MultiRasterBandStorageBlockWalker.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\GradientColor.h">
+      <Filter>include\GradientColor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GradientColorRepository.h">
+      <Filter>include\GradientColor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\GradientColorRender.h">
+      <Filter>include\GradientColor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -561,6 +576,15 @@
     </ClCompile>
     <ClCompile Include="..\src\MultiRasterBandStorageBlockWalker.cpp">
       <Filter>src\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GradientColor.cpp">
+      <Filter>src\GradientColor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GradientColorRepository.cpp">
+      <Filter>src\GradientColor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GradientColorRender.cpp">
+      <Filter>src\GradientColor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,32 +1,31 @@
 #include <wx/wx.h>
-#include "GrayScaleLayerRenderCtrl.h"
+#include "PseudoColorLayerRenderCtrl.h"
 #include <wx/progdlg.h>
 
-GrayScaleLayerRenderCtrl::GrayScaleLayerRenderCtrl( wxWindow* parent )
-	:GrayScaleLayerRenderCtrlBase( parent )
+PseudoColorLayerRenderCtrl::PseudoColorLayerRenderCtrl( wxWindow* parent )
+	:PseudoColorLayerRenderCtrlBase( parent )
 {
 	_render = nullptr;
 	_raster = nullptr;
 	_layer = nullptr;
 
-	Bind(wxEVT_SLIDER, &GrayScaleLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
-	Bind(wxEVT_BUTTON, &GrayScaleLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
-
+	Bind(wxEVT_SLIDER, &PseudoColorLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Bind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 }
 
-GrayScaleLayerRenderCtrl::~GrayScaleLayerRenderCtrl()
+PseudoColorLayerRenderCtrl::~PseudoColorLayerRenderCtrl()
 {
-	Unbind(wxEVT_SLIDER, &GrayScaleLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
-	Unbind(wxEVT_BUTTON, &GrayScaleLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+	Unbind(wxEVT_SLIDER, &PseudoColorLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Unbind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 
 }
 
-const char * GrayScaleLayerRenderCtrl::GetLayerRenderName()
+const char * PseudoColorLayerRenderCtrl::GetLayerRenderName()
 {
-	return "Raster GrayScale Render";;
+	return "Raster PseudoColor Render";;
 }
 
-bool GrayScaleLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
+bool PseudoColorLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 {
 	if (IsSupportLayer(layer))
 	{
@@ -50,7 +49,7 @@ bool GrayScaleLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 	return false;
 }
 
-bool GrayScaleLayerRenderCtrl::IsSupportLayer(ILayer * layer)
+bool PseudoColorLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 {
 	IDataset* dt = layer->GetDataset();
 	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
@@ -59,7 +58,7 @@ bool GrayScaleLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 	return false;
 }
 
-void GrayScaleLayerRenderCtrl::SetLayer(ILayer * layer)
+void PseudoColorLayerRenderCtrl::SetLayer(ILayer * layer)
 {
 	_layer = layer;
 	_raster = (MyGDALRasterDataset*)layer->GetDataset();
@@ -79,7 +78,7 @@ void GrayScaleLayerRenderCtrl::SetLayer(ILayer * layer)
 		SetLayerRender(trender);
 }
 
-void GrayScaleLayerRenderCtrl::UpdateLayerRender()
+void PseudoColorLayerRenderCtrl::UpdateLayerRender()
 {
 	if (_render == nullptr)
 		_render = new RasterGrayScaleLayerRender(_layer);
@@ -115,7 +114,7 @@ void GrayScaleLayerRenderCtrl::UpdateLayerRender()
 }
 
 
-void GrayScaleLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
+void PseudoColorLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 {
 	GDALDataset* dt = _raster->GetGDALDataset();
 	int layerCount = dt->GetRasterCount();
@@ -154,7 +153,7 @@ void GrayScaleLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 	_choiceBand->SetSelection(0);
 }
 
-void GrayScaleLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * render)
+void PseudoColorLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * render)
 {
 	_render = render;
 
@@ -191,7 +190,7 @@ void GrayScaleLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * rende
 	_choiceBand->SetSelection(_render->GetBand() - 1);
 }
 
-void GrayScaleLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
+void PseudoColorLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
 {
 	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
 }
@@ -206,7 +205,7 @@ static int CPL_STDCALL ComputeStatisticsPrgFunc(double dfComplete, const char *p
 	return TRUE;
 }
 
-void GrayScaleLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
+void PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
 {
 	GDALDataset* dt = _raster->GetGDALDataset();
 	bool bApproxOK = _chkApproximate->GetValue();

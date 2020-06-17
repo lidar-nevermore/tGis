@@ -52,8 +52,8 @@ class GrayScaleLayerRenderCtrlBase : public wxPanel
 		wxStaticText* m_staticText51;
 		wxStaticText* _lblOpacityValue;
 		wxSlider* _sldOpacity;
-		wxButton* _btnComputeStatistics;
 		wxCheckBox* _chkApproximate;
+		wxButton* _btnComputeStatistics;
 
 	public:
 

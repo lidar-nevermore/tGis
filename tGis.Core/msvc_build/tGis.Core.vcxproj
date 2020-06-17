@@ -39,6 +39,9 @@
     <ClInclude Include="..\include\FileSystemDataSource.h" />
     <ClInclude Include="..\include\GeoSurface.h" />
     <ClInclude Include="..\include\GeoViewPort.h" />
+    <ClInclude Include="..\include\GradientColor.h" />
+    <ClInclude Include="..\include\GradientColorRender.h" />
+    <ClInclude Include="..\include\GradientColorRepository.h" />
     <ClInclude Include="..\include\hashmap.h" />
     <ClInclude Include="..\include\Helper.h" />
     <ClInclude Include="..\include\IDataset.h" />
@@ -138,6 +141,9 @@
     <ClCompile Include="..\src\FileSystemDataSource.cpp" />
     <ClCompile Include="..\src\GeoSurface.cpp" />
     <ClCompile Include="..\src\GeoViewPort.cpp" />
+    <ClCompile Include="..\src\GradientColor.cpp" />
+    <ClCompile Include="..\src\GradientColorRender.cpp" />
+    <ClCompile Include="..\src\GradientColorRepository.cpp" />
     <ClCompile Include="..\src\hashmap.c" />
     <ClCompile Include="..\src\Helper.cpp" />
     <ClCompile Include="..\src\IInclusionObject.cpp" />

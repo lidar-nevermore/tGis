@@ -434,7 +434,7 @@ void RgbLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
 	bool bApproxOK = _chkApproximate->GetValue();
 
 	int prog = 0;
-	wxProgressDialog* prgDlg = new wxProgressDialog(wxT("Compute Statistics..."), wxT("Computing Statistics..."), 300, this, wxPD_AUTO_HIDE | wxPD_APP_MODAL);
+	wxProgressDialog* prgDlg = new wxProgressDialog(wxT("Compute Min and Max..."), wxT("Computing Min and Max..."), 300, this, wxPD_AUTO_HIDE | wxPD_APP_MODAL);
 	void* progData[2] = { &prog, prgDlg };
 
 	int rBandIndex = _choiceRBand->GetSelection() + 1;

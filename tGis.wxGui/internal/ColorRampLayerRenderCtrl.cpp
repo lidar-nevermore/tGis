@@ -260,7 +260,7 @@ void ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & ev
 	GDALDataset* dt = _raster->GetGDALDataset();
 	bool bApproxOK = _chkApproximate->GetValue();
 
-	wxProgressDialog* prgDlg = new wxProgressDialog(wxT("Compute Statistics..."), wxT("Computing Statistics..."), 100, this, wxPD_AUTO_HIDE | wxPD_APP_MODAL);
+	wxProgressDialog* prgDlg = new wxProgressDialog(wxT("Compute Min and Max..."), wxT("Computing Min and Max..."), 100, this, wxPD_AUTO_HIDE | wxPD_APP_MODAL);
 
 	int rBandIndex = _choiceBand->GetSelection() + 1;
 	GDALRasterBand* rBand = dt->GetRasterBand(rBandIndex);

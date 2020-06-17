@@ -5,11 +5,12 @@
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#include "GrayScaleLayerRenderCtrlBase.h"
+#include "PseudoColorLayerRenderCtrlBase.h"
+#include "wxGradientColorWidget.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
-GrayScaleLayerRenderCtrlBase::GrayScaleLayerRenderCtrlBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+PseudoColorLayerRenderCtrlBase::PseudoColorLayerRenderCtrlBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxGridBagSizer* gbSizer1;
 	gbSizer1 = new wxGridBagSizer( 0, 0 );
@@ -66,6 +67,13 @@ GrayScaleLayerRenderCtrlBase::GrayScaleLayerRenderCtrlBase( wxWindow* parent, wx
 	_sldOpacity = new wxSlider( this, wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
 	gbSizer1->Add( _sldOpacity, wxGBPosition( 4, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND, 5 );
 
+	m_staticText7 = new wxStaticText( this, wxID_ANY, wxT("Color"), wxDefaultPosition, wxDefaultSize, 0 );
+	m_staticText7->Wrap( -1 );
+	gbSizer1->Add( m_staticText7, wxGBPosition( 5, 0 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+
+	_wxGradientColor = new tGis::Gui::wxGradientColorWidget( this );
+	gbSizer1->Add( _wxGradientColor, wxGBPosition( 5, 1 ), wxGBSpan( 1, 7 ), wxALL|wxEXPAND, 5 );
+
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );
 
@@ -87,6 +95,6 @@ GrayScaleLayerRenderCtrlBase::GrayScaleLayerRenderCtrlBase( wxWindow* parent, wx
 	this->Layout();
 }
 
-GrayScaleLayerRenderCtrlBase::~GrayScaleLayerRenderCtrlBase()
+PseudoColorLayerRenderCtrlBase::~PseudoColorLayerRenderCtrlBase()
 {
 }

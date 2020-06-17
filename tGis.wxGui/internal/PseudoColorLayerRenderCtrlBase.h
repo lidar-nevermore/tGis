@@ -19,21 +19,25 @@
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
 #include <wx/slider.h>
+#include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
 #include <wx/sizer.h>
 #include <wx/gbsizer.h>
-#include <wx/panel.h>
 
 ///////////////////////////////////////////////////////////////////////////
 
+#include "tGis_wxGuiCfg.h"
 
+BEGIN_NAME_SPACE(tGis, Gui)
+class wxGradientColorWidget;
+END_NAME_SPACE(tGis, Gui)
 ///////////////////////////////////////////////////////////////////////////////
-/// Class ColorRampLayerRenderCtrlBase
+/// Class PseudoColorLayerRenderCtrlBase
 ///////////////////////////////////////////////////////////////////////////////
-class ColorRampLayerRenderCtrlBase : public wxPanel
+class PseudoColorLayerRenderCtrlBase : public wxPanel
 {
 	private:
 
@@ -49,26 +53,18 @@ class ColorRampLayerRenderCtrlBase : public wxPanel
 		wxCheckBox* _chkNoDataEQ;
 		wxCheckBox* _chkNoDataGT;
 		wxCheckBox* _chkNoDataLT;
-		wxStaticText* m_staticText8;
-		wxTextCtrl* _txtPivot;
-		wxStaticText* m_staticText9;
-		wxCheckBox* _chkLtPivotR;
-		wxCheckBox* _chkLtPivotG;
-		wxCheckBox* _chkLtPivotB;
-		wxStaticText* m_staticText91;
-		wxCheckBox* _chkGtPivotR;
-		wxCheckBox* _chkGtPivotG;
-		wxCheckBox* _chkGtPivotB;
 		wxStaticText* m_staticText51;
 		wxStaticText* _lblOpacityValue;
 		wxSlider* _sldOpacity;
+		wxStaticText* m_staticText7;
+		tGis::Gui::wxGradientColorWidget* _wxGradientColor;
 		wxCheckBox* _chkApproximate;
 		wxButton* _btnComputeStatistics;
 
 	public:
 
-		ColorRampLayerRenderCtrlBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 444,435 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-		~ColorRampLayerRenderCtrlBase();
+		PseudoColorLayerRenderCtrlBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 430,438 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+		~PseudoColorLayerRenderCtrlBase();
 
 };
 

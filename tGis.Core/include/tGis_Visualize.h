@@ -17,5 +17,8 @@
 #include "IMapTool.h"
 #include "MapTool.h"
 
+#include "GradientColor.h"
+#include "GradientColorRender.h"
+#include "GradientColorRepository.h"
 
 

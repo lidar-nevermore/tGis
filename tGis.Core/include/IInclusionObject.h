@@ -21,7 +21,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 //在堆里的对象是需要容器对象编码释放的，在栈里的对象则不需要；
 //第二，容器类编码释放被聚合对象的代码编译到了本库中，
 //而被聚合对象的创建在客户库中，客户库和本库可能使用了不同的堆，
-//在本库中delete客户库堆中的对象是不对的，要确保所有继承自ITypedObject
+//在本库中delete客户库堆中的对象是不对的，要确保所有继承自IInclusionObject
 //的对象都是在本库的堆里创建的。
 struct TGIS_CORE_API IInclusionObject
 {

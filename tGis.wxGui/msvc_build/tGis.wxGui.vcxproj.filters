@@ -104,6 +104,15 @@
     <ClInclude Include="..\include\wxDatasetInfoDialog.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\PseudoColorLayerRenderCtrlBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\PseudoColorLayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -187,6 +196,15 @@
     <ClCompile Include="..\src\wxDatasetInfoDialog.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\PseudoColorLayerRenderCtrlBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\PseudoColorLayerRenderCtrl.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\RgbLayerRanderCtrl.fbp">
@@ -208,6 +226,9 @@
       <Filter>internal</Filter>
     </None>
     <None Include="..\internal\StandaloneToolDialog.fbp">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\PseudoColorLayerRenderCtrl.fbp">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>
