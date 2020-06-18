@@ -1,13 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
-// http://www.wxformbuilder.org/
-//
-// PLEASE DO *NOT* EDIT THIS FILE!
-///////////////////////////////////////////////////////////////////////////
-
 #include "wxGradientColorEditorWidget.h"
 
-///////////////////////////////////////////////////////////////////////////
+
+BEGIN_NAME_SPACE(tGis, Gui)
 
 wxGradientColorEditorWidget::wxGradientColorEditorWidget( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
@@ -73,3 +67,6 @@ wxGradientColorEditorWidget::wxGradientColorEditorWidget( wxWindow* parent, wxWi
 wxGradientColorEditorWidget::~wxGradientColorEditorWidget()
 {
 }
+
+
+END_NAME_SPACE(tGis, Gui)

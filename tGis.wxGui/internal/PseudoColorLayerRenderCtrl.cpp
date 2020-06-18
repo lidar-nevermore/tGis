@@ -234,5 +234,9 @@ void PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & 
 void PseudoColorLayerRenderCtrl::_btnSelGradColor_clicked(wxCommandEvent& e)
 {
 	wxGradientColorPickerDialog dlg;
-	dlg.ShowModal();
+	dlg.SetGradientColor(_wxGradientColor->GetGradientColor());
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		_wxGradientColor->SetGradientColor(dlg.GetGradientColor());
+	}
 }

@@ -1,11 +1,7 @@
-///////////////////////////////////////////////////////////////////////////
-// C++ code generated with wxFormBuilder (version Oct 26 2018)
-// http://www.wxformbuilder.org/
-//
-// PLEASE DO *NOT* EDIT THIS FILE!
-///////////////////////////////////////////////////////////////////////////
-
 #pragma once
+
+#ifndef __wxGradientColorEditorWidget_H__
+#define __wxGradientColorEditorWidget_H__
 
 #include <wx/artprov.h>
 #include <wx/xrc/xmlres.h>
@@ -24,13 +20,14 @@
 #include <wx/grid.h>
 #include <wx/panel.h>
 
-///////////////////////////////////////////////////////////////////////////
+#include "tGis_wxGuiCfg.h"
 
 
-///////////////////////////////////////////////////////////////////////////////
-/// Class wxGradientColorEditorWidget
-///////////////////////////////////////////////////////////////////////////////
-class wxGradientColorEditorWidget : public wxPanel
+using namespace tGis::Core;
+
+BEGIN_NAME_SPACE(tGis, Gui)
+
+class TGIS_GUI_API wxGradientColorEditorWidget : public wxPanel
 {
 	private:
 
@@ -47,4 +44,9 @@ class wxGradientColorEditorWidget : public wxPanel
 		~wxGradientColorEditorWidget();
 
 };
+
+
+END_NAME_SPACE(tGis, Gui)
+
+#endif
 

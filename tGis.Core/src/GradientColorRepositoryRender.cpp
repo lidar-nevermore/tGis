@@ -59,7 +59,7 @@ GradientColorRepositoryRender::GradientColorRepositoryRender(ILayer* layer)
 	_layer->SetRender(this);
 
 	_envelope.MinX = 0;
-	_envelope.MinY = -20.0 * GradientColorRepository::INSTANCE()->GetGradientColorCount();
+	_envelope.MinY = -double(_occupy * GradientColorRepository::INSTANCE()->GetGradientColorCount());
 	_envelope.MaxX = 0;
 	_envelope.MaxY = 0;
 }
@@ -75,7 +75,7 @@ void GradientColorRepositoryRender::SetHeight(int height)
 	assert(height > 3);
 	_height = height;
 	_occupy = _height + _margin + _margin;
-	_envelope.MinY = double(-_occupy * GradientColorRepository::INSTANCE()->GetGradientColorCount());
+	_envelope.MinY = -double(_occupy * GradientColorRepository::INSTANCE()->GetGradientColorCount());
 }
 
 void GradientColorRepositoryRender::SetMargin(int margin)
@@ -83,7 +83,7 @@ void GradientColorRepositoryRender::SetMargin(int margin)
 	assert(margin > 3);
 	_margin = margin;
 	_occupy = _height + _margin + _margin;
-	_envelope.MinY = double(-_occupy * GradientColorRepository::INSTANCE()->GetGradientColorCount());
+	_envelope.MinY = -double(_occupy * GradientColorRepository::INSTANCE()->GetGradientColorCount());
 }
 
 void GradientColorRepositoryRender::UpdateEnvelope(int surfW, int surfH)

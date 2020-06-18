@@ -1,5 +1,7 @@
 #include "wxGradientColorPickerDialog.h"
 #include "wxGradientColorRepositoryWidget.h"
+#include "wxGradientColorEditorWidget.h"
+
 #include "wxTGisApplication.h"
 
 BEGIN_NAME_SPACE(tGis, Gui)
@@ -17,7 +19,10 @@ wxGradientColorPickerDialog::wxGradientColorPickerDialog( wxWindow* parent, wxWi
 	_tabGrdColor = new wxNotebook( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
 
 	_gcrWidget = new wxGradientColorRepositoryWidget(_tabGrdColor);
-	_tabGrdColor->AddPage(_gcrWidget, wxT("Predefined  Gradient Color"));
+	_tabGrdColor->AddPage(_gcrWidget, wxT("Predefined Gradient Color"));
+
+	_gcEditor = new wxGradientColorEditorWidget(_tabGrdColor);
+	_tabGrdColor->AddPage(_gcEditor, wxT("Edit Gradient Color"));
 
 	bSizer1->Add( _tabGrdColor, 1, wxEXPAND | wxALL, 3 );
 
@@ -40,6 +45,16 @@ wxGradientColorPickerDialog::wxGradientColorPickerDialog( wxWindow* parent, wxWi
 
 wxGradientColorPickerDialog::~wxGradientColorPickerDialog()
 {
+}
+
+GradientColor * wxGradientColorPickerDialog::GetGradientColor()
+{
+	return _gcrWidget->GetSelGradientColor();
+}
+
+void wxGradientColorPickerDialog::SetGradientColor(GradientColor * color)
+{
+	_gcrWidget->SetSelGradientColor(color);
 }
 
 

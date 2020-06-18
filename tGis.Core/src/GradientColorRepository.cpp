@@ -28,14 +28,31 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		_instance->AddGradientColor(inferno);
 
 		GradientColor* red = new GradientColor();
-		red->AddKeyColor(0, 0, 0, 0);
-		red->AddKeyColor(237, 17, 10, 1.0);
+		red->AddKeyColor(50, 50, 50, 0);
+		red->AddKeyColor(251, 17, 10, 1.0);
 		_instance->AddGradientColor(red);
 
 		GradientColor* yellow = new GradientColor();
-		yellow->AddKeyColor(0, 0, 0, 0);
-		yellow->AddKeyColor(237, 235, 10, 1.0);
+		yellow->AddKeyColor(50, 50, 50, 0);
+		yellow->AddKeyColor(251, 253, 10, 1.0);
 		_instance->AddGradientColor(yellow);
+
+		GradientColor* blue = new GradientColor();
+		blue->AddKeyColor(50, 50, 50, 0);
+		blue->AddKeyColor(17, 35, 253, 1.0);
+		_instance->AddGradientColor(blue);
+
+		GradientColor* green = new GradientColor();
+		green->AddKeyColor(50, 50, 50, 0);
+		green->AddKeyColor(17, 237, 25, 1.0);
+		_instance->AddGradientColor(green);
+
+		GradientColor* soilgrass = new GradientColor();
+		soilgrass->AddKeyColor(59, 18, 14, 0);
+		soilgrass->AddKeyColor(95, 64, 44, 0.2);
+		soilgrass->AddKeyColor(118, 114, 87, 0.43);
+		soilgrass->AddKeyColor(17, 237, 25, 1.0);
+		_instance->AddGradientColor(soilgrass);
 
 		GradientColor* spectral = new GradientColor();
 		spectral->AddKeyColor(215, 25, 28, 0);

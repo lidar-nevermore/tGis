@@ -23,8 +23,9 @@ using namespace tGis::Core;
 BEGIN_NAME_SPACE(tGis, Gui)
 
 class wxGradientColorRepositoryWidget;
+class wxGradientColorEditorWidget;
 
-class wxGradientColorPickerDialog : public wxDialog
+class TGIS_GUI_API wxGradientColorPickerDialog : public wxDialog
 {
 public:
 	wxGradientColorPickerDialog(wxWindow* parent = nullptr, wxWindowID id = wxID_ANY, const wxString& title = wxT("Gradient Color"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(569, 376), long style = wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
@@ -36,6 +37,11 @@ protected:
 	wxButton* _sdbSzOK;
 	wxButton* _sdbSzCancel;
 	wxGradientColorRepositoryWidget* _gcrWidget;
+	wxGradientColorEditorWidget* _gcEditor;
+
+public:
+	GradientColor* GetGradientColor();
+	void SetGradientColor(GradientColor* color);
 
 };
 

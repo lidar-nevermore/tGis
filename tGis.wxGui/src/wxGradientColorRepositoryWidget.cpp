@@ -118,12 +118,12 @@ wxGradientColorRepositoryWidget::wxGradientColorRepositoryWidget( wxWindow* pare
 	_scrollBar = new wxScrollBar( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSB_VERTICAL );
 	bSizer1->Add( _scrollBar, 0, wxALL|wxEXPAND, 5 );
 
-	this->SetSizer( bSizer1 );
-	this->Layout();
-
 	((wxGradientColorRepoDispalyWidget*)_gcrWidget)->_scrollBar = _scrollBar;
 	_impl_->_render = ((wxGradientColorRepoDispalyWidget*)_gcrWidget)->_render;
 	_gcrWidget->AddMapTool(_impl_);
+
+	this->SetSizer( bSizer1 );
+	this->Layout();
 }
 
 wxGradientColorRepositoryWidget::~wxGradientColorRepositoryWidget()
