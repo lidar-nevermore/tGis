@@ -368,6 +368,9 @@
     <ClInclude Include="..\include\GradientColorRender.h">
       <Filter>include\GradientColor</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\GradientColorRepositoryRender.h">
+      <Filter>include\GradientColor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -584,6 +587,9 @@
       <Filter>src\GradientColor</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GradientColorRender.cpp">
+      <Filter>src\GradientColor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\GradientColorRepositoryRender.cpp">
       <Filter>src\GradientColor</Filter>
     </ClCompile>
   </ItemGroup>

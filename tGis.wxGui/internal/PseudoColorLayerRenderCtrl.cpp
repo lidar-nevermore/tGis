@@ -1,6 +1,10 @@
 #include <wx/wx.h>
 #include "PseudoColorLayerRenderCtrl.h"
 #include <wx/progdlg.h>
+#include "wxGradientColorPickerDialog.h"
+#include "wxGradientColorWidget.h"
+
+using namespace tGis::Gui;
 
 PseudoColorLayerRenderCtrl::PseudoColorLayerRenderCtrl( wxWindow* parent )
 	:PseudoColorLayerRenderCtrlBase( parent )
@@ -11,12 +15,15 @@ PseudoColorLayerRenderCtrl::PseudoColorLayerRenderCtrl( wxWindow* parent )
 
 	Bind(wxEVT_SLIDER, &PseudoColorLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
 	Bind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+	Bind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnSelGradColor_clicked, this, _btnSelGradColor->GetId());
+
 }
 
 PseudoColorLayerRenderCtrl::~PseudoColorLayerRenderCtrl()
 {
 	Unbind(wxEVT_SLIDER, &PseudoColorLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
 	Unbind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+	Unbind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnSelGradColor_clicked, this, _btnSelGradColor->GetId());
 
 }
 
@@ -222,4 +229,10 @@ void PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & 
 	_txtMax->SetValue(wxString::Format(wxT("%.3f"), rMax));
 
 	delete prgDlg;
+}
+
+void PseudoColorLayerRenderCtrl::_btnSelGradColor_clicked(wxCommandEvent& e)
+{
+	wxGradientColorPickerDialog dlg;
+	dlg.ShowModal();
 }

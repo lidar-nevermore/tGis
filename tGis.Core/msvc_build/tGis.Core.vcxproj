@@ -42,6 +42,7 @@
     <ClInclude Include="..\include\GradientColor.h" />
     <ClInclude Include="..\include\GradientColorRender.h" />
     <ClInclude Include="..\include\GradientColorRepository.h" />
+    <ClInclude Include="..\include\GradientColorRepositoryRender.h" />
     <ClInclude Include="..\include\hashmap.h" />
     <ClInclude Include="..\include\Helper.h" />
     <ClInclude Include="..\include\IDataset.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="..\src\GradientColor.cpp" />
     <ClCompile Include="..\src\GradientColorRender.cpp" />
     <ClCompile Include="..\src\GradientColorRepository.cpp" />
+    <ClCompile Include="..\src\GradientColorRepositoryRender.cpp" />
     <ClCompile Include="..\src\hashmap.c" />
     <ClCompile Include="..\src\Helper.cpp" />
     <ClCompile Include="..\src\IInclusionObject.cpp" />

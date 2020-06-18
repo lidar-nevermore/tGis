@@ -41,7 +41,7 @@ RgbLayerRenderCtrlBase::RgbLayerRenderCtrlBase( wxWindow* parent, wxWindowID id,
 
 	m_staticText13 = new wxStaticText( this, wxID_ANY, wxT("R NoData"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText13->Wrap( -1 );
-	gbSizer1->Add( m_staticText13, wxGBPosition( 3, 0 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( m_staticText13, wxGBPosition( 3, 0 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_txtRNoData = new wxTextCtrl( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
 	gbSizer1->Add( _txtRNoData, wxGBPosition( 3, 1 ), wxGBSpan( 1, 3 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
@@ -139,10 +139,10 @@ RgbLayerRenderCtrlBase::RgbLayerRenderCtrlBase( wxWindow* parent, wxWindowID id,
 
 	_lblOpacityValue = new wxStaticText( this, wxID_ANY, wxT("255"), wxDefaultPosition, wxDefaultSize, 0 );
 	_lblOpacityValue->Wrap( -1 );
-	gbSizer1->Add( _lblOpacityValue, wxGBPosition( 10, 1 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( _lblOpacityValue, wxGBPosition( 10, 1 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_sldOpacity = new wxSlider( this, wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
-	gbSizer1->Add( _sldOpacity, wxGBPosition( 10, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND, 5 );
+	gbSizer1->Add( _sldOpacity, wxGBPosition( 10, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );

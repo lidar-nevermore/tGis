@@ -39,6 +39,13 @@ GradientColor * wxGradientColorWidget::GetGradientColor()
 	return _color;
 }
 
+void wxGradientColorWidget::OnSize(wxSizeEvent & event)
+{
+	wxSize sz = GetClientSize();
+	_render->SetHeight(sz.y);
+	wxGLMapWidget::OnSize(event);
+}
+
 
 END_NAME_SPACE(tGis, Gui)
 

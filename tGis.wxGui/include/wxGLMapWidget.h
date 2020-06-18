@@ -57,7 +57,7 @@ protected:
 	void LayerRemoved(IMapPtr, ILayerPtr, size_t) override;
 	void LayerCleared(IMapPtr) override;
 
-private:
+protected:
 	virtual void OnPaint(wxPaintEvent& event);
 	virtual void OnSize(wxSizeEvent& event);
 	virtual void OnMouseEvent(wxMouseEvent& event);

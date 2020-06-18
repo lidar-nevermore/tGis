@@ -40,9 +40,9 @@ GradientColorRender::GradientColorRender(ILayer* layer, GradientColor* color)
 	_layer->SetRender(this);
 	_color = color;
 	_envelope.MinX = 0;
-	_envelope.MinY = 0;
+	_envelope.MinY = -20;
 	_envelope.MaxX = 0;
-	_envelope.MaxY = -20;
+	_envelope.MaxY = 0;
 }
 
 
@@ -59,7 +59,7 @@ void GradientColorRender::SetHeight(int height)
 {
 	assert(height > 3);
 	_height = height;
-	_envelope.MaxY = -_height;
+	_envelope.MinY = -_height;
 }
 
 void GradientColorRender::Paint(IGeoSurface * surf)

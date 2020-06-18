@@ -19,11 +19,11 @@
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
 #include <wx/slider.h>
-#include <wx/panel.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
 #include <wx/button.h>
+#include <wx/panel.h>
 #include <wx/sizer.h>
 #include <wx/gbsizer.h>
 
@@ -57,6 +57,7 @@ class PseudoColorLayerRenderCtrlBase : public wxPanel
 		wxStaticText* _lblOpacityValue;
 		wxSlider* _sldOpacity;
 		wxStaticText* m_staticText7;
+		wxButton* _btnSelGradColor;
 		tGis::Gui::wxGradientColorWidget* _wxGradientColor;
 		wxCheckBox* _chkApproximate;
 		wxButton* _btnComputeStatistics;

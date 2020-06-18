@@ -117,11 +117,13 @@ void wxGLMapWidget::OnSize(wxSizeEvent & event)
 void wxGLMapWidget::OnMouseEvent(wxMouseEvent & event)
 {
 	MouseEvent(this, &event);
+	event.Skip();
 }
 
 void wxGLMapWidget::OnWheelEvent(wxMouseEvent & event)
 {
 	WheelEvent(this, &event);
+	event.Skip();
 }
 
 wxBEGIN_EVENT_TABLE(wxGLMapWidget, wxGLCanvas)

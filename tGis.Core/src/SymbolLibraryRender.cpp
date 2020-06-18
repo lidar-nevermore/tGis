@@ -48,7 +48,7 @@ public:
 		_rowCount = 0;
 		_colCount = 0;
 		_selSymId = 0;
-		_curSurY = INT_MAX;
+		_curSurfY = INT_MAX;
 	}
 
 	SymbolLibraryRender* _owner;
@@ -57,7 +57,8 @@ public:
 	int _rowCount;
 	int _colCount;
 	int _selSymId;
-	int _curSurY;
+	//Surface上当前起始绘制的y坐标，可能小于零，只有一半露在外面时就小于零
+	int _curSurfY;
 	//记录当前Surf上显示的符号的Id
 	std::vector<int> _vecSymId;
 };
@@ -132,7 +133,7 @@ void SymbolLibraryRender::UpdateEnvelope(int surfW, int surfH)
 int SymbolLibraryRender::SelectSymbol(int x, int y)
 {
 	int col = (x + _symOccupy) / _symOccupy;
-	int row = (y - _impl_->_curSurY + _symOccupy) / _symOccupy;
+	int row = (y - _impl_->_curSurfY + _symOccupy) / _symOccupy;
 	_impl_->_selSymId = -1;
 	if (col <= _impl_->_colCount)
 	{
@@ -223,7 +224,7 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 
 	//更新当前Surf上显示的符号的Id
 	_impl_->_vecSymId.clear();
-	_impl_->_curSurY = INT_MAX;
+	_impl_->_curSurfY = INT_MAX;
 
 	while (nextSymId >= 0)
 	{
@@ -233,8 +234,8 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 		{
 			int curSurfX, curSurfY;
 			surf->GetViewPort()->Spatial2Surface(curDrwX, curDrwY, &curSurfX, &curSurfY);
-			if (_impl_->_curSurY == INT_MAX)
-				_impl_->_curSurY = curSurfY;
+			if (_impl_->_curSurfY == INT_MAX)
+				_impl_->_curSurfY = curSurfY;
 
 			if (sym->GetType() == SymbolType::Marker)
 				DrawMarkerSymbol(surf, (IMarkerSymbol*)sym, curSurfX, curSurfY);

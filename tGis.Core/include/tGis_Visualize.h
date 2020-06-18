@@ -20,5 +20,6 @@
 #include "GradientColor.h"
 #include "GradientColorRender.h"
 #include "GradientColorRepository.h"
+#include "GradientColorRepositoryRender.h"
 
 

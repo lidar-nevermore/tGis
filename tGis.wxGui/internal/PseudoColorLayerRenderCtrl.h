@@ -44,6 +44,7 @@ private:
 private:
 	void _sldOpacity_scroll(wxCommandEvent& event);
 	void _btnComputeStatistics_Clicked(wxCommandEvent& event);
+	void _btnSelGradColor_clicked(wxCommandEvent& e);
 };
 
 #endif // __GrayScaleLayerRenderCtrl__

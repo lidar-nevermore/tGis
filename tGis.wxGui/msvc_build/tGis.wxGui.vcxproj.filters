@@ -113,6 +113,15 @@
     <ClInclude Include="..\internal\PseudoColorLayerRenderCtrl.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorEditorWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorPickerDialog.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorRepositoryWidget.h">
+      <Filter>include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxGLGeoSurface.cpp">
@@ -204,6 +213,15 @@
     </ClCompile>
     <ClCompile Include="..\internal\PseudoColorLayerRenderCtrl.cpp">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorEditorWidget.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorPickerDialog.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorRepositoryWidget.cpp">
+      <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

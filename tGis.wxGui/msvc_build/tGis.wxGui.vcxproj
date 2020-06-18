@@ -88,6 +88,9 @@
     <ClInclude Include="..\include\DrawRectTool.h" />
     <ClInclude Include="..\include\wxDatasetInfoDialog.h" />
     <ClInclude Include="..\include\wxDatasetInfoWidget.h" />
+    <ClInclude Include="..\include\wxGradientColorEditorWidget.h" />
+    <ClInclude Include="..\include\wxGradientColorPickerDialog.h" />
+    <ClInclude Include="..\include\wxGradientColorRepositoryWidget.h" />
     <ClInclude Include="..\include\wxGradientColorWidget.h" />
     <ClInclude Include="..\include\wxLayerPropertyDialog.h" />
     <ClInclude Include="..\include\wxLayerRenderWidget.h" />
@@ -135,6 +138,9 @@
     <ClCompile Include="..\src\DrawRectTool.cpp" />
     <ClCompile Include="..\src\wxDatasetInfoDialog.cpp" />
     <ClCompile Include="..\src\wxDatasetInfoWidget.cpp" />
+    <ClCompile Include="..\src\wxGradientColorEditorWidget.cpp" />
+    <ClCompile Include="..\src\wxGradientColorPickerDialog.cpp" />
+    <ClCompile Include="..\src\wxGradientColorRepositoryWidget.cpp" />
     <ClCompile Include="..\src\wxGradientColorWidget.cpp" />
     <ClCompile Include="..\src\wxLayerPropertyDialog.cpp" />
     <ClCompile Include="..\src\wxLayerRenderWidget.cpp" />

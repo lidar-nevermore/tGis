@@ -32,6 +32,9 @@ private:
 	Map* _map;
 	GradientColor* _color;
 	GradientColorRender* _render;
+
+private:
+	virtual void OnSize(wxSizeEvent& event);
 };
 
 END_NAME_SPACE(tGis, Gui)

@@ -19,7 +19,7 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 
 		GradientColor* inferno = new GradientColor();
 		inferno->AddKeyColor(0, 0, 4, 0);
-		inferno->AddKeyColor(10, 7, 34, 0.05);
+		inferno->AddKeyColor(30, 15, 72, 0.01);
 		inferno->AddKeyColor(64, 10, 103, 0.2);
 		inferno->AddKeyColor(207, 57, 82, 0.5);
 		inferno->AddKeyColor(251, 166, 12, 0.8);

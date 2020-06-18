@@ -58,21 +58,26 @@ PseudoColorLayerRenderCtrlBase::PseudoColorLayerRenderCtrlBase( wxWindow* parent
 
 	m_staticText51 = new wxStaticText( this, wxID_ANY, wxT("Opacity"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText51->Wrap( -1 );
-	gbSizer1->Add( m_staticText51, wxGBPosition( 4, 0 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( m_staticText51, wxGBPosition( 4, 0 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_lblOpacityValue = new wxStaticText( this, wxID_ANY, wxT("255"), wxDefaultPosition, wxDefaultSize, 0 );
 	_lblOpacityValue->Wrap( -1 );
-	gbSizer1->Add( _lblOpacityValue, wxGBPosition( 4, 1 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( _lblOpacityValue, wxGBPosition( 4, 1 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_sldOpacity = new wxSlider( this, wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
-	gbSizer1->Add( _sldOpacity, wxGBPosition( 4, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND, 5 );
+	gbSizer1->Add( _sldOpacity, wxGBPosition( 4, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	m_staticText7 = new wxStaticText( this, wxID_ANY, wxT("Color"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText7->Wrap( -1 );
-	gbSizer1->Add( m_staticText7, wxGBPosition( 5, 0 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( m_staticText7, wxGBPosition( 5, 0 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
-	_wxGradientColor = new tGis::Gui::wxGradientColorWidget( this );
-	gbSizer1->Add( _wxGradientColor, wxGBPosition( 5, 1 ), wxGBSpan( 1, 7 ), wxALL|wxEXPAND, 5 );
+	_btnSelGradColor = new wxButton( this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+	_btnSelGradColor->SetMaxSize( wxSize( 31,-1 ) );
+
+	gbSizer1->Add( _btnSelGradColor, wxGBPosition( 5, 1 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
+
+	_wxGradientColor = new tGis::Gui::wxGradientColorWidget(this);
+	gbSizer1->Add( _wxGradientColor, wxGBPosition( 5, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );

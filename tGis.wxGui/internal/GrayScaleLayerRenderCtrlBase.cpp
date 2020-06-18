@@ -57,14 +57,14 @@ GrayScaleLayerRenderCtrlBase::GrayScaleLayerRenderCtrlBase( wxWindow* parent, wx
 
 	m_staticText51 = new wxStaticText( this, wxID_ANY, wxT("Opacity"), wxDefaultPosition, wxDefaultSize, 0 );
 	m_staticText51->Wrap( -1 );
-	gbSizer1->Add( m_staticText51, wxGBPosition( 4, 0 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( m_staticText51, wxGBPosition( 4, 0 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_lblOpacityValue = new wxStaticText( this, wxID_ANY, wxT("255"), wxDefaultPosition, wxDefaultSize, 0 );
 	_lblOpacityValue->Wrap( -1 );
-	gbSizer1->Add( _lblOpacityValue, wxGBPosition( 4, 1 ), wxGBSpan( 1, 1 ), wxALL, 5 );
+	gbSizer1->Add( _lblOpacityValue, wxGBPosition( 4, 1 ), wxGBSpan( 1, 1 ), wxALL|wxALIGN_CENTER_VERTICAL, 5 );
 
 	_sldOpacity = new wxSlider( this, wxID_ANY, 255, 0, 255, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL );
-	gbSizer1->Add( _sldOpacity, wxGBPosition( 4, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND, 5 );
+	gbSizer1->Add( _sldOpacity, wxGBPosition( 4, 2 ), wxGBSpan( 1, 6 ), wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL, 5 );
 
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );

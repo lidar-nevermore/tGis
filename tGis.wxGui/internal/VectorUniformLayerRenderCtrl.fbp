@@ -195,7 +195,7 @@
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">0</property>
-                    <property name="flag">wxALL</property>
+                    <property name="flag">wxALL|wxALIGN_CENTER_VERTICAL</property>
                     <property name="row">1</property>
                     <property name="rowspan">1</property>
                     <object class="wxStaticText" expanded="1">
@@ -259,7 +259,7 @@
                     <property name="border">5</property>
                     <property name="colspan">1</property>
                     <property name="column">1</property>
-                    <property name="flag">wxALL</property>
+                    <property name="flag">wxALL|wxALIGN_CENTER_VERTICAL</property>
                     <property name="row">1</property>
                     <property name="rowspan">1</property>
                     <object class="wxStaticText" expanded="1">
@@ -323,7 +323,7 @@
                     <property name="border">5</property>
                     <property name="colspan">6</property>
                     <property name="column">2</property>
-                    <property name="flag">wxALL|wxEXPAND</property>
+                    <property name="flag">wxALL|wxEXPAND|wxALIGN_CENTER_VERTICAL</property>
                     <property name="row">1</property>
                     <property name="rowspan">1</property>
                     <object class="wxSlider" expanded="1">
