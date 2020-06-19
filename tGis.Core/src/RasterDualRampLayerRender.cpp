@@ -1,4 +1,4 @@
-#include "RasterColorRampLayerRender.h"
+#include "RasterDualRampLayerRender.h"
 #include "MyGDALRasterDataset.h"
 
 #include "gdal.h"
@@ -8,26 +8,26 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-const char* const RasterColorRampLayerRender::_type = "7EB66993-6103-4426-AE75-FA7BC52C402B";
+const char* const RasterDualRampLayerRender::_type = "7EB66993-6103-4426-AE75-FA7BC52C402B";
 
-const char * RasterColorRampLayerRender::GetType()
+const char * RasterDualRampLayerRender::GetType()
 {
 	return _type;
 }
 
-const char * RasterColorRampLayerRender::S_GetType()
+const char * RasterDualRampLayerRender::S_GetType()
 {
 	return _type;
 }
 
-bool RasterColorRampLayerRender::IsTypeOf(const char * type)
+bool RasterDualRampLayerRender::IsTypeOf(const char * type)
 {
 	if (strcmp(type, _type) == 0)
 		return true;
 	return RasterLayerRender::IsTypeOf(type);
 }
 
-RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer * layer)
+RasterDualRampLayerRender::RasterDualRampLayerRender(ILayer * layer)
 	:RasterLayerRender(layer)
 {
 	_leftRChannel = true;
@@ -39,22 +39,22 @@ RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer * layer)
 	_noDataLogic = 0;
 	_noDataValue = 0.0;
 	_dataBytes = 0;
-	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterColorRampLayerRender::OuterResample;
-	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterColorRampLayerRender::IOResample;
+	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterDualRampLayerRender::OuterResample;
+	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterDualRampLayerRender::IOResample;
 }
 
-RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer* layer, int bandIndex)
-	:RasterColorRampLayerRender(layer)
+RasterDualRampLayerRender::RasterDualRampLayerRender(ILayer* layer, int bandIndex)
+	:RasterDualRampLayerRender(layer)
 {
 	SetBand(bandIndex);
 }
 
 
-RasterColorRampLayerRender::~RasterColorRampLayerRender()
+RasterDualRampLayerRender::~RasterDualRampLayerRender()
 {
 }
 
-void RasterColorRampLayerRender::SetMinPivotMax(double min, double pivot, double max)
+void RasterDualRampLayerRender::SetMinPivotMax(double min, double pivot, double max)
 {
 	_min = min;
 	_max = max;
@@ -63,24 +63,24 @@ void RasterColorRampLayerRender::SetMinPivotMax(double min, double pivot, double
 	_rightRange = _max - _pivot;
 }
 
-void RasterColorRampLayerRender::GetMinPivotMax(double * min, double * pivot, double * max)
+void RasterDualRampLayerRender::GetMinPivotMax(double * min, double * pivot, double * max)
 {
 	*min = _min;
 	*max = _max;
 	*pivot = _pivot;
 }
 
-unsigned char * RasterColorRampLayerRender::GetLut()
+unsigned char * RasterDualRampLayerRender::GetLut()
 {
 	return _lut;
 }
 
-int RasterColorRampLayerRender::GetBand()
+int RasterDualRampLayerRender::GetBand()
 {
 	return _bandIndex;
 }
 
-void RasterColorRampLayerRender::SetBand(int bandIndex)
+void RasterDualRampLayerRender::SetBand(int bandIndex)
 {
 	GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(bandIndex);
 	GDALDataType dataType = band->GetRasterDataType();
@@ -100,47 +100,47 @@ void RasterColorRampLayerRender::SetBand(int bandIndex)
 	RasterLayerRender::InitialMinMax(_band, _dataType, &_min, &_max, &_range);
 }
 
-void RasterColorRampLayerRender::SetLeftChannel(bool r, bool g, bool b)
+void RasterDualRampLayerRender::SetLeftChannel(bool r, bool g, bool b)
 {
 	_leftRChannel = r;
 	_leftGChannel = g;
 	_leftBChannel = b;
 }
 
-void RasterColorRampLayerRender::GetLeftChannel(bool * r, bool * g, bool * b)
+void RasterDualRampLayerRender::GetLeftChannel(bool * r, bool * g, bool * b)
 {
 	*r = _leftRChannel;
 	*g = _leftGChannel;
 	*b = _leftBChannel;
 }
 
-void RasterColorRampLayerRender::SetRightChannel(bool r, bool g, bool b)
+void RasterDualRampLayerRender::SetRightChannel(bool r, bool g, bool b)
 {
 	_rightRChannel = r;
 	_rightGChannel = g;
 	_rightBChannel = b;
 }
 
-void RasterColorRampLayerRender::GetRightChannel(bool * r, bool * g, bool * b)
+void RasterDualRampLayerRender::GetRightChannel(bool * r, bool * g, bool * b)
 {
 	*r = _rightRChannel;
 	*g = _rightGChannel;
 	*b = _rightBChannel;
 }
 
-void RasterColorRampLayerRender::SetNoDataValue(int noDataLogic, double noDataValue)
+void RasterDualRampLayerRender::SetNoDataValue(int noDataLogic, double noDataValue)
 {
 	_noDataLogic = noDataLogic;
 	_noDataValue = noDataValue;
 }
 
-void RasterColorRampLayerRender::GetNoDataValue(int * noDataLogic, double * noDataValue)
+void RasterDualRampLayerRender::GetNoDataValue(int * noDataLogic, double * noDataValue)
 {
 	*noDataLogic = _noDataLogic;
 	*noDataValue = _noDataValue;
 }
 
-void RasterColorRampLayerRender::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
+void RasterDualRampLayerRender::OuterResample(unsigned char * pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
 {
 	GDALRasterIOExtraArg arg;
 	INIT_RASTERIO_EXTRA_ARG(arg);
@@ -204,7 +204,7 @@ void RasterColorRampLayerRender::OuterResample(unsigned char * pixBuffer, int re
 	}
 }
 
-void RasterColorRampLayerRender::IOResample(unsigned char * pixBuffer, int readingLeft, int readingTop, int readingRight, int readingBottom, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
+void RasterDualRampLayerRender::IOResample(unsigned char * pixBuffer, int readingLeft, int readingTop, int readingRight, int readingBottom, unsigned char * surfBuffer, int paintingLeft, int paintingTop, int paintingWidth, int paintingHeight)
 {
 	GDALRasterIOExtraArg arg;
 	INIT_RASTERIO_EXTRA_ARG(arg);

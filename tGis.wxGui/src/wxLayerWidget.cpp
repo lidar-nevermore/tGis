@@ -198,7 +198,7 @@ inline wxTreeItemId wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 	wxTreeItemId inserted;
 	if (render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
 		inserted = _treeCtrl->InsertItem(root, pos, label, raster_rgb, raster_rgb, layerData);
-	else if (render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
+	else if (render->IsTypeOf(RasterDualRampLayerRender::S_GetType()))
 		inserted = _treeCtrl->InsertItem(root, pos, label, raster_color_ramp, raster_color_ramp, layerData);
 	else if (render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
 		inserted = _treeCtrl->InsertItem(root, pos, label, raster_grayscale, raster_grayscale, layerData);

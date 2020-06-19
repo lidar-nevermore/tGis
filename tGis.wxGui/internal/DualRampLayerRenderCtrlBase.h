@@ -31,9 +31,9 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class ColorRampLayerRenderCtrlBase
+/// Class DualRampLayerRenderCtrlBase
 ///////////////////////////////////////////////////////////////////////////////
-class ColorRampLayerRenderCtrlBase : public wxPanel
+class DualRampLayerRenderCtrlBase : public wxPanel
 {
 	private:
 
@@ -67,8 +67,8 @@ class ColorRampLayerRenderCtrlBase : public wxPanel
 
 	public:
 
-		ColorRampLayerRenderCtrlBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 444,435 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-		~ColorRampLayerRenderCtrlBase();
+		DualRampLayerRenderCtrlBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 444,435 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+		~DualRampLayerRenderCtrlBase();
 
 };
 

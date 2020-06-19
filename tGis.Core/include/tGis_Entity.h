@@ -30,7 +30,7 @@
 #include "RasterLayerRender.h"
 #include "RasterGrayScaleLayerRender.h"
 #include "RasterRgbLayerRender.h"
-#include "RasterColorRampLayerRender.h"
+#include "RasterDualRampLayerRender.h"
 
 #include "VectorLayerRender.h"
 #include "VectorUniformLayerRender.h"

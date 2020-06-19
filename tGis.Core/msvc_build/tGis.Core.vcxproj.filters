@@ -266,9 +266,6 @@
     <ClInclude Include="..\include\IInclusionObject.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\RasterColorRampLayerRender.h">
-      <Filter>include\Entity</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\BuildPyramids.h">
       <Filter>include\Utility</Filter>
     </ClInclude>
@@ -370,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="..\include\GradientColorRepositoryRender.h">
       <Filter>include\GradientColor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RasterDualRampLayerRender.h">
+      <Filter>include\Entity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -511,9 +511,6 @@
     <ClCompile Include="..\src\ILayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\RasterColorRampLayerRender.cpp">
-      <Filter>src\Entity</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\BuildPyramids.cpp">
       <Filter>src\Utility</Filter>
     </ClCompile>
@@ -591,6 +588,9 @@
     </ClCompile>
     <ClCompile Include="..\src\GradientColorRepositoryRender.cpp">
       <Filter>src\GradientColor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RasterDualRampLayerRender.cpp">
+      <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

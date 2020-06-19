@@ -2,8 +2,8 @@
 #pragma once
 
 
-#ifndef __RASTERBINARYGRAYSCALELAYER_H__
-#define __RASTERBINARYGRAYSCALELAYER_H__
+#ifndef __RasterDualRampLayerRender_H__
+#define __RasterDualRampLayerRender_H__
 
 #include "Helper.h"
 
@@ -15,7 +15,7 @@ class GDALRasterBand;
 BEGIN_NAME_SPACE(tGis, Core)
 
 
-class TGIS_CORE_API RasterColorRampLayerRender : public RasterLayerRender
+class TGIS_CORE_API RasterDualRampLayerRender : public RasterLayerRender
 {
 public:
 	virtual const char* GetType();
@@ -26,13 +26,13 @@ private:
 	static const char* const _type;
 
 public:
-	RasterColorRampLayerRender(ILayer* layer);
-	RasterColorRampLayerRender(ILayer* layer, int band);
-	~RasterColorRampLayerRender();
+	RasterDualRampLayerRender(ILayer* layer);
+	RasterDualRampLayerRender(ILayer* layer, int band);
+	~RasterDualRampLayerRender();
 
 private:
-	RasterColorRampLayerRender(const RasterColorRampLayerRender &) = delete;
-	RasterColorRampLayerRender &operator=(const RasterColorRampLayerRender &) = delete;
+	RasterDualRampLayerRender(const RasterDualRampLayerRender &) = delete;
+	RasterDualRampLayerRender &operator=(const RasterDualRampLayerRender &) = delete;
 
 public:
 	void SetMinPivotMax(double min, double pivot, double max);

@@ -5,11 +5,11 @@
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#include "ColorRampLayerRenderCtrlBase.h"
+#include "DualRampLayerRenderCtrlBase.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
-ColorRampLayerRenderCtrlBase::ColorRampLayerRenderCtrlBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+DualRampLayerRenderCtrlBase::DualRampLayerRenderCtrlBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxGridBagSizer* gbSizer1;
 	gbSizer1 = new wxGridBagSizer( 0, 0 );
@@ -120,6 +120,6 @@ ColorRampLayerRenderCtrlBase::ColorRampLayerRenderCtrlBase( wxWindow* parent, wx
 	this->Layout();
 }
 
-ColorRampLayerRenderCtrlBase::~ColorRampLayerRenderCtrlBase()
+DualRampLayerRenderCtrlBase::~DualRampLayerRenderCtrlBase()
 {
 }

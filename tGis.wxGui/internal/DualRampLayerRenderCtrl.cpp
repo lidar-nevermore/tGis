@@ -1,32 +1,32 @@
 #include <wx/wx.h>
-#include "ColorRampLayerRenderCtrl.h"
+#include "DualRampLayerRenderCtrl.h"
 #include <wx/progdlg.h>
 
-ColorRampLayerRenderCtrl::ColorRampLayerRenderCtrl( wxWindow* parent )
-	:ColorRampLayerRenderCtrlBase( parent )
+DualRampLayerRenderCtrl::DualRampLayerRenderCtrl( wxWindow* parent )
+	:DualRampLayerRenderCtrlBase( parent )
 {
 	_render = nullptr;
 	_raster = nullptr;
 	_layer = nullptr;
 
-	Bind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
-	Bind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+	Bind(wxEVT_SLIDER, &DualRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Bind(wxEVT_BUTTON, &DualRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 
 }
 
-ColorRampLayerRenderCtrl::~ColorRampLayerRenderCtrl()
+DualRampLayerRenderCtrl::~DualRampLayerRenderCtrl()
 {
-	Unbind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
-	Unbind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+	Unbind(wxEVT_SLIDER, &DualRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Unbind(wxEVT_BUTTON, &DualRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
 
 }
 
-const char * ColorRampLayerRenderCtrl::GetLayerRenderName()
+const char * DualRampLayerRenderCtrl::GetLayerRenderName()
 {
-	return "Raster ColorRamp Render";;
+	return "Raster DualRamp Render";;
 }
 
-bool ColorRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
+bool DualRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 {
 	if (IsSupportLayer(layer))
 	{
@@ -42,7 +42,7 @@ bool ColorRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 		}
 		else
 		{
-			if (render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
+			if (render->IsTypeOf(RasterDualRampLayerRender::S_GetType()))
 				return true;
 		}
 	}
@@ -50,7 +50,7 @@ bool ColorRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 	return false;
 }
 
-bool ColorRampLayerRenderCtrl::IsSupportLayer(ILayer * layer)
+bool DualRampLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 {
 	IDataset* dt = layer->GetDataset();
 	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
@@ -59,7 +59,7 @@ bool ColorRampLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 	return false;
 }
 
-void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
+void DualRampLayerRenderCtrl::SetLayer(ILayer * layer)
 {
 	_layer = layer;
 	_raster = (MyGDALRasterDataset*)layer->GetDataset();
@@ -72,17 +72,17 @@ void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
 	}
 
 	ILayerRender* render = layer->GetRender();
-	RasterColorRampLayerRender* trender = dynamic_cast<RasterColorRampLayerRender*>(render);
+	RasterDualRampLayerRender* trender = dynamic_cast<RasterDualRampLayerRender*>(render);
 	if (trender == nullptr)
 		SetDataset(_raster);
 	else
 		SetLayerRender(trender);
 }
 
-void ColorRampLayerRenderCtrl::UpdateLayerRender()
+void DualRampLayerRenderCtrl::UpdateLayerRender()
 {
 	if (_render == nullptr)
-		_render = new RasterColorRampLayerRender(_layer);
+		_render = new RasterDualRampLayerRender(_layer);
 
 	_render->SetBand(_choiceBand->GetSelection() + 1);
 
@@ -134,7 +134,7 @@ void ColorRampLayerRenderCtrl::UpdateLayerRender()
 }
 
 
-void ColorRampLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
+void DualRampLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 {
 	GDALDataset* dt = _raster->GetGDALDataset();
 	int layerCount = dt->GetRasterCount();
@@ -184,7 +184,7 @@ void ColorRampLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 	_choiceBand->SetSelection(0);
 }
 
-void ColorRampLayerRenderCtrl::SetLayerRender(RasterColorRampLayerRender * render)
+void DualRampLayerRenderCtrl::SetLayerRender(RasterDualRampLayerRender * render)
 {
 	_render = render;
 
@@ -240,7 +240,7 @@ void ColorRampLayerRenderCtrl::SetLayerRender(RasterColorRampLayerRender * rende
 	_choiceBand->SetSelection(_render->GetBand() - 1);
 }
 
-void ColorRampLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
+void DualRampLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
 {
 	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
 }
@@ -255,7 +255,7 @@ static int CPL_STDCALL ComputeStatisticsPrgFunc(double dfComplete, const char *p
 	return TRUE;
 }
 
-void ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
+void DualRampLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
 {
 	GDALDataset* dt = _raster->GetGDALDataset();
 	bool bApproxOK = _chkApproximate->GetValue();
