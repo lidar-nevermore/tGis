@@ -1,38 +1,38 @@
 #include <wx/wx.h>
-#include "PseudoColorLayerRenderCtrl.h"
+#include "ColorRampLayerRenderCtrl.h"
 #include <wx/progdlg.h>
 #include "wxGradientColorPickerDialog.h"
 #include "wxGradientColorWidget.h"
 
 using namespace tGis::Gui;
 
-PseudoColorLayerRenderCtrl::PseudoColorLayerRenderCtrl( wxWindow* parent )
-	:PseudoColorLayerRenderCtrlBase( parent )
+ColorRampLayerRenderCtrl::ColorRampLayerRenderCtrl( wxWindow* parent )
+	:ColorRampLayerRenderCtrlBase( parent )
 {
 	_render = nullptr;
 	_raster = nullptr;
 	_layer = nullptr;
 
-	Bind(wxEVT_SLIDER, &PseudoColorLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
-	Bind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
-	Bind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnSelGradColor_clicked, this, _btnSelGradColor->GetId());
+	Bind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Bind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+	Bind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnSelGradColor_clicked, this, _btnSelGradColor->GetId());
 
 }
 
-PseudoColorLayerRenderCtrl::~PseudoColorLayerRenderCtrl()
+ColorRampLayerRenderCtrl::~ColorRampLayerRenderCtrl()
 {
-	Unbind(wxEVT_SLIDER, &PseudoColorLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
-	Unbind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
-	Unbind(wxEVT_BUTTON, &PseudoColorLayerRenderCtrl::_btnSelGradColor_clicked, this, _btnSelGradColor->GetId());
+	Unbind(wxEVT_SLIDER, &ColorRampLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
+	Unbind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked, this, _btnComputeStatistics->GetId());
+	Unbind(wxEVT_BUTTON, &ColorRampLayerRenderCtrl::_btnSelGradColor_clicked, this, _btnSelGradColor->GetId());
 
 }
 
-const char * PseudoColorLayerRenderCtrl::GetLayerRenderName()
+const char * ColorRampLayerRenderCtrl::GetLayerRenderName()
 {
-	return "Raster PseudoColor Render";;
+	return "Raster ColorRamp Render";;
 }
 
-bool PseudoColorLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
+bool ColorRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 {
 	if (IsSupportLayer(layer))
 	{
@@ -56,7 +56,7 @@ bool PseudoColorLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 	return false;
 }
 
-bool PseudoColorLayerRenderCtrl::IsSupportLayer(ILayer * layer)
+bool ColorRampLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 {
 	IDataset* dt = layer->GetDataset();
 	if (dt->IsTypeOf(MyGDALRasterDataset::S_GetType()))
@@ -65,7 +65,7 @@ bool PseudoColorLayerRenderCtrl::IsSupportLayer(ILayer * layer)
 	return false;
 }
 
-void PseudoColorLayerRenderCtrl::SetLayer(ILayer * layer)
+void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
 {
 	_layer = layer;
 	_raster = (MyGDALRasterDataset*)layer->GetDataset();
@@ -85,7 +85,7 @@ void PseudoColorLayerRenderCtrl::SetLayer(ILayer * layer)
 		SetLayerRender(trender);
 }
 
-void PseudoColorLayerRenderCtrl::UpdateLayerRender()
+void ColorRampLayerRenderCtrl::UpdateLayerRender()
 {
 	if (_render == nullptr)
 		_render = new RasterGrayScaleLayerRender(_layer);
@@ -121,7 +121,7 @@ void PseudoColorLayerRenderCtrl::UpdateLayerRender()
 }
 
 
-void PseudoColorLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
+void ColorRampLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 {
 	GDALDataset* dt = _raster->GetGDALDataset();
 	int layerCount = dt->GetRasterCount();
@@ -160,7 +160,7 @@ void PseudoColorLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 	_choiceBand->SetSelection(0);
 }
 
-void PseudoColorLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * render)
+void ColorRampLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * render)
 {
 	_render = render;
 
@@ -197,7 +197,7 @@ void PseudoColorLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * ren
 	_choiceBand->SetSelection(_render->GetBand() - 1);
 }
 
-void PseudoColorLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
+void ColorRampLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
 {
 	_lblOpacityValue->SetLabel(wxString::Format(wxT("%-3d"), event.GetInt()));
 }
@@ -212,7 +212,7 @@ static int CPL_STDCALL ComputeStatisticsPrgFunc(double dfComplete, const char *p
 	return TRUE;
 }
 
-void PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
+void ColorRampLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & event)
 {
 	GDALDataset* dt = _raster->GetGDALDataset();
 	bool bApproxOK = _chkApproximate->GetValue();
@@ -231,7 +231,7 @@ void PseudoColorLayerRenderCtrl::_btnComputeStatistics_Clicked(wxCommandEvent & 
 	delete prgDlg;
 }
 
-void PseudoColorLayerRenderCtrl::_btnSelGradColor_clicked(wxCommandEvent& e)
+void ColorRampLayerRenderCtrl::_btnSelGradColor_clicked(wxCommandEvent& e)
 {
 	wxGradientColorPickerDialog dlg;
 	dlg.SetGradientColor(_wxGradientColor->GetGradientColor());

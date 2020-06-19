@@ -5,12 +5,12 @@
 // PLEASE DO *NOT* EDIT THIS FILE!
 ///////////////////////////////////////////////////////////////////////////
 
-#include "PseudoColorLayerRenderCtrlBase.h"
+#include "ColorRampLayerRenderCtrlBase.h"
 #include "wxGradientColorWidget.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
-PseudoColorLayerRenderCtrlBase::PseudoColorLayerRenderCtrlBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
+ColorRampLayerRenderCtrlBase::ColorRampLayerRenderCtrlBase( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	wxGridBagSizer* gbSizer1;
 	gbSizer1 = new wxGridBagSizer( 0, 0 );
@@ -100,6 +100,6 @@ PseudoColorLayerRenderCtrlBase::PseudoColorLayerRenderCtrlBase( wxWindow* parent
 	this->Layout();
 }
 
-PseudoColorLayerRenderCtrlBase::~PseudoColorLayerRenderCtrlBase()
+ColorRampLayerRenderCtrlBase::~ColorRampLayerRenderCtrlBase()
 {
 }

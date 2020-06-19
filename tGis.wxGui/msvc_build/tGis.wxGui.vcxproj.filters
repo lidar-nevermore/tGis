@@ -101,12 +101,6 @@
     <ClInclude Include="..\include\wxGradientColorWidget.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\internal\PseudoColorLayerRenderCtrlBase.h">
-      <Filter>internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\internal\PseudoColorLayerRenderCtrl.h">
-      <Filter>internal</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\wxGradientColorEditorWidget.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -120,6 +114,12 @@
       <Filter>internal</Filter>
     </ClInclude>
     <ClInclude Include="..\internal\DualRampLayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\ColorRampLayerRenderCtrlBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\ColorRampLayerRenderCtrl.h">
       <Filter>internal</Filter>
     </ClInclude>
   </ItemGroup>
@@ -202,12 +202,6 @@
     <ClCompile Include="..\src\wxGradientColorWidget.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\internal\PseudoColorLayerRenderCtrlBase.cpp">
-      <Filter>internal</Filter>
-    </ClCompile>
-    <ClCompile Include="..\internal\PseudoColorLayerRenderCtrl.cpp">
-      <Filter>internal</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\wxGradientColorEditorWidget.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -221,6 +215,12 @@
       <Filter>internal</Filter>
     </ClCompile>
     <ClCompile Include="..\internal\DualRampLayerRenderCtrl.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\ColorRampLayerRenderCtrlBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\ColorRampLayerRenderCtrl.cpp">
       <Filter>internal</Filter>
     </ClCompile>
   </ItemGroup>
@@ -243,10 +243,10 @@
     <None Include="..\internal\StandaloneToolDialog.fbp">
       <Filter>internal</Filter>
     </None>
-    <None Include="..\internal\PseudoColorLayerRenderCtrl.fbp">
+    <None Include="..\internal\DualRampLayerRenderCtrl.fbp">
       <Filter>internal</Filter>
     </None>
-    <None Include="..\internal\DualRampLayerRenderCtrl.fbp">
+    <None Include="..\internal\ColorRampLayerRenderCtrl.fbp">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>

@@ -108,13 +108,13 @@
     <ClInclude Include="..\include\wxSymbolPickerWidget.h" />
     <ClInclude Include="..\include\wxTGisApplication.h" />
     <ClInclude Include="..\include\wxToolWidget.h" />
+    <ClInclude Include="..\internal\ColorRampLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\DualRampLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\DualRampLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\GrayScaleLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\GrayScaleLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\ILayerRenderCtrl.h" />
-    <ClInclude Include="..\internal\PseudoColorLayerRenderCtrl.h" />
-    <ClInclude Include="..\internal\PseudoColorLayerRenderCtrlBase.h" />
+    <ClInclude Include="..\internal\ColorRampLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\StandaloneToolDialog.h" />
@@ -123,12 +123,12 @@
     <ClInclude Include="..\internal\VectorUniformLayerRenderCtrlBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\internal\ColorRampLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\DualRampLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\DualRampLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp" />
-    <ClCompile Include="..\internal\PseudoColorLayerRenderCtrl.cpp" />
-    <ClCompile Include="..\internal\PseudoColorLayerRenderCtrlBase.cpp" />
+    <ClCompile Include="..\internal\ColorRampLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\StandaloneToolDialog.cpp" />
@@ -160,7 +160,7 @@
   <ItemGroup>
     <None Include="..\internal\DualRampLayerRenderCtrl.fbp" />
     <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp" />
-    <None Include="..\internal\PseudoColorLayerRenderCtrl.fbp" />
+    <None Include="..\internal\ColorRampLayerRenderCtrl.fbp" />
     <None Include="..\internal\RgbLayerRanderCtrl.fbp" />
     <None Include="..\internal\StandaloneToolDialog.fbp" />
     <None Include="..\internal\VectorUniformLayerRenderCtrl.fbp" />

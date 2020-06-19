@@ -35,9 +35,9 @@ BEGIN_NAME_SPACE(tGis, Gui)
 class wxGradientColorWidget;
 END_NAME_SPACE(tGis, Gui)
 ///////////////////////////////////////////////////////////////////////////////
-/// Class PseudoColorLayerRenderCtrlBase
+/// Class ColorRampLayerRenderCtrlBase
 ///////////////////////////////////////////////////////////////////////////////
-class PseudoColorLayerRenderCtrlBase : public wxPanel
+class ColorRampLayerRenderCtrlBase : public wxPanel
 {
 	private:
 
@@ -64,8 +64,8 @@ class PseudoColorLayerRenderCtrlBase : public wxPanel
 
 	public:
 
-		PseudoColorLayerRenderCtrlBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 430,438 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-		~PseudoColorLayerRenderCtrlBase();
+		ColorRampLayerRenderCtrlBase( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 430,438 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
+		~ColorRampLayerRenderCtrlBase();
 
 };
 
