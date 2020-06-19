@@ -138,7 +138,7 @@ void MainFrame::OnDatasetActivated(IDataset * dt)
 		MyGDALRasterDataset* dataset = (MyGDALRasterDataset*)dt;
 		if (NeedBuildPyramids(dataset->GetGDALDataset()))
 		{
-			wxProgressDialog* prgDlg = new wxProgressDialog(wxT("建立图像金字塔..."), wxT("建立图像金字塔..."), 100, this, wxPD_AUTO_HIDE|wxPD_APP_MODAL);
+			wxProgressDialog* prgDlg = new wxProgressDialog(wxT("建立图像金字塔..."), wxT("建立图像金字塔..."), 100, this, wxPD_ESTIMATED_TIME|wxPD_AUTO_HIDE|wxPD_APP_MODAL);
 			FunctorEventHandler<const Progress&> handler(
 				[prgDlg](const Progress& prg)->void
 			{
@@ -147,7 +147,9 @@ void MainFrame::OnDatasetActivated(IDataset * dt)
 
 			BuildPyramids(dataset->GetGDALDataset(), &handler);
 
-			delete prgDlg;
+			prgDlg->Destroy();
+
+			this->Raise();
 		}
 	}
 
