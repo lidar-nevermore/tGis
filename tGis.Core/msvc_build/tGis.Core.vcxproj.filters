@@ -371,6 +371,9 @@
     <ClInclude Include="..\include\RasterDualRampLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\RasterColorRampLayerRender.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -590,6 +593,9 @@
       <Filter>src\GradientColor</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RasterDualRampLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RasterColorRampLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>

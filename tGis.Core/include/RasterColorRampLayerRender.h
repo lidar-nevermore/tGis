@@ -1,21 +1,23 @@
 #pragma once
 
 
-#ifndef __RasterDualRampLayerRender_H__
-#define __RasterDualRampLayerRender_H__
+#ifndef __RasterColorRampLayerRender_H__
+#define __RasterColorRampLayerRender_H__
 
 #include "Helper.h"
 
 #include "RasterLayerRender.h"
 
-
 class GDALRasterBand;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+class GradientColor;
 
-class TGIS_CORE_API RasterDualRampLayerRender : public RasterLayerRender
+class TGIS_CORE_API RasterColorRampLayerRender : public RasterLayerRender
 {
+	TGIS_DECLARE_NO_COPY_CLASS(RasterColorRampLayerRender);
+
 public:
 	virtual const char* GetType();
 	static const char* S_GetType();
@@ -25,27 +27,24 @@ private:
 	static const char* const _type;
 
 public:
-	RasterDualRampLayerRender(ILayer* layer);
-	RasterDualRampLayerRender(ILayer* layer, int band);
-	~RasterDualRampLayerRender();
-
-private:
-	RasterDualRampLayerRender(const RasterDualRampLayerRender &) = delete;
-	RasterDualRampLayerRender &operator=(const RasterDualRampLayerRender &) = delete;
+	RasterColorRampLayerRender(ILayer* layer);
+	RasterColorRampLayerRender(ILayer* layer, int band);
+	~RasterColorRampLayerRender();
 
 public:
-	void SetMinPivotMax(double min, double pivot, double max);
-	void GetMinPivotMax(double* min, double* pivot, double* max);
-	unsigned char* GetLut();
+	void SetMinMax(double min, double max);
+	void GetMinMax(double* min, double* max);
+
 	int GetBand();
 	void SetBand(int band);
-	void SetLeftChannel(bool r, bool g, bool b);
-	void GetLeftChannel(bool* r, bool* g, bool* b);
-	void SetRightChannel(bool r, bool g, bool b);
-	void GetRightChannel(bool* r, bool* g, bool* b);
-
 	void SetNoDataValue(int noDataLogic, double noDataValue);
 	void GetNoDataValue(int* noDataLogic, double* noDataValue);
+
+	void SetGradientColor(GradientColor* color);
+	GradientColor* GetGradientColor();
+
+public:
+	virtual void Paint(IGeoSurface*);
 
 protected:
 	void OuterResample(unsigned char* pixBuffer, int readingLeft, double alignRmrX, int readingTop, double alignRmrY, int readingWidth, int readingHeight,
@@ -60,28 +59,20 @@ private:
 	int _dataType;
 	int _dataBytes;
 
-	unsigned char _lut[256];
+	unsigned char _rLut[1000];
+	unsigned char _gLut[1000];
+	unsigned char _bLut[1000];
 	double _min;
 	double _max;
-	double _pivot;
 	double _range;
-	double _leftRange;
-	double _rightRange;
-	bool _leftRChannel;
-	bool _leftGChannel;
-	bool _leftBChannel;
-	bool _rightRChannel;
-	bool _rightGChannel;
-	bool _rightBChannel;
 
 	int _noDataLogic;
 	//ÎÞÐ§Öµ
 	double _noDataValue;
+
+	GradientColor* _color;
 };
-
-
 
 END_NAME_SPACE(tGis, Core)
 
 #endif
-

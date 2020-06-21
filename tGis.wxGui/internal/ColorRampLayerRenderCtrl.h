@@ -34,10 +34,10 @@ public:
 
 private:
 	void SetDataset(MyGDALRasterDataset* raster);
-	void SetLayerRender(RasterGrayScaleLayerRender* render);
+	void SetLayerRender(RasterColorRampLayerRender* render);
 
 private:
-	RasterGrayScaleLayerRender* _render;
+	RasterColorRampLayerRender* _render;
 	MyGDALRasterDataset* _raster;
 	ILayer* _layer;
 

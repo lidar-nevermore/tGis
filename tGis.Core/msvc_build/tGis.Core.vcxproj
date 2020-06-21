@@ -64,6 +64,7 @@
     <ClInclude Include="..\include\ISymbol.h" />
     <ClInclude Include="..\include\ISymbolLibrary.h" />
     <ClInclude Include="..\include\MultiRasterBandStorageBlockWalker.h" />
+    <ClInclude Include="..\include\RasterColorRampLayerRender.h" />
     <ClInclude Include="..\include\ToolKitSet.h" />
     <ClInclude Include="..\include\ITypedObject.h" />
     <ClInclude Include="..\include\ITool.h" />
@@ -152,6 +153,7 @@
     <ClCompile Include="..\src\ILayerRender.cpp" />
     <ClCompile Include="..\src\ilog.c" />
     <ClCompile Include="..\src\MultiRasterBandStorageBlockWalker.cpp" />
+    <ClCompile Include="..\src\RasterColorRampLayerRender.cpp" />
     <ClCompile Include="..\src\ToolKitSet.cpp" />
     <ClCompile Include="..\src\Layer.cpp" />
     <ClCompile Include="..\src\LayerRender.cpp" />

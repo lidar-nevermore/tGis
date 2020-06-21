@@ -31,6 +31,7 @@
 #include "RasterGrayScaleLayerRender.h"
 #include "RasterRgbLayerRender.h"
 #include "RasterDualRampLayerRender.h"
+#include "RasterColorRampLayerRender.h"
 
 #include "VectorLayerRender.h"
 #include "VectorUniformLayerRender.h"

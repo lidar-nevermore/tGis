@@ -48,9 +48,11 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		_instance->AddGradientColor(green);
 
 		GradientColor* soilgrass = new GradientColor();
-		soilgrass->AddKeyColor(59, 18, 14, 0);
-		soilgrass->AddKeyColor(95, 64, 44, 0.2);
-		soilgrass->AddKeyColor(118, 114, 87, 0.43);
+		soilgrass->AddKeyColor(0, 0, 0, 0);
+		soilgrass->AddKeyColor(9, 9, 9, 0.2);
+		soilgrass->AddKeyColor(59, 18, 14, 0.27);
+		soilgrass->AddKeyColor(95, 64, 44, 0.35);
+		soilgrass->AddKeyColor(118, 114, 87, 0.5);
 		soilgrass->AddKeyColor(17, 237, 25, 1.0);
 		_instance->AddGradientColor(soilgrass);
 

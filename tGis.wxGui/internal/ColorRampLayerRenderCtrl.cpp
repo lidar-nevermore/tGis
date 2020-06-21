@@ -48,7 +48,7 @@ bool ColorRampLayerRenderCtrl::IsSupportLayerExactly(ILayer * layer)
 		}
 		else
 		{
-			if (render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
+			if (render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
 				return true;
 		}
 	}
@@ -78,7 +78,7 @@ void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
 	}
 
 	ILayerRender* render = layer->GetRender();
-	RasterGrayScaleLayerRender* trender = dynamic_cast<RasterGrayScaleLayerRender*>(render);
+	RasterColorRampLayerRender* trender = dynamic_cast<RasterColorRampLayerRender*>(render);
 	if (trender == nullptr)
 		SetDataset(_raster);
 	else
@@ -88,7 +88,7 @@ void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
 void ColorRampLayerRenderCtrl::UpdateLayerRender()
 {
 	if (_render == nullptr)
-		_render = new RasterGrayScaleLayerRender(_layer);
+		_render = new RasterColorRampLayerRender(_layer);
 
 	_render->SetBand(_choiceBand->GetSelection() + 1);
 
@@ -118,6 +118,8 @@ void ColorRampLayerRenderCtrl::UpdateLayerRender()
 	double noData = 0;
 	noDataStr.ToDouble(&noData);
 	_render->SetNoDataValue(noDataLogic, noData);
+
+	_render->SetGradientColor(_wxGradientColor->GetGradientColor());
 }
 
 
@@ -160,7 +162,7 @@ void ColorRampLayerRenderCtrl::SetDataset(MyGDALRasterDataset * raster)
 	_choiceBand->SetSelection(0);
 }
 
-void ColorRampLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * render)
+void ColorRampLayerRenderCtrl::SetLayerRender(RasterColorRampLayerRender * render)
 {
 	_render = render;
 
@@ -195,6 +197,8 @@ void ColorRampLayerRenderCtrl::SetLayerRender(RasterGrayScaleLayerRender * rende
 	}
 
 	_choiceBand->SetSelection(_render->GetBand() - 1);
+
+	_wxGradientColor->SetGradientColor(_render->GetGradientColor());
 }
 
 void ColorRampLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
