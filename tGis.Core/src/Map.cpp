@@ -104,7 +104,10 @@ bool Map::AddLayer(ILayer *layer)
 	if (layerCount == 0)
 	{
 		if (_spatialRef != nullptr)
+		{
 			OSRDestroySpatialReference(_spatialRef);
+			_spatialRef = nullptr;
+		}
 		if(layerSpatialRef != nullptr)
 			_spatialRef = layerSpatialRef->Clone();
 		_envelope = *(layer->GetEnvelope());
