@@ -374,6 +374,9 @@
     <ClInclude Include="..\include\RasterColorRampLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\IReferenceObject.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">

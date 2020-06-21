@@ -60,6 +60,7 @@
     <ClInclude Include="..\include\IMarkerSymbol.h" />
     <ClInclude Include="..\include\IOverlayLayer.h" />
     <ClInclude Include="..\include\IOverlayObject.h" />
+    <ClInclude Include="..\include\IReferenceObject.h" />
     <ClInclude Include="..\include\ISurface.h" />
     <ClInclude Include="..\include\ISymbol.h" />
     <ClInclude Include="..\include\ISymbolLibrary.h" />

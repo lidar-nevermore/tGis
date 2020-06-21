@@ -266,7 +266,7 @@ void SymbolLibraryRender::Paint(IGeoSurface * surf)
 			glVertex3f(left, top, 0.0f);
 			glEnd();
 
-			_symLib->ReleaseSymbol(sym);
+			sym->Release();
 
 			curCol++;
 			if (curCol == colCount)

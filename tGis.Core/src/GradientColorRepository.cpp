@@ -11,6 +11,19 @@ BEGIN_NAME_SPACE(tGis, Core)
 GradientColorRepository* GradientColorRepository::_instance = nullptr;
 
 
+class GradientColorRepositoryImpl
+{
+public:
+	GradientColorRepositoryImpl(GradientColorRepository* owner)
+	{
+		_owner = owner;
+	}
+
+	GradientColorRepository* _owner;
+
+	vector<GradientColor*> _vecGradientColor;
+};
+
 GradientColorRepository * GradientColorRepository::INSTANCE()
 {
 	if (_instance == nullptr)
@@ -25,27 +38,27 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		inferno->AddKeyColor(251, 166, 12, 0.8);
 		inferno->AddKeyColor(242, 242, 125, 0.95);
 		inferno->AddKeyColor(252, 255, 164, 1.0);
-		_instance->AddGradientColor(inferno);
+		_instance->_impl_->_vecGradientColor.push_back(inferno);
 
 		GradientColor* red = new GradientColor();
 		red->AddKeyColor(50, 50, 50, 0);
 		red->AddKeyColor(251, 17, 10, 1.0);
-		_instance->AddGradientColor(red);
+		_instance->_impl_->_vecGradientColor.push_back(red);
 
 		GradientColor* yellow = new GradientColor();
 		yellow->AddKeyColor(50, 50, 50, 0);
 		yellow->AddKeyColor(251, 253, 10, 1.0);
-		_instance->AddGradientColor(yellow);
+		_instance->_impl_->_vecGradientColor.push_back(yellow);
 
 		GradientColor* blue = new GradientColor();
 		blue->AddKeyColor(50, 50, 50, 0);
 		blue->AddKeyColor(17, 35, 253, 1.0);
-		_instance->AddGradientColor(blue);
+		_instance->_impl_->_vecGradientColor.push_back(blue);
 
 		GradientColor* green = new GradientColor();
 		green->AddKeyColor(50, 50, 50, 0);
 		green->AddKeyColor(17, 237, 25, 1.0);
-		_instance->AddGradientColor(green);
+		_instance->_impl_->_vecGradientColor.push_back(green);
 
 		GradientColor* soilgrass = new GradientColor();
 		soilgrass->AddKeyColor(0, 0, 0, 0);
@@ -54,7 +67,7 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		soilgrass->AddKeyColor(95, 64, 44, 0.35);
 		soilgrass->AddKeyColor(118, 114, 87, 0.5);
 		soilgrass->AddKeyColor(17, 237, 25, 1.0);
-		_instance->AddGradientColor(soilgrass);
+		_instance->_impl_->_vecGradientColor.push_back(soilgrass);
 
 		GradientColor* spectral = new GradientColor();
 		spectral->AddKeyColor(215, 25, 28, 0);
@@ -62,7 +75,7 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		spectral->AddKeyColor(255, 255, 191, 0.5);
 		spectral->AddKeyColor(171, 221, 164, 0.75);
 		spectral->AddKeyColor(43, 131, 186, 1.0);
-		_instance->AddGradientColor(spectral);
+		_instance->_impl_->_vecGradientColor.push_back(spectral);
 
 		GradientColor* oranges = new GradientColor();
 		oranges->AddKeyColor(255, 245, 235, 0);
@@ -70,7 +83,7 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		oranges->AddKeyColor(253, 141, 60, 0.5);
 		oranges->AddKeyColor(217, 72, 1, 0.76);
 		oranges->AddKeyColor(127, 39, 4, 1.0);
-		_instance->AddGradientColor(oranges);
+		_instance->_impl_->_vecGradientColor.push_back(oranges);
 
 		GradientColor* viridis = new GradientColor();
 		viridis->AddKeyColor(68, 1, 84, 0);
@@ -78,28 +91,13 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		viridis->AddKeyColor(36, 170, 130, 0.61);
 		viridis->AddKeyColor(127, 210, 80, 0.8);
 		viridis->AddKeyColor(253, 231, 37, 1.0);		
-		_instance->AddGradientColor(viridis);
+		_instance->_impl_->_vecGradientColor.push_back(viridis);
 
 		static unique_ptr<GradientColorRepository> shit(_instance);
 	}
 
 	return _instance;
 }
-
-
-class GradientColorRepositoryImpl
-{
-public:
-	GradientColorRepositoryImpl(GradientColorRepository* owner)
-	{
-		_owner = owner;
-	}
-
-	GradientColorRepository* _owner;
-
-	vector<GradientColor*> _vecGradientColor;
-};
-
 
 GradientColorRepository::GradientColorRepository()
 {
@@ -113,7 +111,7 @@ GradientColorRepository::~GradientColorRepository()
 		GradientColor* sl = *it;
 
 		if (sl->_is_in_heap)
-			delete sl;
+			sl->Release();
 	}
 
 	delete _impl_;
@@ -127,11 +125,14 @@ size_t GradientColorRepository::GetGradientColorCount()
 
 GradientColor * GradientColorRepository::GetGradientColor(size_t pos)
 {
-	return _impl_->_vecGradientColor.at(pos);
+	GradientColor* color = _impl_->_vecGradientColor.at(pos);
+	color->Reference();
+	return color;
 }
 
 void GradientColorRepository::AddGradientColor(GradientColor * color)
 {
+	color->Reference();
 	_impl_->_vecGradientColor.push_back(color);
 }
 

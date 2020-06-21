@@ -4,10 +4,6 @@
 #define __I_TYPEDOBJECT_H__
 
 #include "Helper.h"
-#include "elr_mpl.h"
-
-
-class OGRSpatialReference;
 
 BEGIN_NAME_SPACE(tGis, Core)
 

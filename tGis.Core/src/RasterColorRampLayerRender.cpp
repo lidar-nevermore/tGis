@@ -55,6 +55,8 @@ RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer* layer, int bandIn
 
 RasterColorRampLayerRender::~RasterColorRampLayerRender()
 {
+	if (_color != nullptr)
+		_color->Release();
 }
 
 void RasterColorRampLayerRender::SetMinMax(double min, double max)
@@ -107,9 +109,14 @@ void RasterColorRampLayerRender::GetNoDataValue(int * noDataLogic, double * noDa
 
 void RasterColorRampLayerRender::SetGradientColor(GradientColor * color)
 {
-	_color = color;
-	if (_color == nullptr)
+	if (color == nullptr)
 		return;
+
+	if (_color != nullptr)
+		_color->Release();
+	_color = color;
+	if (_color != nullptr)
+		_color->Reference();
 
 	for (int i = 0; i < 1000; i++)
 	{

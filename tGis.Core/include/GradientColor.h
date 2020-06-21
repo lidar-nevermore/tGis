@@ -4,7 +4,7 @@
 #define __GradientColor_H__
 
 #include "Helper.h"
-#include "IInclusionObject.h"
+#include "IReferenceObject.h"
 
 namespace tinyxml2
 {
@@ -16,7 +16,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class GradientColorImpl;
 
-class TGIS_CORE_API GradientColor : public IInclusionObject
+class TGIS_CORE_API GradientColor : public IReferenceObject
 {
 	friend class GradientColorRepository;
 public:

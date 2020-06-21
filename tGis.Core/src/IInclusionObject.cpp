@@ -30,11 +30,9 @@ public:
 
 HeapPtrsCtor _g_heap_ptrs_ctor;
 
-//TODO:
-//这里有bug
 //对象的this指针并不与所申请的内存对齐，
 //而是处在所申请内存的范围内
-//因此判断方式需要修改
+//因此采用了判断范围的方式
 IInclusionObject::IInclusionObject()
 {
 	void* p = (void*)this;

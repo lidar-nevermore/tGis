@@ -21,7 +21,6 @@ public:
 		_map = new Map();
 		Layer* layer = new Layer(nullptr);
 		_render = new GradientColorRepositoryRender(layer);
-		_render->SelectGradientColor(GradientColorRepository::INSTANCE()->GetGradientColor(0));
 		_map->AddLayer(layer);
 		SetMap(_map);
 	};
@@ -68,6 +67,8 @@ public:
 		if (_mapWidget != nullptr)
 			_mapWidget->RemoveMapTool(this);
 		SetMapWidget(nullptr);
+		if (_selColor != nullptr)
+			_selColor->Release();
 	}
 
 	wxGradientColorRepositoryWidget* _owner;
@@ -99,7 +100,11 @@ protected:
 		{
 			int cliX = e->GetX();
 			int cliY = e->GetY();
+			if (_selColor != nullptr)
+				_selColor->Release();
 			_selColor = _render->SelectGradientColor(cliX, cliY);
+			if (_selColor != nullptr)
+				_selColor->Reference();
 			_mapWidget->RepaintMap();
 		}
 	}
@@ -108,6 +113,7 @@ protected:
 wxGradientColorRepositoryWidget::wxGradientColorRepositoryWidget( wxWindow* parent, wxWindowID id, const wxPoint& pos, const wxSize& size, long style, const wxString& name ) : wxPanel( parent, id, pos, size, style, name )
 {
 	_impl_ = new wxGradientColorRepositoryWidgetImpl(this);
+	_impl_->_selColor = GradientColorRepository::INSTANCE()->GetGradientColor(0);
 
 	wxBoxSizer* bSizer1;
 	bSizer1 = new wxBoxSizer( wxHORIZONTAL );
@@ -120,6 +126,7 @@ wxGradientColorRepositoryWidget::wxGradientColorRepositoryWidget( wxWindow* pare
 
 	((wxGradientColorRepoDispalyWidget*)_gcrWidget)->_scrollBar = _scrollBar;
 	_impl_->_render = ((wxGradientColorRepoDispalyWidget*)_gcrWidget)->_render;
+	_impl_->_render->SelectGradientColor(_impl_->_selColor);
 	_gcrWidget->AddMapTool(_impl_);
 
 	this->SetSizer( bSizer1 );
@@ -138,7 +145,11 @@ GradientColor * wxGradientColorRepositoryWidget::GetSelGradientColor()
 
 void wxGradientColorRepositoryWidget::SetSelGradientColor(GradientColor * color)
 {
+	if (_impl_->_selColor != nullptr)
+		_impl_->_selColor->Release();
 	_impl_->_selColor = color;
+	if (_impl_->_selColor != nullptr)
+		_impl_->_selColor->Reference();
 	_impl_->_render->SelectGradientColor(color);
 	_gcrWidget->Refresh();
 }

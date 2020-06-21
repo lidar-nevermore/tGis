@@ -24,12 +24,18 @@ wxGradientColorWidget::wxGradientColorWidget(wxWindow *parent,
 wxGradientColorWidget::~wxGradientColorWidget()
 {
 	SetMap(nullptr);
+	if (_color != nullptr)
+		_color->Release();
 	delete _map;
 }
 
 void wxGradientColorWidget::SetGradientColor(GradientColor * color)
 {
+	if (_color != nullptr)
+		_color->Release();
 	_color = color;
+	if (_color != nullptr)
+		_color->Reference();
 	_render->SetGradientColor(_color);
 	RepaintMap();
 }

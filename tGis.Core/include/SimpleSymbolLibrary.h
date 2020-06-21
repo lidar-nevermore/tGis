@@ -39,7 +39,6 @@ public:
 	ISymbol* GetSymbol(int id) const;
 	bool SymbolExists(int id, int* nextId) const;
 	ISymbol* GetSymbol(int id, int* nextId) const;
-	void ReleaseSymbol(ISymbol*) const;
 
 private:
 	char* _name;

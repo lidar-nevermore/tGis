@@ -52,9 +52,6 @@ struct TGIS_CORE_API ISymbolLibrary : public IInclusionObject
 	//应该用*nextId是否不小于零判断
 	virtual bool SymbolExists(int id, int* nextId) const = 0;
 	virtual ISymbol* GetSymbol(int id,int* nextId) const = 0;
-	//所有从符号库里取出来的符号
-	//当不再使用时都需要调用这个接口返还给符号库
-	virtual void ReleaseSymbol(ISymbol*) const = 0;
 
 protected:
 	SymbolLibraryType _libType;

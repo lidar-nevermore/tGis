@@ -229,10 +229,6 @@ ISymbol * SimpleSymbolLibrary::GetSymbol(int id, int *nextId) const
 	return nullptr;
 }
 
-void SimpleSymbolLibrary::ReleaseSymbol(ISymbol * sym) const
-{
-	delete sym;
-}
 
 END_NAME_SPACE(tGis, Core)
 

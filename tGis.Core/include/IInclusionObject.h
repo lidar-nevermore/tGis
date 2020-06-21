@@ -28,8 +28,10 @@ struct TGIS_CORE_API IInclusionObject
 	IInclusionObject();
 	virtual ~IInclusionObject() {};
 
-	//没有重载new[]和delete[]，
+	//没有重载new[]和delete[]
 	//也就是说如果以数组方式申请的内存，本库内部是不负责释放的
+	//没有重载placement new
+	//也就是说在已有内存块中创建的对象仍然保留的原有行为
 	static void* operator new(size_t size);
 	static void* operator new(size_t size, std::nothrow_t& nothrow_value) throw();
 	static void operator delete(void *p);

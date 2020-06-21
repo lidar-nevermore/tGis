@@ -67,6 +67,9 @@ GradientColorRepositoryRender::GradientColorRepositoryRender(ILayer* layer)
 
 GradientColorRepositoryRender::~GradientColorRepositoryRender()
 {
+	if (_selColor != nullptr)
+		_selColor->Release();
+
 	delete _impl_;
 }
 
@@ -100,6 +103,9 @@ GradientColor * GradientColorRepositoryRender::SelectGradientColor(int x, int y)
 	int row = (y - _drwTopSurfY) / _occupy;
 	size_t colorIdx = row + _topColorIdx;
 
+	if (_selColor != nullptr)
+		_selColor->Release();
+
 	_selColor = nullptr;
 
 	if (colorIdx < GradientColorRepository::INSTANCE()->GetGradientColorCount())
@@ -110,7 +116,11 @@ GradientColor * GradientColorRepositoryRender::SelectGradientColor(int x, int y)
 
 void GradientColorRepositoryRender::SelectGradientColor(GradientColor * color)
 {
+	if (_selColor != nullptr)
+		_selColor->Release();
 	_selColor = color;
+	if (_selColor != nullptr)
+		_selColor->Reference();
 }
 
 void GradientColorRepositoryRender::Paint(IGeoSurface * surf)
@@ -178,6 +188,8 @@ void GradientColorRepositoryRender::Paint(IGeoSurface * surf)
 			glVertex3f(left, top, 0.0f);
 			glEnd();
 		}
+
+		color->Release();
 
 		drwColorIdxBegin++;
 		drwYBegin -= _occupy;

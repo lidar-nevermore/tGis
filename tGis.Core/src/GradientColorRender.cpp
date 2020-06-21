@@ -43,16 +43,24 @@ GradientColorRender::GradientColorRender(ILayer* layer, GradientColor* color)
 	_envelope.MinY = -20;
 	_envelope.MaxX = 0;
 	_envelope.MaxY = 0;
+	if (_color != nullptr)
+		_color->Reference();
 }
 
 
 GradientColorRender::~GradientColorRender()
 {
+	if (_color != nullptr)
+		_color->Release();
 }
 
 void GradientColorRender::SetGradientColor(GradientColor* color)
 {
+	if (_color != nullptr)
+		_color->Release();
 	_color = color;
+	if (_color != nullptr)
+		_color->Reference();
 }
 
 void GradientColorRender::SetHeight(int height)
