@@ -22,7 +22,7 @@ class TGIS_CORE_API RasterBandPixelBlockWalker
 {
 public:
 	// x,y为读取像素块左上角的像素坐标
-	typedef void(*FOREACHBLOCK_FUNC)(void* user, GDALRasterBand* band, void* block, int x, int y);
+	typedef void(__stdcall *FOREACHBLOCK_FUNC)(void* user, GDALRasterBand* band, void* block, int x, int y);
 
 public:
 	RasterBandPixelBlockWalker(GDALDataset* raster,int band,int width,int height,GDALDataset* aoiRaster = nullptr, int aoiBand=0,int mlimit = 16);

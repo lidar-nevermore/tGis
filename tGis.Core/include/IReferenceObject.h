@@ -18,12 +18,12 @@ BEGIN_NAME_SPACE(tGis, Core)
 //只能尽量从语言层面约束类的正确使用方式
 //
 //一个返回IReferenceObject的接口，
-//如果具有创建性值，那么接口内部需要调用Reference
+//如果具有创建性质，那么需要对返回的结果调用Release
 //具有创建性值也就是说IReferenceObject不可当作属性，
 //比如从GradientColorRepository中获取GradientColor
 //比如从SimpleSymbolLibrary中获取Symbol
 //
-//如果接口功能为访问IReferenceObject类型属性
+//如果接口功能为访问IReferenceObject类型的属性
 //那么接口内部不可以调用Reference
 //
 //一个类调用返回IReferenceObject的接口后持有这个指针用于完成功能，

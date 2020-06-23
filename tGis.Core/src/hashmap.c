@@ -347,6 +347,37 @@ void hashmap_next(HASHMAP * hashmap, HASHMAP_ITER * iter)
 	}
 }
 
+void hashmap_clear(HASHMAP * hashmap)
+{
+	size_t aindex = 0;
+	size_t bindex = 0;
+	HASH_NODE_PTR* bnode = NULL;
+	HASH_NODE_PTR  vnode = NULL;
+	HASH_NODE_PTR  tnode = NULL;
+
+	for (aindex = 0; aindex < hashmap->array_size; aindex++)
+	{
+		bnode = hashmap->hash_array[aindex];
+		if (bnode != NULL)
+		{
+			for (bindex = 0; bindex < HASH_BLOCK_SIZE; bindex++)
+			{
+				vnode = bnode[bindex];
+				while (vnode != NULL)
+				{
+					tnode = vnode->next;
+					hashmap->free_mem(vnode);
+					vnode = tnode;
+				}
+			}
+
+			hashmap->free_mem(bnode);
+		}
+	}
+
+	hashmap->size = 0;
+	memset(hashmap->hash_array, 0, hashmap->array_size * sizeof(HASH_NODE_PTR*));
+}
 
 void hashmap_release(HASHMAP * hashmap)
 {

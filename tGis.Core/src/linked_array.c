@@ -37,6 +37,32 @@ void linked_array_init(LINKED_ARRAY *arr,
 	arr->assign = assign;
 }
 
+/*和linked_array_release一样的，对外的语义不一样*/
+/*clear表示清除容器种的元素，release表示释放容器*/
+void linked_array_clear(LINKED_ARRAY * arr)
+{
+	LA_NODE *p1, *p2;
+
+	p1 = p2 = arr->head;
+	while (p1 != NULL)
+	{
+		p2 = p1->next;
+		arr->free_mem(p1);
+		p1 = p2;
+	}
+	arr->node_count = 0;
+	arr->front_idx = 0;
+	arr->end_idx = 0;
+	arr->front_ptr = NULL;
+	arr->end_ptr = NULL;
+	arr->end_node = NULL;
+	arr->capacity = 0;
+	arr->size = 0;
+
+	arr->tail = NULL;
+	arr->head = NULL;
+}
+
 void linked_array_release(LINKED_ARRAY * arr)
 {
 	LA_NODE *p1, *p2;

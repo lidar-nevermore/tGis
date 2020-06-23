@@ -12,6 +12,18 @@
     <Filter Include="internal">
       <UniqueIdentifier>{35090428-712b-4f1b-af89-a4bedb01bb6a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="include\Map">
+      <UniqueIdentifier>{74b8df86-2f9f-432b-82b8-d0e55f3ce1dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Map">
+      <UniqueIdentifier>{f2569ab0-8bc3-4bf1-b314-e1edf8374ddd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\Widget">
+      <UniqueIdentifier>{7a13f79b-44ca-4755-a308-26116f69637a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Widget">
+      <UniqueIdentifier>{7a4e3448-3a69-48ac-bfec-ba99611e8254}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\tGis_wxGui.h">
@@ -20,40 +32,7 @@
     <ClInclude Include="..\include\tGis_wxGuiCfg.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\wxGLGeoSurface.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxGLMapWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\DrawRectTool.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\MapPanTool.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\MapZoomTool.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\RectZoomTool.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxDataSourceWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxLayerWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxToolWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\include\wxTGisApplication.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxGLEagleEyeWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxLayerPropertyDialog.h">
       <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h">
@@ -71,18 +50,6 @@
     <ClInclude Include="..\internal\GrayScaleLayerRenderCtrlBase.h">
       <Filter>internal</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\wxDatasetInfoWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxLayerRenderWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxSymbolLibraryWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxSymbolPickerWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\internal\VectorUniformLayerRenderCtrl.h">
       <Filter>internal</Filter>
     </ClInclude>
@@ -94,21 +61,6 @@
     </ClInclude>
     <ClInclude Include="..\internal\StandaloneToolDialogBase.h">
       <Filter>internal</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxDatasetInfoDialog.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxGradientColorWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxGradientColorEditorWidget.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxGradientColorPickerDialog.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\include\wxGradientColorRepositoryWidget.h">
-      <Filter>include</Filter>
     </ClInclude>
     <ClInclude Include="..\internal\DualRampLayerRenderCtrlBase.h">
       <Filter>internal</Filter>
@@ -122,42 +74,84 @@
     <ClInclude Include="..\internal\ColorRampLayerRenderCtrl.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\internal\PalettedLayerRenderCtrlBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\PalettedLayerRenderCtrl.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\DrawRectTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MapPanTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MapZoomTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RectZoomTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGLGeoSurface.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGLMapWidget.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxDatasetInfoDialog.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxDatasetInfoWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxDataSourceWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGLEagleEyeWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorEditorWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorPickerDialog.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorRepositoryWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGradientColorWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxLayerPropertyDialog.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxLayerRenderWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxLayerWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxSymbolLibraryWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxSymbolPickerWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxToolWidget.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGridCellColorEditor.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGridCellColorRenderer.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\wxGridPaletteTable.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\wxGLGeoSurface.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxGLMapWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\RectZoomTool.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\DrawRectTool.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\MapPanTool.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\MapZoomTool.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxToolWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxLayerWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxDataSourceWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\wxTGisApplication.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxGLEagleEyeWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxLayerPropertyDialog.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp">
@@ -172,18 +166,6 @@
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\wxDatasetInfoWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxLayerRenderWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxSymbolLibraryWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxSymbolPickerWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrl.cpp">
       <Filter>internal</Filter>
     </ClCompile>
@@ -196,21 +178,6 @@
     <ClCompile Include="..\internal\StandaloneToolDialogBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\wxDatasetInfoDialog.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxGradientColorWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxGradientColorEditorWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxGradientColorPickerDialog.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\wxGradientColorRepositoryWidget.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\internal\DualRampLayerRenderCtrlBase.cpp">
       <Filter>internal</Filter>
     </ClCompile>
@@ -222,6 +189,81 @@
     </ClCompile>
     <ClCompile Include="..\internal\ColorRampLayerRenderCtrl.cpp">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\PalettedLayerRenderCtrlBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\PalettedLayerRenderCtrl.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DrawRectTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MapPanTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MapZoomTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RectZoomTool.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGLGeoSurface.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGLMapWidget.cpp">
+      <Filter>src\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxDatasetInfoDialog.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxDatasetInfoWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxDataSourceWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGLEagleEyeWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorEditorWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorPickerDialog.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorRepositoryWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGradientColorWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxLayerPropertyDialog.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxLayerRenderWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxLayerWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxSymbolLibraryWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxSymbolPickerWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxToolWidget.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGridCellColorEditor.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGridCellColorRenderer.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxGridPaletteTable.cpp">
+      <Filter>src\Widget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -247,6 +289,9 @@
       <Filter>internal</Filter>
     </None>
     <None Include="..\internal\ColorRampLayerRenderCtrl.fbp">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\PalettedLayerRenderCtrl.fbp">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>

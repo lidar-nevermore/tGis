@@ -71,6 +71,24 @@ void bi_list_init(BI_LIST *list,
     list->size = 0;
 }
 
+/*和bi_list_release一样的，对外的语义不一样*/
+/*clear表示清除容器种的元素，release表示释放容器*/
+void bi_list_clear(BI_LIST *list)
+{
+	BI_NODE *p1, *p2;
+
+	p1 = p2 = list->head;
+	while (p1 != NULL)
+	{
+		p2 = p1->next;
+		list->free_mem(p1);
+		p1 = p2;
+	}
+
+	list->tail = NULL;
+	list->head = NULL;
+	list->size = 0;
+}
 
 void bi_list_release(BI_LIST *list)
 {

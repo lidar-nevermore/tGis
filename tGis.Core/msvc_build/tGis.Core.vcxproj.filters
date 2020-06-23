@@ -48,10 +48,10 @@
     <Filter Include="glad">
       <UniqueIdentifier>{0b419c5c-cbf8-4a12-bc6c-8d13ac4b0f7e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\GradientColor">
+    <Filter Include="include\Color">
       <UniqueIdentifier>{0f2c3483-b559-4247-a3ef-8523dd2a9d7e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\GradientColor">
+    <Filter Include="src\Color">
       <UniqueIdentifier>{577ee955-5918-455b-97db-5a35a7bc406b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -357,16 +357,16 @@
       <Filter>include\Utility</Filter>
     </ClInclude>
     <ClInclude Include="..\include\GradientColor.h">
-      <Filter>include\GradientColor</Filter>
+      <Filter>include\Color</Filter>
     </ClInclude>
     <ClInclude Include="..\include\GradientColorRepository.h">
-      <Filter>include\GradientColor</Filter>
+      <Filter>include\Color</Filter>
     </ClInclude>
     <ClInclude Include="..\include\GradientColorRender.h">
-      <Filter>include\GradientColor</Filter>
+      <Filter>include\Color</Filter>
     </ClInclude>
     <ClInclude Include="..\include\GradientColorRepositoryRender.h">
-      <Filter>include\GradientColor</Filter>
+      <Filter>include\Color</Filter>
     </ClInclude>
     <ClInclude Include="..\include\RasterDualRampLayerRender.h">
       <Filter>include\Entity</Filter>
@@ -375,6 +375,12 @@
       <Filter>include\Entity</Filter>
     </ClInclude>
     <ClInclude Include="..\include\IReferenceObject.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\Palette.h">
+      <Filter>include\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\RasterPalettedLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
   </ItemGroup>
@@ -584,21 +590,27 @@
       <Filter>src\Utility</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GradientColor.cpp">
-      <Filter>src\GradientColor</Filter>
+      <Filter>src\Color</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GradientColorRepository.cpp">
-      <Filter>src\GradientColor</Filter>
+      <Filter>src\Color</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GradientColorRender.cpp">
-      <Filter>src\GradientColor</Filter>
+      <Filter>src\Color</Filter>
     </ClCompile>
     <ClCompile Include="..\src\GradientColorRepositoryRender.cpp">
-      <Filter>src\GradientColor</Filter>
+      <Filter>src\Color</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RasterDualRampLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RasterColorRampLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Palette.cpp">
+      <Filter>src\Color</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\RasterPalettedLayerRender.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>

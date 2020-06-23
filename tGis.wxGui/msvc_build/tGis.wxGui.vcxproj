@@ -92,6 +92,9 @@
     <ClInclude Include="..\include\wxGradientColorPickerDialog.h" />
     <ClInclude Include="..\include\wxGradientColorRepositoryWidget.h" />
     <ClInclude Include="..\include\wxGradientColorWidget.h" />
+    <ClInclude Include="..\include\wxGridCellColorEditor.h" />
+    <ClInclude Include="..\include\wxGridCellColorRenderer.h" />
+    <ClInclude Include="..\include\wxGridPaletteTable.h" />
     <ClInclude Include="..\include\wxLayerPropertyDialog.h" />
     <ClInclude Include="..\include\wxLayerRenderWidget.h" />
     <ClInclude Include="..\include\MapPanTool.h" />
@@ -115,6 +118,8 @@
     <ClInclude Include="..\internal\GrayScaleLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\ILayerRenderCtrl.h" />
     <ClInclude Include="..\internal\ColorRampLayerRenderCtrl.h" />
+    <ClInclude Include="..\internal\PalettedLayerRenderCtrl.h" />
+    <ClInclude Include="..\internal\PalettedLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\StandaloneToolDialog.h" />
@@ -129,6 +134,8 @@
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\ColorRampLayerRenderCtrl.cpp" />
+    <ClCompile Include="..\internal\PalettedLayerRenderCtrl.cpp" />
+    <ClCompile Include="..\internal\PalettedLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\StandaloneToolDialog.cpp" />
@@ -142,6 +149,9 @@
     <ClCompile Include="..\src\wxGradientColorPickerDialog.cpp" />
     <ClCompile Include="..\src\wxGradientColorRepositoryWidget.cpp" />
     <ClCompile Include="..\src\wxGradientColorWidget.cpp" />
+    <ClCompile Include="..\src\wxGridCellColorEditor.cpp" />
+    <ClCompile Include="..\src\wxGridCellColorRenderer.cpp" />
+    <ClCompile Include="..\src\wxGridPaletteTable.cpp" />
     <ClCompile Include="..\src\wxLayerPropertyDialog.cpp" />
     <ClCompile Include="..\src\wxLayerRenderWidget.cpp" />
     <ClCompile Include="..\src\MapPanTool.cpp" />
@@ -161,6 +171,7 @@
     <None Include="..\internal\DualRampLayerRenderCtrl.fbp" />
     <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp" />
     <None Include="..\internal\ColorRampLayerRenderCtrl.fbp" />
+    <None Include="..\internal\PalettedLayerRenderCtrl.fbp" />
     <None Include="..\internal\RgbLayerRanderCtrl.fbp" />
     <None Include="..\internal\StandaloneToolDialog.fbp" />
     <None Include="..\internal\VectorUniformLayerRenderCtrl.fbp" />

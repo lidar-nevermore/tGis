@@ -65,6 +65,9 @@ TGIS_CORE_API void linked_array_init(LINKED_ARRAY *arr,
 	);
 
 
+TGIS_CORE_API void linked_array_clear(LINKED_ARRAY *arr);
+
+
 TGIS_CORE_API void linked_array_release(LINKED_ARRAY *arr);
 
 

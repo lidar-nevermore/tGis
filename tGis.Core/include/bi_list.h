@@ -123,6 +123,9 @@ TGIS_CORE_API void bi_list_init(BI_LIST *list,
 	void(*assign)(void * a, const void * b)
 	);
 
+/*清除链表所有节点*/
+TGIS_CORE_API void bi_list_clear(BI_LIST *list);
+
 /*释放链表所占用的资源，在链表使用结束后必须调用*/
 TGIS_CORE_API void bi_list_release(BI_LIST *list);
 

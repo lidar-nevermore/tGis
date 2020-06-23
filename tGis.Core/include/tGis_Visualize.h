@@ -22,4 +22,6 @@
 #include "GradientColorRepository.h"
 #include "GradientColorRepositoryRender.h"
 
+#include "Palette.h"
+
 

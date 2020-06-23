@@ -31,10 +31,10 @@ struct TGIS_CORE_API IDataSource : public ITypedObject, public IInclusionObject
 	//被聚合的对象没有顺序
 	//通过在遍历接口传入回调遍历被聚合对象
 	virtual size_t GetDatasetCount() = 0;
-	virtual void ForEachDataset(void(*pfunc)(IDataset* dt, void* ud), void* ud) = 0;
+	virtual void ForEachDataset(void(__stdcall *pfunc)(IDataset* dt, void* ud), void* ud) = 0;
 
 	virtual size_t GetDataSourceCount() = 0;
-	virtual void ForEachDataSource(void(*pfunc)(IDataSource* ds, void* ud), void* ud) = 0;
+	virtual void ForEachDataSource(void(__stdcall *pfunc)(IDataSource* ds, void* ud), void* ud) = 0;
 
 	IDataSource() {};
 	virtual ~IDataSource() {};

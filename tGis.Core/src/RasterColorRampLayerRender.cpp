@@ -38,9 +38,9 @@ RasterColorRampLayerRender::RasterColorRampLayerRender(ILayer * layer)
 	_color = nullptr;
 	for (int i = 0; i < 1000; i++)
 	{
-		_rLut[i] = i;
-		_gLut[i] = i;
-		_bLut[i] = i;
+		_rLut[i] = unsigned char(255.0*i/999.0);
+		_gLut[i] = unsigned char(255.0*i/999.0);
+		_bLut[i] = unsigned char(255.0*i/999.0);
 	}
 	RasterLayerRender::OuterResample = (RasterLayerRender::OuterResampleFunc)&RasterColorRampLayerRender::OuterResample;
 	RasterLayerRender::IOResample = (RasterLayerRender::IOResampleFunc)&RasterColorRampLayerRender::IOResample;

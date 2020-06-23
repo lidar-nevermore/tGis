@@ -182,7 +182,22 @@ void * sorted_list_del(ST_LIST * list, void * iter)
 	return rpos;
 }
 
+/*和sorted_list_release一样的，对外的语义不一样*/
+/*clear表示清除容器种的元素，release表示释放容器*/
+void sorted_list_clear(ST_LIST* list)
+{
+	SK_NODE* node = list->head[0].next;
+	while (node != NULL)
+	{
+		list->head[0].next = node->link[0].next;
+		list->free_mem(node);
+		node = list->head[0].next;
+	}
 
+	list->level = 0;
+	memset(list->head, 0, SK_MAX_LEVEL * sizeof(SK_LINK));
+	list->size = 0;
+}
 
 void sorted_list_release(ST_LIST * list)
 {
@@ -194,5 +209,7 @@ void sorted_list_release(ST_LIST * list)
 		node = list->head[0].next;
 	}
 
+	list->level = 0;
+	memset(list->head, 0, SK_MAX_LEVEL * sizeof(SK_LINK));
 	list->size = 0;
 }

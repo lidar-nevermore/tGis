@@ -33,10 +33,10 @@ public:
 	virtual void Refresh() {};
 
 	virtual size_t GetDatasetCount();
-	virtual void ForEachDataset(void(*pfunc)(IDataset*, void*), void* ud = nullptr);
+	virtual void ForEachDataset(void(__stdcall *pfunc)(IDataset*, void*), void* ud = nullptr);
 
 	virtual size_t GetDataSourceCount();
-	virtual void ForEachDataSource(void(*pfunc)(IDataSource*, void*), void* ud = nullptr);
+	virtual void ForEachDataSource(void(__stdcall *pfunc)(IDataSource*, void*), void* ud = nullptr);
 
 
 protected:

@@ -86,6 +86,10 @@ inline void * sorted_list_next(ST_LIST * list, void * iter)
 	return node->link[0].next;
 }
 
+
+TGIS_CORE_API void  sorted_list_clear(ST_LIST* list);
+
+
 TGIS_CORE_API void  sorted_list_release(ST_LIST* list);
 
 #endif

@@ -76,6 +76,8 @@ TGIS_CORE_API HASHMAP_ENTRY hashmap_at(HASHMAP* hashmap, HASHMAP_ITER* iter);
 
 TGIS_CORE_API void  hashmap_next(HASHMAP* hashmap, HASHMAP_ITER* iter);
 
+TGIS_CORE_API void hashmap_clear(HASHMAP* hashmap);
+
 TGIS_CORE_API void hashmap_release(HASHMAP* hashmap);
 
 
