@@ -249,6 +249,10 @@ void PalettedLayerRenderCtrl::_btnGradColor_clicked(wxCommandEvent & event)
 void PalettedLayerRenderCtrl::_btnAdd_clicked(wxCommandEvent & event)
 {
 	PaletteColorDialog dlg(this);
+	int entry = 0;
+	unsigned char r, g, b;
+	_palette->GenerateColor(&r, &g, &b);
+	dlg.SetPaletteColor(entry, r, g, b);
 	if (dlg.ShowModal() == wxID_OK)
 	{
 		int entry;

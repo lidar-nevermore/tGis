@@ -132,8 +132,6 @@ static inline void RandomRGB(UserData* ud, unsigned char *r, unsigned char *g, u
 {
 	double rmax = RAND_MAX;
 
-	srand((unsigned int)time(NULL));
-
 	int nh = 0;
 	if (ud != nullptr && ud->palette->GetColorCount() < UNI_COLOR)
 	{
@@ -205,7 +203,7 @@ Palette * Palette::CreatePalette(MyGDALRasterDataset * dt, int band, ProgressEve
 	memset(ud.flag, 0, MAX_COLOR);
 
 	RasterBandStorageBlockWalker pixWalker(dt->GetGDALDataset(), band);
-
+	srand((unsigned int)time(NULL));
 	pixWalker.ForEachBlock(RandomColorPalette, &ud);
 
 	free(ud.flag);
@@ -260,7 +258,7 @@ Palette * Palette::CreatePalette(MyGDALRasterDataset * dt, int band, GradientCol
 	ud.color = color;
 
 	RasterBandStorageBlockWalker pixWalker(dt->GetGDALDataset(), band);
-
+	srand((unsigned int)time(NULL));
 	pixWalker.ForEachBlock(GradientColorPalette, &ud);
 
 	return pal;
@@ -268,6 +266,7 @@ Palette * Palette::CreatePalette(MyGDALRasterDataset * dt, int band, GradientCol
 
 void Palette::GenerateColor(unsigned char * r, unsigned char * g, unsigned char * b)
 {
+	srand((unsigned int)time(NULL));
 	RandomRGB(nullptr, r, g, b);
 }
 
