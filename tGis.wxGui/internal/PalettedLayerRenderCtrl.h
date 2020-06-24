@@ -40,10 +40,15 @@ private:
 	RasterPalettedLayerRender* _render;
 	MyGDALRasterDataset* _raster;
 	ILayer* _layer;
+	Palette* _palette;
 
 private:
 	void _sldOpacity_scroll(wxCommandEvent& event);
 	void _btnRandColor_clicked(wxCommandEvent& event);
+	void _btnGradColor_clicked(wxCommandEvent& event);
+	void _btnAdd_clicked(wxCommandEvent& event);
+	void _btnDelete_clicked(wxCommandEvent& event);
+	void _btnClear_clicked(wxCommandEvent& event);
 };
 
 #endif // __GrayScaleLayerRenderCtrl__

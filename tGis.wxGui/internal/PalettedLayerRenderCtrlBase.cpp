@@ -55,33 +55,8 @@ PalettedLayerRenderCtrlBase::PalettedLayerRenderCtrlBase( wxWindow* parent, wxWi
 	wxBoxSizer* bSizer2;
 	bSizer2 = new wxBoxSizer( wxVERTICAL );
 
-	_grdPallete = new wxGrid( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-
-	// Grid
-	_grdPallete->CreateGrid( 5, 2 );
-	_grdPallete->EnableEditing( true );
-	_grdPallete->EnableGridLines( true );
-	_grdPallete->EnableDragGridSize( false );
-	_grdPallete->SetMargins( 0, 0 );
-
-	// Columns
-	_grdPallete->SetColSize( 0, 150 );
-	_grdPallete->SetColSize( 1, 105 );
-	_grdPallete->EnableDragColMove( false );
-	_grdPallete->EnableDragColSize( false );
-	_grdPallete->SetColLabelSize( 30 );
-	_grdPallete->SetColLabelAlignment( wxALIGN_CENTER, wxALIGN_CENTER );
-
-	// Rows
-	_grdPallete->EnableDragRowSize( false );
-	_grdPallete->SetRowLabelSize( 80 );
-	_grdPallete->SetRowLabelAlignment( wxALIGN_CENTER, wxALIGN_CENTER );
-
-	// Label Appearance
-
-	// Cell Defaults
-	_grdPallete->SetDefaultCellAlignment( wxALIGN_LEFT, wxALIGN_TOP );
-	bSizer2->Add( _grdPallete, 1, wxALL|wxEXPAND, 5 );
+	_dvPalette = new wxDataViewListCtrl( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE );
+	bSizer2->Add( _dvPalette, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer3;
 	bSizer3 = new wxBoxSizer( wxHORIZONTAL );
@@ -100,24 +75,31 @@ PalettedLayerRenderCtrlBase::PalettedLayerRenderCtrlBase( wxWindow* parent, wxWi
 
 	bSizer3->Add( _btnAdd, 0, wxALL, 5 );
 
+	_btnEdit = new wxButton( this, wxID_ANY, wxT("Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+	_btnEdit->SetMaxSize( wxSize( 35,-1 ) );
+
+	bSizer3->Add( _btnEdit, 0, wxALL, 5 );
+
 	_btnDelete = new wxButton( this, wxID_ANY, wxT("Del"), wxDefaultPosition, wxDefaultSize, 0 );
 	_btnDelete->SetMaxSize( wxSize( 35,-1 ) );
 
 	bSizer3->Add( _btnDelete, 0, wxALL, 5 );
 
 	_btnClear = new wxButton( this, wxID_ANY, wxT("Clear"), wxDefaultPosition, wxDefaultSize, 0 );
+	_btnClear->SetMaxSize( wxSize( 50,-1 ) );
+
 	bSizer3->Add( _btnClear, 0, wxALL, 5 );
 
 
 	bSizer2->Add( bSizer3, 0, wxEXPAND, 5 );
 
 
-	gbSizer1->Add( bSizer2, wxGBPosition( 4, 0 ), wxGBSpan( 1, 8 ), wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
+	gbSizer1->Add( bSizer2, wxGBPosition( 3, 0 ), wxGBSpan( 1, 8 ), wxALIGN_CENTER_VERTICAL|wxEXPAND, 5 );
 
 
 	gbSizer1->AddGrowableCol( 2 );
 	gbSizer1->AddGrowableCol( 7 );
-	gbSizer1->AddGrowableRow( 4 );
+	gbSizer1->AddGrowableRow( 3 );
 
 	this->SetSizer( gbSizer1 );
 	this->Layout();

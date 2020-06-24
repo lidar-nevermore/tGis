@@ -19,7 +19,7 @@
 #include <wx/textctrl.h>
 #include <wx/checkbox.h>
 #include <wx/slider.h>
-#include <wx/grid.h>
+#include <wx/dataview.h>
 #include <wx/bitmap.h>
 #include <wx/image.h>
 #include <wx/icon.h>
@@ -49,10 +49,11 @@ class PalettedLayerRenderCtrlBase : public wxPanel
 		wxStaticText* m_staticText51;
 		wxStaticText* _lblOpacityValue;
 		wxSlider* _sldOpacity;
-		wxGrid* _grdPallete;
+		wxDataViewListCtrl* _dvPalette;
 		wxButton* _btnRandColor;
 		wxButton* _btnGradColor;
 		wxButton* _btnAdd;
+		wxButton* _btnEdit;
 		wxButton* _btnDelete;
 		wxButton* _btnClear;
 

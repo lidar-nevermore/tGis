@@ -61,7 +61,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);$(ELRMPL);$(GDALDIR)\lib;$(WXDIR)\lib\vc140_x64_dll</AdditionalLibraryDirectories>
-      <AdditionalDependencies>tGis.Core.lib;gdal_i.lib;elr_mpl.lib;wxmsw30ud_core.lib;wxbase30ud.lib;wxmsw30ud_gl.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tGis.Core.lib;gdal_i.lib;elr_mpl.lib;wxmsw30ud_core.lib;wxbase30ud.lib;wxmsw30ud_gl.lib;wxmsw30ud_adv.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -81,13 +81,14 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir);$(ELRMPL);$(GDALDIR)\lib;$(WXDIR)\lib\vc140_x64_dll</AdditionalLibraryDirectories>
-      <AdditionalDependencies>tGis.Core.lib;gdal_i.lib;elr_mpl.lib;wxmsw30u_core.lib;wxbase30u.lib;wxmsw30u_gl.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>tGis.Core.lib;gdal_i.lib;elr_mpl.lib;wxmsw30u_core.lib;wxbase30u.lib;wxmsw30u_gl.lib;wxmsw30u_adv.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\include\DrawRectTool.h" />
     <ClInclude Include="..\include\wxDatasetInfoDialog.h" />
     <ClInclude Include="..\include\wxDatasetInfoWidget.h" />
+    <ClInclude Include="..\include\wxDataViewColorRenderer.h" />
     <ClInclude Include="..\include\wxGradientColorEditorWidget.h" />
     <ClInclude Include="..\include\wxGradientColorPickerDialog.h" />
     <ClInclude Include="..\include\wxGradientColorRepositoryWidget.h" />
@@ -145,6 +146,7 @@
     <ClCompile Include="..\src\DrawRectTool.cpp" />
     <ClCompile Include="..\src\wxDatasetInfoDialog.cpp" />
     <ClCompile Include="..\src\wxDatasetInfoWidget.cpp" />
+    <ClCompile Include="..\src\wxDataViewColorRenderer.cpp" />
     <ClCompile Include="..\src\wxGradientColorEditorWidget.cpp" />
     <ClCompile Include="..\src\wxGradientColorPickerDialog.cpp" />
     <ClCompile Include="..\src\wxGradientColorRepositoryWidget.cpp" />

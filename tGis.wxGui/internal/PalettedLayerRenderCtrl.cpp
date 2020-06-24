@@ -2,11 +2,25 @@
 #include "PalettedLayerRenderCtrl.h"
 #include <wx/progdlg.h>
 
-#include "wxGridPaletteTable.h"
-#include "wxGridCellColorEditor.h"
-#include "wxGridCellColorRenderer.h"
+#include "wxDataViewColorRenderer.h"
 
 using namespace tGis::Gui;
+
+static void __stdcall ForEachColor(int* pos, unsigned char *r, unsigned char *g, unsigned char *b, void* ud)
+{
+	wxDataViewListCtrl* dvPal = (wxDataViewListCtrl*)ud;
+
+	wxVector<wxVariant> data;
+	data.push_back(wxVariant(*pos));
+	//wxColour clr;
+	//clr.Set(*r, *g, *b);
+	//wxVariant var;
+	//var << clr;
+	//data.push_back(var);
+	long clr = *r | *g << 8 | *b << 16;
+	data.push_back(wxVariant(clr));
+	dvPal->AppendItem(data, (wxUIntPtr)(*pos));
+}
 
 PalettedLayerRenderCtrl::PalettedLayerRenderCtrl( wxWindow* parent )
 	:PalettedLayerRenderCtrlBase( parent )
@@ -14,21 +28,19 @@ PalettedLayerRenderCtrl::PalettedLayerRenderCtrl( wxWindow* parent )
 	_render = nullptr;
 	_raster = nullptr;
 	_layer = nullptr;
+	_palette = nullptr;
 
-	wxGridCellColorEditor *edtColor = new wxGridCellColorEditor();
-	wxGridCellColorRenderer *rndColor = new wxGridCellColorRenderer();
-
-	_grdPallete->RegisterDataType(wxT("Color"), rndColor, edtColor);
-
-	wxGridPaletteTable *tblPalette = new wxGridPaletteTable(nullptr);
-	_grdPallete->SetTable(tblPalette, true, wxGrid::wxGridSelectRows);
-	_grdPallete->SetColSize(0, 150);
-	_grdPallete->SetColSize(1, 105);
-	_grdPallete->EnableDragColMove(false);
-	_grdPallete->EnableDragColSize(true);
+	wxDataViewColumn* col0 = _dvPalette->AppendTextColumn(wxT("Value"));
+	col0->SetSortable(true);
+	wxDataViewColorRenderer* render = new wxDataViewColorRenderer();
+	wxDataViewColumn* col1 = new wxDataViewColumn("Color", render, 1);
+	_dvPalette->AppendColumn(col1);
+	//_dvPalette->AppendTextColumn(wxT("Color"));
 
 	Bind(wxEVT_SLIDER, &PalettedLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
 	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnRandColor_clicked, this, _btnRandColor->GetId());
+	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnClear_clicked, this, _btnClear->GetId());
+	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnDelete_clicked, this, _btnDelete->GetId());
 
 }
 
@@ -36,7 +48,12 @@ PalettedLayerRenderCtrl::~PalettedLayerRenderCtrl()
 {
 	Unbind(wxEVT_SLIDER, &PalettedLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
 	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnRandColor_clicked, this, _btnRandColor->GetId());
+	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnClear_clicked, this, _btnClear->GetId());
+	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnDelete_clicked, this, _btnDelete->GetId());
 
+
+	if (_palette != nullptr)
+		_palette->Release();
 }
 
 const char * PalettedLayerRenderCtrl::GetLayerRenderName()
@@ -121,9 +138,7 @@ void PalettedLayerRenderCtrl::UpdateLayerRender()
 	double noData = 0;
 	noDataStr.ToDouble(&noData);
 	_render->SetNoDataValue(noDataLogic, noData);
-
-	wxGridPaletteTable *tblPalette = (wxGridPaletteTable *)_grdPallete->GetTable();
-	_render->SetPalette(tblPalette->GetPalette());
+	_render->SetPalette(_palette);
 }
 
 
@@ -189,16 +204,10 @@ void PalettedLayerRenderCtrl::SetLayerRender(RasterPalettedLayerRender * render)
 	Palette* pal = _render->GetPalette();
 	if (pal != nullptr)
 	{
-		pal = pal->Clone();
-		wxGridPaletteTable *tblPalette = new wxGridPaletteTable(pal);
-		_grdPallete->SetTable(tblPalette, true, wxGrid::wxGridSelectRows);
-		pal->Release();
+		_palette = pal->Clone();
+		_palette->ForEachColor(ForEachColor, _dvPalette);
 
-		wxSize sz = _grdPallete->GetSize();
-		_grdPallete->SetInitialSize(sz);
-		_grdPallete->FitInside();
-
-		this->Layout();
+		//this->Layout();
 	}
 }
 
@@ -209,10 +218,52 @@ void PalettedLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
 
 void PalettedLayerRenderCtrl::_btnRandColor_clicked(wxCommandEvent & event)
 {
-	Palette* pal = Palette::CreatePalette(_raster, _choiceBand->GetSelection() + 1);
-	wxGridPaletteTable *tblPalette = new wxGridPaletteTable(pal);
-	_grdPallete->SetTable(tblPalette, true, wxGrid::wxGridSelectRows);
-	pal->Release();
+	_palette = Palette::CreatePalette(_raster, _choiceBand->GetSelection() + 1);
+	_palette->ForEachColor(ForEachColor, _dvPalette);
+}
 
-	_grdPallete->Refresh();
+void PalettedLayerRenderCtrl::_btnGradColor_clicked(wxCommandEvent & event)
+{
+}
+
+void PalettedLayerRenderCtrl::_btnAdd_clicked(wxCommandEvent & event)
+{
+}
+
+static int CompareInt(int* first, int *second)
+{
+	if (*first > *second)
+		return -1;
+	else if (*first == *second)
+		return 0;
+	else return 1;
+}
+
+void PalettedLayerRenderCtrl::_btnDelete_clicked(wxCommandEvent & event)
+{
+	wxArrayInt rows;
+	wxDataViewItemArray sels;
+	_dvPalette->GetSelections(sels);
+	for (wxDataViewItemArray::iterator it = sels.begin(); it != sels.end(); it++)
+	{
+		wxDataViewItem item = *it;
+		int row = _dvPalette->ItemToRow(item);
+		rows.push_back(row);
+		int ent = (int)(_dvPalette->GetItemData(item));
+		_palette->RemoveColor(ent);
+	}
+
+	rows.Sort(CompareInt);
+
+	for (wxArrayInt::iterator it = rows.begin(); it != rows.end(); it++)
+	{
+		int row = *it;
+		_dvPalette->DeleteItem(row);
+	}
+}
+
+void PalettedLayerRenderCtrl::_btnClear_clicked(wxCommandEvent & event)
+{
+	_dvPalette->DeleteAllItems();
+	_palette->ClearColor();
 }

@@ -149,6 +149,9 @@
     <ClInclude Include="..\include\wxGridPaletteTable.h">
       <Filter>include\Widget</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxDataViewColorRenderer.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxTGisApplication.cpp">
@@ -263,6 +266,9 @@
       <Filter>src\Widget</Filter>
     </ClCompile>
     <ClCompile Include="..\src\wxGridPaletteTable.cpp">
+      <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxDataViewColorRenderer.cpp">
       <Filter>src\Widget</Filter>
     </ClCompile>
   </ItemGroup>
