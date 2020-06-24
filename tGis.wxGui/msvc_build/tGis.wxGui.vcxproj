@@ -119,6 +119,8 @@
     <ClInclude Include="..\internal\GrayScaleLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\ILayerRenderCtrl.h" />
     <ClInclude Include="..\internal\ColorRampLayerRenderCtrl.h" />
+    <ClInclude Include="..\internal\PaletteColorDialog.h" />
+    <ClInclude Include="..\internal\PaletteColorDialogBase.h" />
     <ClInclude Include="..\internal\PalettedLayerRenderCtrl.h" />
     <ClInclude Include="..\internal\PalettedLayerRenderCtrlBase.h" />
     <ClInclude Include="..\internal\RgbLayerRenderCtrl.h" />
@@ -135,6 +137,8 @@
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\GrayScaleLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\ColorRampLayerRenderCtrl.cpp" />
+    <ClCompile Include="..\internal\PaletteColorDialog.cpp" />
+    <ClCompile Include="..\internal\PaletteColorDialogBase.cpp" />
     <ClCompile Include="..\internal\PalettedLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\PalettedLayerRenderCtrlBase.cpp" />
     <ClCompile Include="..\internal\RgbLayerRenderCtrl.cpp" />
@@ -173,6 +177,7 @@
     <None Include="..\internal\DualRampLayerRenderCtrl.fbp" />
     <None Include="..\internal\GrayScaleLayerRenderCtrl.fbp" />
     <None Include="..\internal\ColorRampLayerRenderCtrl.fbp" />
+    <None Include="..\internal\PaletteColorDialog.fbp" />
     <None Include="..\internal\PalettedLayerRenderCtrl.fbp" />
     <None Include="..\internal\RgbLayerRanderCtrl.fbp" />
     <None Include="..\internal\StandaloneToolDialog.fbp" />

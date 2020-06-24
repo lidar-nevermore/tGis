@@ -47,6 +47,7 @@ private:
 	void _btnRandColor_clicked(wxCommandEvent& event);
 	void _btnGradColor_clicked(wxCommandEvent& event);
 	void _btnAdd_clicked(wxCommandEvent& event);
+	void _btnEdit_clicked(wxCommandEvent& event);
 	void _btnDelete_clicked(wxCommandEvent& event);
 	void _btnClear_clicked(wxCommandEvent& event);
 };

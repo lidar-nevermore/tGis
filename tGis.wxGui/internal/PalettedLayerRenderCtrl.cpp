@@ -3,6 +3,8 @@
 #include <wx/progdlg.h>
 
 #include "wxDataViewColorRenderer.h"
+#include "wxGradientColorPickerDialog.h"
+#include "PaletteColorDialog.h"
 
 using namespace tGis::Gui;
 
@@ -28,7 +30,7 @@ PalettedLayerRenderCtrl::PalettedLayerRenderCtrl( wxWindow* parent )
 	_render = nullptr;
 	_raster = nullptr;
 	_layer = nullptr;
-	_palette = nullptr;
+	_palette = new Palette();
 
 	wxDataViewColumn* col0 = _dvPalette->AppendTextColumn(wxT("Value"));
 	col0->SetSortable(true);
@@ -41,6 +43,9 @@ PalettedLayerRenderCtrl::PalettedLayerRenderCtrl( wxWindow* parent )
 	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnRandColor_clicked, this, _btnRandColor->GetId());
 	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnClear_clicked, this, _btnClear->GetId());
 	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnDelete_clicked, this, _btnDelete->GetId());
+	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnEdit_clicked, this, _btnEdit->GetId());
+	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnAdd_clicked, this, _btnAdd->GetId());
+	Bind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnGradColor_clicked, this, _btnGradColor->GetId());
 
 }
 
@@ -50,7 +55,9 @@ PalettedLayerRenderCtrl::~PalettedLayerRenderCtrl()
 	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnRandColor_clicked, this, _btnRandColor->GetId());
 	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnClear_clicked, this, _btnClear->GetId());
 	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnDelete_clicked, this, _btnDelete->GetId());
-
+	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnEdit_clicked, this, _btnEdit->GetId());
+	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnAdd_clicked, this, _btnAdd->GetId());
+	Unbind(wxEVT_BUTTON, &PalettedLayerRenderCtrl::_btnGradColor_clicked, this, _btnGradColor->GetId());
 
 	if (_palette != nullptr)
 		_palette->Release();
@@ -218,16 +225,88 @@ void PalettedLayerRenderCtrl::_sldOpacity_scroll(wxCommandEvent & event)
 
 void PalettedLayerRenderCtrl::_btnRandColor_clicked(wxCommandEvent & event)
 {
+	_dvPalette->DeleteAllItems();
+	if (_palette != nullptr)
+		_palette->Release();
+
 	_palette = Palette::CreatePalette(_raster, _choiceBand->GetSelection() + 1);
 	_palette->ForEachColor(ForEachColor, _dvPalette);
 }
 
 void PalettedLayerRenderCtrl::_btnGradColor_clicked(wxCommandEvent & event)
 {
+	wxGradientColorPickerDialog dlg(this);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		_dvPalette->DeleteAllItems();
+		if (_palette != nullptr)
+			_palette->Release();
+		_palette = Palette::CreatePalette(_raster, _choiceBand->GetSelection() + 1, dlg.GetGradientColor());
+		_palette->ForEachColor(ForEachColor, _dvPalette);
+	}
 }
 
 void PalettedLayerRenderCtrl::_btnAdd_clicked(wxCommandEvent & event)
 {
+	PaletteColorDialog dlg(this);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		int entry;
+		unsigned char r, g, b;
+		if (dlg.GetPaletteColor(&entry, &r, &g, &b))
+		{
+			_palette->SetColor(entry, r, g, b);
+			wxVector<wxVariant> data;
+			data.push_back(wxVariant(entry));
+			long clr = r | g << 8 | b << 16;
+			data.push_back(wxVariant(clr));
+			_dvPalette->AppendItem(data, (wxUIntPtr)(entry));
+		}
+		else
+		{
+			wxMessageBox(wxT("Invalid palette color value!"));
+		}
+	}
+}
+
+void PalettedLayerRenderCtrl::_btnEdit_clicked(wxCommandEvent & event)
+{
+	if (_dvPalette->GetSelectedItemsCount() == 1)
+	{
+		wxDataViewItem item = _dvPalette->GetSelection();
+		int entry = (int)(_dvPalette->GetItemData(item));
+		unsigned char r, g, b;
+		_palette->GetColor(entry, &r, &g, &b);
+
+		PaletteColorDialog dlg(this);
+		dlg.SetPaletteColor(entry, r, g, b);
+		if (dlg.ShowModal() == wxID_OK)
+		{
+			int entryNew;
+			if (dlg.GetPaletteColor(&entryNew, &r, &g, &b))
+			{
+				if (entryNew == entry)
+				{
+					_palette->SetColor(entry, r, g, b);
+				}
+				else
+				{
+					_palette->RemoveColor(entry);
+					_palette->SetColor(entryNew, r, g, b);
+					_dvPalette->SetItemData(item, (wxUIntPtr)(entryNew));
+				}
+
+				int row = _dvPalette->ItemToRow(item);
+				_dvPalette->SetValue(wxVariant(entryNew), row, 0);
+				long clr = r | g << 8 | b << 16;
+				_dvPalette->SetValue(wxVariant(clr), row, 1);
+			}
+			else
+			{
+				wxMessageBox(wxT("Invalid palette color value!"));
+			}
+		}
+	}
 }
 
 static int CompareInt(int* first, int *second)
@@ -265,5 +344,6 @@ void PalettedLayerRenderCtrl::_btnDelete_clicked(wxCommandEvent & event)
 void PalettedLayerRenderCtrl::_btnClear_clicked(wxCommandEvent & event)
 {
 	_dvPalette->DeleteAllItems();
-	_palette->ClearColor();
+	if(_palette != nullptr)
+		_palette->ClearColor();
 }

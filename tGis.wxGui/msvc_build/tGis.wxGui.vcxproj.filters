@@ -152,6 +152,12 @@
     <ClInclude Include="..\include\wxDataViewColorRenderer.h">
       <Filter>include\Widget</Filter>
     </ClInclude>
+    <ClInclude Include="..\internal\PaletteColorDialog.h">
+      <Filter>internal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\internal\PaletteColorDialogBase.h">
+      <Filter>internal</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxTGisApplication.cpp">
@@ -271,6 +277,12 @@
     <ClCompile Include="..\src\wxDataViewColorRenderer.cpp">
       <Filter>src\Widget</Filter>
     </ClCompile>
+    <ClCompile Include="..\internal\PaletteColorDialog.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\internal\PaletteColorDialogBase.cpp">
+      <Filter>internal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\RgbLayerRanderCtrl.fbp">
@@ -298,6 +310,9 @@
       <Filter>internal</Filter>
     </None>
     <None Include="..\internal\PalettedLayerRenderCtrl.fbp">
+      <Filter>internal</Filter>
+    </None>
+    <None Include="..\internal\PaletteColorDialog.fbp">
       <Filter>internal</Filter>
     </None>
   </ItemGroup>
