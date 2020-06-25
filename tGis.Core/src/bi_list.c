@@ -168,7 +168,7 @@ void* bi_list_insert_tail(BI_LIST *list,const void * data)
 }
 
 
-void bi_list_insert_before(BI_LIST * list, void * pos, const void * data)
+void* bi_list_insert_before(BI_LIST * list, void * pos, const void * data)
 {
 	BI_NODE *npos = (BI_NODE*)pos;
 	BI_NODE *p = (BI_NODE*)list->alloc_mem(list->node_bytes);
@@ -188,10 +188,12 @@ void bi_list_insert_before(BI_LIST * list, void * pos, const void * data)
 	else
 		list->head = p;
 	npos->prev = p;
+
+	return (void*)(p->data);
 }
 
 
-void bi_list_insert_after(BI_LIST * list, void * pos, const void * data)
+void* bi_list_insert_after(BI_LIST * list, void * pos, const void * data)
 {
 	BI_NODE *npos = (BI_NODE*)pos;
 	BI_NODE *p = (BI_NODE*)list->alloc_mem(list->node_bytes);
@@ -211,6 +213,8 @@ void bi_list_insert_after(BI_LIST * list, void * pos, const void * data)
 	else
 		list->tail = p;
 	npos->next = p;
+
+	return (void*)(p->data);
 }
 
 

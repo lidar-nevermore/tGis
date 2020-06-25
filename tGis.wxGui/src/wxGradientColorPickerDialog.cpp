@@ -49,12 +49,18 @@ wxGradientColorPickerDialog::~wxGradientColorPickerDialog()
 
 GradientColor * wxGradientColorPickerDialog::GetGradientColor()
 {
-	return _gcrWidget->GetSelGradientColor();
+	if(_tabGrdColor->GetSelection() == 0)
+		return _gcrWidget->GetSelGradientColor();
+
+	return _gcEditor->GetGradientColor();
 }
 
 void wxGradientColorPickerDialog::SetGradientColor(GradientColor * color)
 {
 	_gcrWidget->SetSelGradientColor(color);
+	GradientColor * c = color->Clone();
+	_gcEditor->SetGradientColor(c);
+	c->Release();
 }
 
 

@@ -45,6 +45,10 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		red->AddKeyColor(251, 17, 10, 1.0);
 		_instance->_impl_->_vecGradientColor.push_back(red);
 
+		GradientColor* pureRed = new GradientColor();
+		pureRed->AddKeyColor(255, 0, 0, 0);
+		_instance->_impl_->_vecGradientColor.push_back(pureRed);
+
 		GradientColor* yellow = new GradientColor();
 		yellow->AddKeyColor(50, 50, 50, 0);
 		yellow->AddKeyColor(251, 253, 10, 1.0);
@@ -55,10 +59,18 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		blue->AddKeyColor(17, 35, 253, 1.0);
 		_instance->_impl_->_vecGradientColor.push_back(blue);
 
+		GradientColor* pureBlue = new GradientColor();
+		pureBlue->AddKeyColor(0, 0, 255, 0);
+		_instance->_impl_->_vecGradientColor.push_back(pureBlue);
+
 		GradientColor* green = new GradientColor();
 		green->AddKeyColor(50, 50, 50, 0);
 		green->AddKeyColor(17, 237, 25, 1.0);
 		_instance->_impl_->_vecGradientColor.push_back(green);
+
+		GradientColor* pureCyan = new GradientColor();
+		pureCyan->AddKeyColor(255, 0, 255, 0);
+		_instance->_impl_->_vecGradientColor.push_back(pureCyan);
 
 		GradientColor* soilgrass = new GradientColor();
 		soilgrass->AddKeyColor(0, 0, 0, 0);

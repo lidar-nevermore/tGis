@@ -20,7 +20,7 @@ public:
 	GradientColorImpl(GradientColor* owner)
 	{
 		_owner = owner;
-		_maxPos = 0.0;
+		_maxPos = -DBL_MAX;
 	}
 
 	GradientColor* _owner;
@@ -30,6 +30,19 @@ public:
 
 	void GetColor(double * r, double * g, double * b, double pos)
 	{
+		if (_vecColor.size() == 0)
+			return;
+
+		if (_vecColor.size() == 1)
+		{
+			ColorNode clr = _vecColor[0];
+			*r = clr.r;
+			*g = clr.g;
+			*b = clr.b;
+
+			return;
+		}
+
 		if (pos < 0)
 			pos = 0;
 		if (pos > 1)
@@ -43,7 +56,7 @@ public:
 		for (auto it = _vecColor.begin(); it != _vecColor.end(); it++)
 		{
 			secondColor = *it;
-			if (secondColor.pos > colorPos || secondColor.pos >= 1.0)
+			if (secondColor.pos > colorPos || secondColor.pos >= _maxPos)
 				break;
 			firstColor = secondColor;
 		}
@@ -77,6 +90,15 @@ GradientColor::~GradientColor()
 	delete _impl_;
 }
 
+GradientColor * GradientColor::Clone()
+{
+	GradientColor* color = new GradientColor();
+	color->_impl_->_maxPos = _impl_->_maxPos;
+	color->_impl_->_vecColor.insert(color->_impl_->_vecColor.begin(), _impl_->_vecColor.begin(), _impl_->_vecColor.end());
+
+	return color;
+}
+
 void GradientColor::AddKeyColor(unsigned char r, unsigned char g, unsigned char b, double pos)
 {
 	assert(pos >= _impl_->_maxPos);
@@ -101,26 +123,13 @@ void GradientColor::GetKeyColor(size_t idx, unsigned char * r, unsigned char * g
 	*r = cn.r;
 	*g = cn.g;
 	*b = cn.b;
+	*pos = cn.pos;
 }
 
-void GradientColor::SetKeyColor(size_t idx, unsigned char r, unsigned char g, unsigned char b, double pos)
+void GradientColor::ClearKeyColor()
 {
-#ifdef _DEBUG
-	double prevPos = -DBL_MAX;
-	if (idx > 0)
-		prevPos = _impl_->_vecColor[idx - 1].pos;
-	double nextPos = DBL_MAX;
-	if ((idx + 1) < _impl_->_vecColor.size())
-		nextPos = _impl_->_vecColor[idx + 1].pos;
-
-	assert(pos > prevPos && pos < nextPos);
-#endif // DEBUG
-
-	ColorNode& cn = _impl_->_vecColor[idx];
-	cn.r = r;
-	cn.g = g;
-	cn.b = b;
-	cn.pos = pos;
+	_impl_->_vecColor.clear();
+	_impl_->_maxPos = -DBL_MAX;
 }
 
 void GradientColor::FromXml(tinyxml2::XMLElement * xelem)

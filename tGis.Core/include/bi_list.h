@@ -136,10 +136,10 @@ TGIS_CORE_API void* bi_list_insert_head(BI_LIST *list, const void * data);
 TGIS_CORE_API void* bi_list_insert_tail(BI_LIST *list, const void * data);
 
 /*在迭代器之前插入元素*/
-TGIS_CORE_API void bi_list_insert_before(BI_LIST *list, void* pos, const void *data);
+TGIS_CORE_API void* bi_list_insert_before(BI_LIST *list, void* pos, const void *data);
 
 /*在迭代器之后插入元素*/
-TGIS_CORE_API void bi_list_insert_after(BI_LIST *list, void* pos, const void *data);
+TGIS_CORE_API void* bi_list_insert_after(BI_LIST *list, void* pos, const void *data);
 
 /*删除链表头部元素到data中,如果删除的元素不再需要传入NULL即可*/
 TGIS_CORE_API void bi_list_delete_head(BI_LIST *list, void * data);

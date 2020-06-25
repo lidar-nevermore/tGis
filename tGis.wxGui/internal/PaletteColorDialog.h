@@ -21,6 +21,9 @@ class PaletteColorDialog : public PaletteColorDialogBase
 public:
 	void SetPaletteColor(int entry, unsigned char r, unsigned char g, unsigned char b);
 	bool GetPaletteColor(int *entry, unsigned char *r, unsigned char *g, unsigned char *b);
+
+	void SetKeyColor(double pos, unsigned char r, unsigned char g, unsigned char b);
+	bool GetKeyColor(double *pos, unsigned char *r, unsigned char *g, unsigned char *b);
 };
 
 #endif // __PaletteColorDialog__

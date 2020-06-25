@@ -19,30 +19,49 @@
 #include <wx/sizer.h>
 #include <wx/grid.h>
 #include <wx/panel.h>
+#include <wx/dataview.h>
 
 #include "tGis_wxGuiCfg.h"
 
 
 using namespace tGis::Core;
 
+BEGIN_NAME_SPACE(tGis, Core)
+
+class GradientColor;
+
+END_NAME_SPACE(tGis, Core)
+
 BEGIN_NAME_SPACE(tGis, Gui)
+
+class wxGradientColorWidget;
+class wxGradientColorEditorWidgetImpl;
 
 class TGIS_GUI_API wxGradientColorEditorWidget : public wxPanel
 {
-	private:
+public:
+	wxGradientColorEditorWidget(wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize(500, 334), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString);
+	~wxGradientColorEditorWidget();
 
-	protected:
-		wxStaticText* m_staticText1;
-		wxColourPickerCtrl* _cpAdd;
-		wxButton* _btnDelete;
-		wxGrid* _gridKeyColor;
-		wxPanel* _wxGradientColor;
+public:
+	void SetGradientColor(GradientColor* color);
+	GradientColor* GetGradientColor();
 
-	public:
+protected:
+	wxButton* _btnAdd;
+	wxButton* _btnEdit;
+	wxButton* _btnDelete;
+	wxDataViewListCtrl* _dvlKeyColor;
+	wxGradientColorWidget* _wxGradientColor;
 
-		wxGradientColorEditorWidget( wxWindow* parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 500,334 ), long style = wxTAB_TRAVERSAL, const wxString& name = wxEmptyString );
-		~wxGradientColorEditorWidget();
+private:
+	wxGradientColorEditorWidgetImpl* _impl_;
+	GradientColor* _grdColor;
 
+private:
+	void _btnAdd_clicked(wxCommandEvent& event);
+	void _btnEdit_clicked(wxCommandEvent& event);
+	void _btnDelete_clicked(wxCommandEvent& event);
 };
 
 

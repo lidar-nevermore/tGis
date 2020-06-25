@@ -24,10 +24,12 @@ public:
 	~GradientColor();
 
 public:
+	GradientColor* Clone();
+
 	void AddKeyColor(unsigned char r, unsigned char g, unsigned char b, double pos);
-	size_t GetKeyColorCount();
+	size_t GetKeyColorCount();	
 	void GetKeyColor(size_t idx, unsigned char *r, unsigned char *g, unsigned char *b, double *pos);
-	void SetKeyColor(size_t idx, unsigned char r, unsigned char g, unsigned char b, double pos);
+	void ClearKeyColor();
 
 protected:
 	void FromXml(tinyxml2::XMLElement* xelem);

@@ -34,9 +34,11 @@ PalettedLayerRenderCtrl::PalettedLayerRenderCtrl( wxWindow* parent )
 
 	wxDataViewColumn* col0 = _dvPalette->AppendTextColumn(wxT("Value"));
 	col0->SetSortable(true);
+	col0->SetWidth(115);
 	wxDataViewColorRenderer* render = new wxDataViewColorRenderer();
 	wxDataViewColumn* col1 = new wxDataViewColumn("Color", render, 1);
 	_dvPalette->AppendColumn(col1);
+	col1->SetWidth(115);
 	//_dvPalette->AppendTextColumn(wxT("Color"));
 
 	Bind(wxEVT_SLIDER, &PalettedLayerRenderCtrl::_sldOpacity_scroll, this, _sldOpacity->GetId());
@@ -251,11 +253,10 @@ void PalettedLayerRenderCtrl::_btnAdd_clicked(wxCommandEvent & event)
 	PaletteColorDialog dlg(this);
 	int entry = 0;
 	unsigned char r, g, b;
-	_palette->GenerateColor(&r, &g, &b);
+    Palette::GenerateColor(&r, &g, &b);
 	dlg.SetPaletteColor(entry, r, g, b);
 	if (dlg.ShowModal() == wxID_OK)
 	{
-		int entry;
 		unsigned char r, g, b;
 		if (dlg.GetPaletteColor(&entry, &r, &g, &b))
 		{
