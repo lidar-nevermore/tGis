@@ -95,6 +95,15 @@ MainFrame::MainFrame()
 	_mgr.GetPane(_eagleEyeWidget).SafeSet(pane);
 	_mgr.Update();
 
+	_statusBar->SetFieldsCount(4);
+	int fieldWidth[] = { 130, 190, 250, -1 };
+	_statusBar->SetStatusWidths(4, fieldWidth);
+
+	OnMapScaleChanged(_mapWidget->GetViewPort());
+	_mapWidget->GetViewPort()->CenterChangedEvent.Add(this, &MainFrame::OnMapCenterChanged);
+	_mapWidget->GetViewPort()->ScaleChangedEvent.Add(this, &MainFrame::OnMapScaleChanged);
+	_mapWidget->MouseEvent.Add(this, &MainFrame::OnMouseMove);
+
 	Bind(wxEVT_TOOL, &MainFrame::_toolPan_Clicked, this, _toolPan->GetId());
 	Bind(wxEVT_TOOL, &MainFrame::_toolZoomFree_Clicked, this, _toolZoomFree->GetId());
 	Bind(wxEVT_TOOL, &MainFrame::_toolZoomIn_Clicked, this, _toolZoomIn->GetId());
@@ -111,6 +120,10 @@ MainFrame::MainFrame()
 
 MainFrame::~MainFrame()
 {
+	_mapWidget->GetViewPort()->CenterChangedEvent.Remove(this, &MainFrame::OnMapCenterChanged);
+	_mapWidget->GetViewPort()->ScaleChangedEvent.Remove(this, &MainFrame::OnMapScaleChanged);
+	_mapWidget->MouseEvent.Remove(this, &MainFrame::OnMouseMove);
+
 	Unbind(wxEVT_TOOL, &MainFrame::_toolPan_Clicked, this, _toolPan->GetId());
 	Unbind(wxEVT_TOOL, &MainFrame::_toolZoomFree_Clicked, this, _toolZoomFree->GetId());
 	Unbind(wxEVT_TOOL, &MainFrame::_toolZoomIn_Clicked, this, _toolZoomIn->GetId());
@@ -179,6 +192,46 @@ void MainFrame::OnLayerSelChanged(IMapPtr, ILayerPtr layer, size_t)
 		else
 			_toolBar->EnableTool(_toolZoomOriginal->GetId(), false);
 	}
+}
+
+void MainFrame::OnMapScaleChanged(GeoViewPort *)
+{
+	GeoViewPort* viewPort = _mapWidget->GetViewPort();
+	double scale;
+	viewPort->GetViewScale(&scale);
+
+	wxString scaleStr = wxString::Format(wxT(" Scale: %.5f"), scale);
+	_statusBar->SetStatusText(scaleStr, 0);
+}
+
+void MainFrame::OnMapCenterChanged(GeoViewPort *)
+{
+
+}
+
+void MainFrame::OnMouseMove(wxGLMapWidget * mapWidget, wxMouseEvent * e)
+{
+	if (e->Moving())
+	{
+		GeoViewPort* viewPort = mapWidget->GetViewPort();
+		int x = e->GetX();
+		int y = e->GetY();
+		double spatialX;
+		double spatialY;
+		viewPort->Surface2Spatial(x, y, &spatialX, &spatialY);
+		unsigned char r, g, b;
+		mapWidget->GetColor(x, y, &r, &g, &b);		
+
+		wxString color = wxString::Format(wxT(" RGB: %3d,%3d,%3d"), r, g, b);
+		_statusBar->SetStatusText(color, 1);
+
+		wxString coord = wxString::Format(wxT(" Surface Coord: %4d,%4d"), x, y);
+		_statusBar->SetStatusText(coord, 2);
+
+		wxString spatialCoord = wxString::Format(wxT(" Spatial Coord: %.5f,%.5f"), spatialX, spatialY);
+		_statusBar->SetStatusText(spatialCoord, 3);
+	}
+
 }
 
 void MainFrame::OnSize(wxSizeEvent & event)

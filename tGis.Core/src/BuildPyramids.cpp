@@ -111,6 +111,9 @@ TGIS_CORE_API void BuildPyramids(GDALDataset * raster,
 		const char      *pszResampling = "NEAREST"; //采样方式
 		GDALProgressFunc pfnProgress = BuildPyramidsPrgFunc;//进度条
 
+		//clean overviews 
+		GDALBuildOverviews(pDataset, pszResampling, 0, nullptr, 0, nullptr, pfnProgress, nullptr);
+
 		CPLErr ret = pDataset->BuildOverviews(pszResampling, nLevelCount, anLevels, 0, NULL, pfnProgress, progressHandler);
 
 		if (ret != CE_None)

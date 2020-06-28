@@ -33,6 +33,9 @@ struct TGIS_CORE_API ISurface
 	//如果使用OpenGL或者DirectX渲染引擎，自带双缓冲，在这里将一屏内容显示出来
 	virtual void EndPaint(bool isCache) = 0;
 
+	//获取Surface上某处的RGB颜色
+	virtual void GetColor(int surfX, int surfY, unsigned char* r, unsigned char* g, unsigned char* b) = 0;
+
 	//buf 四通道RGBA紧蹙格式图像 行的长度单字节对齐的 (OpenGL早期版本不支持BGRA)
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY) = 0;
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY, int surfW, int surfH) = 0;

@@ -48,6 +48,14 @@ MapWidget::~MapWidget()
 	delete _impl_;
 }
 
+void MapWidget::GetColor(int cliX, int cliY, unsigned char * r, unsigned char * g, unsigned char * b)
+{
+	double spatialX, spatialY;
+	_viewPort.Surface2Spatial(cliX, cliY, &spatialX, &spatialY);
+	_geoSurface->GetViewPort()->Spatial2Surface(spatialX, spatialY, &cliX, &cliY);
+	_geoSurface->GetColor(cliX, cliY, r, g, b);
+}
+
 void MapWidget::SetMap(IMap *map)
 {
 	if (_map == map)

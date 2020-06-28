@@ -6,6 +6,7 @@ BEGIN_NAME_SPACE(tGis, Gui)
 
 MapZoomTool::MapZoomTool()
 {
+	_delayRepaint = false;
 }
 
 
@@ -21,12 +22,14 @@ void MapZoomTool::SetMapWidget(IMapWidget * mapWidget)
 	{
 		wxGLMapWidget* widget = (wxGLMapWidget*)_mapWidget;
 		widget->MouseEvent.Remove<>(this, &MapZoomTool::MouseWheel);
+		widget->MouseEvent.Remove<>(this, &MapZoomTool::MouseRightDown);
 	}
 	_mapWidget = mapWidget;
 	if (mapWidget != nullptr)
 	{
 		wxGLMapWidget* widget = (wxGLMapWidget*)_mapWidget;
 		widget->MouseEvent.Add<>(this, &MapZoomTool::MouseWheel);
+		widget->MouseEvent.Add<>(this, &MapZoomTool::MouseRightDown);
 	}
 }
 
@@ -91,6 +94,16 @@ void MapZoomTool::MouseWheel(wxGLMapWidget*, wxMouseEvent *e)
 	else
 	{
 		_mapWidget->PresentMap();
+		_delayRepaint = true;
+	}
+}
+
+void MapZoomTool::MouseRightDown(wxGLMapWidget *, wxMouseEvent *e)
+{
+	if (_delayRepaint && e->RightDown())
+	{
+		_mapWidget->RepaintMap();
+		_delayRepaint = false;
 	}
 }
 

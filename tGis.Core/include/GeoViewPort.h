@@ -33,7 +33,9 @@ public:
 	GeoViewPort &operator=(const GeoViewPort &);
 
 public:
-	Event<GeoViewPort*> ChangedEvent;
+	Event<GeoViewPort*> ScaleChangedEvent;
+	Event<GeoViewPort*> CenterChangedEvent;
+	Event<GeoViewPort*> EnvelopeChangedEvent;
 
 public:
 	void GetSurfaceSize(int* surfW, int* surfH) const;
@@ -60,7 +62,7 @@ public:
 	void SetViewScale(double scale);
 
 private:
-	void UpdateViewPort();
+	void UpdateEnvelope();
 
 public:
 	virtual void Surface2Spatial(int surfX, int surfY, double *spatialX, double *spatialY) const;

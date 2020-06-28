@@ -131,6 +131,20 @@ void wxGLGeoSurface::EndPaint(bool isCache)
 	glFinish();
 }
 
+void wxGLGeoSurface::GetColor(int surfX, int surfY, unsigned char * r, unsigned char * g, unsigned char * b)
+{
+	if (_extraBuffer 
+		&& surfX > 0 && surfX < _mapWidth
+		&& surfY > 0 && surfY < _mapHeight)
+	{
+		unsigned char* rgba = (unsigned char*)_mapBuffer;
+		rgba = rgba + ((_mapHeight - surfY)*_mapWidth + surfX) * 4;
+		*r = rgba[0];
+		*g = rgba[1];
+		*b = rgba[2];
+	}
+}
+
 void wxGLGeoSurface::DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY)
 {
 	DrawImage(buf, width, height, surfX, surfY, width, height);

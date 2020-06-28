@@ -38,7 +38,7 @@ private:
 	OverlayRect _rect;
 
 private:
-	void OnViewPortChanged(GeoViewPort* geoViewPort);
+	void OnEnvelopeChanged(GeoViewPort* geoViewPort);
 };
 
 END_NAME_SPACE(tGis, Gui)

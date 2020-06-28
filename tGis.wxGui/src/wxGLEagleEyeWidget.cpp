@@ -35,7 +35,7 @@ void wxGLEagleEyeWidget::SetMapWidget(IMapWidget * mapWidget)
 	if (_relMapWidget != nullptr)
 	{
 		GeoViewPort* viewPort = _relMapWidget->GetViewPort();
-		viewPort->ChangedEvent.Remove(this, &wxGLEagleEyeWidget::OnViewPortChanged);
+		viewPort->EnvelopeChangedEvent.Remove(this, &wxGLEagleEyeWidget::OnEnvelopeChanged);
 		IMapPtr map = GetMap();
 		MapWidget::SetMap(nullptr);
 		if (map != nullptr)
@@ -51,7 +51,7 @@ void wxGLEagleEyeWidget::SetMapWidget(IMapWidget * mapWidget)
 	if (_relMapWidget != nullptr)
 	{
 		GeoViewPort* viewPort = _relMapWidget->GetViewPort();
-		viewPort->ChangedEvent.Add(this, &wxGLEagleEyeWidget::OnViewPortChanged);
+		viewPort->EnvelopeChangedEvent.Add(this, &wxGLEagleEyeWidget::OnEnvelopeChanged);
 		IMapPtr map = _relMapWidget->GetMap();
 		MapWidget::SetMap(map);
 		if (map != nullptr)
@@ -88,7 +88,7 @@ void wxGLEagleEyeWidget::LayerMoved(IMapPtr, ILayerPtr, size_t, ILayerPtr, size_
 	Refresh();
 }
 
-void wxGLEagleEyeWidget::OnViewPortChanged(GeoViewPort * geoViewPort)
+void wxGLEagleEyeWidget::OnEnvelopeChanged(GeoViewPort * geoViewPort)
 {
 	int surfW, surfH;
 	_geoSurface->GetSize(&surfW, &surfH);

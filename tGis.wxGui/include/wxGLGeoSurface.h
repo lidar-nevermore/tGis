@@ -38,6 +38,8 @@ public:
 	virtual void BeginPaint(bool isCache) override;
 	virtual void EndPaint(bool isCache) override;
 
+	virtual void GetColor(int surfX, int surfY, unsigned char* r, unsigned char* g, unsigned char* b) override;
+
 	//»æÖÆ½Ó¿Ú
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY) override;
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY, int surfW, int surfH) override;

@@ -19,8 +19,12 @@ public:
 	~MapZoomTool();
 
 private:
+	bool _delayRepaint;
+
+private:
 	void SetMapWidget(IMapWidget* mapWidget);
 	void MouseWheel(wxGLMapWidget*, wxMouseEvent*);
+	void MouseRightDown(wxGLMapWidget*, wxMouseEvent*);
 };
 
 END_NAME_SPACE(tGis, Gui)

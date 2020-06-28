@@ -67,7 +67,7 @@ void GeoViewPort::SetSurfaceSize(int surfW, int surfH)
 {
 	_surfWidth = surfW;
 	_surfHeight = surfH;
-	UpdateViewPort();
+	UpdateEnvelope();
 }
 
 const OGRSpatialReference * GeoViewPort::GetSpatialReference() const
@@ -90,7 +90,8 @@ void GeoViewPort::SetSpatialCenter(double spatialCenterX, double spatialCenterY)
 {
 	_spatialCenterX = spatialCenterX;
 	_spatialCenterY = spatialCenterY;
-	UpdateViewPort();
+	CenterChangedEvent(this);
+	UpdateEnvelope();
 }
 
 void GeoViewPort::IncludeEnvelope(const OGREnvelope * envelope)
@@ -102,7 +103,7 @@ void GeoViewPort::IncludeEnvelope(const OGREnvelope * envelope)
 		_scale = 1.0;
 	else
 		_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
-
+	ScaleChangedEvent(this);
 	SetSpatialCenter((envelope->MaxX + envelope->MinX) / 2.0, (envelope->MaxY + envelope->MinY) / 2.0);
 }
 
@@ -116,6 +117,7 @@ void GeoViewPort::IncludeEnvelope(double spatialLeft, double spatialTop, double 
 	else
 		_scale = _tgis_max(abs(height / _surfHeight), abs(width / _surfWidth));
 
+	ScaleChangedEvent(this);
 	SetSpatialCenter((spatialRight + spatialLeft) / 2.0, (spatialBottom + spatialTop) / 2.0);
 }
 
@@ -143,11 +145,11 @@ void GeoViewPort::GetViewScale(double * scale) const
 void GeoViewPort::SetViewScale(double scale)
 {
 	_scale = scale;
-
-	UpdateViewPort();
+	ScaleChangedEvent(this);
+	UpdateEnvelope();
 }
 
-void GeoViewPort::UpdateViewPort()
+void GeoViewPort::UpdateEnvelope()
 {
 	double halfW = _scale*_surfWidth / 2.0;
 	double halfH = _scale*_surfHeight / 2.0;
@@ -156,7 +158,7 @@ void GeoViewPort::UpdateViewPort()
 	_spatialRight = _spatialCenterX + halfW;
 	_spatialBottom = _spatialCenterY - halfH;
 	
-	ChangedEvent(this);
+	EnvelopeChangedEvent(this);
 }
 
 void GeoViewPort::Surface2Spatial(int surfX, int surfY, double * spatialX, double * spatialY) const

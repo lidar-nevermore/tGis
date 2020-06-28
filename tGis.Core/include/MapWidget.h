@@ -22,6 +22,8 @@ public:
 	MapWidget();
 	virtual ~MapWidget();
 
+	virtual void GetColor(int cliX, int cliY, unsigned char* r, unsigned char* g, unsigned char* b);
+
 	virtual void SetMap(IMap*);
 	virtual IMap* GetMap()
 	{
