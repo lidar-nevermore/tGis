@@ -365,6 +365,8 @@ void wxDataSourceWidget::OnNodeSelChanged(wxTreeEvent & event)
 			}
 		}
 	}
+
+	DataSelChangedEvent(_selDs, _selDt);
 }
 
 void wxDataSourceWidget::_toolCloseDt_Clicked(wxCommandEvent & event)

@@ -114,6 +114,7 @@ wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& po
 	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerDown_Clicked, this, _toolLayerDown->GetId());
 	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerTop_Clicked, this, _toolLayerTop->GetId());
 	Bind(wxEVT_TOOL, &wxLayerWidget::_toolLayerBottom_Clicked, this, _toolLayerBottom->GetId());
+	//Bind(wxEVT_SET_FOCUS, &wxLayerWidget::OnTreeCtrl, this, _treeCtrl->GetId());
 
 }
 
@@ -165,9 +166,11 @@ void wxLayerWidget::SetMap(IMap * map, IMapWidget* mapWidget)
 	}
 }
 
-void wxLayerWidget::LayerAdded(IMapPtr, ILayerPtr layer, size_t pos)
+void wxLayerWidget::LayerAdded(IMapPtr map, ILayerPtr layer, size_t pos)
 {
-	AddLayerNode(layer, pos);
+	wxTreeItemId item = AddLayerNode(layer, pos);
+	if (map->GetLayerCount() == 1)
+		_treeCtrl->SelectItem(item);
 	UpdateLayerTool();
 }
 
@@ -305,6 +308,11 @@ void wxLayerWidget::OnNodeSelChanged(wxTreeEvent & event)
 	}
 
 	LayerSelChangedEvent(_map, _selLayer, selLayerPos);
+}
+
+void wxLayerWidget::OnTreeCtrl(wxFocusEvent& event)
+{
+	event.Skip();
 }
 
 void wxLayerWidget::_toolLayerVisible_Clicked(wxCommandEvent & event)

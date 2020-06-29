@@ -22,14 +22,14 @@ void MapZoomTool::SetMapWidget(IMapWidget * mapWidget)
 	{
 		wxGLMapWidget* widget = (wxGLMapWidget*)_mapWidget;
 		widget->MouseEvent.Remove<>(this, &MapZoomTool::MouseWheel);
-		widget->MouseEvent.Remove<>(this, &MapZoomTool::MouseRightDown);
+		widget->MouseEvent.Remove<>(this, &MapZoomTool::MouseRightUp);
 	}
 	_mapWidget = mapWidget;
 	if (mapWidget != nullptr)
 	{
 		wxGLMapWidget* widget = (wxGLMapWidget*)_mapWidget;
 		widget->MouseEvent.Add<>(this, &MapZoomTool::MouseWheel);
-		widget->MouseEvent.Add<>(this, &MapZoomTool::MouseRightDown);
+		widget->MouseEvent.Add<>(this, &MapZoomTool::MouseRightUp);
 	}
 }
 
@@ -98,9 +98,9 @@ void MapZoomTool::MouseWheel(wxGLMapWidget*, wxMouseEvent *e)
 	}
 }
 
-void MapZoomTool::MouseRightDown(wxGLMapWidget *, wxMouseEvent *e)
+void MapZoomTool::MouseRightUp(wxGLMapWidget *, wxMouseEvent *e)
 {
-	if (_delayRepaint && e->RightDown())
+	if (_delayRepaint && e->RightUp())
 	{
 		_mapWidget->RepaintMap();
 		_delayRepaint = false;

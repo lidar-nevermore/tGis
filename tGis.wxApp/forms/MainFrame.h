@@ -55,10 +55,13 @@ private:
 	void OnMapScaleChanged(GeoViewPort*);
 	void OnMapCenterChanged(GeoViewPort*);
 	void OnMouseMove(wxGLMapWidget*, wxMouseEvent*);
+	void OnDataSelChanged(IDataSource*, IDataset*);
 
 private:
 	void OnSize(wxSizeEvent& event);
 	void OnExit(wxCommandEvent& WXUNUSED(event));
+	void OnLayerWidgetActivated(wxAuiManagerEvent& event);
+	void OnDataSourceWidgetActivated(wxAuiManagerEvent& event);
 	void _toolPan_Clicked(wxCommandEvent& event);
 	void _toolZoomFree_Clicked(wxCommandEvent& event);
 	void _toolZoomIn_Clicked(wxCommandEvent& event);

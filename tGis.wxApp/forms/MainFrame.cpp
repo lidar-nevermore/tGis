@@ -95,14 +95,16 @@ MainFrame::MainFrame()
 	_mgr.GetPane(_eagleEyeWidget).SafeSet(pane);
 	_mgr.Update();
 
-	_statusBar->SetFieldsCount(4);
-	int fieldWidth[] = { 130, 190, 250, -1 };
-	_statusBar->SetStatusWidths(4, fieldWidth);
+	_statusBar->SetFieldsCount(6);
+	int fieldWidth[] = { 110, 130, 180, 200, 310, -1 };
+	_statusBar->SetStatusWidths(6, fieldWidth);
 
 	OnMapScaleChanged(_mapWidget->GetViewPort());
 	_mapWidget->GetViewPort()->CenterChangedEvent.Add(this, &MainFrame::OnMapCenterChanged);
 	_mapWidget->GetViewPort()->ScaleChangedEvent.Add(this, &MainFrame::OnMapScaleChanged);
 	_mapWidget->MouseEvent.Add(this, &MainFrame::OnMouseMove);
+	_layerWidget->LayerSelChangedEvent.Add(this, &MainFrame::OnLayerSelChanged);
+	_dataSourceWidget->DataSelChangedEvent.Add(this, &MainFrame::OnDataSelChanged);
 
 	Bind(wxEVT_TOOL, &MainFrame::_toolPan_Clicked, this, _toolPan->GetId());
 	Bind(wxEVT_TOOL, &MainFrame::_toolZoomFree_Clicked, this, _toolZoomFree->GetId());
@@ -114,6 +116,8 @@ MainFrame::MainFrame()
 	Bind(wxEVT_TOOL, &MainFrame::_toolZoomOriginal_Clicked, this, _toolZoomOriginal->GetId());
 	Bind(wxEVT_TOOL, &MainFrame::_toolGrid_Clicked, this, _toolGrid->GetId());
 	Bind(wxEVT_TOOL, &MainFrame::_toolMapSpatialRef_Clicked, this, _toolMapSpatialRef->GetId());
+	//Bind(wxEVT_CHILD_FOCUS, &MainFrame::OnLayerWidgetActivated, this, _layerWidget->GetId());
+	//Bind(wxEVT_CHILD_FOCUS, &MainFrame::OnDataSourceWidgetActivated, this, _dataSourceWidget->GetId());
 
 }
 
@@ -123,6 +127,8 @@ MainFrame::~MainFrame()
 	_mapWidget->GetViewPort()->CenterChangedEvent.Remove(this, &MainFrame::OnMapCenterChanged);
 	_mapWidget->GetViewPort()->ScaleChangedEvent.Remove(this, &MainFrame::OnMapScaleChanged);
 	_mapWidget->MouseEvent.Remove(this, &MainFrame::OnMouseMove);
+	_layerWidget->LayerSelChangedEvent.Remove(this, &MainFrame::OnLayerSelChanged);
+	_dataSourceWidget->DataSelChangedEvent.Remove(this, &MainFrame::OnDataSelChanged);
 
 	Unbind(wxEVT_TOOL, &MainFrame::_toolPan_Clicked, this, _toolPan->GetId());
 	Unbind(wxEVT_TOOL, &MainFrame::_toolZoomFree_Clicked, this, _toolZoomFree->GetId());
@@ -134,6 +140,8 @@ MainFrame::~MainFrame()
 	Unbind(wxEVT_TOOL, &MainFrame::_toolZoomOriginal_Clicked, this, _toolZoomOriginal->GetId());
 	Unbind(wxEVT_TOOL, &MainFrame::_toolGrid_Clicked, this, _toolGrid->GetId());
 	Unbind(wxEVT_TOOL, &MainFrame::_toolMapSpatialRef_Clicked, this, _toolMapSpatialRef->GetId());
+	//Unbind(wxEVT_CHILD_FOCUS, &MainFrame::OnLayerWidgetActivated, this, _layerWidget->GetId());
+	//Unbind(wxEVT_CHILD_FOCUS, &MainFrame::OnDataSourceWidgetActivated, this, _dataSourceWidget->GetId());
 
 	_eagleEyeWidget->SetMapWidget(nullptr);
 	_mapWidget->SetMap(nullptr);
@@ -186,6 +194,9 @@ void MainFrame::OnLayerSelChanged(IMapPtr, ILayerPtr layer, size_t)
 	}
 	else
 	{
+		wxString dtName = layer->GetDataset()->GetName();
+		_statusBar->SetStatusText(dtName, 5);
+
 		_toolBar->EnableTool(_toolZoomLayer->GetId(), true);
 		if(layer->GetDataset()->IsTypeOf(MyGDALRasterDataset::S_GetType()))
 			_toolBar->EnableTool(_toolZoomOriginal->GetId(), true);
@@ -225,13 +236,33 @@ void MainFrame::OnMouseMove(wxGLMapWidget * mapWidget, wxMouseEvent * e)
 		wxString color = wxString::Format(wxT(" RGB: %3d,%3d,%3d"), r, g, b);
 		_statusBar->SetStatusText(color, 1);
 
-		wxString coord = wxString::Format(wxT(" Surface Coord: %4d,%4d"), x, y);
-		_statusBar->SetStatusText(coord, 2);
+		wxString surfCoord = wxString::Format(wxT(" Surface Coord: %4d, %4d"), x, y);
+		_statusBar->SetStatusText(surfCoord, 2);
 
-		wxString spatialCoord = wxString::Format(wxT(" Spatial Coord: %.5f,%.5f"), spatialX, spatialY);
-		_statusBar->SetStatusText(spatialCoord, 3);
+		ILayer* selLayer = _layerWidget->GetSelLayer();
+		if (selLayer != nullptr && selLayer->GetDataset()->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		{
+			MyGDALRasterDataset* raster = (MyGDALRasterDataset*)selLayer->GetDataset();
+			double pixX, pixY;
+			raster->Spatial2Pixel(spatialX, spatialY, &pixX, &pixY);
+
+			wxString imgCoord = wxString::Format(wxT(" Image Coord: %d, %d"), (int)round(pixX), (int)round(pixY));
+			_statusBar->SetStatusText(imgCoord, 3);
+		}
+
+		wxString spatialCoord = wxString::Format(wxT(" Spatial Coord: %.5f, %.5f"), spatialX, spatialY);
+		_statusBar->SetStatusText(spatialCoord, 4);
 	}
 
+}
+
+void MainFrame::OnDataSelChanged(IDataSource *ds, IDataset *dt)
+{
+	if (dt != nullptr)
+	{
+		wxString dtName = dt->GetName();
+		_statusBar->SetStatusText(dtName, 5);
+	}
 }
 
 void MainFrame::OnSize(wxSizeEvent & event)
@@ -242,6 +273,24 @@ void MainFrame::OnSize(wxSizeEvent & event)
 void MainFrame::OnExit(wxCommandEvent& WXUNUSED(event))
 {
 	Close(true);
+}
+
+void MainFrame::OnLayerWidgetActivated(wxAuiManagerEvent& event)
+{
+	if (_layerWidget->GetSelLayer() != nullptr)
+	{
+		wxString dtName = _layerWidget->GetSelLayer()->GetDataset()->GetName();
+		_statusBar->SetStatusText(dtName, 5);
+	}
+}
+
+void MainFrame::OnDataSourceWidgetActivated(wxAuiManagerEvent& event)
+{
+	if (_dataSourceWidget->GetSelDataset() != nullptr)
+	{
+		wxString dtName = _dataSourceWidget->GetSelDataset()->GetName();
+		_statusBar->SetStatusText(dtName, 5);
+	}
 }
 
 void MainFrame::_toolPan_Clicked(wxCommandEvent & event)

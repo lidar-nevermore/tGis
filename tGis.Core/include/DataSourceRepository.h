@@ -19,6 +19,9 @@ template class TGIS_CORE_API Event<IDataset*>;
 template struct TGIS_CORE_API IEventHandler<IDataSource*>;
 template class TGIS_CORE_API Event<IDataSource*>;
 
+template struct TGIS_CORE_API IEventHandler<IDataSource*, IDataset*>;
+template class TGIS_CORE_API Event<IDataSource*, IDataset*>;
+
 class TGIS_CORE_API DataSourceRepository
 {
 	friend class DataSource;

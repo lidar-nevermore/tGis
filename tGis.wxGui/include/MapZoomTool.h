@@ -24,7 +24,7 @@ private:
 private:
 	void SetMapWidget(IMapWidget* mapWidget);
 	void MouseWheel(wxGLMapWidget*, wxMouseEvent*);
-	void MouseRightDown(wxGLMapWidget*, wxMouseEvent*);
+	void MouseRightUp(wxGLMapWidget*, wxMouseEvent*);
 };
 
 END_NAME_SPACE(tGis, Gui)

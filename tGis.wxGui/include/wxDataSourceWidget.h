@@ -29,6 +29,7 @@ public:
 public:
 	Event<IDataset*> AfterDatasetActivatedEvent;
 	Event<IDataSource*> AfterDataSourceActivatedEvent;
+	Event<IDataSource*, IDataset*> DataSelChangedEvent;
 
 protected:
 	wxToolBar* _toolBar;
@@ -53,8 +54,8 @@ private:
 	wxTreeItemId _fileSysItemId;
 
 private:
-	static void OnEachDataSource(IDataSource* ds, void* ud);
-	static void OnEachDataset(IDataset* dt, void* ud);
+	static void __stdcall OnEachDataSource(IDataSource* ds, void* ud);
+	static void __stdcall OnEachDataset(IDataset* dt, void* ud);
 	wxTreeItemId AddDataSourceNode(wxTreeItemId &parent, IDataSource* ds, bool autoDelete);
 	void AddDataSourceSubNode(wxTreeItemId &parent, IDataSource* ds);
 	wxTreeItemId AddDatasetNode(wxTreeItemId &parent, IDataset* dt, wxTreeItemId* itemId = nullptr);

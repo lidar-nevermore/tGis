@@ -74,6 +74,7 @@ private:
 
 private:
 	void OnNodeSelChanged(wxTreeEvent& event);
+	void OnTreeCtrl(wxFocusEvent& event);
 	void _toolLayerVisible_Clicked(wxCommandEvent& event);
 	void _toolRemoveLayer_Clicked(wxCommandEvent& event);
 	void _toolRemoveAllLayers_Clicked(wxCommandEvent& event);
