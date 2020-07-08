@@ -381,6 +381,7 @@ void MainFrame::_toolZoomOriginal_Clicked(wxCommandEvent & event)
 			MyGDALRasterDataset* gdalDataset = (MyGDALRasterDataset*)dataset;
 			double res = gdalDataset->GetGeoTransform()[1];
 			GeoViewPort* viewPort = _mapWidget->GetViewPort();
+			viewPort->IncludeEnvelope(layer->GetEnvelope());
 			viewPort->SetViewScale(res);
 			_mapWidget->RepaintMap();
 		}

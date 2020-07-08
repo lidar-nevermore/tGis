@@ -184,7 +184,8 @@ void wxLayerWidget::LayerCleared(IMapPtr)
 {
 	wxTreeItemId root = _treeCtrl->GetRootItem();
 	_impl_->_vecLayerNode.clear();
-	_treeCtrl->DeleteChildren(root);	
+	_treeCtrl->DeleteChildren(root);
+	_selLayer = nullptr;
 }
 
 inline wxTreeItemId wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
