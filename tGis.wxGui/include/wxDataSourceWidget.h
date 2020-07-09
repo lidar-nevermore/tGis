@@ -31,6 +31,11 @@ public:
 	Event<IDataSource*> AfterDataSourceActivatedEvent;
 	Event<IDataSource*, IDataset*> DataSelChangedEvent;
 
+public:
+	//添加外部创建的数据集dt，
+	//如果dt未打开内部则会调用打开函数，如果打开函数调用识别则返回false
+	bool AddOuterDataset(IDataset* dt);
+
 protected:
 	wxToolBar* _toolBar;
 	wxToolBarToolBase* _toolConnDs;

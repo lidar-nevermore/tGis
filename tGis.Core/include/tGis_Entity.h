@@ -14,6 +14,7 @@
 #include "GeoViewPort.h"
 
 #include "DataSource.h"
+#include "VirtualDataSource.h"
 #include "FileSystemDataSource.h"
 #include "MemoryDataSource.h"
 

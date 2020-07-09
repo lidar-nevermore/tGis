@@ -34,7 +34,7 @@ MyGDALFileRasterDataset::MyGDALFileRasterDataset()
 {
 }
 
-MyGDALFileRasterDataset::MyGDALFileRasterDataset(FileSystemDataSource* ds, const char* path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+MyGDALFileRasterDataset::MyGDALFileRasterDataset(DataSource* ds, const char* path, GDALAccess eAccess, bool delayOpen, bool autoClose)
 	:MyGDALRasterDataset((DataSource*)ds,path,eAccess,delayOpen,autoClose)
 {
 }

@@ -7,6 +7,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 Dataset::Dataset(DataSource * ds)
 {
 	_parent = ds;
+	_opened = false;
 }
 
 

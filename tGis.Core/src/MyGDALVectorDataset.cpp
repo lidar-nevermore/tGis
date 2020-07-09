@@ -34,7 +34,7 @@ MyGDALVectorDataset::MyGDALVectorDataset()
 {
 }
 
-MyGDALVectorDataset::MyGDALVectorDataset(FileSystemDataSource* ds, const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
+MyGDALVectorDataset::MyGDALVectorDataset(DataSource* ds, const char * path, GDALAccess eAccess, bool delayOpen, bool autoClose)
 	:MyGDALDataset((DataSource*)ds, path, eAccess, delayOpen, autoClose)
 {
 	if (_dataset != nullptr)

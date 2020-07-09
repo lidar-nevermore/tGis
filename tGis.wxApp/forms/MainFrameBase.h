@@ -44,7 +44,7 @@ class MainFrameBase : public wxFrame
 
 		// Virtual event handlers, overide them in your derived class
 		virtual void OnNewProject( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnAddToMap( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnOpenRasterDataset( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

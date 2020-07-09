@@ -26,7 +26,7 @@ private:
 	static const char* const _type;
 
 public:
-	MyGDALVectorDataset(FileSystemDataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
+	MyGDALVectorDataset(DataSource* ds, const char* path, GDALAccess eAccess = GA_Update, bool delayOpen = true, bool autoClose = true);
 	MyGDALVectorDataset();
 	virtual ~MyGDALVectorDataset();
 

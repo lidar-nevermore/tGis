@@ -33,6 +33,7 @@ private:
 	wxToolWidget* _toolWidget;
 
 	wxGLEagleEyeWidget* _eagleEyeWidget;
+	VirtualDataSource _outerDtContainer;
 
 private:
 	wxAuiManager    _mgr;
@@ -62,6 +63,7 @@ private:
 	void OnExit(wxCommandEvent& WXUNUSED(event));
 	void OnLayerWidgetActivated(wxAuiManagerEvent& event);
 	void OnDataSourceWidgetActivated(wxAuiManagerEvent& event);
+	void OnOpenRasterDataset(wxCommandEvent& event);
 	void _toolPan_Clicked(wxCommandEvent& event);
 	void _toolZoomFree_Clicked(wxCommandEvent& event);
 	void _toolZoomIn_Clicked(wxCommandEvent& event);

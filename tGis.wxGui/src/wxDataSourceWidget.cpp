@@ -152,6 +152,19 @@ wxDataSourceWidget::~wxDataSourceWidget()
 	DataSourceRepository::INSTANCE()->BeforeDatasetCloseEvent.Remove(this, &wxDataSourceWidget::RemoveOpenedDatasetNode);
 }
 
+bool wxDataSourceWidget::AddOuterDataset(IDataset * dt)
+{
+	if (dt->IsOpened() == false)
+		dt->Open();
+
+	if (dt->IsOpened() == false)
+		return false;
+
+	AddDatasetNode(_openedDtItemId, dt, nullptr);
+
+	return true;
+}
+
 wxTreeItemId wxDataSourceWidget::AddDataSourceNode(wxTreeItemId &parent, IDataSource * ds, bool autoDelete)
 {
 	dsTreeItemData* mdsData = new dsTreeItemData(autoDelete);
@@ -212,10 +225,11 @@ wxTreeItemId wxDataSourceWidget::AddDatasetNode(wxTreeItemId & parent, IDataset 
 			itemId = _treeCtrl->AppendItem(parent, label, vector_img, vector_img, mdsData);
 	}
 
-	if (itemId_ != nullptr)
+	if(parent == _openedDtItemId)
 	{
 		mdsData->_openedItemId = itemId;
-		mdsData->_itemId = *itemId_;
+		if(itemId_ != nullptr)
+			mdsData->_itemId = *itemId_;
 	}
 	else
 		mdsData->_itemId = itemId;
@@ -263,7 +277,8 @@ void wxDataSourceWidget::RemoveOpenedDatasetNode(IDataset * dt)
 		dsTreeItemData* dsData = (dsTreeItemData*)_treeCtrl->GetItemData(dsNodeId);
 		if (dsData->_dt == dt)
 		{
-			UpdateDatasetNode(dsData->_itemId, dsData->_dt);			
+			if (dsData->_itemId != nullptr)
+				UpdateDatasetNode(dsData->_itemId, dsData->_dt);			
 			//if (dsData->_itemId == _selId)
 			{
 				_toolBar->EnableTool(_toolDtInfo->GetId(), false);

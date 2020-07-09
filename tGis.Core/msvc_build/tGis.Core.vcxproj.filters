@@ -383,6 +383,9 @@
     <ClInclude Include="..\include\RasterPalettedLayerRender.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\VirtualDataSource.h">
+      <Filter>include\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -611,6 +614,9 @@
       <Filter>src\Color</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RasterPalettedLayerRender.cpp">
+      <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\VirtualDataSource.cpp">
       <Filter>src\Entity</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,6 +6,7 @@
 
 MainFrame::MainFrame()
     : MainFrameBase(NULL,wxID_ANY,wxT("tGis Desktop"))
+	, _outerDtContainer("Outer")
 {
 	wxIcon icon(wxString(tGisApplication::INSTANCE()->GetExeDir()) + wxString("/wxApp_res/icon.png"), wxBITMAP_TYPE_PNG);
 	SetIcon(icon);
@@ -290,6 +291,37 @@ void MainFrame::OnDataSourceWidgetActivated(wxAuiManagerEvent& event)
 	{
 		wxString dtName = _dataSourceWidget->GetSelDataset()->GetName();
 		_statusBar->SetStatusText(dtName, 5);
+	}
+}
+
+void MainFrame::OnOpenRasterDataset(wxCommandEvent & event)
+{
+	wxFileDialog ofd(this, wxT("Open Raster Dataset"), wxEmptyString, wxEmptyString,
+		wxT("Geographic Raster file(*.tiff *.img *.pix *.tif *TIL)|*.tiff;*.tif;*.img;*.pix;*TIL|"
+			"Normal Image file (*.jpg;*.jpeg;*.bmp;*.png)|*.jpg;*.jpeg;*.bmp;*.png|"
+			"All files (*.*)|*.*"), 
+		wxFD_OPEN);
+
+	if (ofd.ShowModal() == wxID_OK)
+	{
+		wxString path = ofd.GetPath();
+		MyGDALFileRasterDataset* raster = new MyGDALFileRasterDataset(&_outerDtContainer, path.c_str(), GA_ReadOnly);
+		
+		try
+		{
+			if (_dataSourceWidget->AddOuterDataset(raster))
+			{
+				OnDatasetActivated(raster);
+			}
+			else
+			{
+				delete raster;
+			}
+		}
+		catch (...)
+		{
+			delete raster;
+		}
 	}
 }
 

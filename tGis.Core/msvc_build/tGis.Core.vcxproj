@@ -30,6 +30,7 @@
     <ClInclude Include="..\glutess\tessmono.h" />
     <ClInclude Include="..\include\bi_list.h" />
     <ClInclude Include="..\include\BuildPyramids.h" />
+    <ClInclude Include="..\include\VirtualDataSource.h" />
     <ClInclude Include="..\include\Dataset.h" />
     <ClInclude Include="..\include\DataSource.h" />
     <ClInclude Include="..\include\DataSourceRepository.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="..\src\ToolKitRepository.cpp" />
     <ClCompile Include="..\src\VectorLayerRender.cpp" />
     <ClCompile Include="..\src\VectorUniformLayerRender.cpp" />
+    <ClCompile Include="..\src\VirtualDataSource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\internal\BackwardDiagonal.inl" />

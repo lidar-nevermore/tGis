@@ -177,7 +177,7 @@
                         <property name="unchecked_bitmap"></property>
                     </object>
                 </object>
-                <object class="wxMenu" expanded="0">
+                <object class="wxMenu" expanded="1">
                     <property name="label">DataSource</property>
                     <property name="name">_menuDataSource</property>
                     <property name="permission">protected</property>
@@ -257,12 +257,25 @@
                         <property name="help"></property>
                         <property name="id">wxID_ANY</property>
                         <property name="kind">wxITEM_NORMAL</property>
-                        <property name="label">打开数据集</property>
-                        <property name="name">_miAddToMap</property>
+                        <property name="label">打开栅格数据集</property>
+                        <property name="name">_miOpenRasterDataset</property>
                         <property name="permission">none</property>
                         <property name="shortcut"></property>
                         <property name="unchecked_bitmap"></property>
-                        <event name="OnMenuSelection">OnAddToMap</event>
+                        <event name="OnMenuSelection">OnOpenRasterDataset</event>
+                    </object>
+                    <object class="wxMenuItem" expanded="1">
+                        <property name="bitmap"></property>
+                        <property name="checked">0</property>
+                        <property name="enabled">1</property>
+                        <property name="help"></property>
+                        <property name="id">wxID_ANY</property>
+                        <property name="kind">wxITEM_NORMAL</property>
+                        <property name="label">打开矢量数据集</property>
+                        <property name="name">_miOpenVectorDataset</property>
+                        <property name="permission">none</property>
+                        <property name="shortcut"></property>
+                        <property name="unchecked_bitmap"></property>
                     </object>
                     <object class="wxMenuItem" expanded="0">
                         <property name="bitmap"></property>
