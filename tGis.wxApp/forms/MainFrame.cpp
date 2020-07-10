@@ -426,6 +426,9 @@ void MainFrame::_toolGrid_Clicked(wxCommandEvent & event)
 
 void MainFrame::_toolMapSpatialRef_Clicked(wxCommandEvent & event)
 {
+	wxSpatialReferenceDialog dlg;
+	dlg.SetSpatialReference(_map.GetSpatialReference());
+	dlg.ShowModal();
 }
 
 BEGIN_EVENT_TABLE(MainFrame, MainFrameBase)

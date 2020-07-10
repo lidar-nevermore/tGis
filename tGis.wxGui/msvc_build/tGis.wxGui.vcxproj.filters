@@ -158,6 +158,9 @@
     <ClInclude Include="..\internal\PaletteColorDialogBase.h">
       <Filter>internal</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\wxSpatialReferenceDialog.h">
+      <Filter>include\Widget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxTGisApplication.cpp">
@@ -282,6 +285,9 @@
     </ClCompile>
     <ClCompile Include="..\internal\PaletteColorDialogBase.cpp">
       <Filter>internal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\wxSpatialReferenceDialog.cpp">
+      <Filter>src\Widget</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

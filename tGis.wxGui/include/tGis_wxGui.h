@@ -19,5 +19,7 @@
 #include "wxLayerPropertyDialog.h"
 #include "wxLayerRenderWidget.h"
 #include "wxDatasetInfoWidget.h"
+#include "wxDatasetInfoDialog.h"
+#include "wxSpatialReferenceDialog.h"
 
 #endif // !__TGIS_GUI_H__

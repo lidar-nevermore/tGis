@@ -121,7 +121,7 @@ struct GDALInfoOptions
 #ifndef _info_str_Concat_
 #define _info_str_Concat_
 
-std::string _str_format(const char* format, va_list args)
+static std::string _str_format(const char* format, va_list args)
 {
 	int count = _vsnprintf(NULL, 0, format, args);
 	size_t bufsz = count * sizeof(wchar_t);
