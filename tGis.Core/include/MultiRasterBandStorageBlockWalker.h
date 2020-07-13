@@ -29,9 +29,10 @@ public:
 	//dataBytes 波段数据占据的字节数目
 	//progress 遍历进度 多个块更新一次进度，如果进度值没有改变不需要更新ui上的进度提示，更新进度提示会拖累效率
 	//
-	//functor或者lambda表达式调用比直接函数指针调用要慢很多
+	//return 返回false不再继续遍历
+	//
 	//不推荐用该接口
-	typedef void(__stdcall *M_FOREACHPIXEL_FUNC)(void* user,
+	typedef bool(__stdcall *M_FOREACHPIXEL_FUNC)(void* user,
 		GDALRasterBand** band,
 		double* pix, int xIM, int yIM, int xIB, int yIB, void** orgPix,
 		StorageBlockInfo* blockInfo, void** blockBuffer,
@@ -46,7 +47,10 @@ public:
 	//aoiBuffer 当前块中在AOI范围内的部分对应的AOI像素缓存
 	//aoiNoDataValue aoi像素的无效值，没有无效值将会传递INT_MIN
 	//progress 遍历进度 多个块更新一次进度，如果进度值没有改变不需要更新ui上的进度提示，更新进度提示会拖累效率
-	typedef void(__stdcall *M_FOREACHBLOCK_FUNC)(void* user,
+	//
+	//return 返回false不再继续遍历
+	//
+	typedef bool(__stdcall *M_FOREACHBLOCK_FUNC)(void* user,
 		GDALRasterBand** band,
 		StorageBlockInfo* blockInfo, void** blockBuffer,
 		GDALDataType* bandDataType, int* bandDataBytes,
@@ -58,14 +62,14 @@ public:
 	~MultiRasterBandStorageBlockWalker(void);
 
 private:
-	static void __stdcall FOREACHPIXEL_OneBand(void* user,
+	static bool __stdcall FOREACHPIXEL_OneBand(void* user,
 		GDALRasterBand* band,
 		StorageBlockInfo* blockInfo, void* blockBuffer,
 		GDALDataType dataType, int dataBytes,
 		unsigned char* aoiBuffer, double aoiNoDataValue,
 		double progress);
 
-	static void __stdcall FOREACHBLOCK_OneBand(void* user,
+	static bool __stdcall FOREACHBLOCK_OneBand(void* user,
 		GDALRasterBand* band,
 		StorageBlockInfo* blockInfo, void* blockBuffer,
 		GDALDataType dataType, int dataBytes,

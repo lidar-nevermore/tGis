@@ -19,7 +19,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 tGisApplication* tGisApplication::_instance = nullptr;
 
-Event<const char*, const char*, const char*, const char*> tGisApplication::LoadPluginEvent;
+Event<const char*, const char*, const char*> tGisApplication::LoadPluginEvent;
 
 tGisApplication* tGisApplication::INSTANCE()
 {
@@ -78,33 +78,7 @@ void LoadStandaloneTool(const char* tgis)
 			}
 
 			XMLElement* eleToolBelong = eleTool->FirstChildElement("belong");
-			std::vector<std::string> belongParts;
-			_tgis_str_split(eleToolBelong->GetText(), "/", belongParts);
-
-			ToolKit* toFillKit = nullptr;
-			ToolKitSet* kitSet = ToolKitRepository::INSTANCE();
-			bool needNewKit = false;
-
-			for (auto it = belongParts.begin(); it != belongParts.end(); it++)
-			{
-				string& strKit = *it;
-
-				if (strKit.empty())
-					continue;
-
-				ToolKit* kit = needNewKit ? nullptr : kitSet->GetToolKit(strKit.c_str());
-				if (kit == nullptr)
-				{
-					needNewKit = true;
-					kit = new ToolKit(strKit.c_str());
-					kitSet->AddToolKit(kit);
-				}
-
-				toFillKit = kit;
-				kitSet = kit;
-			}
-
-			toFillKit->AddTool(tool);
+			ToolKitRepository::INSTANCE()->AddTool(eleToolBelong->GetText(), tool);
 
 			//加载下一个工具
 			eleTool = eleTool->NextSiblingElement();

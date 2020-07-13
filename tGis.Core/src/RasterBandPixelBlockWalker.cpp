@@ -305,7 +305,8 @@ void RasterBandPixelBlockWalker::ForEachBlock(FOREACHBLOCK_FUNC proc, void* user
 					unsigned char* aoi = (unsigned char*)_aoiGridReader->GetOneReadingBlock(xAoi,yAoi);
 					if (*aoi > 0 && *aoi != _aoiNoDataValue)
 					{
-						proc(user,_band,block,x,y);
+						if (proc(user, _band, block, x, y) == false)
+							return;
 					}
 				}				
 			}

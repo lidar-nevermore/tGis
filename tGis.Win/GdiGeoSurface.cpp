@@ -195,4 +195,8 @@ void GdiGeoSurface::DrawImage(const unsigned char* buf, int width, int height, i
 	gps.DrawImage(&bitmap, surfX, surfY, surfW, surfH);
 }
 
+void GdiGeoSurface::GetColor(int surfX, int surfY, unsigned char * r, unsigned char * g, unsigned char * b)
+{
+}
+
 END_NAME_SPACE(tGis, wGui)

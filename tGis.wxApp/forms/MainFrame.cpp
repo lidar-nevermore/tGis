@@ -297,7 +297,7 @@ void MainFrame::OnDataSourceWidgetActivated(wxAuiManagerEvent& event)
 void MainFrame::OnOpenRasterDataset(wxCommandEvent & event)
 {
 	wxFileDialog ofd(this, wxT("Open Raster Dataset"), wxEmptyString, wxEmptyString,
-		wxT("Geographic Raster file(*.tiff *.img *.pix *.tif *TIL)|*.tiff;*.tif;*.img;*.pix;*TIL|"
+		wxT("Geographic Raster file(*.tiff *.img *.pix *.tif)|*.tiff;*.tif;*.img;*.pix|"
 			"Normal Image file (*.jpg;*.jpeg;*.bmp;*.png)|*.jpg;*.jpeg;*.bmp;*.png|"
 			"All files (*.*)|*.*"), 
 		wxFD_OPEN);

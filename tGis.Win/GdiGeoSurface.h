@@ -35,6 +35,8 @@ public:
 
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY);
 	virtual void DrawImage(const unsigned char* buf, int width, int height, int surfX, int surfY, int surfW, int surfH);
+
+	virtual void GetColor(int surfX, int surfY, unsigned char * r, unsigned char * g, unsigned char * b) override;
 };
 
 END_NAME_SPACE(tGis, wGui)

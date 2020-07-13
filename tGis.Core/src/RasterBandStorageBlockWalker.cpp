@@ -301,12 +301,14 @@ void RasterBandStorageBlockWalker::ForEachPixel(FOREACHPIXEL_FUNC proc, void* us
 					{
 						unsigned char* curPix = curLine + xp*_dataBytes;
 						double pix = MyGDALGetPixelValue(_dataType, curPix);
-						proc(user,
+						
+						if(proc(user,
 							_band, 
 							pix, _curBlockX + xp, _curBlockY + yp, xp, yp, curPix,
 							&blockInfo, _blockBuffer,
 							_dataType, _dataBytes,
-							progress);
+							progress) == false)
+							return;
 					}
 
 					if (curAoi != nullptr)
@@ -377,12 +379,13 @@ void RasterBandStorageBlockWalker::ForEachBlock(FOREACHBLOCK_FUNC proc, void* us
 				_aoiBand->RasterIO(GF_Read, curAoiBlockStartX, curAoiBlockStartY, curAoiBlockXSize, curAoiBlockYSize, _aoiBlockBuffer, blockInfo.xValidBlockSize, blockInfo.yValidBlockSize, GDT_Byte, 0, 0, &arg);
 			}
 
-			proc(user, 
-				_band, 
+			if (proc(user,
+				_band,
 				&blockInfo, _blockBuffer,
 				_dataType, _dataBytes,
 				_aoiBlockBuffer, _aoiNoDataValue,
-				progress);
+				progress) == false)
+				return;
 		}
 	}
 }

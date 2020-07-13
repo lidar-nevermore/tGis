@@ -52,7 +52,7 @@ TGIS_CORE_API loger_t  _init_log(const char *path, int level, int console)
 		loger->level = level;
 		loger->console = console;
 
-		sprintf(date, "%4d-%02d-%02d", 1900 + localtm.tm_year, localtm.tm_mon, localtm.tm_mday);
+		sprintf(date, "%4d-%02d-%02d", 1900 + localtm.tm_year, localtm.tm_mon+1, localtm.tm_mday);
 		sprintf(loger->path, "%s%s.log.txt", path, date);
 		loger->pdate = strstr(loger->path, date);
 

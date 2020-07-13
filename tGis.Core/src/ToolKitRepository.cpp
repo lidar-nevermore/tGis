@@ -40,6 +40,37 @@ ToolKitRepository::~ToolKitRepository()
 }
 
 
+void ToolKitRepository::AddTool(const char * belong, ITool * tool)
+{
+	std::vector<std::string> belongParts;
+	_tgis_str_split(belong, "/", belongParts);
+
+	ToolKit* toFillKit = nullptr;
+	ToolKitSet* kitSet = this;
+	bool needNewKit = false;
+
+	for (auto it = belongParts.begin(); it != belongParts.end(); it++)
+	{
+		string& strKit = *it;
+
+		if (strKit.empty())
+			continue;
+
+		ToolKit* kit = needNewKit ? nullptr : kitSet->GetToolKit(strKit.c_str());
+		if (kit == nullptr)
+		{
+			needNewKit = true;
+			kit = new ToolKit(strKit.c_str());
+			kitSet->AddToolKit(kit);
+		}
+
+		toFillKit = kit;
+		kitSet = kit;
+	}
+
+	toFillKit->AddTool(tool);
+}
+
 void ToolKitRepository::AddToolKit(int count, ...)
 {
 	ToolKit* toFillKit = nullptr;

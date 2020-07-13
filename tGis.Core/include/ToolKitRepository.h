@@ -13,6 +13,8 @@ namespace tinyxml2
 
 BEGIN_NAME_SPACE(tGis, Core)
 
+struct ITool;
+
 class TGIS_CORE_API ToolKitRepository : public ToolKitSet
 {
 	TGIS_DECLARE_NO_COPY_CLASS(ToolKitRepository);
@@ -29,6 +31,7 @@ public:
 	~ToolKitRepository();
 
 public:
+	void AddTool(const char* belong, ITool* tool);
 	void AddToolKit(int count, ...);
 	void SaveStandaloneTool();
 	using ToolKitSet::AddToolKit;

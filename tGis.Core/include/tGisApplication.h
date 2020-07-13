@@ -24,7 +24,8 @@ private:
 	static tGisApplication* _instance;
 public:
 	static tGisApplication* INSTANCE();
-	static Event<const char*, const char*, const char*, const char*> LoadPluginEvent;
+	//加载插件事件，参数分别为：配置文件路径，插件执行文件路径，插件加载结果
+	static Event<const char*, const char*, const char*> LoadPluginEvent;
 
 protected:
 	tGisApplication();

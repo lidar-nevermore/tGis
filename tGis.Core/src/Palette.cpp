@@ -158,7 +158,7 @@ static inline void RandomRGB(UserData* ud, unsigned char *r, unsigned char *g, u
 	HSL2RGB(h, s, v, r, g, b);
 }
 
-static void __stdcall RandomColorPalette(void* user,
+static bool __stdcall RandomColorPalette(void* user,
 	GDALRasterBand* band,
 	StorageBlockInfo* blockInfo, void* blockBuffer,
 	GDALDataType dataType, int dataBytes,
@@ -179,6 +179,10 @@ static void __stdcall RandomColorPalette(void* user,
 				unsigned char r, g, b;
 				RandomRGB(ud, &r, &g, &b);
 				ud->palette->SetColor(v, r, g, b);
+
+				//调色板中最多有50000个颜色
+				if (ud->palette->GetColorCount() > MAX_COLOR)
+					return false;
 			}
 
 			inPix += dataBytes;
@@ -191,6 +195,8 @@ static void __stdcall RandomColorPalette(void* user,
 		Progress prog(progi, progi);
 		ud->progress->Raise(prog);
 	}
+
+	return true;
 }
 
 Palette * Palette::CreatePalette(MyGDALRasterDataset * dt, int band, ProgressEventHandler * progressHanler)
@@ -211,7 +217,7 @@ Palette * Palette::CreatePalette(MyGDALRasterDataset * dt, int band, ProgressEve
 	return pal;
 }
 
-static void __stdcall GradientColorPalette(void* user,
+static bool __stdcall GradientColorPalette(void* user,
 	GDALRasterBand* band,
 	StorageBlockInfo* blockInfo, void* blockBuffer,
 	GDALDataType dataType, int dataBytes,
@@ -234,6 +240,10 @@ static void __stdcall GradientColorPalette(void* user,
 				double cpos = rand() / rmax;
 				ud->color->GetColor(&r, &g, &b, cpos);
 				ud->palette->SetColor(v, r, g, b);
+
+				//调色板中最多有50000个颜色
+				if (ud->palette->GetColorCount() > MAX_COLOR)
+					return false;
 			}
 
 			inPix += dataBytes;
@@ -246,6 +256,8 @@ static void __stdcall GradientColorPalette(void* user,
 		Progress prog(progi, progi);
 		ud->progress->Raise(prog);
 	}
+
+	return true;
 }
 
 

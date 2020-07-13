@@ -15,7 +15,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 
 class Plugin;
 
-class TGIS_CORE_API PluginManager
+class PluginManager
 {
 private:
 	static PluginManager* _instance;

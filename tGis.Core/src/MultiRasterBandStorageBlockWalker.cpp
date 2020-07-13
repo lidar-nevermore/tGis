@@ -89,7 +89,7 @@ struct __UserData
 	void* _cliUser;
 };
 
-void MultiRasterBandStorageBlockWalker::FOREACHPIXEL_OneBand(void* user,
+bool MultiRasterBandStorageBlockWalker::FOREACHPIXEL_OneBand(void* user,
 	GDALRasterBand* band,
 	StorageBlockInfo* blockInfo, void* blockBuffer,
 	GDALDataType dataType, int dataBytes,
@@ -132,21 +132,24 @@ void MultiRasterBandStorageBlockWalker::FOREACHPIXEL_OneBand(void* user,
 					char* curPix = ud->_pThis->_blockBufferPos[i] + xp*ud->_pThis->_bandDataBytes[i];
 					ud->_pThis->_blockPixel[i] = MyGDALGetPixelValue(ud->_pThis->_bandDataType[i], curPix);
 				}
-				ud->_pixel_proc(ud->_cliUser,
+				if (ud->_pixel_proc(ud->_cliUser,
 					ud->_pThis->_bands,
 					ud->_pThis->_blockPixel, curBlockX + xp, curBlockY + yp, xp, yp, (void**)ud->_pThis->_blockBufferPos,
-					blockInfo, ud->_pThis->_blockBuffer, 
-					ud->_pThis->_bandDataType, ud->_pThis->_bandDataBytes, 
-					progress);
+					blockInfo, ud->_pThis->_blockBuffer,
+					ud->_pThis->_bandDataType, ud->_pThis->_bandDataBytes,
+					progress) == false)
+					return false;
 			}
 
 			if (curAoi != nullptr)
 				curAoi += 1;
 		}
 	}
+
+	return true;
 }
 
-void MultiRasterBandStorageBlockWalker::FOREACHBLOCK_OneBand(void* user,
+bool MultiRasterBandStorageBlockWalker::FOREACHBLOCK_OneBand(void* user,
 	GDALRasterBand* band,
 	StorageBlockInfo* blockInfo, void* blockBuffer,
 	GDALDataType dataType, int dataBytes,
@@ -166,7 +169,7 @@ void MultiRasterBandStorageBlockWalker::FOREACHBLOCK_OneBand(void* user,
 
 	ud->_pThis->_blockBuffer[0] = blockBuffer;
 
-	ud->_block_proc(ud->_cliUser,
+	return ud->_block_proc(ud->_cliUser,
 		ud->_pThis->_bands,
 		blockInfo, ud->_pThis->_blockBuffer,
 		ud->_pThis->_bandDataType, ud->_pThis->_bandDataBytes,

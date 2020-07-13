@@ -15,9 +15,14 @@
 
 using namespace std;
 
+namespace tinyxml2
+{
+	class XMLDocument;
+}
+
 BEGIN_NAME_SPACE(tGis, Core)
 
-typedef void(__cdecl *PLUGIN_INITIALIZE_PROC)();
+typedef void(__cdecl *PLUGIN_INITIALIZE_PROC)(tinyxml2::XMLDocument* doc);
 
 typedef void(__cdecl *PLUGIN_FINALIZE_PROC)();
 
@@ -28,15 +33,10 @@ public:
 	~Plugin();
 
 private:
-	string _name; // utf8
-	string _file; // utf8
+	string _file;
 	HMODULE _hModule;
 	PLUGIN_INITIALIZE_PROC _initializeProc;
 	PLUGIN_FINALIZE_PROC _finalizeProc;
-public:
-	const char* GetName();
-	void Initialize();
-	void Finalize();
 };
 
 

@@ -35,7 +35,6 @@ PluginManager::~PluginManager()
 	{
 		Plugin* plugin = *it;
 
-		plugin->Finalize();
 		delete plugin;
 	}
 }
@@ -52,7 +51,6 @@ void PluginManager::OnTraverseDir(void * usr, const char * dir, const char * nam
 		const char* csPluginPath = pluginPath.c_str();
 		Plugin* plugin = nullptr;
 		plugin = new Plugin(csPluginPath);
-		plugin->Initialize();
 		pm->_plugins.push_back(plugin);
 	}
 }

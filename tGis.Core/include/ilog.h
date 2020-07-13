@@ -14,7 +14,7 @@ extern "C" {
 
 #define init_log(path, level, console)            _init_log(path, level, console)
 #define print_log(loger, level, format, ...)      _print_log(loger, level, format, ##__VA_ARGS__)
-#define vprint_log(loger, level, format, args)    _print_log(loger, level, format, args)
+#define vprint_log(loger, level, format, args)    _vprint_log(loger, level, format, args)
 #define finalize_log(loger)                       _finalize_log(loger)
 #define flush_log(loger)                          _flush_log(loger)
 
