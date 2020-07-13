@@ -175,14 +175,20 @@ RasterBandStorageBlockWalker::RasterBandStorageBlockWalker(GDALDataset* raster,G
 RasterBandStorageBlockWalker::RasterBandStorageBlockWalker(GDALDataset* raster,GDALRasterBand* band,int xOffset, int yOffset, int xSize, int ySize)
 {
 	_aoiRaster = nullptr;
+	_aoiBand = nullptr;
 	_aoiBlockBuffer = nullptr;
+	_aoiNoDataValue = INT_MIN;
+	_aoiNoDataValueValid = false;
 	Init(raster,band,xOffset, yOffset, xSize, ySize);
 }
 
 RasterBandStorageBlockWalker::RasterBandStorageBlockWalker(GDALDataset* raster,int band,int xOffset, int yOffset, int xSize, int ySize)
 {
 	_aoiRaster = nullptr;
+	_aoiBand = nullptr;
 	_aoiBlockBuffer = nullptr;
+	_aoiNoDataValue = INT_MIN;
+	_aoiNoDataValueValid = false;
 	Init(raster,raster->GetRasterBand(band),xOffset, yOffset, xSize, ySize);
 }
 
