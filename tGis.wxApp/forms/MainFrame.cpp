@@ -164,7 +164,7 @@ void MainFrame::OnDatasetActivated(IDataset * dt)
 			FunctorEventHandler<const Progress&> handler(
 				[prgDlg](const Progress& prg)->void
 			{
-				prgDlg->Update(prg.StepValue, prg.Message);
+				prgDlg->Update(prg.TotalValue, prg.Message);
 			});
 
 			BuildPyramids(dataset->GetGDALDataset(), &handler);

@@ -6,8 +6,6 @@
 *.VC.VC.opendb
 *.vcxproj.user
 *.obj
-/Basics/tGis.CTest
-/Basics/tGis.Segment
 /**/ipch
 *.ipch
 *.aps
