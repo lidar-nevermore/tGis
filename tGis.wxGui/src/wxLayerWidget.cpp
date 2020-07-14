@@ -41,10 +41,10 @@ public:
 
 const int raster_rgb = 0;
 const int raster_grayscale = 1;
-const int raster_color_ramp = 2;
-const int raster_pseudo = 3;
-const int raster_unique = 4;
-const int vector_simple = 5;
+const int raster_dual_ramp = 2;
+const int raster_color_ramp = 3;
+const int raster_paletted = 4;
+const int vector_uniform = 5;
 const int vector_label = 6;
 const int vector_range = 7;
 const int vector_unique = 8;
@@ -82,10 +82,10 @@ wxLayerWidget::wxLayerWidget( wxWindow* parent, wxWindowID id, const wxPoint& po
 	_imgList = new wxImageList(16, 16, true, 25);
 	_imgList->Add(_TREE_PNG("raster_rgb"));
 	_imgList->Add(_TREE_PNG("raster_grayscale"));
+	_imgList->Add(_TREE_PNG("raster_dual_ramp"));
 	_imgList->Add(_TREE_PNG("raster_color_ramp"));
-	_imgList->Add(_TREE_PNG("raster_pseudo"));
-	_imgList->Add(_TREE_PNG("raster_unique"));
-	_imgList->Add(_TREE_PNG("vector_simple"));
+	_imgList->Add(_TREE_PNG("raster_paletted"));
+	_imgList->Add(_TREE_PNG("vector_uniform"));
 	_imgList->Add(_TREE_PNG("vector_label"));
 	_imgList->Add(_TREE_PNG("vector_range"));
 	_imgList->Add(_TREE_PNG("vector_unique"));
@@ -203,11 +203,15 @@ inline wxTreeItemId wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 	if (render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
 		inserted = _treeCtrl->InsertItem(root, pos, label, raster_rgb, raster_rgb, layerData);
 	else if (render->IsTypeOf(RasterDualRampLayerRender::S_GetType()))
-		inserted = _treeCtrl->InsertItem(root, pos, label, raster_color_ramp, raster_color_ramp, layerData);
+		inserted = _treeCtrl->InsertItem(root, pos, label, raster_dual_ramp, raster_dual_ramp, layerData);
 	else if (render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
 		inserted = _treeCtrl->InsertItem(root, pos, label, raster_grayscale, raster_grayscale, layerData);
-	else //if (render->IsTypeOf(VectorSimpleLayerRender::S_GetType()))
-		inserted = _treeCtrl->InsertItem(root, pos, label, vector_simple, vector_simple, layerData);
+	else if (render->IsTypeOf(VectorUniformLayerRender::S_GetType()))
+		inserted = _treeCtrl->InsertItem(root, pos, label, vector_uniform, vector_uniform, layerData);
+	else if (render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
+		inserted = _treeCtrl->InsertItem(root, pos, label, raster_color_ramp, raster_color_ramp, layerData);
+	else //if (render->IsTypeOf(RasterPalettedLayerRender::S_GetType()))
+		inserted = _treeCtrl->InsertItem(root, pos, label, raster_paletted, raster_paletted, layerData);
 
 	_impl_->_vecLayerNode.insert(_impl_->_vecLayerNode.begin() + pos, inserted);
 
