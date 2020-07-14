@@ -24,7 +24,6 @@ protected:
 	virtual void MouseMove(wxGLMapWidget*, wxMouseEvent*);
 	virtual void MouseUp(wxGLMapWidget*, wxMouseEvent*);
 
-
 protected:
 	OverlayRect _rect;
 };

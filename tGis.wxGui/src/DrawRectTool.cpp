@@ -1,5 +1,6 @@
 
 #include "DrawRectTool.h"
+#include "MessageFlag.inl"
 
 using namespace tGis::Core;
 
@@ -8,6 +9,7 @@ BEGIN_NAME_SPACE(tGis, Gui)
 DrawRectTool::DrawRectTool()
 {
 	_rect.SetVisible(false);
+	_msgFlag = MF_LBUTTONDOWN | MF_LBUTTONUP | MF_MOUSEMOVE;
 }
 
 

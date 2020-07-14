@@ -185,6 +185,7 @@
     <None Include="..\internal\StandaloneToolDialog.fbp" />
     <None Include="..\internal\VectorUniformLayerRenderCtrl.fbp" />
     <None Include="..\src\gdalinfo.inl" />
+    <None Include="..\src\MessageFlag.inl" />
     <None Include="..\src\ogrinfo.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

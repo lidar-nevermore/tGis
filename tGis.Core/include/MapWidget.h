@@ -65,6 +65,8 @@ protected:
 	virtual void LayerRemoved(IMapPtr, ILayerPtr, size_t);
 	virtual void LayerCleared(IMapPtr);
 
+	virtual void OnMapToolChanged(IMapWidget*, IMapTool*);
+
 private:
 	IMap* _map;
 

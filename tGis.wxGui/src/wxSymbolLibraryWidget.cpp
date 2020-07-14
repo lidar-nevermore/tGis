@@ -47,6 +47,8 @@ public:
 	wxSymbolLibraryWidgetImpl(wxSymbolLibraryWidget* owner)
 	{
 		_owner = owner;
+		_enabled = true;
+		_msgFlag = 0;
 	}
 
 	~wxSymbolLibraryWidgetImpl()

@@ -25,7 +25,6 @@ public:
 protected:
 	IMapWidget* _mapWidget;
 	virtual void SetMapWidget(IMapWidget* mapWidget);
-
 	bool _enabled;
 };
 

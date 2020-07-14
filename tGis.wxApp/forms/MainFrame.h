@@ -57,6 +57,7 @@ private:
 	void OnMapCenterChanged(GeoViewPort*);
 	void OnMouseMove(wxGLMapWidget*, wxMouseEvent*);
 	void OnDataSelChanged(IDataSource*, IDataset*);
+	void OnMapToolChanged(IMapWidget*, IMapTool*);
 
 private:
 	void OnSize(wxSizeEvent& event);

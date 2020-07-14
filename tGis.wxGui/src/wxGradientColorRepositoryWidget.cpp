@@ -60,6 +60,8 @@ public:
 	{
 		_owner = owner;
 		_selColor = nullptr;
+		_enabled = true;
+		_msgFlag = 0;
 	}
 
 	~wxGradientColorRepositoryWidgetImpl()

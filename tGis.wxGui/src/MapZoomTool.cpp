@@ -1,4 +1,5 @@
 #include "MapZoomTool.h"
+#include "MessageFlag.inl"
 
 
 BEGIN_NAME_SPACE(tGis, Gui)
@@ -7,6 +8,7 @@ BEGIN_NAME_SPACE(tGis, Gui)
 MapZoomTool::MapZoomTool()
 {
 	_delayRepaint = false;
+	_msgFlag = MF_MOUSEWHEEL;
 }
 
 

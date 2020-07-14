@@ -7,7 +7,7 @@ BEGIN_NAME_SPACE(tGis, Core)
 MapTool::MapTool()
 {
 	_mapWidget = nullptr;
-	_enabled = true;
+	_enabled = false;
 }
 
 

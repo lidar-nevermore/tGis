@@ -1,12 +1,15 @@
 
 #include "MapPanTool.h"
 
+#include "MessageFlag.inl"
+
 BEGIN_NAME_SPACE(tGis, Gui)
 
 MapPanTool::MapPanTool()
 {
 	_mouseDownX = -1;
 	_mouseDownY = -1;
+	_msgFlag = MF_LBUTTONDOWN | MF_LBUTTONUP | MF_MOUSEMOVE | MF_RBUTTONDOWN | MF_RBUTTONUP;
 }
 
 

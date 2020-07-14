@@ -31,11 +31,14 @@ MapWidget::MapWidget()
 	_backgroundB = 255;
 	_map = nullptr;
 	_geoSurface = nullptr;
+
+	MapToolChangedEvent.Add<>(this, &MapWidget::OnMapToolChanged);
 }
 
 
 MapWidget::~MapWidget()
 {
+	MapToolChangedEvent.Remove<>(this, &MapWidget::OnMapToolChanged);
 	vector<IMapTool*>::iterator it = _impl_->_vecMapTool.begin();
 	while(it != _impl_->_vecMapTool.end())
 	{
@@ -101,6 +104,21 @@ void MapWidget::LayerCleared(IMapPtr)
 	RepaintMap();
 }
 
+void MapWidget::OnMapToolChanged(IMapWidget *, IMapTool *tool)
+{
+	if (tool->GetEnabled() == true)
+	{
+		for (vector<IMapTool*>::iterator it = _impl_->_vecMapTool.begin(); it != _impl_->_vecMapTool.end(); ++it)
+		{
+			IMapTool *t = *it;
+			if (t != tool && t->IsCompatible(tool) == false)
+			{
+				t->SetEnabled(false);
+			}
+		}
+	}
+}
+
 bool MapWidget::AddMapTool(IMapTool * tool)
 {
 	bool canAdd = true;
@@ -118,6 +136,8 @@ bool MapWidget::AddMapTool(IMapTool * tool)
 		tool->SetMapWidget(this);
 		_impl_->_vecMapTool.push_back(tool);
 		MapToolAddedEvent(this, tool);
+		if (tool->GetEnabled() == true)
+			MapToolChangedEvent(this, tool);
 	}
 
 	return canAdd;
@@ -129,6 +149,8 @@ bool MapWidget::RemoveMapTool(IMapTool * tool)
 	{
 		if (*it == tool)
 		{
+			if (tool->GetEnabled() == true)
+				tool->SetEnabled(false);
 			tool->SetMapWidget(nullptr);
 			_impl_->_vecMapTool.erase(it);
 			MapToolRemovedEvent(this, tool);

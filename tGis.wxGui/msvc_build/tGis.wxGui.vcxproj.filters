@@ -321,5 +321,8 @@
     <None Include="..\internal\PaletteColorDialog.fbp">
       <Filter>internal</Filter>
     </None>
+    <None Include="..\src\MessageFlag.inl">
+      <Filter>src\Map</Filter>
+    </None>
   </ItemGroup>
 </Project>

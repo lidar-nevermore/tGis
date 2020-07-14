@@ -29,12 +29,17 @@ MainFrame::MainFrame()
 	_mapWidget = new wxGLMapWidget(this, wxID_ANY,
 		wxPoint(0, 0), wxDefaultSize, wxNO_BORDER);
 	_mapWidget->SetMap(&_map);
+
+	_mapWidget->MapToolChangedEvent.Add<MainFrame>(this, &MainFrame::OnMapToolChanged);
+
 	_mapWidget->AddMapTool(&_mapPanTool);
 	_mapWidget->AddMapTool(&_mapZoomTool);
 	_mapWidget->AddMapTool(&_rectZoomTool);
-	_toolBar->ToggleTool(_toolPan->GetId(), true);
-	_toolBar->ToggleTool(_toolZoomFree->GetId(), true);
+	_mapPanTool.SetEnabled(true);
+	_mapZoomTool.SetEnabled(true);
 	_rectZoomTool.SetEnabled(false);
+	//_toolBar->ToggleTool(_toolPan->GetId(), true);
+	//_toolBar->ToggleTool(_toolZoomFree->GetId(), true);	
 
 	_mgr.AddPane(_mapWidget, wxAuiPaneInfo().
 		Name(wxT("map")).Caption(wxT("map")).
@@ -130,6 +135,7 @@ MainFrame::~MainFrame()
 	_mapWidget->MouseEvent.Remove(this, &MainFrame::OnMouseMove);
 	_layerWidget->LayerSelChangedEvent.Remove(this, &MainFrame::OnLayerSelChanged);
 	_dataSourceWidget->DataSelChangedEvent.Remove(this, &MainFrame::OnDataSelChanged);
+	_mapWidget->MapToolChangedEvent.Remove<MainFrame>(this, &MainFrame::OnMapToolChanged);
 
 	Unbind(wxEVT_TOOL, &MainFrame::_toolPan_Clicked, this, _toolPan->GetId());
 	Unbind(wxEVT_TOOL, &MainFrame::_toolZoomFree_Clicked, this, _toolZoomFree->GetId());
@@ -266,6 +272,16 @@ void MainFrame::OnDataSelChanged(IDataSource *ds, IDataset *dt)
 	}
 }
 
+void MainFrame::OnMapToolChanged(IMapWidget *mapw, IMapTool *tool)
+{
+	if (tool == &_mapPanTool)
+		_toolBar->ToggleTool(_toolPan->GetId(), tool->GetEnabled());
+	else if(tool == &_rectZoomTool)
+		_toolBar->ToggleTool(_toolZoomRect->GetId(), tool->GetEnabled());
+	else if(tool == &_mapZoomTool)
+		_toolBar->ToggleTool(_toolZoomFree->GetId(), tool->GetEnabled());
+}
+
 void MainFrame::OnSize(wxSizeEvent & event)
 {
 
@@ -328,18 +344,9 @@ void MainFrame::OnOpenRasterDataset(wxCommandEvent & event)
 void MainFrame::_toolPan_Clicked(wxCommandEvent & event)
 {
 	if (event.IsChecked())
-	{
 		_mapPanTool.SetEnabled(true);
-		_rectZoomTool.SetEnabled(false);
-		//_mapWidget->AddMapTool(&_mapPanTool);
-		//_mapWidget->RemoveMapTool(&_rectZoomTool);
-		_toolBar->ToggleTool(_toolZoomRect->GetId(), false);
-	}
 	else
-	{
 		_mapPanTool.SetEnabled(false);
-		//_mapWidget->RemoveMapTool(&_mapPanTool);
-	}
 }
 
 void MainFrame::_toolZoomFree_Clicked(wxCommandEvent & event)
@@ -373,15 +380,9 @@ void MainFrame::_toolZoomOut_Clicked(wxCommandEvent & event)
 void MainFrame::_toolZoomRect_Clicked(wxCommandEvent & event)
 {
 	if (event.IsChecked())
-	{
-		_mapPanTool.SetEnabled(false);
 		_rectZoomTool.SetEnabled(true);
-		_toolBar->ToggleTool(_toolPan->GetId(), false);
-	}
 	else
-	{
 		_rectZoomTool.SetEnabled(false);
-	}
 }
 
 void MainFrame::_toolEntire_Clicked(wxCommandEvent & event)
