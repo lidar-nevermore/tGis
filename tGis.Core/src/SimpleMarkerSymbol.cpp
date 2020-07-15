@@ -9,14 +9,17 @@
 BEGIN_NAME_SPACE(tGis, Core)
 
 SimpleMarkerSymbol::SimpleMarkerSymbol()
-	:SimpleMarkerSymbol(SimpleMarkerSymbol::Rect)
+	:SimpleMarkerSymbol(SimpleMarkerSymbol::Rect, nullptr)
 {
 }
 
-SimpleMarkerSymbol::SimpleMarkerSymbol(int t)
+SimpleMarkerSymbol::SimpleMarkerSymbol(unsigned char r, unsigned char g, unsigned char b, unsigned char a, int t)
 	:SimpleMarkerSymbol(t, nullptr)
 {
-
+	_r = r;
+	_g = g;
+	_b = b;
+	_a = a;
 }
 
 SimpleMarkerSymbol::~SimpleMarkerSymbol()

@@ -38,13 +38,19 @@ int g_pattern[] =
 };
 
 SimpleLineSymbol::SimpleLineSymbol()
-	:SimpleLineSymbol(SimpleLineSymbol::Solid)
+	:SimpleLineSymbol(SimpleLineSymbol::Solid, nullptr)
 {
 }
 
-SimpleLineSymbol::SimpleLineSymbol(int t)
-	:SimpleLineSymbol(t, nullptr)
+SimpleLineSymbol::SimpleLineSymbol(unsigned char r, unsigned char g, unsigned char b, unsigned char a, int w, int t)
+	: ILineSymbol(nullptr)
 {
+	_type = t;
+	_r = r;
+	_g = g;
+	_b = b;
+	_a = a;
+	_width = w;
 }
 
 SimpleLineSymbol::~SimpleLineSymbol()
@@ -67,7 +73,7 @@ int SimpleLineSymbol::GetId()
 	return _type;
 }
 
-void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y)
+void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y, bool close)
 {
 	int surfWidth;
 	int surfHeight;
@@ -86,7 +92,10 @@ void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 		glLineStipple(1, g_pattern[_type]);
 	}
 	glColor4f(red, green, blue, alpha);
-	glBegin(GL_LINE_STRIP);
+	if(close)
+		glBegin(GL_LINE_LOOP);
+	else
+		glBegin(GL_LINE_STRIP);
 	for (int i = 0; i < count; i++)
 	{
 		GLfloat xg = (2.0f*x[i]) / surfWidth - 1.0f;
@@ -96,6 +105,62 @@ void SimpleLineSymbol::Paint(ISurface * surf, int count, int * x, int * y)
 	glEnd();
 	if (_type > 0)
 		glDisable(GL_LINE_STIPPLE);
+}
+
+void SimpleLineSymbol::BeginPaint(ISurface * surf, bool close)
+{
+	int surfWidth;
+	int surfHeight;
+	surf->GetSize(&surfWidth, &surfHeight);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0.0f, (GLfloat)surfWidth, (GLfloat)surfHeight, 0.0f, -1.0f, 1.0f);
+
+	GLfloat red = _r / 255.0f;
+	GLfloat green = _g / 255.0f;
+	GLfloat blue = _b / 255.0f;
+	GLfloat alpha = _a / 255.0f;
+
+	glLineWidth((GLfloat)_width);
+	glEnable(GL_BLEND);
+	glEnable(GL_LINE_SMOOTH);
+	if (_type > 0)
+	{
+		glEnable(GL_LINE_STIPPLE);
+		glLineStipple(1, g_pattern[_type]);
+	}
+	glColor4f(red, green, blue, alpha);
+	if (close)
+		glBegin(GL_LINE_LOOP);
+	else
+		glBegin(GL_LINE_STRIP);
+}
+
+void SimpleLineSymbol::AppendVertex(int count, int * x, int * y)
+{
+	for (int i = 0; i < count; i++)
+	{
+		GLfloat xg = (GLfloat)x[i];
+		GLfloat yg = (GLfloat)y[i];
+		glVertex3f(xg, yg, 0.0f);
+	}
+}
+
+void SimpleLineSymbol::AppendVertex(int x, int y)
+{
+	GLfloat xg = (GLfloat)x;
+	GLfloat yg = (GLfloat)y;
+	glVertex3f(xg, yg, 0.0f);
+}
+
+void SimpleLineSymbol::EndPaint(ISurface * surf)
+{
+	glEnd();
+	if (_type > 0)
+		glDisable(GL_LINE_STIPPLE);
+	glPopMatrix();
 }
 
 void SimpleLineSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)

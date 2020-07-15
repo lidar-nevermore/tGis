@@ -27,7 +27,17 @@ struct TGIS_CORE_API ILineSymbol : public ISymbol
 	virtual void SetWidth(int w) = 0;
 
 	//一次画一条线
-	virtual void Paint(ISurface* surf, int count, int* x, int* y) = 0;
+	virtual void Paint(ISurface* surf, int count, int* x, int* y, bool close = false) = 0;
+
+	//调用方的顶点可能不是放在连续的内存空间的
+	//提供这些接口可以避免拼接顶点数组
+	virtual void BeginPaint(ISurface* surf, bool close = false) = 0;
+
+	virtual void AppendVertex(int count, int* x, int* y) = 0;
+
+	virtual void AppendVertex(int x, int y) = 0;
+
+	virtual void EndPaint(ISurface* surf) = 0;
 };
 
 

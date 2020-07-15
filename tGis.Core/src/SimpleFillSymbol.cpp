@@ -53,9 +53,14 @@ public:
 		return GetInstance()->_tesselator;
 	}
 
+	static GLdouble* TessVertex()
+	{
+		return (GLdouble*)bi_list_insert_head(&(GetInstance()->_newVertexList), nullptr);
+	}
+
 	static void TessEnd()
 	{
-		bi_list_release(&(GetInstance()->_newVertexList));
+		bi_list_clear(&(GetInstance()->_newVertexList));
 	}
 
 	static const GLubyte* GetStrippe(int id)
@@ -123,15 +128,19 @@ private:
 gluTessHelper* gluTessHelper::_instance = nullptr;
 
 SimpleFillSymbol::SimpleFillSymbol()
-	:SimpleFillSymbol(SimpleFillSymbol::DiagonalCross)
+	:SimpleFillSymbol(SimpleFillSymbol::DiagonalCross, nullptr)
 {
 	_lib = nullptr;
 }
 
-SimpleFillSymbol::SimpleFillSymbol(int t)
-	: SimpleFillSymbol(t, nullptr)
+SimpleFillSymbol::SimpleFillSymbol(unsigned char r, unsigned char g, unsigned char b, unsigned char a, int t)
+	: IFillSymbol(nullptr)
 {
-
+	_type = t;
+	_r = r;
+	_g = g;
+	_b = b;
+	_a = a;
 }
 
 
@@ -244,6 +253,98 @@ void SimpleFillSymbol::Paint(ISurface* surf, int contourCount, int* ptCount, int
 	gluTessHelper::TessEnd();
 	if (_type > 1)
 		glDisable(GL_POLYGON_STIPPLE);
+}
+
+void SimpleFillSymbol::BeginPaint(ISurface * surf)
+{
+	if (_type == NoFill)
+		return;
+
+	int surfWidth;
+	int surfHeight;
+	surf->GetSize(&surfWidth, &surfHeight);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0.0f, (GLfloat)surfWidth, (GLfloat)surfHeight, 0.0f, -1.0f, 1.0f);
+
+	GLfloat red = _r / 255.0f;
+	GLfloat green = _g / 255.0f;
+	GLfloat blue = _b / 255.0f;
+	GLfloat alpha = _a / 255.0f;
+
+	glColor4f(red, green, blue, alpha);
+	if (_type > 1)
+	{
+		glEnable(GL_POLYGON_STIPPLE);
+		glPolygonStipple(gluTessHelper::GetStrippe(_type));
+	}
+
+	GLUtesselator* tess = gluTessHelper::GetTesselator();
+	gluTessBeginPolygon(tess, nullptr);
+}
+
+void SimpleFillSymbol::BeginContour(ISurface * surf)
+{
+	if (_type == NoFill)
+		return;
+
+	GLUtesselator* tess = gluTessHelper::GetTesselator();
+	gluTessBeginContour(tess);
+}
+
+void SimpleFillSymbol::AppendVertex(int count, int * x, int * y)
+{
+	if (_type == NoFill)
+		return;
+
+	GLUtesselator* tess = gluTessHelper::GetTesselator();
+
+	for (int i = 0; i < count; i++)
+	{
+		GLdouble* vertex = gluTessHelper::TessVertex();
+		vertex[2] = (GLdouble)0.0;
+		vertex[0] = (GLdouble)x[i];
+		vertex[1] = (GLdouble)y[i];
+		gluTessVertex(tess, vertex, vertex);
+	}
+}
+
+void SimpleFillSymbol::AppendVertex(int x, int y)
+{
+	if (_type == NoFill)
+		return;
+
+	GLUtesselator* tess = gluTessHelper::GetTesselator();
+	GLdouble* vertex = gluTessHelper::TessVertex();
+	vertex[0] = (GLdouble)x;
+	vertex[1] = (GLdouble)y;
+	vertex[2] = (GLdouble)0.0;
+	gluTessVertex(tess, vertex, vertex);
+}
+
+void SimpleFillSymbol::EndContour(ISurface * surf)
+{
+	if (_type == NoFill)
+		return;
+
+	GLUtesselator* tess = gluTessHelper::GetTesselator();
+	gluTessEndContour(tess);
+}
+
+void SimpleFillSymbol::EndPaint(ISurface * surf)
+{
+	if (_type == NoFill)
+		return;
+
+	GLUtesselator* tess = gluTessHelper::GetTesselator();
+	gluTessEndPolygon(tess);
+
+	gluTessHelper::TessEnd();
+	if (_type > 1)
+		glDisable(GL_POLYGON_STIPPLE);
+	glPopMatrix();
 }
 
 void SimpleFillSymbol::GetColor(unsigned char * r, unsigned char * g, unsigned char * b, unsigned char * a)

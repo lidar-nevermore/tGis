@@ -321,8 +321,15 @@ inline void VectorUniformLayerRender::DrawPolygon(int* x, int* y, IGeoSurface* s
 		int ptcount = TransferGeometryPoints(x, y, surf, exterior);
 		*(x + ptcount) = *x;
 		*(y + ptcount) = *y;
-		if(_fillSymbol != nullptr)
+		if (_fillSymbol != nullptr)
+		{
 			_fillSymbol->Paint(surf, ptcount + 1, x, y);
+			//_fillSymbol->BeginPaint(surf);
+			//_fillSymbol->BeginContour(surf);
+			//_fillSymbol->AppendVertex(ptcount + 1, x, y);
+			//_fillSymbol->EndContour(surf);
+			//_fillSymbol->EndPaint(surf);
+		}
 		_lineSymbol->Paint(surf, ptcount + 1, x, y);
 	}
 }

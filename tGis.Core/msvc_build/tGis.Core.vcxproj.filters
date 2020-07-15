@@ -386,6 +386,9 @@
     <ClInclude Include="..\include\VirtualDataSource.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\OverlayPolygon.h">
+      <Filter>include\Visualize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -618,6 +621,9 @@
     </ClCompile>
     <ClCompile Include="..\src\VirtualDataSource.cpp">
       <Filter>src\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\OverlayPolygon.cpp">
+      <Filter>src\Visualize</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

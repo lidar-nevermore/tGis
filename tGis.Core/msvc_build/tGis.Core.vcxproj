@@ -30,6 +30,7 @@
     <ClInclude Include="..\glutess\tessmono.h" />
     <ClInclude Include="..\include\bi_list.h" />
     <ClInclude Include="..\include\BuildPyramids.h" />
+    <ClInclude Include="..\include\OverlayPolygon.h" />
     <ClInclude Include="..\include\VirtualDataSource.h" />
     <ClInclude Include="..\include\Dataset.h" />
     <ClInclude Include="..\include\DataSource.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="..\src\ILayerRender.cpp" />
     <ClCompile Include="..\src\ilog.c" />
     <ClCompile Include="..\src\MultiRasterBandStorageBlockWalker.cpp" />
+    <ClCompile Include="..\src\OverlayPolygon.cpp" />
     <ClCompile Include="..\src\Palette.cpp" />
     <ClCompile Include="..\src\RasterColorRampLayerRender.cpp" />
     <ClCompile Include="..\src\RasterPalettedLayerRender.cpp" />

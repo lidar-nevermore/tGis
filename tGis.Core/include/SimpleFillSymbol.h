@@ -36,7 +36,7 @@ public:
 
 public:
 	SimpleFillSymbol();
-	SimpleFillSymbol(int t);
+	SimpleFillSymbol(unsigned char r, unsigned char g, unsigned char b, unsigned char a, int t);
 	virtual ~SimpleFillSymbol();
 
 protected:
@@ -47,6 +47,18 @@ public:
 
 	void Paint(ISurface* surf, int count, int* x, int* y) override;
 	void Paint(ISurface* surf, int contourCount, int* ptCount, int** x, int** y) override;
+
+	void BeginPaint(ISurface* surf) override;
+
+	void BeginContour(ISurface* surf) override;
+
+	void AppendVertex(int count, int* x, int* y) override;
+
+	void AppendVertex(int x, int y) override;
+
+	void EndContour(ISurface* surf) override;
+
+	void EndPaint(ISurface* surf) override;
 
 public:
 	void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);

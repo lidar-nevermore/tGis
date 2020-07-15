@@ -4,11 +4,10 @@
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-static SimpleLineSymbol g_LineSymbol(SimpleLineSymbol::Solid);
+static SimpleLineSymbol g_LineSymbol(255, 0, 0, 255, 1, SimpleLineSymbol::Solid);
 
 OverlayRect::OverlayRect()
 {
-	g_LineSymbol.SetColor(255, 0, 0, 255);
 	_left = 0;
 	_top = 0;
 	_right = 0;
@@ -47,13 +46,20 @@ void OverlayRect::Paint(IGeoSurface * surf)
 {
 	int x[5] = { _left,_right,_right,_left,_left };
 	int y[5] = { _top,_top,_bottom,_bottom,_top };
-	if (_lineSymbol != nullptr)
-	{
-		_lineSymbol->Paint((ISurface*)surf, 5, x, y);
-	}
 	if (_fillSymbol != nullptr)
 	{
 		_fillSymbol->Paint((ISurface*)surf, 5, x, y);
+	}
+	if (_lineSymbol != nullptr)
+	{
+		_lineSymbol->Paint((ISurface*)surf, 5, x, y);
+		//_lineSymbol->BeginPaint((ISurface*)surf);
+		//_lineSymbol->AppendVertex(x[0], y[0]);
+		//_lineSymbol->AppendVertex(x[1], y[1]);
+		//_lineSymbol->AppendVertex(x[2], y[2]);
+		//_lineSymbol->AppendVertex(x[3], y[3]);
+		//_lineSymbol->AppendVertex(x[4], y[4]);
+		//_lineSymbol->EndPaint((ISurface*)surf);
 	}
 }
 

@@ -213,6 +213,8 @@ void PalettedLayerRenderCtrl::SetLayerRender(RasterPalettedLayerRender * render)
 	Palette* pal = _render->GetPalette();
 	if (pal != nullptr)
 	{
+		if (_palette != nullptr)
+			_palette->Release();
 		_palette = pal->Clone();
 		_palette->ForEachColor(ForEachColor, _dvPalette);
 

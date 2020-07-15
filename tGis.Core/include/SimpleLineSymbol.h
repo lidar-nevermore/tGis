@@ -24,8 +24,8 @@ public:
 
 public:
 	SimpleLineSymbol();
-	SimpleLineSymbol(int t);
-	~SimpleLineSymbol();
+	SimpleLineSymbol(unsigned char r, unsigned char g, unsigned char b, unsigned char a, int w, int t);
+	virtual ~SimpleLineSymbol();
 
 protected:
 	SimpleLineSymbol(int t, const ISymbolLibrary* symLib);
@@ -33,7 +33,15 @@ protected:
 public:
 	int GetId();
 
-	void Paint(ISurface* surf, int count, int* x, int* y) override;
+	void Paint(ISurface* surf, int count, int* x, int* y, bool close = false) override;
+
+	void BeginPaint(ISurface* surf, bool close = false) override;
+
+	void AppendVertex(int count, int* x, int* y) override;
+
+	void AppendVertex(int x, int y) override;
+
+	void EndPaint(ISurface* surf) override;
 
 public:
 	void GetColor(unsigned char* r, unsigned char* g, unsigned char* b, unsigned char* a);
