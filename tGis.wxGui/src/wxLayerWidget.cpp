@@ -218,6 +218,42 @@ inline wxTreeItemId wxLayerWidget::AddLayerNode(ILayer * layer, size_t pos)
 	return inserted;
 }
 
+void wxLayerWidget::UpdateLayerNode(wxTreeItemId itemId, ILayer * layer)
+{
+	ILayerRender* render = layer->GetRender();
+
+	if (render->IsTypeOf(RasterRgbLayerRender::S_GetType()))
+	{
+		_treeCtrl->SetItemImage(itemId, raster_rgb);
+		_treeCtrl->SetItemImage(itemId, raster_rgb, wxTreeItemIcon_Selected);
+	}
+	else if (render->IsTypeOf(RasterDualRampLayerRender::S_GetType()))
+	{
+		_treeCtrl->SetItemImage(itemId, raster_dual_ramp);
+		_treeCtrl->SetItemImage(itemId, raster_dual_ramp, wxTreeItemIcon_Selected);
+	}
+	else if (render->IsTypeOf(RasterGrayScaleLayerRender::S_GetType()))
+	{
+		_treeCtrl->SetItemImage(itemId, raster_grayscale);
+		_treeCtrl->SetItemImage(itemId, raster_grayscale, wxTreeItemIcon_Selected);
+	}
+	else if (render->IsTypeOf(VectorUniformLayerRender::S_GetType()))
+	{
+		_treeCtrl->SetItemImage(itemId, vector_uniform);
+		_treeCtrl->SetItemImage(itemId, vector_uniform, wxTreeItemIcon_Selected);
+	}
+	else if (render->IsTypeOf(RasterColorRampLayerRender::S_GetType()))
+	{
+		_treeCtrl->SetItemImage(itemId, raster_color_ramp);
+		_treeCtrl->SetItemImage(itemId, raster_color_ramp, wxTreeItemIcon_Selected);
+	}
+	else //if (render->IsTypeOf(RasterPalettedLayerRender::S_GetType()))
+	{
+		_treeCtrl->SetItemImage(itemId, raster_paletted);
+		_treeCtrl->SetItemImage(itemId, raster_paletted, wxTreeItemIcon_Selected);
+	}
+}
+
 inline void wxLayerWidget::RemoveLayerNode(ILayer * layer, size_t pos)
 {
 	wxTreeItemId layerNodeId = _impl_->_vecLayerNode[pos];
@@ -356,6 +392,7 @@ void wxLayerWidget::_toolLayerAttrib_Clicked(wxCommandEvent & event)
 	wxLayerPropertyDialog lpDlg(_selLayer);
 	if (lpDlg.ShowModal() == wxID_OK)
 	{
+		UpdateLayerNode(_selId, _selLayer);
 		_map->LayerRenderChangedEvent(_map, _selLayer);
 		_mapWidget->RepaintMap();
 	}

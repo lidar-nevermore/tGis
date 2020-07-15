@@ -105,6 +105,16 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		viridis->AddKeyColor(253, 231, 37, 1.0);		
 		_instance->_impl_->_vecGradientColor.push_back(viridis);
 
+		GradientColor* hue = new GradientColor();
+		hue->AddKeyColor(255, 0, 0, 0);
+		hue->AddKeyColor(255, 255, 0, 1);
+		hue->AddKeyColor(0, 255, 0, 2);
+		hue->AddKeyColor(0, 255, 255, 3);
+		hue->AddKeyColor(0, 0, 255, 4);
+		hue->AddKeyColor(255, 0, 255, 5);
+		hue->AddKeyColor(255, 0, 0, 6);
+		_instance->_impl_->_vecGradientColor.push_back(hue);
+
 		static unique_ptr<GradientColorRepository> shit(_instance);
 	}
 
