@@ -42,6 +42,8 @@ public:
 public:
 	Event<wxGLMapWidget*, wxMouseEvent*> MouseEvent;
 	Event<wxGLMapWidget*, wxMouseEvent*> WheelEvent;
+	Event<wxGLMapWidget*, wxKeyEvent*> KeyDownEvent;
+	Event<wxGLMapWidget*, wxKeyEvent*> KeyUpEvent;
 
 private:
 	bool _repaint;
@@ -62,6 +64,8 @@ protected:
 	virtual void OnSize(wxSizeEvent& event);
 	virtual void OnMouseEvent(wxMouseEvent& event);
 	virtual void OnWheelEvent(wxMouseEvent& event);
+	virtual void OnKeyDownEvent(wxKeyEvent& event);
+	virtual void OnKeyUpEvent(wxKeyEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };

@@ -13,6 +13,7 @@
 #include "OverlayLayer.h"
 #include "IOverlayObject.h"
 #include "OverlayRect.h"
+#include "OverlayPolygon.h"
 
 #include "IMapTool.h"
 #include "MapTool.h"

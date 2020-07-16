@@ -19,8 +19,10 @@ MainFrame::MainFrame()
 	_toolEntire = _toolBar->AddTool(wxID_ANY, wxT("Entire Map"), _TOOL_PNG("MapTool", "Entire"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
 	_toolZoomLayer = _toolBar->AddTool(wxID_ANY, wxT("Zoom to layer"), _TOOL_PNG("MapTool", "ZoomLayer"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
 	_toolZoomOriginal = _toolBar->AddTool(wxID_ANY, wxT("Zoom Original"), _TOOL_PNG("MapTool", "ZoomOriginal"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_toolBar->AddSeparator();
 	_toolGrid = _toolBar->AddTool(wxID_ANY, wxT("Show Grid"), _TOOL_PNG("MapTool", "Grid"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
 	_toolMapSpatialRef = _toolBar->AddTool(wxID_ANY, wxT("Map SpatialRefrence"), _TOOL_PNG("MapTool", "MapSpatialRef"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
+	_tool3DView = _toolBar->AddTool(wxID_ANY, wxT("3D Map View"), _TOOL_PNG("MapTool", "3dMapView"), wxNullBitmap, wxITEM_NORMAL, wxEmptyString, wxEmptyString, NULL);
 
 	_toolBar->Realize();
 
@@ -35,9 +37,11 @@ MainFrame::MainFrame()
 	_mapWidget->AddMapTool(&_mapPanTool);
 	_mapWidget->AddMapTool(&_mapZoomTool);
 	_mapWidget->AddMapTool(&_rectZoomTool);
+	_mapWidget->AddMapTool(&_drawPolygonTool);
+	_drawPolygonTool.AttachPanTool(&_mapPanTool);
 	_mapPanTool.SetEnabled(true);
 	_mapZoomTool.SetEnabled(true);
-	_rectZoomTool.SetEnabled(false);
+	//_rectZoomTool.SetEnabled(false);
 	//_toolBar->ToggleTool(_toolPan->GetId(), true);
 	//_toolBar->ToggleTool(_toolZoomFree->GetId(), true);	
 
@@ -124,6 +128,7 @@ MainFrame::MainFrame()
 	Bind(wxEVT_TOOL, &MainFrame::_toolMapSpatialRef_Clicked, this, _toolMapSpatialRef->GetId());
 	//Bind(wxEVT_CHILD_FOCUS, &MainFrame::OnLayerWidgetActivated, this, _layerWidget->GetId());
 	//Bind(wxEVT_CHILD_FOCUS, &MainFrame::OnDataSourceWidgetActivated, this, _dataSourceWidget->GetId());
+	Bind(wxEVT_TOOL, &MainFrame::_tool3DView_Clicked, this, _tool3DView->GetId());
 
 }
 
@@ -149,6 +154,7 @@ MainFrame::~MainFrame()
 	Unbind(wxEVT_TOOL, &MainFrame::_toolMapSpatialRef_Clicked, this, _toolMapSpatialRef->GetId());
 	//Unbind(wxEVT_CHILD_FOCUS, &MainFrame::OnLayerWidgetActivated, this, _layerWidget->GetId());
 	//Unbind(wxEVT_CHILD_FOCUS, &MainFrame::OnDataSourceWidgetActivated, this, _dataSourceWidget->GetId());
+	Unbind(wxEVT_TOOL, &MainFrame::_tool3DView_Clicked, this, _tool3DView->GetId());
 
 	_eagleEyeWidget->SetMapWidget(nullptr);
 	_mapWidget->SetMap(nullptr);
@@ -430,6 +436,14 @@ void MainFrame::_toolMapSpatialRef_Clicked(wxCommandEvent & event)
 	wxSpatialReferenceDialog dlg;
 	dlg.SetSpatialReference(_map.GetSpatialReference());
 	dlg.ShowModal();
+}
+
+void MainFrame::_tool3DView_Clicked(wxCommandEvent & event)
+{
+	if (_drawPolygonTool.GetEnabled())
+		_drawPolygonTool.SetEnabled(false);
+	else
+		_drawPolygonTool.SetEnabled(true);
 }
 
 BEGIN_EVENT_TABLE(MainFrame, MainFrameBase)

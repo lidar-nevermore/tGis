@@ -8,7 +8,7 @@ using namespace std;
 
 BEGIN_NAME_SPACE(tGis, Core)
 
-static SimpleLineSymbol g_LineSymbol(255, 0, 0, 255, 1, SimpleLineSymbol::Solid);
+static SimpleLineSymbol g_LineSymbol(64, 255, 255, 255, 1, SimpleLineSymbol::Solid);
 
 class OverlayPolygonImpl
 {
@@ -57,7 +57,7 @@ void OverlayPolygon::Paint(IGeoSurface * surf)
 	const GeoViewPort* viewPort = surf->GetViewPort();
 	if (_lineSymbol != nullptr)
 	{
-		_lineSymbol->BeginPaint((ISurface*)surf);
+		_lineSymbol->BeginPaint((ISurface*)surf,true);
 		for (vector<pair<double, double>>::iterator it = _impl_->_vecVertex.begin(); it != _impl_->_vecVertex.end(); ++it)
 		{
 			pair<double, double>& vertex = *it;
@@ -105,10 +105,26 @@ void OverlayPolygon::GetVertex(size_t pos, double * x, double * y)
 	*y = vertex.second;
 }
 
+void OverlayPolygon::AddVertex(double x, double y)
+{
+	_impl_->_vecVertex.push_back(std::make_pair(x, y));
+}
+
+void OverlayPolygon::SetVertex(size_t pos, double x, double y)
+{
+	assert(pos < _impl_->_vecVertex.size());
+	_impl_->_vecVertex[pos] = std::make_pair(x, y);
+}
+
 void OverlayPolygon::RemoveVertex(size_t pos)
 {
 	vector<pair<double,double>>::iterator it = _impl_->_vecVertex.begin() + pos;
 	_impl_->_vecVertex.erase(it);
+}
+
+void OverlayPolygon::ClearVertex()
+{
+	_impl_->_vecVertex.clear();
 }
 
 

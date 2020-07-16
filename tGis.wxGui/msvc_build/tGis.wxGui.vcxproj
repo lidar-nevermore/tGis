@@ -85,6 +85,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\DrawPolygonTool.h" />
     <ClInclude Include="..\include\DrawRectTool.h" />
     <ClInclude Include="..\include\wxDatasetInfoDialog.h" />
     <ClInclude Include="..\include\wxDatasetInfoWidget.h" />
@@ -148,6 +149,7 @@
     <ClCompile Include="..\internal\StandaloneToolDialogBase.cpp" />
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrl.cpp" />
     <ClCompile Include="..\internal\VectorUniformLayerRenderCtrlBase.cpp" />
+    <ClCompile Include="..\src\DrawPolygonTool.cpp" />
     <ClCompile Include="..\src\DrawRectTool.cpp" />
     <ClCompile Include="..\src\wxDatasetInfoDialog.cpp" />
     <ClCompile Include="..\src\wxDatasetInfoWidget.cpp" />

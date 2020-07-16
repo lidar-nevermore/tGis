@@ -8,6 +8,7 @@
 #include "wxGLEagleEyeWidget.h"
 
 #include "DrawRectTool.h"
+#include "DrawPolygonTool.h"
 #include "MapPanTool.h"
 #include "MapZoomTool.h"
 #include "RectZoomTool.h"

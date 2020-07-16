@@ -25,6 +25,7 @@ private:
 	MapPanTool _mapPanTool;
 	MapZoomTool _mapZoomTool;
 	RectZoomTool _rectZoomTool;
+	DrawPolygonTool _drawPolygonTool;
 
 	wxDataSourceWidget* _dataSourceWidget;
 
@@ -49,6 +50,7 @@ private:
 	wxToolBarToolBase* _toolZoomOriginal;
 	wxToolBarToolBase* _toolGrid;
 	wxToolBarToolBase* _toolMapSpatialRef;
+	wxToolBarToolBase* _tool3DView;
 
 private:
 	void OnDatasetActivated(IDataset* dt);
@@ -65,6 +67,7 @@ private:
 	void OnLayerWidgetActivated(wxAuiManagerEvent& event);
 	void OnDataSourceWidgetActivated(wxAuiManagerEvent& event);
 	void OnOpenRasterDataset(wxCommandEvent& event);
+
 	void _toolPan_Clicked(wxCommandEvent& event);
 	void _toolZoomFree_Clicked(wxCommandEvent& event);
 	void _toolZoomIn_Clicked(wxCommandEvent& event);
@@ -75,6 +78,7 @@ private:
 	void _toolZoomOriginal_Clicked(wxCommandEvent& event);
 	void _toolGrid_Clicked(wxCommandEvent& event);
 	void _toolMapSpatialRef_Clicked(wxCommandEvent& event);
-	
+	void _tool3DView_Clicked(wxCommandEvent& event);
+
 	DECLARE_EVENT_TABLE();
 };

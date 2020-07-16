@@ -161,6 +161,9 @@
     <ClInclude Include="..\include\wxSpatialReferenceDialog.h">
       <Filter>include\Widget</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\DrawPolygonTool.h">
+      <Filter>include\Map</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\wxTGisApplication.cpp">
@@ -288,6 +291,9 @@
     </ClCompile>
     <ClCompile Include="..\src\wxSpatialReferenceDialog.cpp">
       <Filter>src\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\DrawPolygonTool.cpp">
+      <Filter>src\Map</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

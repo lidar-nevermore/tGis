@@ -9,7 +9,7 @@ BEGIN_NAME_SPACE(tGis, Gui)
 DrawRectTool::DrawRectTool()
 {
 	_rect.SetVisible(false);
-	_msgFlag = MF_LBUTTONDOWN | MF_LBUTTONUP | MF_MOUSEMOVE;
+	_msgFlag = MF_LBUTTON | MF_MOUSEMOVE | MF_RBUTTON;
 }
 
 
@@ -44,11 +44,11 @@ void DrawRectTool::MouseAll(wxGLMapWidget * s, wxMouseEvent * e)
 	if (_enabled == false)
 		return;
 
-	if (e->LeftDown())
+	if (e->LeftDown() || e->RightDown())
 		MouseDown(s, e);
 	else if (e->Dragging())
 		MouseMove(s, e);
-	else if (e->LeftUp())
+	else if (e->LeftUp() || e->RightUp())
 		MouseUp(s, e);
 }
 

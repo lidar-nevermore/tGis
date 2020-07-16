@@ -33,7 +33,10 @@ public:
 public:
 	size_t GetVertexCount();
 	void GetVertex(size_t pos, double* x, double* y);
+	void AddVertex(double x, double y);
+	void SetVertex(size_t pos, double x, double y);
 	void RemoveVertex(size_t pos);
+	void ClearVertex();
 
 private:
 	bool _visible;

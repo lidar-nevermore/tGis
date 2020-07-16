@@ -126,11 +126,25 @@ void wxGLMapWidget::OnWheelEvent(wxMouseEvent & event)
 	event.Skip();
 }
 
+void wxGLMapWidget::OnKeyDownEvent(wxKeyEvent & event)
+{
+	KeyDownEvent(this, &event);
+	event.Skip();
+}
+
+void wxGLMapWidget::OnKeyUpEvent(wxKeyEvent & event)
+{
+	KeyUpEvent(this, &event);
+	event.Skip();
+}
+
 wxBEGIN_EVENT_TABLE(wxGLMapWidget, wxGLCanvas)
     EVT_PAINT(wxGLMapWidget::OnPaint)
 	EVT_SIZE(wxGLMapWidget::OnSize)
 	EVT_MOUSE_EVENTS(wxGLMapWidget::OnMouseEvent)
 	EVT_MOUSEWHEEL(wxGLMapWidget::OnWheelEvent)
+	EVT_KEY_DOWN(wxGLMapWidget::OnKeyDownEvent)
+	EVT_KEY_UP(wxGLMapWidget::OnKeyUpEvent)
 wxEND_EVENT_TABLE()
 
 END_NAME_SPACE(tGis, Gui)

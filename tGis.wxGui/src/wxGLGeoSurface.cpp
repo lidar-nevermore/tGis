@@ -91,6 +91,7 @@ void wxGLGeoSurface::EndPaint(bool isCache)
 {
 	int surfWidth;
 	int surfHeight;
+	
 	_viewPort.GetSurfaceSize(&surfWidth, &surfHeight);
 
 	if (_extraBuffer && isCache == false && surfHeight > 0 && surfWidth > 0)
@@ -112,8 +113,11 @@ void wxGLGeoSurface::EndPaint(bool isCache)
 		glReadPixels(0, 0, _mapWidth, _mapHeight, GL_RGBA, GL_UNSIGNED_BYTE, _mapBuffer);
 	}
 
+	GeoViewPort viewPortBackup = _viewPort;
+	_viewPort = *(_mapWidget->GetViewPort());
 	IOverlayLayer* overlayLayer = _mapWidget->GetOverlayLayer();
 	overlayLayer->Paint((IGeoSurface*)this);
+	_viewPort = viewPortBackup;
 
 	//if (widget->_gridVisible)
 	//{
@@ -128,7 +132,7 @@ void wxGLGeoSurface::EndPaint(bool isCache)
 	//		painter.drawLine(0, y, wW, y);
 	//	}
 	//}
-	glFinish();
+	glFinish();	
 }
 
 void wxGLGeoSurface::GetColor(int surfX, int surfY, unsigned char * r, unsigned char * g, unsigned char * b)
