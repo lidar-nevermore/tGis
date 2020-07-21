@@ -39,6 +39,7 @@ MainFrame::MainFrame()
 	_mapWidget->AddMapTool(&_rectZoomTool);
 	_mapWidget->AddMapTool(&_drawPolygonTool);
 	_drawPolygonTool.AttachPanTool(&_mapPanTool);
+	_drawPolygonTool.EndDrawEvent.Add<>(this, &MainFrame::OnEndDraw);
 	_mapPanTool.SetEnabled(true);
 	_mapZoomTool.SetEnabled(true);
 	//_rectZoomTool.SetEnabled(false);
@@ -66,6 +67,7 @@ MainFrame::MainFrame()
 	_layerWidget->SetMap(&_map, _mapWidget);
 	_toolBar->EnableTool(_toolZoomLayer->GetId(), false);
 	_toolBar->EnableTool(_toolZoomOriginal->GetId(), false);
+	_toolBar->EnableTool(_tool3DView->GetId(), false);
 	_layerWidget->LayerSelChangedEvent.Add(this, &MainFrame::OnLayerSelChanged);
 
 	_mgr.AddPane(_layerWidget, wxAuiPaneInfo().
@@ -204,6 +206,7 @@ void MainFrame::OnLayerSelChanged(IMapPtr, ILayerPtr layer, size_t)
 	{
 		_toolBar->EnableTool(_toolZoomLayer->GetId(), false);
 		_toolBar->EnableTool(_toolZoomOriginal->GetId(), false);
+		_toolBar->EnableTool(_tool3DView->GetId(), false);
 	}
 	else
 	{
@@ -211,10 +214,16 @@ void MainFrame::OnLayerSelChanged(IMapPtr, ILayerPtr layer, size_t)
 		_statusBar->SetStatusText(dtName, 5);
 
 		_toolBar->EnableTool(_toolZoomLayer->GetId(), true);
-		if(layer->GetDataset()->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		if (layer->GetDataset()->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		{
 			_toolBar->EnableTool(_toolZoomOriginal->GetId(), true);
+			_toolBar->EnableTool(_tool3DView->GetId(), true);
+		}
 		else
+		{
 			_toolBar->EnableTool(_toolZoomOriginal->GetId(), false);
+			_toolBar->EnableTool(_tool3DView->GetId(), false);
+		}
 	}
 }
 
@@ -286,6 +295,18 @@ void MainFrame::OnMapToolChanged(IMapWidget *mapw, IMapTool *tool)
 		_toolBar->ToggleTool(_toolZoomRect->GetId(), tool->GetEnabled());
 	else if(tool == &_mapZoomTool)
 		_toolBar->ToggleTool(_toolZoomFree->GetId(), tool->GetEnabled());
+}
+
+void MainFrame::OnEndDraw(DrawPolygonTool *tool, OverlayPolygon * o)
+{
+	ILayer* layer = _layerWidget->GetSelLayer();
+	if (!layer->GetDataset()->IsTypeOf(MyGDALRasterDataset::S_GetType()))
+		return;
+	MyGDALRasterDataset* raster = dynamic_cast<MyGDALRasterDataset*>(layer->GetDataset());
+
+	wxRaster3dViewDialog dlg;
+	dlg.SetRaster(raster, o);
+	dlg.ShowModal();
 }
 
 void MainFrame::OnSize(wxSizeEvent & event)
@@ -440,10 +461,7 @@ void MainFrame::_toolMapSpatialRef_Clicked(wxCommandEvent & event)
 
 void MainFrame::_tool3DView_Clicked(wxCommandEvent & event)
 {
-	if (_drawPolygonTool.GetEnabled())
-		_drawPolygonTool.SetEnabled(false);
-	else
-		_drawPolygonTool.SetEnabled(true);
+	_drawPolygonTool.SetEnabled(true);
 }
 
 BEGIN_EVENT_TABLE(MainFrame, MainFrameBase)

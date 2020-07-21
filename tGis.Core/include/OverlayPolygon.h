@@ -6,6 +6,7 @@
 #include "Helper.h"
 
 #include "IOverlayObject.h"
+#include "IVertex2dList.h"
 
 BEGIN_NAME_SPACE(tGis, Core)
 
@@ -15,7 +16,7 @@ struct IFillSymbol;
 
 class OverlayPolygonImpl;
 
-class TGIS_CORE_API OverlayPolygon : public IOverlayObject
+class TGIS_CORE_API OverlayPolygon : public IOverlayObject, public IVertex2dList
 {
 public:
 	OverlayPolygon();

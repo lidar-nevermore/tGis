@@ -22,5 +22,6 @@
 #include "wxDatasetInfoWidget.h"
 #include "wxDatasetInfoDialog.h"
 #include "wxSpatialReferenceDialog.h"
+#include "wxRaster3dViewDialog.h"
 
 #endif // !__TGIS_GUI_H__

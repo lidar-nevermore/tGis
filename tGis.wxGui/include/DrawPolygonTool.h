@@ -22,6 +22,9 @@ public:
 	virtual void SetEnabled(bool enabled);
 	void AttachPanTool(MapPanTool* mapPanTool);
 
+public:
+	Event<DrawPolygonTool*, OverlayPolygon*> EndDrawEvent;
+
 protected:
 	virtual void SetMapWidget(IMapWidget* mapWidget);
 
@@ -34,7 +37,7 @@ protected:
 
 	virtual void KeyUp(wxGLMapWidget*, wxKeyEvent*);
 
-	virtual void EndDraw(wxGLMapWidget*);
+	virtual void EndDraw();
 
 protected:
 	bool _needRestore;

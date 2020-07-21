@@ -109,6 +109,7 @@
     <ClInclude Include="..\include\wxGLGeoSurface.h" />
     <ClInclude Include="..\include\wxGLMapWidget.h" />
     <ClInclude Include="..\include\wxLayerWidget.h" />
+    <ClInclude Include="..\include\wxRaster3dViewDialog.h" />
     <ClInclude Include="..\include\wxSpatialReferenceDialog.h" />
     <ClInclude Include="..\include\wxSymbolLibraryWidget.h" />
     <ClInclude Include="..\include\wxSymbolPickerWidget.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="..\src\wxGLGeoSurface.cpp" />
     <ClCompile Include="..\src\wxGLMapWidget.cpp" />
     <ClCompile Include="..\src\wxLayerWidget.cpp" />
+    <ClCompile Include="..\src\wxRaster3dViewDialog.cpp" />
     <ClCompile Include="..\src\wxSpatialReferenceDialog.cpp" />
     <ClCompile Include="..\src\wxSymbolLibraryWidget.cpp" />
     <ClCompile Include="..\src\wxSymbolPickerWidget.cpp" />

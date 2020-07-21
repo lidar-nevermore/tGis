@@ -25,6 +25,8 @@
 #include "MyGDALMemRasterDataset.h"
 #include "MyGDALVectorDataset.h"
 
+#include "IVertex2dList.h"
+
 #include "Layer.h"
 #include "LayerRender.h"
 

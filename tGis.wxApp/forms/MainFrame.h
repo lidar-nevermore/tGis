@@ -60,6 +60,7 @@ private:
 	void OnMouseMove(wxGLMapWidget*, wxMouseEvent*);
 	void OnDataSelChanged(IDataSource*, IDataset*);
 	void OnMapToolChanged(IMapWidget*, IMapTool*);
+	void OnEndDraw(DrawPolygonTool*, OverlayPolygon*);
 
 private:
 	void OnSize(wxSizeEvent& event);

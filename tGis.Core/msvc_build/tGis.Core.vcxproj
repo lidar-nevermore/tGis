@@ -30,6 +30,7 @@
     <ClInclude Include="..\glutess\tessmono.h" />
     <ClInclude Include="..\include\bi_list.h" />
     <ClInclude Include="..\include\BuildPyramids.h" />
+    <ClInclude Include="..\include\IVertex2dList.h" />
     <ClInclude Include="..\include\OverlayPolygon.h" />
     <ClInclude Include="..\include\VirtualDataSource.h" />
     <ClInclude Include="..\include\Dataset.h" />

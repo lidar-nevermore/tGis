@@ -57,6 +57,7 @@ void wxGLGeoSurface::Present(int wX, int wY, int wW, int wH)
 	//正射投影
 	glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_TEXTURE_2D);    //启用2D纹理映射
 	glColor4f(_mapWidget->_br, _mapWidget->_bg, _mapWidget->_bb, 1.0f);
 	glBegin(GL_QUADS);
@@ -183,6 +184,7 @@ void wxGLGeoSurface::DrawImage(const unsigned char* buf, int width, int height, 
 	//正射投影
 	glOrtho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_TEXTURE_2D);    //启用2D纹理映射
 	glColor4f(_mapWidget->_br, _mapWidget->_bg, _mapWidget->_bb, 1.0f);
 	glBegin(GL_QUADS);

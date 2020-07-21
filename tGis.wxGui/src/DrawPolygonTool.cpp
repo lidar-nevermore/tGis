@@ -130,7 +130,7 @@ void DrawPolygonTool::MouseRightUp(wxGLMapWidget * s, wxMouseEvent * ev)
 		_polygon.RemoveVertex(_polygon.GetVertexCount() - 1);
 		_mapWidget->PresentMap();
 
-		EndDraw(s);
+		EndDraw();
 	}
 }
 
@@ -150,8 +150,9 @@ void DrawPolygonTool::KeyUp(wxGLMapWidget *s, wxKeyEvent *ev)
 	}
 }
 
-void DrawPolygonTool::EndDraw(wxGLMapWidget *)
+void DrawPolygonTool::EndDraw()
 {
+	EndDrawEvent(this, &_polygon);
 }
 
 END_NAME_SPACE(tGis, Gui)

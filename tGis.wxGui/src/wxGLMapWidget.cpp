@@ -4,7 +4,7 @@
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
-const int wxGLAttribList[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, 0 };
+static const int wxGLAttribList[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, 0 };
 
 wxGLMapWidget::wxGLMapWidget(wxWindow *parent,
 	wxWindowID id,
