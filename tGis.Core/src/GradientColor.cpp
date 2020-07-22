@@ -20,13 +20,11 @@ public:
 	GradientColorImpl(GradientColor* owner)
 	{
 		_owner = owner;
-		_maxPos = -DBL_MAX;
 	}
 
 	GradientColor* _owner;
 
 	vector<ColorNode> _vecColor;
-	double _maxPos;
 
 	void GetColor(double * r, double * g, double * b, double pos)
 	{
@@ -48,15 +46,18 @@ public:
 		if (pos > 1)
 			pos = 1;
 
-		double colorPos = pos*_maxPos;
-
-		ColorNode firstColor;
+		ColorNode firstColor = *(_vecColor.begin());
 		ColorNode secondColor;
+
+		double minPos = firstColor.pos;
+		double maxPos = _vecColor.rbegin()->pos;
+
+		double colorPos = minPos + pos*(maxPos - minPos);
 
 		for (auto it = _vecColor.begin(); it != _vecColor.end(); it++)
 		{
 			secondColor = *it;
-			if (secondColor.pos > colorPos || secondColor.pos >= _maxPos)
+			if (secondColor.pos > colorPos || secondColor.pos >= maxPos)
 				break;
 			firstColor = secondColor;
 		}
@@ -93,7 +94,6 @@ GradientColor::~GradientColor()
 GradientColor * GradientColor::Clone()
 {
 	GradientColor* color = new GradientColor();
-	color->_impl_->_maxPos = _impl_->_maxPos;
 	color->_impl_->_vecColor.insert(color->_impl_->_vecColor.begin(), _impl_->_vecColor.begin(), _impl_->_vecColor.end());
 
 	return color;
@@ -101,14 +101,13 @@ GradientColor * GradientColor::Clone()
 
 void GradientColor::AddKeyColor(unsigned char r, unsigned char g, unsigned char b, double pos)
 {
-	assert(pos >= _impl_->_maxPos);
+	assert(_impl_->_vecColor.size() == 0 || pos >= _impl_->_vecColor.rbegin()->pos);
 
 	ColorNode cn;
 	cn.r = r;
 	cn.g = g;
 	cn.b = b;
 	cn.pos = pos;
-	_impl_->_maxPos = pos;
 	_impl_->_vecColor.push_back(cn);
 }
 
@@ -129,7 +128,6 @@ void GradientColor::GetKeyColor(size_t idx, unsigned char * r, unsigned char * g
 void GradientColor::ClearKeyColor()
 {
 	_impl_->_vecColor.clear();
-	_impl_->_maxPos = -DBL_MAX;
 }
 
 void GradientColor::FromXml(tinyxml2::XMLElement * xelem)

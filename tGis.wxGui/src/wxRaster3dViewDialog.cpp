@@ -151,9 +151,17 @@ public:
 	{
 		_owner = owner;
 
+		_color = new GradientColor();
+		_color->AddKeyColor(0, 1, 128, 0);
+		_color->AddKeyColor(13, 255, 233, 1);
+		_color->AddKeyColor(223, 213, 32, 2);
+		_color->AddKeyColor(196, 21, 0, 3);
+
 		_bandIndex = 0;
 		_raster = nullptr;
 		_pixBuffer = (float*)malloc(MAX_PIXEL * sizeof(float));
+		//顶点颜色，*4而不是*3为了尽量对齐
+		_vertexColor = (unsigned char*)malloc(MAX_PIXEL * 4);
 		//一个矩形分成两个三角形 最多有(w-1)*(h-1)*2个三角形
 		_triNormal = (float*)malloc(6 * MAX_PIXEL * sizeof(float));
 		_pitchY = 0.0f;
@@ -161,7 +169,7 @@ public:
 		_yawZ = 0.0f;
 		_scaleZ = 1.0f;
 
-		_gradColorFill = false;
+		_gradColorFill = true;
 
 		_glContext.SetCurrent(*this);
 		glClearDepth(1.0f);
@@ -171,7 +179,7 @@ public:
 
 		GLfloat m_light0Ambient[4] = { 0.6f,0.6f,0.6f,0.8f };
 		GLfloat m_light0Diffuse[4] = { 0.6f,0.7f,0.6f,0.6f };
-		GLfloat m_light0Pos[4] = { 1.0f,1.0f,1.0f,0.0f };
+		GLfloat m_light0Pos[4] = { -1.0f,-1.0f,-1.0f,0.0f };
 
 		glLightfv(GL_LIGHT0, GL_AMBIENT, m_light0Ambient);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, m_light0Diffuse);
@@ -182,10 +190,13 @@ public:
 
 	~wxRaster3dViewDialogImpl()
 	{
+		_color->Release();
 		free(_pixBuffer);
 		free(_triNormal);
+		free(_vertexColor);
 	}
 
+	GradientColor* _color;
 	wxGLContext _glContext;
 	wxRaster3dViewDialog* _owner;
 	MyGDALRasterDataset * _raster;
@@ -204,6 +215,7 @@ public:
 	float _maxPixValue;
 	//存储三角形单位法向量
 	float* _triNormal;
+	unsigned char* _vertexColor;
 
 	float _cenX;
 	float _cenY;
@@ -215,9 +227,6 @@ public:
 	float _rollX;
 	float _pitchY;
 	float _scaleZ;
-
-	float _rangeX;
-	float _rangeY;
 
 	bool _gradColorFill;
 
@@ -306,19 +315,23 @@ public:
 			_bufWidth = int(_pixWidth*ratio);
 			_bufHeight = int(_pixHeight*ratio);
 		}
-
-		raster->Pixel2Spatial(0, 0, &minX, &maxY);
-		raster->Pixel2Spatial(_pixWidth, _pixHeight, &maxX, &minY);
-
-		_rangeX = abs((maxX - minX));
-		_rangeY = abs((maxY - minY));
-
-		_bufStepX = _rangeX / _bufWidth;
-		_bufStepY = _rangeY / _bufHeight;
 	}
 
 	void InitData(int bandIndex)
 	{
+		double minX = INT_MAX;
+		double maxX = INT_MIN;
+		double minY = INT_MAX;
+		double maxY = INT_MIN;
+		_raster->Pixel2Spatial(0, 0, &minX, &minY);
+		_raster->Pixel2Spatial(_pixWidth, _pixHeight, &maxX, &maxY);
+
+		double rangeX = maxX - minX;
+		double rangeY = maxY - minY;
+
+		_bufStepX = rangeX / _bufWidth;
+		_bufStepY = rangeY / _bufHeight;
+
 		_bandIndex = bandIndex;
 		GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(_bandIndex);
 
@@ -352,18 +365,18 @@ public:
 				vertex4[2] = *(pixLine2 + 1);
 
 #define _TEST_AND_SET(v,pixValue)\
-			if (noDataOk != 0 && v == noDataValue)\
-			{\
-				*(pixValue) = 0;\
-                v = 0;\
-			}\
-			else\
-			{\
-				if (_minPixValue > v)\
-					_minPixValue = v;\
-				if (_maxPixValue < v)\
-					_maxPixValue = v;\
-			}
+			    if (noDataOk != 0 && v == noDataValue)\
+			    {\
+			    	*(pixValue) = 0;\
+                    v = 0;\
+			    }\
+			    else\
+			    {\
+			    	if (_minPixValue > v)\
+			    		_minPixValue = v;\
+			    	if (_maxPixValue < v)\
+			    		_maxPixValue = v;\
+			    }
 				_TEST_AND_SET(vertex1[2], pixLine1);
 				_TEST_AND_SET(vertex2[2], pixLine1 + 1);
 				_TEST_AND_SET(vertex3[2], pixLine2);
@@ -383,7 +396,7 @@ public:
 
 				CalcTriNormal(vertex1, vertex2, vertex3, triNormalValue);
 				triNormalValue += 3;
-				CalcTriNormal(vertex2, vertex3, vertex4, triNormalValue);
+				CalcTriNormal(vertex2, vertex4, vertex3, triNormalValue);
 				triNormalValue += 3;
 
 				pixLine1++;
@@ -398,17 +411,41 @@ public:
 			x = 0;
 		}
 
-		_cenX = _rangeX / 2.0;
-		_cenY = _rangeY / 2.0;
+		double pixValueRange = _maxPixValue - _minPixValue;
+		float* pixValue = _pixBuffer;
+		unsigned char* pixColor = _vertexColor;
+		for (int i = 0; i < _bufHeight; i++)
+		{
+			for (int j = 0; j < _bufWidth; j++)
+			{
+				float v = *pixValue;
+				unsigned char* c = (unsigned char*)pixColor;
+				if (v < _minPixValue)
+				{
+					c[0] = 0;
+					c[1] = 0;
+					c[2] = 0;
+				}
+				else
+				{
+					_color->GetColor(c, c + 1, c + 2, (v - _minPixValue) / pixValueRange);
+				}
+				pixValue++;
+				pixColor += 4;
+			}
+		}
+
+		_cenX = rangeX / 2.0;
+		_cenY = rangeY / 2.0;
 		_cenZ = (_minPixValue + _maxPixValue) / 2;
 
-		_eyeX = _cenX;
-		_eyeY = _cenY;
+		_eyeX = 0;
+		_eyeY = 0;
 		//视场角45度，为了能够将数据全部放到视锥中
-		_eyeZ = _cenZ + _rangeX*tan(23.0) / 1.5 + _rangeY;
+		_eyeZ = abs(rangeX)*tan(23.0) / 1.7 + abs(rangeY);
 
-		float r1 = _rangeX / (_maxPixValue - _minPixValue);
-		float r2 = _rangeY / (_maxPixValue - _minPixValue);
+		float r1 = abs(rangeX) / (_maxPixValue - _minPixValue);
+		float r2 = abs(rangeY) / (_maxPixValue - _minPixValue);
 
 		if (r1 < 1.0 || r2 < 1.0)
 			_scaleZ = r1 > r2 ? r2 : r1;
@@ -584,16 +621,24 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	wxSize sz = GetClientSize();
+	if (sz.x == 0 || sz.y == 0)
+	{
+		event.Skip();
+		return;
+	}
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective_(45.0f, 1.0f, 1.0f, _eyeZ*10);
+	gluPerspective_(45.0f, float(sz.x) / float(sz.y), 1.0f, _eyeZ * 10);
+	glViewport(0, 0, sz.x, sz.y);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
 	//glDrawBuffer(GL_BACK);
 
-	gluLookAt_(_eyeX, _eyeY, _eyeZ, _cenX, _cenY, _cenZ, 0.0f, 1.0f, 0.0f);
+	gluLookAt_(_eyeX, _eyeY, _eyeZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
 	glRotatef(_rollX, 1.0f, 0.0f, 0.0f);//	
 	glRotatef(_yawZ, 0.0f, 0.0f, 1.0f);//
 	glRotatef(_pitchY, 0.0f, 1.0f, 0.0f);//
@@ -610,9 +655,11 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 
 	float* pixLine1 = _pixBuffer;
 	float* pixLine2 = _pixBuffer + _pixWidth;
+	unsigned char* colorLine1 = _vertexColor;
+	unsigned char* colorLine2 = _vertexColor + _pixWidth * 4;
 
-	float x = 0;
-	float y = 0;
+	float x = -_cenX;
+	float y = -_cenY;
 	float* triNormalValue = _triNormal;
 	float vertex1[3];
 	float vertex2[3];
@@ -633,40 +680,79 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 			vertex3[1] = y + _bufStepY;
 			vertex4[1] = y + _bufStepY;
 
-			vertex1[2] = *pixLine1;
-			vertex2[2] = *(pixLine1 + 1);
-			vertex3[2] = *pixLine2;
-			vertex4[2] = *(pixLine2 + 1);
+			vertex1[2] = *pixLine1 - _cenZ;
+			vertex2[2] = *(pixLine1 + 1) - _cenZ;
+			vertex3[2] = *pixLine2 - _cenZ;
+			vertex4[2] = *(pixLine2 + 1) - _cenZ;
 
-			glBegin(GL_TRIANGLES);
-			glColor3f(0.2f, 1.0f, 0.2f);
+			unsigned char* color1 = colorLine1;
+			unsigned char* color2 = colorLine1 + 4;
+			unsigned char* color3 = colorLine2;
+			unsigned char* color4 = colorLine2 + 4;
 
-			glNormal3fv(triNormalValue);
-			glVertex3f(vertex1[0], vertex1[1], vertex1[2]);
-			glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
-			glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
+			if (_gradColorFill)
+			{
+				glBegin(GL_TRIANGLES);
 
-			triNormalValue += 3;
+				glNormal3fv(triNormalValue);
+				glColor3ub(color1[0], color1[1], color1[2]);
+				glVertex3f(vertex1[0], vertex1[1], vertex1[2]);
+				glColor3ub(color2[0], color2[1], color2[2]);
+				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
+				glColor3ub(color3[0], color3[1], color3[2]);
+				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
 
-			glNormal3fv(triNormalValue);			
-			glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
-			glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
-			glVertex3f(vertex4[0], vertex4[1], vertex4[2]);
+				triNormalValue += 3;
 
-			triNormalValue += 3;
+				glNormal3fv(triNormalValue);
+				glColor3ub(color2[0], color2[1], color2[2]);
+				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
+				glColor3ub(color4[0], color4[1], color4[2]);
+				glVertex3f(vertex4[0], vertex4[1], vertex4[2]);
+				glColor3ub(color3[0], color3[1], color3[2]);
+				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);				
 
-			glEnd();
+				triNormalValue += 3;
+
+				glEnd();
+			}
+			else
+			{
+				glBegin(GL_TRIANGLES);
+				glColor3f(0.2f, 1.0f, 0.2f);
+
+				glNormal3fv(triNormalValue);
+				glVertex3f(vertex1[0], vertex1[1], vertex1[2]);
+				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
+				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
+
+				triNormalValue += 3;
+
+				glNormal3fv(triNormalValue);
+				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
+				glVertex3f(vertex4[0], vertex4[1], vertex4[2]);
+				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);				
+
+				triNormalValue += 3;
+
+				glEnd();
+			}
 
 			pixLine1++;
 			pixLine2++;
+			colorLine1 += 4;
+			colorLine2 += 4;
 
 			x += _bufStepX;
 		}
 
 		pixLine1++;
 		pixLine2++;
+		colorLine1 += 4;
+		colorLine2 += 4;
+
 		y += _bufStepY;
-		x = 0;
+		x = -_cenX;
 	}
 
 
@@ -676,14 +762,6 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 
 void wxRaster3dViewDialogImpl::OnSize(wxSizeEvent & event)
 {
-	wxSize sz = GetClientSize();
-	if (sz.x > 0 && sz.y > 0)
-	{
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-
-		glViewport(0, 0, sz.x, sz.y);
-	}
 	Refresh();
 	event.Skip();
 }

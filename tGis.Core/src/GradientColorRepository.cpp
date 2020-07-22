@@ -115,6 +115,13 @@ GradientColorRepository * GradientColorRepository::INSTANCE()
 		hue->AddKeyColor(255, 0, 0, 6);
 		_instance->_impl_->_vecGradientColor.push_back(hue);
 
+		GradientColor* height = new GradientColor();
+		height->AddKeyColor(0, 1, 128, 0);
+		height->AddKeyColor(13, 255, 233, 1);
+		height->AddKeyColor(223, 213, 32, 2);
+		height->AddKeyColor(196, 21, 0, 3);
+		_instance->_impl_->_vecGradientColor.push_back(height);
+
 		static unique_ptr<GradientColorRepository> shit(_instance);
 	}
 
