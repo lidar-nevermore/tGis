@@ -1,5 +1,6 @@
 #include "wxRaster3dViewDialog.h"
 #include "wxTGisApplication.h"
+#include "wxGradientColorPickerDialog.h"
 
 BEGIN_NAME_SPACE(tGis, Gui)
 
@@ -165,11 +166,15 @@ public:
 		//一个矩形分成两个三角形 最多有(w-1)*(h-1)*2个三角形
 		_triNormal = (float*)malloc(6 * MAX_PIXEL * sizeof(float));
 		_pitchY = 0.0f;
-		_rollX = -60.0f;
+		_rollX = -35.0f;
 		_yawZ = 0.0f;
 		_scaleZ = 1.0f;
+		_seeX = 0.0f;
+		_seeY = 0.0f;
 
 		_gradColorFill = true;
+		_showRefLevel = true;
+		_showBoundary = true;
 
 		_glContext.SetCurrent(*this);
 		glClearDepth(1.0f);
@@ -211,24 +216,41 @@ public:
 	float* _pixBuffer;
 	float _bufStepX;
 	float _bufStepY;
+	//栅格数据像素最小最大值，就是Z值
 	float _minPixValue;
 	float _maxPixValue;
 	//存储三角形单位法向量
 	float* _triNormal;
+	//用于填充顶点的渐变色
 	unsigned char* _vertexColor;
 
+	//中心点坐标，用于中心化数据
 	float _cenX;
 	float _cenY;
 	float _cenZ;
+	//观察者位置，眼睛位置
 	float _eyeX;
 	float _eyeY;
 	float _eyeZ;
+	//目视点位置，盯着看的位置
+	float _seeX;
+	float _seeY;
+	//欧拉角旋转
 	float _yawZ;
 	float _rollX;
 	float _pitchY;
+	//z值缩放比例
 	float _scaleZ;
 
+	//参考Z值平面
+	float _refLevel;
+
+	//是否用根据Z值用渐变色填充
 	bool _gradColorFill;
+	//是否显示参考Z值平面
+	bool _showRefLevel;
+	//是否显示范围框
+	bool _showBoundary;
 
 	void SetRaster(MyGDALRasterDataset* raster, IVertex2dList* polygon)
 	{
@@ -439,16 +461,18 @@ public:
 		_cenY = rangeY / 2.0;
 		_cenZ = (_minPixValue + _maxPixValue) / 2;
 
+		_refLevel = _cenZ;
+
 		_eyeX = 0;
 		_eyeY = 0;
 		//视场角45度，为了能够将数据全部放到视锥中
 		_eyeZ = abs(rangeX)*tan(23.0) / 1.7 + abs(rangeY);
 
-		float r1 = abs(rangeX) / (_maxPixValue - _minPixValue);
-		float r2 = abs(rangeY) / (_maxPixValue - _minPixValue);
+		float r1 = abs(rangeX) / pixValueRange;
+		float r2 = abs(rangeY) / pixValueRange;
 
-		if (r1 < 1.0 || r2 < 1.0)
-			_scaleZ = r1 > r2 ? r2 : r1;
+		if (r1 < 2.0f || r2 < 2.0f)
+			_scaleZ = 0.25f*(r1 > r2 ? r2 : r1);
 	}
 
 private:
@@ -456,7 +480,7 @@ private:
 	void OnSize(wxSizeEvent& event);
 	void OnMouseEvent(wxMouseEvent& event);
 	void OnWheelEvent(wxMouseEvent& event);
-	void OnKeyUpEvent(wxKeyEvent& event);
+	void OnKeyDownEvent(wxKeyEvent& event);
 
 	wxDECLARE_EVENT_TABLE();
 };
@@ -483,7 +507,7 @@ wxRaster3dViewDialog::wxRaster3dViewDialog( wxWindow* parent,
 
 	int wxGLAttribList[] = { WX_GL_RGBA, WX_GL_DOUBLEBUFFER, 0 };
 
-	_impl_ = new wxRaster3dViewDialogImpl(this, this, wxID_ANY, wxGLAttribList, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE );
+	_impl_ = new wxRaster3dViewDialogImpl(this, this, wxID_ANY, wxGLAttribList, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxWANTS_CHARS);
 	fgSizer1->Add(_impl_, 1, wxALL|wxEXPAND, 5 );
 
 	wxBoxSizer* bSizer2;
@@ -541,7 +565,7 @@ wxRaster3dViewDialog::wxRaster3dViewDialog( wxWindow* parent,
 	_sldZStretch = new wxSlider(this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL);
 	bSizer2->Add(_sldZStretch, 0, wxALL | wxEXPAND, 5);
 
-	_txtZStretch = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	_txtZStretch = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 	bSizer2->Add(_txtZStretch, 0, wxALL | wxEXPAND, 5);
 
 	m_staticText2 = new wxStaticText(this, wxID_ANY, wxT("reference level :"), wxDefaultPosition, wxDefaultSize, 0);
@@ -551,7 +575,7 @@ wxRaster3dViewDialog::wxRaster3dViewDialog( wxWindow* parent,
 	_sldRefLevel = new wxSlider(this, wxID_ANY, 50, 0, 100, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL);
 	bSizer2->Add(_sldRefLevel, 0, wxALL | wxEXPAND, 5);
 
-	_txtRefLevel = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	_txtRefLevel = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER);
 	bSizer2->Add(_txtRefLevel, 0, wxALL | wxEXPAND, 5);
 
 	m_staticText3 = new wxStaticText(this, wxID_ANY, wxT("volume above :"), wxDefaultPosition, wxDefaultSize, 0);
@@ -578,13 +602,43 @@ wxRaster3dViewDialog::wxRaster3dViewDialog( wxWindow* parent,
 	this->Centre( wxBOTH );
 
 	Bind(wxEVT_CHOICE, &wxRaster3dViewDialog::_chBand_Choice, this, _chBand->GetId());
-
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnYawPlus_Clicked, this, _btnYawPlus->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnYawMinus_Clicked, this, _btnYawMinus->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnRollPlus_Clicked, this, _btnRollPlus->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnRollMinus_Clicked, this, _btnRollMinus->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnPitchPlus_Clicked, this, _btnPitchPlus->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnPitchMinus_Clicked, this, _btnPitchMinus->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnZoomIn_Clicked, this, _btnZoomIn->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnZoomOut_Clicked, this, _btnZoomOut->GetId());
+	Bind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnGradColor_Clicked, this, _btnGradColor->GetId());
+	Bind(wxEVT_CHECKBOX, &wxRaster3dViewDialog::_chkGradColor_Check, this, _chkGradColor->GetId());
+	Bind(wxEVT_CHECKBOX, &wxRaster3dViewDialog::_chkRefLevel_Check, this, _chkRefLevel->GetId());
+	Bind(wxEVT_CHECKBOX, &wxRaster3dViewDialog::_chkBoundary_Check, this, _chkBoundary->GetId());
+	Bind(wxEVT_SLIDER, &wxRaster3dViewDialog::_sldZStretch_Scroll, this, _sldZStretch->GetId());
+	Bind(wxEVT_SLIDER, &wxRaster3dViewDialog::_sldRefLevel_scroll, this, _sldRefLevel->GetId());
+	Bind(wxEVT_TEXT_ENTER, &wxRaster3dViewDialog::_txtZStretch_TextEnter, this, _txtZStretch->GetId());
+	Bind(wxEVT_TEXT_ENTER, &wxRaster3dViewDialog::_txtRefLevel_TextEnter, this, _txtRefLevel->GetId());
 }
 
 wxRaster3dViewDialog::~wxRaster3dViewDialog()
 {
 	Unbind(wxEVT_CHOICE, &wxRaster3dViewDialog::_chBand_Choice, this, _chBand->GetId());
-
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnYawPlus_Clicked, this, _btnYawPlus->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnYawMinus_Clicked, this, _btnYawMinus->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnRollPlus_Clicked, this, _btnRollPlus->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnRollMinus_Clicked, this, _btnRollMinus->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnPitchPlus_Clicked, this, _btnPitchPlus->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnPitchMinus_Clicked, this, _btnPitchMinus->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnZoomIn_Clicked, this, _btnZoomIn->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnZoomOut_Clicked, this, _btnZoomOut->GetId());
+	Unbind(wxEVT_BUTTON, &wxRaster3dViewDialog::_btnGradColor_Clicked, this, _btnGradColor->GetId());
+	Unbind(wxEVT_CHECKBOX, &wxRaster3dViewDialog::_chkGradColor_Check, this, _chkGradColor->GetId());
+	Unbind(wxEVT_CHECKBOX, &wxRaster3dViewDialog::_chkRefLevel_Check, this, _chkRefLevel->GetId());
+	Unbind(wxEVT_CHECKBOX, &wxRaster3dViewDialog::_chkBoundary_Check, this, _chkBoundary->GetId());
+	Unbind(wxEVT_SLIDER, &wxRaster3dViewDialog::_sldZStretch_Scroll, this, _sldZStretch->GetId());
+	Unbind(wxEVT_SLIDER, &wxRaster3dViewDialog::_sldRefLevel_scroll, this, _sldRefLevel->GetId());
+	Unbind(wxEVT_TEXT_ENTER, &wxRaster3dViewDialog::_txtZStretch_TextEnter, this, _txtZStretch->GetId());
+	Unbind(wxEVT_TEXT_ENTER, &wxRaster3dViewDialog::_txtRefLevel_TextEnter, this, _txtRefLevel->GetId());
 }
 
 void wxRaster3dViewDialog::SetRaster(MyGDALRasterDataset * raster, IVertex2dList * polygon)
@@ -610,6 +664,154 @@ void wxRaster3dViewDialog::_chBand_Choice(wxCommandEvent & event)
 	if ((_impl_->_bandIndex-1) == _chBand->GetSelection())
 		return;
 	_impl_->InitData(_chBand->GetSelection() + 1);
+	_txtZStretch->SetValue(wxString::Format(wxT("%.3f"), _impl_->_scaleZ));
+	_txtRefLevel->SetValue(wxString::Format(wxT("%.3f"), _impl_->_refLevel));
+	_sldZStretch->SetValue(int(_impl_->_scaleZ*50));
+}
+
+void wxRaster3dViewDialog::_btnYawPlus_Clicked(wxCommandEvent & event)
+{
+	_impl_->_yawZ += 5.0f;
+	if (_impl_->_yawZ >= 360.0f)
+		_impl_->_yawZ = 0.0f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnYawMinus_Clicked(wxCommandEvent & event)
+{
+	_impl_->_yawZ -= 5.0f;
+	if (_impl_->_yawZ <= 0.0f)
+		_impl_->_yawZ = 360.0f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnRollPlus_Clicked(wxCommandEvent & event)
+{
+	_impl_->_rollX += 5.0f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnRollMinus_Clicked(wxCommandEvent & event)
+{
+	_impl_->_rollX -= 5.0f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnPitchPlus_Clicked(wxCommandEvent & event)
+{
+	_impl_->_pitchY += 5.0f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnPitchMinus_Clicked(wxCommandEvent & event)
+{
+	_impl_->_pitchY -= 5.0f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnZoomIn_Clicked(wxCommandEvent & event)
+{
+	_impl_->_eyeZ /= 1.2f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnZoomOut_Clicked(wxCommandEvent & event)
+{
+	_impl_->_eyeZ *= 1.2f;
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_btnGradColor_Clicked(wxCommandEvent & event)
+{
+	wxGradientColorPickerDialog dlg;
+	dlg.SetGradientColor(_impl_->_color);
+	if (dlg.ShowModal() == wxID_OK)
+	{
+		_impl_->_color->Release();
+		_impl_->_color = dlg.GetGradientColor();
+		_impl_->_color->Reference();
+
+		double pixValueRange = _impl_->_maxPixValue - _impl_->_minPixValue;
+		float* pixValue = _impl_->_pixBuffer;
+		unsigned char* pixColor = _impl_->_vertexColor;
+		for (int i = 0; i < _impl_->_bufHeight; i++)
+		{
+			for (int j = 0; j < _impl_->_bufWidth; j++)
+			{
+				float v = *pixValue;
+				unsigned char* c = (unsigned char*)pixColor;
+				if (v < _impl_->_minPixValue)
+				{
+					c[0] = 0;
+					c[1] = 0;
+					c[2] = 0;
+				}
+				else
+				{
+					_impl_->_color->GetColor(c, c + 1, c + 2, (v - _impl_->_minPixValue) / pixValueRange);
+				}
+				pixValue++;
+				pixColor += 4;
+			}
+		}
+		_impl_->Refresh(false);
+	}
+}
+
+void wxRaster3dViewDialog::_chkGradColor_Check(wxCommandEvent & event)
+{
+	_impl_->_gradColorFill = _chkGradColor->GetValue();
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_chkRefLevel_Check(wxCommandEvent & event)
+{
+	_impl_->_showRefLevel = _chkRefLevel->GetValue();
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_chkBoundary_Check(wxCommandEvent & event)
+{
+	_impl_->_showBoundary = _chkBoundary->GetValue();
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_sldZStretch_Scroll(wxCommandEvent & event)
+{
+	float pos = _sldZStretch->GetValue();
+	_impl_->_scaleZ = 2.0f*pos / 100.0f;
+	_txtZStretch->SetValue(wxString::Format(wxT("%.3f"), _impl_->_scaleZ));
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_sldRefLevel_scroll(wxCommandEvent & event)
+{
+	float pos = _sldZStretch->GetValue();
+	_impl_->_refLevel = _impl_->_minPixValue + pos*(_impl_->_maxPixValue - _impl_->_minPixValue) / 100.0f;
+	_txtRefLevel->SetValue(wxString::Format(wxT("%.3f"), _impl_->_refLevel));
+	_impl_->Refresh(false);
+}
+
+void wxRaster3dViewDialog::_txtZStretch_TextEnter(wxCommandEvent& event)
+{
+	wxString strVal = _txtZStretch->GetValue();
+	double scaleZ;
+	if (strVal.ToDouble(&scaleZ))
+	{
+		_impl_->_scaleZ = scaleZ;
+		_impl_->Refresh(false);
+	}
+}
+
+void wxRaster3dViewDialog::_txtRefLevel_TextEnter(wxCommandEvent& event)
+{
+	wxString strVal = _txtZStretch->GetValue();
+	double refLevel;
+	if (strVal.ToDouble(&refLevel))
+	{
+		_impl_->_refLevel = refLevel;
+		_impl_->Refresh(false);
+	}
 }
 
 
@@ -638,7 +840,7 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 
 	//glDrawBuffer(GL_BACK);
 
-	gluLookAt_(_eyeX, _eyeY, _eyeZ, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f);
+	gluLookAt_(0.0f, 0.0f, _eyeZ, _seeX, _seeY, 0.0f, 0.0f, 1.0f, 0.0f);
 	glRotatef(_rollX, 1.0f, 0.0f, 0.0f);//	
 	glRotatef(_yawZ, 0.0f, 0.0f, 1.0f);//
 	glRotatef(_pitchY, 0.0f, 1.0f, 0.0f);//
@@ -680,10 +882,10 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 			vertex3[1] = y + _bufStepY;
 			vertex4[1] = y + _bufStepY;
 
-			vertex1[2] = *pixLine1 - _cenZ;
-			vertex2[2] = *(pixLine1 + 1) - _cenZ;
-			vertex3[2] = *pixLine2 - _cenZ;
-			vertex4[2] = *(pixLine2 + 1) - _cenZ;
+			vertex1[2] = *pixLine1 - _minPixValue;
+			vertex2[2] = *(pixLine1 + 1) - _minPixValue;
+			vertex3[2] = *pixLine2 - _minPixValue;
+			vertex4[2] = *(pixLine2 + 1) - _minPixValue;
 
 			unsigned char* color1 = colorLine1;
 			unsigned char* color2 = colorLine1 + 4;
@@ -762,23 +964,91 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 
 void wxRaster3dViewDialogImpl::OnSize(wxSizeEvent & event)
 {
-	Refresh();
+	Refresh(false);
 	event.Skip();
 }
 
 void wxRaster3dViewDialogImpl::OnMouseEvent(wxMouseEvent & event)
 {
+	//SetFocus();
 	event.Skip();
 }
 
-void wxRaster3dViewDialogImpl::OnWheelEvent(wxMouseEvent & event)
+void wxRaster3dViewDialogImpl::OnWheelEvent(wxMouseEvent & e)
 {
-	event.Skip();
+	int degree = e.GetWheelDelta();
+
+	if (degree == 0)
+		return;
+
+	int dir = e.GetWheelRotation();
+	if (dir < 0)
+		degree = -degree;
+
+	int step = (int)(abs(degree / 120.0));
+	step = step == 0 ? 1 : step;
+
+	if (e.ShiftDown())
+		step = step * 2;
+
+	double scale = 1.0f;
+
+	for (int i = 0; i < step; i++)
+	{
+		if (degree > 0)
+		{
+			scale /= 1.05; //360/375
+		}
+		else
+		{
+			scale *= 1.05; //375/360
+		}
+	}
+
+	_eyeZ *= scale;
+	Refresh(false);
+
+	e.Skip();
 }
 
-void wxRaster3dViewDialogImpl::OnKeyUpEvent(wxKeyEvent & event)
+void wxRaster3dViewDialogImpl::OnKeyDownEvent(wxKeyEvent & e)
 {
-	event.Skip();
+	int key = e.GetKeyCode();
+
+	switch (key)
+	{
+		//roll
+	case WXK_UP:
+		_rollX += 5.0f;
+		break;
+	case WXK_DOWN:
+		_rollX -= 5.0f;
+		break;
+		//yaw
+	case WXK_LEFT:
+		_yawZ += 5.0f;
+		break;
+	case WXK_RIGHT:
+		_yawZ -= 5.0f;
+		break;
+		//移动视点
+	case 87: //W
+		_seeY += _bufStepY;
+		break;
+	case 83: //S
+		_seeY -= _bufStepY;
+		break;
+	case 65://A
+		_seeX += _bufStepX;
+		break;
+	case 68://D
+		_seeX -= _bufStepX;
+		break;
+	default:
+		break;
+	}
+	Refresh(false);
+	e.Skip();
 }
 
 wxBEGIN_EVENT_TABLE(wxRaster3dViewDialogImpl, wxGLCanvas)
@@ -786,7 +1056,7 @@ wxBEGIN_EVENT_TABLE(wxRaster3dViewDialogImpl, wxGLCanvas)
 	EVT_SIZE(wxRaster3dViewDialogImpl::OnSize)
 	EVT_MOUSE_EVENTS(wxRaster3dViewDialogImpl::OnMouseEvent)
 	EVT_MOUSEWHEEL(wxRaster3dViewDialogImpl::OnWheelEvent)
-	EVT_KEY_UP(wxRaster3dViewDialogImpl::OnKeyUpEvent)
+	EVT_KEY_DOWN(wxRaster3dViewDialogImpl::OnKeyDownEvent)
 wxEND_EVENT_TABLE()
 
 END_NAME_SPACE(tGis, Gui)

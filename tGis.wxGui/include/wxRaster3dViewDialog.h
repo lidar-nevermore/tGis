@@ -77,6 +77,22 @@ private:
 
 private:
 	void _chBand_Choice(wxCommandEvent& event);
+	void _btnYawPlus_Clicked(wxCommandEvent& event);
+	void _btnYawMinus_Clicked(wxCommandEvent& event);
+	void _btnRollPlus_Clicked(wxCommandEvent& event);
+	void _btnRollMinus_Clicked(wxCommandEvent& event);
+	void _btnPitchPlus_Clicked(wxCommandEvent& event);
+	void _btnPitchMinus_Clicked(wxCommandEvent& event);
+	void _btnZoomIn_Clicked(wxCommandEvent& event);
+	void _btnZoomOut_Clicked(wxCommandEvent& event);
+	void _btnGradColor_Clicked(wxCommandEvent& event);
+	void _chkGradColor_Check(wxCommandEvent& event);
+	void _chkRefLevel_Check(wxCommandEvent& event);
+	void _chkBoundary_Check(wxCommandEvent& event);
+	void _sldZStretch_Scroll(wxCommandEvent& event);
+	void _sldRefLevel_scroll(wxCommandEvent& event);
+	void _txtZStretch_TextEnter(wxCommandEvent& event);
+	void _txtRefLevel_TextEnter(wxCommandEvent& event);
 };
 
 
