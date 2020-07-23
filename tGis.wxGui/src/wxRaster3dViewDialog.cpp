@@ -457,6 +457,10 @@ public:
 			}
 		}
 
+		_pitchY = 0.0f;
+		_rollX = -35.0f;
+		_yawZ = 0.0f;
+
 		_cenX = rangeX / 2.0;
 		_cenY = rangeY / 2.0;
 		_cenZ = (_minPixValue + _maxPixValue) / 2;
@@ -667,6 +671,7 @@ void wxRaster3dViewDialog::_chBand_Choice(wxCommandEvent & event)
 	_txtZStretch->SetValue(wxString::Format(wxT("%.3f"), _impl_->_scaleZ));
 	_txtRefLevel->SetValue(wxString::Format(wxT("%.3f"), _impl_->_refLevel));
 	_sldZStretch->SetValue(int(_impl_->_scaleZ*50));
+	_impl_->Refresh(false);
 }
 
 void wxRaster3dViewDialog::_btnYawPlus_Clicked(wxCommandEvent & event)
@@ -1019,17 +1024,17 @@ void wxRaster3dViewDialogImpl::OnKeyDownEvent(wxKeyEvent & e)
 	{
 		//roll
 	case WXK_UP:
-		_rollX += 5.0f;
+		_rollX -= 5.0f;
 		break;
 	case WXK_DOWN:
-		_rollX -= 5.0f;
+		_rollX += 5.0f;
 		break;
 		//yaw
 	case WXK_LEFT:
-		_yawZ += 5.0f;
+		_yawZ -= 5.0f;
 		break;
 	case WXK_RIGHT:
-		_yawZ -= 5.0f;
+		_yawZ += 5.0f;
 		break;
 		//“∆∂Ø ”µ„
 	case 87: //W
