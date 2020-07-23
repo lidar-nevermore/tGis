@@ -201,11 +201,13 @@ public:
 		free(_vertexColor);
 	}
 
+public:
 	GradientColor* _color;
 	wxGLContext _glContext;
 	wxRaster3dViewDialog* _owner;
 	MyGDALRasterDataset * _raster;
 	int _bandIndex;
+	IVertex2dList* _polygon;
 
 	int _pixLeft;
 	int _pixTop;
@@ -216,6 +218,12 @@ public:
 	float* _pixBuffer;
 	float _bufStepX;
 	float _bufStepY;
+	//栅格数据左上角的空间坐标值
+	float _startX;
+	float _startY;
+	//栅格数据空间范围的一半
+	float _halfRangeX;
+	float _halfRangeY;
 	//栅格数据像素最小最大值，就是Z值
 	float _minPixValue;
 	float _maxPixValue;
@@ -224,17 +232,16 @@ public:
 	//用于填充顶点的渐变色
 	unsigned char* _vertexColor;
 
-	//中心点坐标，用于中心化数据
-	float _cenX;
-	float _cenY;
-	float _cenZ;
-	//观察者位置，眼睛位置
-	float _eyeX;
-	float _eyeY;
-	float _eyeZ;
-	//目视点位置，盯着看的位置
+	////中心点坐标，用于中心化数据
+	//float _cenX;
+	//float _cenY;
+	//float _cenZ;
+
+	//目视点位置(_seeX,_seeY,0)，盯着看的位置
 	float _seeX;
 	float _seeY;
+	//观察者位置(0,0,_eyeZ)，眼睛位置
+	float _eyeZ;
 	//欧拉角旋转
 	float _yawZ;
 	float _rollX;
@@ -252,9 +259,11 @@ public:
 	//是否显示范围框
 	bool _showBoundary;
 
+public:
 	void SetRaster(MyGDALRasterDataset* raster, IVertex2dList* polygon)
 	{
 		_raster = raster;
+		_polygon = polygon;
 		double minX = INT_MAX;
 		double maxX = INT_MIN;
 		double minY = INT_MAX;
@@ -345,12 +354,16 @@ public:
 		double maxX = INT_MIN;
 		double minY = INT_MAX;
 		double maxY = INT_MIN;
-		_raster->Pixel2Spatial(0, 0, &minX, &minY);
-		_raster->Pixel2Spatial(_pixWidth, _pixHeight, &maxX, &maxY);
+		_raster->Pixel2Spatial(_pixLeft, _pixTop, &minX, &minY);
+		_raster->Pixel2Spatial(_pixLeft + _pixWidth, _pixTop + _pixHeight, &maxX, &maxY);
 
 		double rangeX = maxX - minX;
 		double rangeY = maxY - minY;
 
+		_startX = minX;
+		_startY = minY;
+		_halfRangeX = rangeX / 2.0;
+		_halfRangeY = rangeY / 2.0;
 		_bufStepX = rangeX / _bufWidth;
 		_bufStepY = rangeY / _bufHeight;
 
@@ -461,14 +474,8 @@ public:
 		_rollX = -35.0f;
 		_yawZ = 0.0f;
 
-		_cenX = rangeX / 2.0;
-		_cenY = rangeY / 2.0;
-		_cenZ = (_minPixValue + _maxPixValue) / 2;
+		_refLevel = (_minPixValue + _maxPixValue) / 2;
 
-		_refLevel = _cenZ;
-
-		_eyeX = 0;
-		_eyeY = 0;
 		//视场角45度，为了能够将数据全部放到视锥中
 		_eyeZ = abs(rangeX)*tan(23.0) / 1.7 + abs(rangeY);
 
@@ -478,6 +485,10 @@ public:
 		if (r1 < 2.0f || r2 < 2.0f)
 			_scaleZ = 0.25f*(r1 > r2 ? r2 : r1);
 	}
+
+private:
+	void DrawRefLevel();
+	void DrawBoundary();
 
 private:
 	void OnPaint(wxPaintEvent& event);
@@ -791,7 +802,7 @@ void wxRaster3dViewDialog::_sldZStretch_Scroll(wxCommandEvent & event)
 
 void wxRaster3dViewDialog::_sldRefLevel_scroll(wxCommandEvent & event)
 {
-	float pos = _sldZStretch->GetValue();
+	float pos = _sldRefLevel->GetValue();
 	_impl_->_refLevel = _impl_->_minPixValue + pos*(_impl_->_maxPixValue - _impl_->_minPixValue) / 100.0f;
 	_txtRefLevel->SetValue(wxString::Format(wxT("%.3f"), _impl_->_refLevel));
 	_impl_->Refresh(false);
@@ -819,6 +830,59 @@ void wxRaster3dViewDialog::_txtRefLevel_TextEnter(wxCommandEvent& event)
 	}
 }
 
+
+void wxRaster3dViewDialogImpl::DrawRefLevel()
+{
+	float x1 = -_halfRangeX;
+	float y1 = -_halfRangeY;
+	float x2 = _halfRangeX;
+	float y2 = _halfRangeY;
+
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glBegin(GL_QUADS);
+
+	glColor4f(0.0f, 0.85f, 0.13f, 0.65f);
+
+	glVertex3f(x1, y1, _refLevel);
+	glVertex3f(x1, y2, _refLevel);
+	glVertex3f(x2, y2, _refLevel);
+	glVertex3f(x2, y1, _refLevel);
+
+	glEnd();
+}
+
+void wxRaster3dViewDialogImpl::DrawBoundary()
+{
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glBegin(GL_QUAD_STRIP);
+
+	glColor4f(0.95f, 0.95f, 0.0f, 0.65f);
+	size_t vertexCount = _polygon->GetVertexCount();
+	double firstX;
+	double firstY;
+	for (size_t i = 0; i < vertexCount; i++)
+	{
+		double x, y;
+		_polygon->GetVertex(i, &x, &y);
+		x = x - _startX - _halfRangeX;
+		y = y - _startY - _halfRangeY;
+		glVertex3d(x, y, _minPixValue);
+		glVertex3d(x, y, _maxPixValue);
+		if (i == 0)
+		{
+			firstX = x;
+			firstY = y;
+		}
+	}
+	glVertex3d(firstX, firstY, _minPixValue);
+	glVertex3d(firstX, firstY, _maxPixValue);
+	glEnd();
+}
 
 void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 {
@@ -865,8 +929,8 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 	unsigned char* colorLine1 = _vertexColor;
 	unsigned char* colorLine2 = _vertexColor + _pixWidth * 4;
 
-	float x = -_cenX;
-	float y = -_cenY;
+	float x = -_halfRangeX;
+	float y = -_halfRangeY;
 	float* triNormalValue = _triNormal;
 	float vertex1[3];
 	float vertex2[3];
@@ -959,9 +1023,14 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 		colorLine2 += 4;
 
 		y += _bufStepY;
-		x = -_cenX;
+		x = -_halfRangeX;
 	}
 
+	if(_showRefLevel)
+		DrawRefLevel();
+
+	if (_showBoundary)
+		DrawBoundary();
 
 	SwapBuffers();
 	event.Skip();
