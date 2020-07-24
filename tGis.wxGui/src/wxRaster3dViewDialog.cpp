@@ -187,12 +187,17 @@ public:
 		GLfloat m_light0Ambient[4] = { 0.6f,0.6f,0.6f,0.8f };
 		GLfloat m_light0Diffuse[4] = { 0.6f,0.7f,0.6f,0.6f };
 		GLfloat m_light0Pos[4] = { -1.0f,-1.0f,-1.0f,0.0f };
+		GLfloat m_light1Pos[4] = { 1.0f,1.0f,1.0f,0.0f };
 
 		glLightfv(GL_LIGHT0, GL_AMBIENT, m_light0Ambient);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, m_light0Diffuse);
 		glLightfv(GL_LIGHT0, GL_POSITION, m_light0Pos);
+		glLightfv(GL_LIGHT1, GL_AMBIENT, m_light0Ambient);
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, m_light0Diffuse);
+		glLightfv(GL_LIGHT1, GL_POSITION, m_light1Pos);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHT1);
 	}
 
 	~wxRaster3dViewDialogImpl()
@@ -221,6 +226,7 @@ public:
 	float* _pixBuffer;
 	float _bufStepX;
 	float _bufStepY;
+	float _bufPixArea;
 	//栅格数据左上角的空间坐标值
 	float _startX;
 	float _startY;
@@ -249,6 +255,8 @@ public:
 
 	//参考Z值平面
 	float _refLevel;
+	float _volAbove;
+	float _volBelow;
 
 	//是否用根据Z值用渐变色填充
 	bool _gradColorFill;
@@ -360,6 +368,7 @@ public:
 		_halfRangeY = rangeY / 2.0;
 		_bufStepX = rangeX / _bufWidth;
 		_bufStepY = rangeY / _bufHeight;
+		_bufPixArea = abs(_bufStepX*_bufStepY);
 
 		POINT_2I_T* pts = (POINT_2I_T*)malloc(vertexCount * sizeof(POINT_2I_T));
 		POINT_2I_T* pt = pts;
@@ -376,14 +385,14 @@ public:
 
 		memset(_boundaryMask, 0, MAX_PIXEL);
 		RasterizePolygon(pts, vertexCount, SetBoundaryMask, this);
-		WriteMemoryBlock("E:\\tst.tif", (void**)(&_boundaryMask), GDT_Byte, _bufWidth, _bufHeight);
+		//WriteMemoryBlock("E:\\tst.tif", (void**)(&_boundaryMask), GDT_Byte, _bufWidth, _bufHeight);
 		free(pts);
 	}
 
 	static void __stdcall SetBoundaryMask(void* user, int x, int y)
 	{
 		wxRaster3dViewDialogImpl* impl = (wxRaster3dViewDialogImpl*)user;
-		*(impl->_boundaryMask + y*impl->_bufWidth + x) += 50;
+		*(impl->_boundaryMask + y*impl->_bufWidth + x) = 255;
 	}
 
 	void InitData(int bandIndex)
@@ -417,8 +426,8 @@ public:
 			{
 				vertex1[2] = *pixLine1;
 				vertex2[2] = *(pixLine1 + 1);
-				vertex3[2] = *pixLine2;
-				vertex4[2] = *(pixLine2 + 1);
+				vertex3[2] = *(pixLine2 + 1);
+				vertex4[2] = *pixLine2;
 
 #define _TEST_AND_SET(v,pixValue)\
 			    if (noDataOk != 0 && v == noDataValue)\
@@ -442,17 +451,17 @@ public:
 
 				vertex1[0] = x;
 				vertex2[0] = x + _bufStepX;
-				vertex3[0] = x;
-				vertex4[0] = x + _bufStepX;
+				vertex3[0] = x + _bufStepX;
+				vertex4[0] = x;
 
 				vertex1[1] = y;
 				vertex2[1] = y;
 				vertex3[1] = y + _bufStepY;
 				vertex4[1] = y + _bufStepY;
 
-				CalcTriNormal(vertex1, vertex2, vertex3, triNormalValue);
+				CalcTriNormal(vertex1, vertex2, vertex4, triNormalValue);
 				triNormalValue += 3;
-				CalcTriNormal(vertex2, vertex4, vertex3, triNormalValue);
+				CalcTriNormal(vertex2, vertex3, vertex4, triNormalValue);
 				triNormalValue += 3;
 
 				pixLine1++;
@@ -468,6 +477,13 @@ public:
 		}
 
 		double pixValueRange = _maxPixValue - _minPixValue;
+
+		if (pixValueRange <= DBL_EPSILON)
+		{
+			_minPixValue = 0.0f;
+			pixValueRange = _maxPixValue;
+		}
+
 		float* pixValue = _pixBuffer;
 		unsigned char* pixColor = _vertexColor;
 		for (int i = 0; i < _bufHeight; i++)
@@ -511,6 +527,8 @@ public:
 		if (r1 < 2.0f || r2 < 2.0f)
 			_scaleZ = 0.25f*(r1 > r2 ? r2 : r1);
 	}
+
+	void CalcVolume();
 
 private:
 	void DrawRefLevel();
@@ -708,6 +726,9 @@ void wxRaster3dViewDialog::_chBand_Choice(wxCommandEvent & event)
 	_txtZStretch->SetValue(wxString::Format(wxT("%.3f"), _impl_->_scaleZ));
 	_txtRefLevel->SetValue(wxString::Format(wxT("%.3f"), _impl_->_refLevel));
 	_sldZStretch->SetValue(int(_impl_->_scaleZ*50));
+	_impl_->CalcVolume();
+	_txtVolumeAbove->SetValue(wxString::Format(wxT("%.5f"), _impl_->_volAbove));
+	_txtVolumeBelow->SetValue(wxString::Format(wxT("%.5f"), _impl_->_volBelow));
 	_impl_->Refresh(false);
 }
 
@@ -832,6 +853,9 @@ void wxRaster3dViewDialog::_sldRefLevel_scroll(wxCommandEvent & event)
 	_impl_->_refLevel = _impl_->_minPixValue + pos*(_impl_->_maxPixValue - _impl_->_minPixValue) / 100.0f;
 	_txtRefLevel->SetValue(wxString::Format(wxT("%.3f"), _impl_->_refLevel));
 	_impl_->Refresh(false);
+	_impl_->CalcVolume();
+	_txtVolumeAbove->SetValue(wxString::Format(wxT("%.5f"), _impl_->_volAbove));
+	_txtVolumeBelow->SetValue(wxString::Format(wxT("%.5f"), _impl_->_volBelow));
 }
 
 void wxRaster3dViewDialog::_txtZStretch_TextEnter(wxCommandEvent& event)
@@ -853,9 +877,41 @@ void wxRaster3dViewDialog::_txtRefLevel_TextEnter(wxCommandEvent& event)
 	{
 		_impl_->_refLevel = refLevel;
 		_impl_->Refresh(false);
+		_impl_->CalcVolume();
+		_txtVolumeAbove->SetValue(wxString::Format(wxT("%.5f"), _impl_->_volAbove));
+		_txtVolumeBelow->SetValue(wxString::Format(wxT("%.5f"), _impl_->_volBelow));
 	}
 }
 
+
+void wxRaster3dViewDialogImpl::CalcVolume()
+{
+	float aboveHeightSum = 0.0f;
+	float belowHeightSum = 0.0f;
+
+	float* pixValue = _pixBuffer;
+	unsigned char* maskValue = _boundaryMask;
+	for (int i = 0; i < _bufHeight; i++)
+	{
+		for (int j = 0; j < _bufWidth; j++)
+		{
+			float v = *pixValue;
+			if (*maskValue > 0 && v >= _minPixValue)
+			{
+				if (v >= _refLevel)
+					aboveHeightSum += (v - _refLevel);
+				else
+					belowHeightSum += (_refLevel - v);
+			}
+
+			pixValue++;
+			maskValue++;
+		}
+	}
+
+	_volAbove = _bufPixArea*aboveHeightSum;
+	_volBelow = _bufPixArea*belowHeightSum;
+}
 
 void wxRaster3dViewDialogImpl::DrawRefLevel()
 {
@@ -863,6 +919,7 @@ void wxRaster3dViewDialogImpl::DrawRefLevel()
 	float y1 = -_halfRangeY;
 	float x2 = _halfRangeX;
 	float y2 = _halfRangeY;
+	float h = _refLevel - _minPixValue;
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glEnable(GL_BLEND);
@@ -872,10 +929,10 @@ void wxRaster3dViewDialogImpl::DrawRefLevel()
 
 	glColor4f(0.0f, 0.85f, 0.13f, 0.65f);
 
-	glVertex3f(x1, y1, _refLevel);
-	glVertex3f(x1, y2, _refLevel);
-	glVertex3f(x2, y2, _refLevel);
-	glVertex3f(x2, y1, _refLevel);
+	glVertex3f(x1, y1, h);
+	glVertex3f(x2, y1, h);
+	glVertex3f(x2, y2, h);
+	glVertex3f(x1, y2, h);
 
 	glEnd();
 }
@@ -891,22 +948,23 @@ void wxRaster3dViewDialogImpl::DrawBoundary()
 	size_t vertexCount = _polygon->GetVertexCount();
 	double firstX;
 	double firstY;
+	double h = _maxPixValue - _minPixValue;
 	for (size_t i = 0; i < vertexCount; i++)
 	{
 		double x, y;
 		_polygon->GetVertex(i, &x, &y);
 		x = x - _startX - _halfRangeX;
 		y = y - _startY - _halfRangeY;
-		glVertex3d(x, y, _minPixValue);
-		glVertex3d(x, y, _maxPixValue);
+		glVertex3d(x, y, 0.0);
+		glVertex3d(x, y, h);
 		if (i == 0)
 		{
 			firstX = x;
 			firstY = y;
 		}
 	}
-	glVertex3d(firstX, firstY, _minPixValue);
-	glVertex3d(firstX, firstY, _maxPixValue);
+	glVertex3d(firstX, firstY, 0.0);
+	glVertex3d(firstX, firstY, h);
 	glEnd();
 }
 
@@ -969,8 +1027,8 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 		{
 			vertex1[0] = x;
 			vertex2[0] = x + _bufStepX;
-			vertex3[0] = x;
-			vertex4[0] = x + _bufStepX;
+			vertex3[0] = x + _bufStepX;
+			vertex4[0] = x;
 
 			vertex1[1] = y;
 			vertex2[1] = y;
@@ -979,13 +1037,13 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 
 			vertex1[2] = *pixLine1 - _minPixValue;
 			vertex2[2] = *(pixLine1 + 1) - _minPixValue;
-			vertex3[2] = *pixLine2 - _minPixValue;
-			vertex4[2] = *(pixLine2 + 1) - _minPixValue;
+			vertex3[2] = *(pixLine2 + 1) - _minPixValue;
+			vertex4[2] = *pixLine2 - _minPixValue;
 
 			unsigned char* color1 = colorLine1;
 			unsigned char* color2 = colorLine1 + 4;
-			unsigned char* color3 = colorLine2;
-			unsigned char* color4 = colorLine2 + 4;
+			unsigned char* color3 = colorLine2 + 4;
+			unsigned char* color4 = colorLine2;
 
 			if (_gradColorFill)
 			{
@@ -996,18 +1054,18 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 				glVertex3f(vertex1[0], vertex1[1], vertex1[2]);
 				glColor3ub(color2[0], color2[1], color2[2]);
 				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
-				glColor3ub(color3[0], color3[1], color3[2]);
-				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
+				glColor3ub(color4[0], color4[1], color4[2]);
+				glVertex3f(vertex4[0], vertex4[1], vertex4[2]);
 
 				triNormalValue += 3;
 
 				glNormal3fv(triNormalValue);
 				glColor3ub(color2[0], color2[1], color2[2]);
 				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
+				glColor3ub(color3[0], color3[1], color3[2]);
+				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
 				glColor3ub(color4[0], color4[1], color4[2]);
 				glVertex3f(vertex4[0], vertex4[1], vertex4[2]);
-				glColor3ub(color3[0], color3[1], color3[2]);
-				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);				
 
 				triNormalValue += 3;
 
@@ -1021,14 +1079,14 @@ void wxRaster3dViewDialogImpl::OnPaint(wxPaintEvent & event)
 				glNormal3fv(triNormalValue);
 				glVertex3f(vertex1[0], vertex1[1], vertex1[2]);
 				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
-				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
+				glVertex3f(vertex4[0], vertex4[1], vertex4[2]);
 
 				triNormalValue += 3;
 
 				glNormal3fv(triNormalValue);
 				glVertex3f(vertex2[0], vertex2[1], vertex2[2]);
+				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);
 				glVertex3f(vertex4[0], vertex4[1], vertex4[2]);
-				glVertex3f(vertex3[0], vertex3[1], vertex3[2]);				
 
 				triNormalValue += 3;
 
