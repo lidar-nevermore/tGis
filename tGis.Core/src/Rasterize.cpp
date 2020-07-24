@@ -110,8 +110,17 @@ TGIS_CORE_API void RasterizePolyline(POINT_2I_T * polyline, size_t size, RASTERI
 struct Edge
 {
 	int ymax;   //max y-coordinate of edge 
-	float xofymin;  //x-coordinate of lowest edge point, updated only in aet 
-	float slopeinverse;
+	union
+	{
+		float xofymin;  //x-coordinate of lowest edge point, updated only in aet 
+		int xmin;
+	};
+
+	union
+	{
+		float slopeinverse;
+		int xmax;
+	};
 };
 
 //ÉýÐò
@@ -185,6 +194,43 @@ inline void StoreEdgeInTable(LINKED_ARRAY * edgeTable, int x1, int y1, int x2, i
 	int ymaxTS, xofyminTS, scanline; //ts stands for to store 
 
 	// horizontal lines are not stored in edge table
+	//if (y1 == y2)
+	//{
+	//	if (x1 > x2)
+	//	{
+	//		int temp = x2;
+	//		x2 = x1;
+	//		x1 = temp;
+	//	}
+
+	//	for (int x = x1; x <= x2;x++)
+	//		func(ud, x, y1);
+
+	//	return;
+	//}
+
+	if (x2 == x1 || y1 == y2)
+		slopeinverse = 0.0f;
+	else
+		slopeinverse = ((float)(x2 - x1)) / ((float)(y2 - y1));
+
+	if (y1 > y2)
+	{
+		scanline = y2 - yMin;
+		ymaxTS = y1;
+		xofyminTS = x2;
+	}
+	else
+	{
+		scanline = y1 - yMin;
+		ymaxTS = y2;
+		xofyminTS = x1;
+	}
+
+	LINKED_ARRAY* edgeTableEntry = edgeTable + scanline;
+
+	Edge* edge = (Edge*)linked_array_enqueue(edgeTableEntry, nullptr);
+
 	if (y1 == y2)
 	{
 		if (x1 > x2)
@@ -194,36 +240,16 @@ inline void StoreEdgeInTable(LINKED_ARRAY * edgeTable, int x1, int y1, int x2, i
 			x1 = temp;
 		}
 
-		for (int x = x1; x <= x2;x++)
-			func(ud, x, y1);
-
-		return;
-	}
-
-	if (x2 == x1)
-		slopeinverse = 0.0f;
-	else
-		slopeinverse = ((float)(x2 - x1)) / ((float)(y2 - y1));
-
-	if (y1>y2)
-	{
-		scanline = y2-yMin;
-		ymaxTS = y1;
-		xofyminTS = x2;
+		edge->ymax = ymaxTS;
+		edge->xmin = x1;
+		edge->xmax = x2;
 	}
 	else
 	{
-		scanline = y1-yMin;
-		ymaxTS = y2;
-		xofyminTS = x1;
+		edge->ymax = ymaxTS;
+		edge->slopeinverse = slopeinverse;		
+		edge->xofymin = (float)xofyminTS;
 	}
-
-	LINKED_ARRAY* edgeTableEntry = edgeTable + scanline;
-
-	Edge* edge = (Edge*)linked_array_enqueue(edgeTableEntry, nullptr);
-	edge->slopeinverse = slopeinverse;
-	edge->ymax = ymaxTS;
-	edge->xofymin = (float)xofyminTS;
 }
 
 void ScanLineFill(LINKED_ARRAY * edgeTable, int yMin, int yMax, RASTERIZE_FUNC func, void * ud)
@@ -276,7 +302,17 @@ void ScanLineFill(LINKED_ARRAY * edgeTable, int yMin, int yMax, RASTERIZE_FUNC f
 			edgePair[edgePairNum] = (Edge*)sorted_list_at(activeEdgeTable, aetPos, nullptr);
 			aetPos = sorted_list_next(activeEdgeTable, aetPos);
 			edgePairNum++;
-			if (edgePairNum == 2)
+
+			//Ë®Æ½Ïß
+			if (edgePair[0]->ymax == y)
+			{
+				edgePairNum = 0;
+				int x1 = edgePair[0]->xmin;
+				int x2 = edgePair[0]->xmax;
+				for (int x = x1; x <= x2;x++)
+					func(ud, x, y);
+			}
+			else if (edgePairNum == 2)
 			{
 				edgePairNum = 0;
 				int x1 = (int)round(edgePair[0]->xofymin);

@@ -310,14 +310,16 @@ void wxDataSourceWidget::OnNodeActivated(wxTreeEvent & event)
 			selData->_ds->Connect();
 			if (isConnected == false && selData->_ds->IsConnected())
 			{
-				AddDataSourceSubNode(selId, selData->_ds);
-
 				//TODO: 当前只有文件系统类型数据源
 				_treeCtrl->SetItemImage(selId, folder_open_img);
 				_treeCtrl->SetItemImage(selId, folder_open_img, wxTreeItemIcon_Selected);
-				
-				_treeCtrl->Expand(selId);
 			}
+
+			if(_treeCtrl->GetChildrenCount(selId,false) == 0)
+				AddDataSourceSubNode(selId, selData->_ds);
+
+			if(!_treeCtrl->IsExpanded(selId))
+				_treeCtrl->Expand(selId);
 
 			AfterDataSourceActivatedEvent(selData->_ds);
 		}
