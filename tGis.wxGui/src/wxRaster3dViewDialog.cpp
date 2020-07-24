@@ -444,8 +444,8 @@ public:
 			    }
 				_TEST_AND_SET(vertex1[2], pixLine1);
 				_TEST_AND_SET(vertex2[2], pixLine1 + 1);
-				_TEST_AND_SET(vertex3[2], pixLine2);
-				_TEST_AND_SET(vertex4[2], pixLine2 + 1);
+				_TEST_AND_SET(vertex3[2], pixLine1 + 1);
+				_TEST_AND_SET(vertex4[2], pixLine2);
 
 #undef _TEST_AND_SET
 
