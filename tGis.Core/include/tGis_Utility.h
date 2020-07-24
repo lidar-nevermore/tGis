@@ -22,4 +22,5 @@ extern "C"
 #include "Statistics.h"
 #include "RasterWriter.h"
 #include "BuildPyramids.h"
+#include "Rasterize.h"
 

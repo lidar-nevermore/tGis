@@ -161,7 +161,7 @@ public:
 		_bandIndex = 0;
 		_raster = nullptr;
 		_pixBuffer = (float*)malloc(MAX_PIXEL * sizeof(float));
-		//顶点颜色，*4而不是*3为了尽量对齐
+		//顶点颜色，*4而不是*3为了尽量内存对齐
 		_vertexColor = (unsigned char*)malloc(MAX_PIXEL * 4);
 		//一个矩形分成两个三角形 最多有(w-1)*(h-1)*2个三角形
 		_triNormal = (float*)malloc(6 * MAX_PIXEL * sizeof(float));
@@ -175,6 +175,8 @@ public:
 		_gradColorFill = true;
 		_showRefLevel = true;
 		_showBoundary = true;
+
+		_boundaryMask = (unsigned char*)malloc(MAX_PIXEL);
 
 		_glContext.SetCurrent(*this);
 		glClearDepth(1.0f);
@@ -199,6 +201,7 @@ public:
 		free(_pixBuffer);
 		free(_triNormal);
 		free(_vertexColor);
+		free(_boundaryMask);
 	}
 
 public:
@@ -229,13 +232,8 @@ public:
 	float _maxPixValue;
 	//存储三角形单位法向量
 	float* _triNormal;
-	//用于填充顶点的渐变色
+	//用于填充顶点的颜色
 	unsigned char* _vertexColor;
-
-	////中心点坐标，用于中心化数据
-	//float _cenX;
-	//float _cenY;
-	//float _cenZ;
 
 	//目视点位置(_seeX,_seeY,0)，盯着看的位置
 	float _seeX;
@@ -258,6 +256,9 @@ public:
 	bool _showRefLevel;
 	//是否显示范围框
 	bool _showBoundary;
+
+	//范围框掩码，范围框内大于0，范围框外等于0
+	unsigned char* _boundaryMask;
 
 public:
 	void SetRaster(MyGDALRasterDataset* raster, IVertex2dList* polygon)
@@ -346,14 +347,7 @@ public:
 			_bufWidth = int(_pixWidth*ratio);
 			_bufHeight = int(_pixHeight*ratio);
 		}
-	}
 
-	void InitData(int bandIndex)
-	{
-		double minX = INT_MAX;
-		double maxX = INT_MIN;
-		double minY = INT_MAX;
-		double maxY = INT_MIN;
 		_raster->Pixel2Spatial(_pixLeft, _pixTop, &minX, &minY);
 		_raster->Pixel2Spatial(_pixLeft + _pixWidth, _pixTop + _pixHeight, &maxX, &maxY);
 
@@ -367,6 +361,33 @@ public:
 		_bufStepX = rangeX / _bufWidth;
 		_bufStepY = rangeY / _bufHeight;
 
+		POINT_2I_T* pts = (POINT_2I_T*)malloc(vertexCount * sizeof(POINT_2I_T));
+		POINT_2I_T* pt = pts;
+		for (size_t i = 0; i < vertexCount; i++)
+		{
+			double x, y;
+			polygon->GetVertex(i, &x, &y);
+			x = x - _startX;
+			y = y - _startY;
+			pt->x = (int)round(x / _bufStepX);
+			pt->y = (int)round(y / _bufStepY);
+			pt++;
+		}
+
+		memset(_boundaryMask, 0, MAX_PIXEL);
+		RasterizePolygon(pts, vertexCount, SetBoundaryMask, this);
+		WriteMemoryBlock("E:\\tst.tif", (void**)(&_boundaryMask), GDT_Byte, _bufWidth, _bufHeight);
+		free(pts);
+	}
+
+	static void __stdcall SetBoundaryMask(void* user, int x, int y)
+	{
+		wxRaster3dViewDialogImpl* impl = (wxRaster3dViewDialogImpl*)user;
+		*(impl->_boundaryMask + y*impl->_bufWidth + x) += 50;
+	}
+
+	void InitData(int bandIndex)
+	{
 		_bandIndex = bandIndex;
 		GDALRasterBand* band = _raster->GetGDALDataset()->GetRasterBand(_bandIndex);
 
@@ -470,17 +491,22 @@ public:
 			}
 		}
 
+		//以下初始化投影参数
+
 		_pitchY = 0.0f;
 		_rollX = -35.0f;
 		_yawZ = 0.0f;
 
 		_refLevel = (_minPixValue + _maxPixValue) / 2;
 
-		//视场角45度，为了能够将数据全部放到视锥中
-		_eyeZ = abs(rangeX)*tan(23.0) / 1.7 + abs(rangeY);
+		float rangeX = abs(_halfRangeX)*2.0f;
+		float rangeY = abs(_halfRangeY)*2.0f;
 
-		float r1 = abs(rangeX) / pixValueRange;
-		float r2 = abs(rangeY) / pixValueRange;
+		//视场角45度，为了能够将数据全部放到视锥中
+		_eyeZ = rangeX*tan(23.0) / 1.7 + rangeY;
+
+		float r1 = rangeX / pixValueRange;
+		float r2 = rangeY / pixValueRange;
 
 		if (r1 < 2.0f || r2 < 2.0f)
 			_scaleZ = 0.25f*(r1 > r2 ? r2 : r1);

@@ -392,6 +392,9 @@
     <ClInclude Include="..\include\IVertex2dList.h">
       <Filter>include\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\Rasterize.h">
+      <Filter>include\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\RasterBandStorageBlockGridReader.cpp">
@@ -627,6 +630,9 @@
     </ClCompile>
     <ClCompile Include="..\src\OverlayPolygon.cpp">
       <Filter>src\Visualize</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Rasterize.cpp">
+      <Filter>src\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
