@@ -71,6 +71,7 @@ void ColorRampLayerRenderCtrl::SetLayer(ILayer * layer)
 	_raster = (MyGDALRasterDataset*)layer->GetDataset();
 	GDALDataset* dt = _raster->GetGDALDataset();
 	int layerCount = dt->GetRasterCount();
+	_choiceBand->Clear();
 	for (int i = 1; i <= layerCount; i++)
 	{
 		wxString bandStr = wxString::Format(wxT("Band %d"), i);
